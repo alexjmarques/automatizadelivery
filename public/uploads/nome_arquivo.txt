@@ -1,0 +1,13 @@
+
+Cod. Produto      Env. Qtd  V. UN  Total
+251  Prod. linha   002   3   0.50   1.50
+278  Prod. linha   005   1   0.75   0.75
+553  Prod. linha   014  10   1.50  15.00
+                        Sub-total: 17.25
+
+Cód. Cliente: 150
+CPF/CNPJ: 999.999.999-99
+Nome do cliente
+ 
+________________________________________
+ Assinatura do Cliente 

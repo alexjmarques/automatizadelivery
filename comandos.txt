@@ -1,0 +1,9 @@
+ALTER TABLE cartCarrinhoAdicional
+ADD CONSTRAINT carrinho_p_adicional
+FOREIGN KEY (`id_carrinho`) REFERENCES `cartCarrinho`(`id`)
+
+
+Truncate
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE table `cartCarrinho`; 
+SET FOREIGN_KEY_CHECKS = 1;

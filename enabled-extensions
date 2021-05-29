@@ -1,0 +1,64 @@
+
+Warning: PHP Startup: Unable to load dynamic library 'tidy.so' (tried: /Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/tidy.so (dlopen(/Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/tidy.so, 9): Library not loaded: libtidy.5.dylib
+  Referenced from: /Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/tidy.so
+  Reason: image not found), /Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/tidy.so.so (dlopen(/Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/tidy.so.so, 9): image not found)) in Unknown on line 0
+
+Warning: PHP Startup: Unable to load dynamic library 'php_printer.dll' (tried: /Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/php_printer.dll (dlopen(/Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/php_printer.dll, 9): image not found), /Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/php_printer.dll.so (dlopen(/Applications/MAMP/bin/php/php7.4.2/lib/php/extensions/no-debug-non-zts-20190902/php_printer.dll.so, 9): image not found)) in Unknown on line 0
+[PHP Modules]
+bcmath
+bz2
+calendar
+Core
+ctype
+curl
+date
+dom
+exif
+fileinfo
+filter
+ftp
+gd
+gettext
+hash
+iconv
+imagick
+imap
+intl
+json
+libxml
+mbstring
+mysqli
+mysqlnd
+OAuth
+openssl
+pcre
+PDO
+pdo_mysql
+pdo_pgsql
+pdo_sqlite
+pgsql
+Phar
+posix
+readline
+Reflection
+session
+SimpleXML
+soap
+sockets
+sodium
+SPL
+sqlite3
+standard
+tokenizer
+xdebug
+xml
+xmlreader
+xmlrpc
+xmlwriter
+xsl
+zip
+zlib
+
+[Zend Modules]
+Xdebug
+
