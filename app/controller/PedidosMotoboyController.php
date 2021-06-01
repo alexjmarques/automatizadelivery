@@ -11,6 +11,7 @@ use DElfimov\Translate\Translate;
 use app\controller\AllController;
 use function JBZoo\Data\json;
 use app\classes\Preferencias;
+use Mobile_Detect;
 use app\classes\Sessao;
 use Browser;
 
@@ -77,6 +78,7 @@ class PedidosMotoboyController extends Controller
             'mesAtual' => date('m'),
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
             
         ]);
@@ -120,6 +122,7 @@ class PedidosMotoboyController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
         ]);
     }
@@ -178,6 +181,7 @@ class PedidosMotoboyController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
         ]);
     }
@@ -197,6 +201,7 @@ class PedidosMotoboyController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
         ]);
     }
@@ -247,6 +252,7 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'numero' => $this->geral->formataTelefone($cliente->telefone)
         ]);
     }
@@ -311,6 +317,7 @@ class PedidosMotoboyController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
         ]);
     }
@@ -347,6 +354,7 @@ class PedidosMotoboyController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
         ]);
     }
@@ -413,6 +421,7 @@ class PedidosMotoboyController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
         ]);
     }

@@ -23,7 +23,7 @@ use app\Models\EstadosModel;
 use app\Models\MoedaModel;
 use app\Models\UsuarioModel;
 use app\Models\VendasModel;
-
+use Mobile_Detect;
 use Bcrypt\Bcrypt;
 
 class PerfilMotoboyController extends Controller
@@ -104,8 +104,9 @@ class PerfilMotoboyController extends Controller
             'empresa' => $resultEmpresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -148,8 +149,9 @@ class PerfilMotoboyController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'empresa' => $resultEmpresa,
             'moeda' => $moeda,
-            'trans' => $trans,
-            
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -183,7 +185,9 @@ class PerfilMotoboyController extends Controller
             'empresa' => $resultEmpresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
+            'isLogin' => $this->sessao->getUser(),
             
         ]);
     }

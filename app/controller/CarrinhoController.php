@@ -24,6 +24,7 @@ use app\Models\Usuarios;
 use app\Models\UsuariosEmpresa;
 use Bcrypt\Bcrypt;
 use Browser;
+use Mobile_Detect;
 
 class CarrinhoController extends Controller
 {
@@ -77,7 +78,7 @@ class CarrinhoController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -142,7 +143,7 @@ class CarrinhoController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -216,7 +217,7 @@ class CarrinhoController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -340,7 +341,7 @@ class CarrinhoController extends Controller
             'cupomValor' => $resultado,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser()
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -408,6 +409,7 @@ class CarrinhoController extends Controller
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -555,7 +557,8 @@ class CarrinhoController extends Controller
             'carrinho' => $resultCarrinho,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser()
+            'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect()
         ]);
     }
 

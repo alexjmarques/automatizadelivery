@@ -13,6 +13,7 @@ use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\classes\Sessao;
 use Browser;
+use Mobile_Detect;
 
 class FavoritosController extends Controller
 {

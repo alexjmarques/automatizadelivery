@@ -15,6 +15,7 @@ use app\classes\Sessao;
 use app\Models\Usuarios;
 use app\Models\UsuariosEnderecos;
 use Browser;
+use Mobile_Detect;
 
 
 class PerfilController extends Controller
@@ -54,6 +55,7 @@ class PerfilController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
 
         ]);

@@ -13,6 +13,7 @@ use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\classes\Sessao;
 use Browser;
+use Mobile_Detect;
 
 class PagesController extends Controller
 {
@@ -86,6 +87,7 @@ class PagesController extends Controller
             'hoje' =>  $hoje,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect()
 
         ]);
     }
@@ -106,7 +108,7 @@ class PagesController extends Controller
             'ultimaVenda' => $resultUltimaVenda,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -136,7 +138,7 @@ class PagesController extends Controller
             'formasPagamento' => $formasPagamento,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -149,7 +151,7 @@ class PagesController extends Controller
         $this->load('_geral/bemVindo/main', [
             'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -163,7 +165,7 @@ class PagesController extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'enderecoAtivo' => $enderecoAtivo,
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -177,7 +179,7 @@ class PagesController extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'enderecoAtivo' => $enderecoAtivo,
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -198,7 +200,7 @@ class PagesController extends Controller
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -211,7 +213,8 @@ class PagesController extends Controller
         $this->load('_geral/termosUso/main', [
             'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
-            'trans' => $this->trans
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -224,7 +227,8 @@ class PagesController extends Controller
         $this->load('_geral/politicaPrivacidade/main', [
             'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
-            'trans' => $this->trans
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
         ]);
     }
 }

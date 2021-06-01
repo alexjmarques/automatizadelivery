@@ -17,6 +17,7 @@ use app\Models\Usuarios;
 use app\Models\Empresa;
 //use app\classes\SMS;
 use Bcrypt\Bcrypt;
+use Mobile_Detect;
 
 class UsuarioController extends Controller
 {
@@ -67,6 +68,7 @@ class UsuarioController extends Controller
             'empresa' => $empresa,
             'isLogin' => $isLogin,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             
         ]);
     }
@@ -89,7 +91,7 @@ class UsuarioController extends Controller
             'empresa' => $empresa,
             'isLogin' => $isLogin,
             'trans' => $this->trans,
-            
+            'detect' => new Mobile_Detect()
         ]);
     }
     /**
@@ -109,7 +111,7 @@ class UsuarioController extends Controller
         $this->load('_admin/login/main', [
             'trans' => $this->trans,
             'isLogin' => $isLogin,
-            
+            'detect' => new Mobile_Detect()
         ]);
     }
     /**

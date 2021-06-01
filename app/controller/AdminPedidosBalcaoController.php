@@ -214,6 +214,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'produtoAdicional' => $resultProdutosAdicionais,
             'produtoSabores' => $resultSabores,
             'chave' => md5(uniqid(rand(), true)),
+            
             'id_cliente' => $SessionPedidoid_cliente
         ]);
     }
@@ -268,6 +269,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
+            
             'moeda' => $moeda,
             'estados' => $resultEstados,
             'delivery' => $resultDelivery,
@@ -351,6 +353,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
+            
             'moeda' => $moeda,
             'estados' => $resultEstados,
             'planoAtivo' => $planoAtivo,

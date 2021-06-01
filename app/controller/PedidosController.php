@@ -14,6 +14,7 @@ use app\classes\Preferencias;
 use app\classes\Sessao;
 use app\Models\CarrinhoPedidos;
 use Browser;
+use Mobile_Detect;
 
 
 class PedidosController extends Controller
@@ -71,6 +72,7 @@ class PedidosController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'usuario' => $usuario,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
         ]);
     }
@@ -85,6 +87,7 @@ class PedidosController extends Controller
             'moeda' => $moeda,
             'venda' => $venda,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser()
         ]);
 
@@ -153,6 +156,7 @@ class PedidosController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'venda' => $venda,
             'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser()
         ]);
     }

@@ -13,6 +13,7 @@ use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\classes\Sessao;
 use Browser;
+use Mobile_Detect;
 
 class RatingController extends Controller
 {
@@ -68,8 +69,9 @@ class RatingController extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
-            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
