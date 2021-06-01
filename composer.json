@@ -39,7 +39,7 @@
         "mike42/escpos-php": "^3.0",
         "calcinai/php-imagick": "^0.1.2",
         "pagarme/pagarme-php": "^4.1",
-        "coffeecode/datalayer": "^1.1.*",
+        "coffeecode/datalayer": "1.1.*",
         "vlucas/valitron": "^1.4",
         "jbzoo/image": "3.0.4",
         "grupocoqueiro/escpos-php": "^3.1",
