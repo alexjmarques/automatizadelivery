@@ -1,11 +1,11 @@
 {% extends 'partials/bodyAcesso.twig.php'  %}
-{% block title %}{{empresa[':nomeFantasia']}} - Sistema de Gerenciamento de Pedidos{% endblock %}
+{% block title %}{{empresa.nome_fantasia }} - Sistema de Gerenciamento de Pedidos{% endblock %}
 {% block body %}
 <div class="container">
 <div class="row align-items-center hv-100">
 <div class="col-lg-6 text-center">
 <img class="logo" src="{{BASE}}uploads/{{empresa[':logo']}}">
-<h2 class="mb-0">{{empresa[':nomeFantasia']}}</h2>
+<h2 class="mb-0">{{empresa.nome_fantasia }}</h2>
 <p class="mb-3">{{empresa[':rua']}}, {{empresa[':numero']}} {{empresa[':complemento']}} - {{empresa[':bairro']}} <br/>
  {{empresa[':cidade']}}/{{estado}} - CEP: {{empresa[':cep']}}</p>
 <img class="mb-3 mt-4 qrcode" src="{{qrCode}}">

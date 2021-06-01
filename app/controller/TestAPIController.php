@@ -19,7 +19,7 @@ class TestAPIController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
+        
         $this->clickEntrega = new ClickEntregas();
     }
 

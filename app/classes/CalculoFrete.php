@@ -3,6 +3,7 @@
 namespace app\classes;
 
 use app\core\Controller;
+use app\classes\Acoes;
 use app\Models\AdminConfigEmpresaModel;
 use DElfimov\Translate\Translate;
 use DElfimov\Translate\Loader\PhpFilesLoader;
@@ -10,7 +11,7 @@ use DElfimov\Translate\Loader\PhpFilesLoader;
 class CalculoFrete extends Controller
 {
 
-    private $configEmpresaModel;
+    private $acoes;
 
     /**
      * 
@@ -20,8 +21,8 @@ class CalculoFrete extends Controller
      */
     public function __construct()
     {
-$this->preferencias = new Preferencias();
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
+
+        $this->acoes = new Acoes();
     }
 
     public function number_format_short( $n, $precision = 1 ) {
@@ -65,8 +66,9 @@ $this->preferencias = new Preferencias();
      */
     public function calculo(string $rua, string $numero, string $bairro, string $cep, int $id_empresa)
     {
-        $resultEmpresa = $this->configEmpresaModel->getById($id_empresa);
-        $empresa = $resultEmpresa[':rua'] . ' ' . $resultEmpresa[':numero'] . ' ' . $resultEmpresa[':bairro'];
+        $resultEmpresa = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $id_empresa);
+
+        $empresa = $resultEmpresa->rua . ' ' . $resultEmpresa->numero . ' ' . $resultEmpresa->bairro;
         $cliente = $rua . ' ' . $numero . ' ' . $bairro . ' ' . $cep;
 
         $empresa = urlencode($empresa);
@@ -86,8 +88,8 @@ $this->preferencias = new Preferencias();
 
     public function infoKm(string $rua, string $numero, string $bairro, string $cep, int $id_empresa)
     {
-        $resultEmpresa = $this->configEmpresaModel->getById($id_empresa);
-        $empresa = $resultEmpresa[':rua'] . ' ' . $resultEmpresa[':numero'] . ' ' . $resultEmpresa[':bairro'];
+        $resultEmpresa = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $id_empresa);
+        $empresa = $resultEmpresa->rua . ' ' . $resultEmpresa->numero . ' ' . $resultEmpresa->bairro;
         $cliente = $rua . ' ' . $numero . ' ' . $bairro . ' ' . $cep;
 
         $empresa = urlencode($empresa);

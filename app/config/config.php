@@ -33,11 +33,6 @@ if($online){
     ]);
 }
 
-define('COR', '#ea1d2c');
-define('CORSECUNDARIA', '#880a1f');
-define('SABORES', 'Sabores');
-define('SABOR', 'sabor');
-
 
 define('IFOOD', [
     "URL" => "https://merchant-api.ifood.com.br",

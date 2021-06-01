@@ -17,7 +17,7 @@ use app\classes\Sessao;
 
 class AdminRating extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,7 +32,7 @@ class AdminRating extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -42,7 +42,7 @@ class AdminRating extends Controller
 
     public function index($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $rating = $this->ratingModel->qtdRating($empresaAct[':id']);
         $ratingAll = $this->ratingModel->getAllPorEmpresa($empresaAct[':id']);
@@ -75,7 +75,7 @@ class AdminRating extends Controller
             'votacaoEntrega' => $ratingEntrega['avaliacao_motoboy'],
             'votacaoPedidos' => $ratingPedidos['avaliacao_pedido'],
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
 }

@@ -1,5 +1,5 @@
 {% extends 'partials/body.twig.php'  %}
-{% block title %}Meus Pedidos - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Meus Pedidos - {{empresa.nome_fantasia }}{% endblock %}
 {% block body %}
 <div class="osahan-checkout">
     <div class="bg-primary border-bottom px-3 pt-3 pb-5 d-flex ">
@@ -10,7 +10,7 @@
     <div class="mb-3 osahan-cart-item osahan-home-page">
         <div class="p-3 osahan-profile">
             <div class="bg-white rounded shadow mt-n5">
-                <div id="acompanharStatusPedido" data-pedido="{{venda[':numero_pedido']}}" data-status="{{venda[':status']}}"></div>
+                <div id="acompanharStatusPedido" data-pedido="{{venda.numero_pedido}}" data-status="{{venda.status}}"></div>
             </div>
         </div>
     </div>

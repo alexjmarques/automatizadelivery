@@ -17,7 +17,7 @@ use app\classes\Sessao;
 
 class AdminPlanos extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,7 +32,7 @@ class AdminPlanos extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -42,7 +42,7 @@ class AdminPlanos extends Controller
 
     public function index($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
 
@@ -50,7 +50,7 @@ class AdminPlanos extends Controller
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -60,7 +60,7 @@ class AdminPlanos extends Controller
         }
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);
         $resultPlanos = $this->apdPlanosModel->getAll();
@@ -75,11 +75,11 @@ class AdminPlanos extends Controller
         $this->load('_admin/planos/main', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'usuarioLogado' => $resulUsuario,
             'planoAtivo' => $planoAtivo,
             'estabelecimento' => $estabelecimento,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'planos' => $resultPlanos,
             'caixa' => $resulCaixa,
         ]);
@@ -87,7 +87,7 @@ class AdminPlanos extends Controller
 
     public function plano($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
 
@@ -95,7 +95,7 @@ class AdminPlanos extends Controller
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -105,7 +105,7 @@ class AdminPlanos extends Controller
         }
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);;;
         $resultPlano = $this->apdPlanosModel->getById($data['id']);
@@ -126,20 +126,20 @@ class AdminPlanos extends Controller
             'estabelecimento' => $estabelecimento,
             'estadosSelecao' => $resultEstados,
             'planoAtivo' => $planoAtivo,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'plano' => $resultPlano,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
 
     public function criarPlano($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $plan = $pagarme->plans()->create([
             'amount' => 74990,
@@ -154,7 +154,7 @@ class AdminPlanos extends Controller
 
     public function updatePlano($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $plan = $pagarme->plans()->update([
             'id' => '574399',
@@ -167,7 +167,7 @@ class AdminPlanos extends Controller
 
     public function cobrancaPlano($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $statusAssinatura = $this->assinaturaModel->getUll($empresaAct[':id']);
@@ -253,7 +253,7 @@ class AdminPlanos extends Controller
      */
     public function atualizarPlano($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $result = $this->adminCategoriaModel->delete($data['id']);
         if ($result <= 0) {
             redirect(BASE . $empresaAct[':link_site'] . '/admin/planos');

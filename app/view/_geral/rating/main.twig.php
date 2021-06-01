@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Avaliação - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Avaliação - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-0 input-group full-width btn-center mt-4">
                     
-<button class="btn btn-success d-block mt-3 full-width">Avaliar {{empresa[':nomeFantasia']}}</button>
+<button class="btn btn-success d-block mt-3 full-width">Avaliar {{empresa.nome_fantasia }}</button>
                 </div>
 
                 <div class="clearfix full-width text-center pt-3">ou</div>
@@ -62,11 +62,11 @@
     </div>
 
 </div>
-{% if delivery[':status'] == 0 %}
+{% if delivery.status == 0 %}
 <div class="StatusRest">ESTAMOS FECHADOS NO MOMENTO</div>
 {% endif%}
-{% if sessaoLogin is not empty %}
-{% if sessaoLogin != 0 %}
+{% if isLogin is not empty %}
+{% if isLogin != 0 %}
 {% include 'partials/modalAlertSite.twig.php' %}
 {% include 'partials/footer.twig.php' %}
 {% endif %}

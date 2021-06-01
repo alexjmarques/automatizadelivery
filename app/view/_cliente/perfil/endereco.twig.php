@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php' %}
 
-{% block title %}Endereço - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Endereço - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">
@@ -32,8 +32,8 @@
                                     <label class="text-dark" for="cidade">Endereço Atual para entrega?</label>
                                     <select id="principal" name="principal" class="form-control select2-single" required>
                                     <option value="">Selecione</option>
-                                        <option value="1" {% if enderecoAtivo[':principal'] == 1 %}selected{% endif %}>Sim</option>
-                                        <option value="0" {% if enderecoAtivo[':principal'] == 0 %}selected{% endif %}>Não</option>
+                                        <option value="1" {% if enderecoAtivo.principal == 1 %}selected{% endif %}>Sim</option>
+                                        <option value="0" {% if enderecoAtivo.principal == 0 %}selected{% endif %}>Não</option>
                                     </select>
                                 </div>
                
@@ -65,22 +65,22 @@
                             </div>
                        
 
-                        <input type="hidden" id="id_usuario" name="id_usuario" value="{{usuarioAtivo[':id']}}">
-                        <input type="hidden" id="email" name="email" value="{{usuarioAtivo[':email']}}">
+                        <input type="hidden" id="id_usuario" name="id_usuario" value="{{usuarioAtivo.id}}">
+                        <input type="hidden" id="email" name="email" value="{{usuarioAtivo.email}}">
                         <input type="hidden" id="cep" name="cep">
                         <input type="hidden" id="bairro" name="bairro">
                         <input type="hidden" id="cidade" name="cidade">
                         
                         <select id="estado" name="estado" style="display: none;">
                             {% for e in estadosSelecao %}
-                            <option value="{{ e[':id }}">{{ e[':uf }}</option>
+                            <option value="{{ e.id }}">{{ e.uf }}</option>
                             {% endfor %}
                         </select>
 
-                        <input type="hidden" id="cidadePrinc" name="cidadePrinc" value="{{ empresa[':cidade }}">
+                        <input type="hidden" id="cidadePrinc" name="cidadePrinc" value="{{ empresa.cidade }}">
                         {% for end in estadosSelecao %}
-                        {% if end[':id'] == empresa[':estado'] %}
-                        <input type="hidden" id="estadoPrinc" name="estadoPrinc" value="{{ end[':uf }}">
+                        {% if end.id == empresa.estado %}
+                        <input type="hidden" id="estadoPrinc" name="estadoPrinc" value="{{ end.uf }}">
                         {% endif %}
                         {% endfor %}
 

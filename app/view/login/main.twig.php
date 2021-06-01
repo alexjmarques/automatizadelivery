@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Login - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Login - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="login-page" style="">
@@ -29,9 +29,9 @@
 </div>
 {% include 'partials/modalAlertSite.twig.php' %}
 {% include 'partials/modalValidaLogin.twig.php' %}
-{% if empresa[':capa'] is null %}
+{% if empresa.capa is null %}
 <style>.fixed-bottom-bar{margin:0 !important;background: url(/uploads/capa_modelo.jpg); background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;}</style>
 {% else %}
-<style>.fixed-bottom-bar{margin:0 !important;background: url(/uploads/{{empresa[':capa']}}); background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;}</style>
+<style>.fixed-bottom-bar{margin:0 !important;background: url(/uploads/{{empresa.capa}}); background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;}</style>
 {% endif %}
 {% endblock %}

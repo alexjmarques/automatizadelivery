@@ -22,6 +22,5 @@
             <a href="{{BASE}}{{empresa.link_site}}/perfil" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-user"></i></p>Perfil</a>
         </div>
     </div>
-    
 </div>
 {% include 'partials/modalCarrinho.twig.php' %}

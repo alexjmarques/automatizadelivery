@@ -17,7 +17,7 @@ use app\Models\ProdutoAdicional;
 
 class AdminProdutosAdicionais extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -26,7 +26,7 @@ class AdminProdutosAdicionais extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -66,7 +66,7 @@ class AdminProdutosAdicionais extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -92,7 +92,7 @@ class AdminProdutosAdicionais extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -122,7 +122,7 @@ class AdminProdutosAdicionais extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -138,7 +138,7 @@ class AdminProdutosAdicionais extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'titulo' => 'Produto Adicional','url' => 'produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Produto Adicional cadastrado com sucesso','error' => 'Não foi possível cadastrar o produto adicional','url' => 'produtos-adicionais']);
         exit($json);
     }
 
@@ -154,7 +154,7 @@ class AdminProdutosAdicionais extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Produto Adicional','url' => 'produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Produto Adicional atualizado com sucesso' ,'error' => 'Não foi possível atualizar o produto adicional','url' => 'produtos-adicionais']);
         exit($json);
     }
 

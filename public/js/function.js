@@ -303,7 +303,6 @@ var iqba = $("#add_itens #itens_value").text();
 (qb === "0") ? $('.adicional_item, .adicional_item_ok').hide(): $('.adicional_item').show();
 
 $('#add_itenSabores input[type=radio]').on('change', function (e) {
-    e.preventDefault();
     if ($(this).is(":checked")) {
         $(".addStyle").show()
     } else {
@@ -313,20 +312,20 @@ $('#add_itenSabores input[type=radio]').on('change', function (e) {
 });
 
 //Produto Adicional
-$('input[type=checkbox]').on('change', function (e) {
-    e.preventDefault();
+$('input[type=checkbox]').on('change', function (e1) {
+    //loadTeachers($(e1.target).val());
+    //console.log(e1);
     let tipoSlug = $(this).attr('data-tiposlug')
     let idEnvBlock = $(`#${tipoSlug}`).attr('id')
     let tipo_escolha = $(`#${idEnvBlock}`).attr('data-tipo_escolha')
     let tipo_escolhaQtd = $(`#${idEnvBlock}`).attr('data-qtd')
     var a = $(`#${idEnvBlock} input[type=checkbox]:checked`).length;
-    let adv = $(this).val();
-    let adv_att = $(this).attr('id'); //Get Id do item selecionado
-    let vrec = $(this).attr('valor'); //Coloca em uma variavel e pega o valor em R$
-    let vb = $('#valorFinal').val(); // Valor do Produto
-
+    var adv = $(this).val();
+    //console.log(adv);
+    let adv_att = $(this).attr('id');
+    let vrec = $(this).attr('valor');
+    let vb = $('#valorFinal').val();
     var a = $(`#${idEnvBlock} input[type=checkbox]:checked`).length;
-    //console.log(a)
 
     if (parseInt(tipo_escolha) === 2) {
         if (parseInt(a) === parseInt(tipo_escolhaQtd)) {
@@ -354,7 +353,6 @@ $('input[type=checkbox]').on('change', function (e) {
                 return;
             }
         }
-
     }
 
     if (parseInt(tipo_escolha) === 3) {
@@ -397,10 +395,9 @@ $('input[type=checkbox]').on('change', function (e) {
         var id_empresa = $('#id_empresa').val();
         var id_cliente = $('#id_cliente').val();
         var valor = $(`#valor${adv}`).val();
-        var chave = $('#chave').val();
         $.ajax({
-            url: `/${link_site}/produto/addCarrinho/adicionalis/${chave}`,
-            type: 'get',
+            url: `/${link_site}/produto/addCarrinho/adicionais`,
+            type: 'post',
             data: {
                 id_adicional: id_adicional,
                 id_produto: id_produto,
@@ -432,7 +429,7 @@ $('input[type=checkbox]').on('change', function (e) {
         var id_cliente = $('#id_cliente').val();
 
         $.ajax({
-            url: `/${link_site}/produto/removeCarrinho/adicionalis/${chave}`,
+            url: `/${link_site}/produto/removeCarrinho/adicionais`,
             type: 'get',
             data: {
                 chave: chave,
@@ -488,7 +485,7 @@ $('input[type=checkbox]').on('change', function (e) {
 });
 
 $('[data-quantity="plus"]').click(function (e) {
-    e.preventDefault();
+    console.log(e);
     $('.minuss').prop("disabled", false);
     fieldName = $(this).attr('data-field');
     var currentVal = parseInt($('input[name=' + fieldName + ']').val());
@@ -503,16 +500,15 @@ $('[data-quantity="plus"]').click(function (e) {
 
     var id_adicional = $(`#id_adicional${advS}`).val();
     var quantidade = $(`#qtd_ad${advS}`).val();
-    var numero_pedido = $('#numero_pedido').val();
     var id_produto = $('#id_produto').val();
     var id_carrinho = $('#id_carrinho').val();
     var id_empresa = $('#id_empresa').val();
     var id_cliente = $('#id_cliente').val();
     var valor = $(`#valor${advS}`).val();
-    var chave = $('#chave').val();
+    console.log(fieldName);
     $.ajax({
-        url: `/${link_site}/produto/addCarrinho/adicionalis/${chave}`,
-        type: 'get',
+        url: `/${link_site}/produto/addCarrinho/adicionais`,
+        type: 'POST',
         data: {
             id_adicional: id_adicional,
             id_produto: id_produto,
@@ -520,24 +516,23 @@ $('[data-quantity="plus"]').click(function (e) {
             id_carrinho: id_carrinho,
             id_empresa: id_empresa,
             valor: valor,
-            quantidade: quantidade,
-            numero_pedido: numero_pedido,
-            chave: chave
+            quantidade: quantidade
         },
         success: function (dd) {
             var valorAdicional = $(`#id_adicional${advS}`).attr('valor');
             var novoValor = (parseFloat(valorAdicional) + parseFloat(vbA));
             $('#total').text(formatter.format(novoValor));
             $('#valorFinal').val(novoValor);
-            //console.log(dd);
+            console.log(dd);
         },
-        error: function (xhr) {}
+        error: function (xhr) {
+            console.log(xhr);
+        }
     });
     $(".addStyle").show()
 });
 
 $('.addFavorito').click(function (e) {
-    e.preventDefault();
     let id = $(this).attr('data-favorito');
 
     $.ajax({
@@ -567,7 +562,6 @@ $('.addFavorito').click(function (e) {
 
 //Radio Buttom
 $('.radioMoto input[type=radio]').on('change', function (e) {
-    e.preventDefault();
     var status = $(this).val();
 
     if ($(this).is(":checked")) {
@@ -590,7 +584,6 @@ $('.radioMoto input[type=radio]').on('change', function (e) {
 
 // This button will decrement the value till 0
 $('[data-quantity="minus"]').click(function (e) {
-    e.preventDefault();
 
     fieldName = $(this).attr('data-field');
     var currentVal = parseInt($('input[name=' + fieldName + ']').val());
@@ -643,11 +636,10 @@ $('[data-quantity="minus"]').click(function (e) {
     var id_empresa = $('#id_empresa').val();
     var id_cliente = $('#id_cliente').val();
     var valor = $(`#valor${advS}`).val();
-    var chave = $('#chave').val();
 
     $.ajax({
-        url: `/${link_site}/produto/addCarrinho/adicionalis/${chave}`,
-        type: 'get',
+        url: `/${link_site}/produto/addCarrinho/adicionais`,
+        type: 'post',
         data: {
             id_adicional: id_adicional,
             id_produto: id_produto,
@@ -674,7 +666,6 @@ $('[data-quantity="minus"]').click(function (e) {
 
 $('.quantity-left-minus, .minuss').prop("disabled", true);
 $('.quantity-right-plus').click(function (e) {
-    e.preventDefault();
 
     var a = $('#add_itens input[type=checkbox]:checked').length;
     var b = $('#add_itens input[type=radio]:checked').length;
@@ -716,7 +707,6 @@ $('.quantity-right-plus').click(function (e) {
 });
 
 $('.quantity-left-minus').click(function (e) {
-    e.preventDefault();
 
     var a = $('#add_itens input[type=checkbox]:checked').length;
     var b = $('#add_itens input[type=radio]:checked').length;
@@ -781,13 +771,13 @@ function mudarEndereco(id) {
         },
         success: function (data) {
             //console.log(data)
-            switch (data) {
+            switch (data.mensagem) {
                 case 'Endereço definido como principal':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
+                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
                     window.location = `/${link_site}/enderecos`;
                     break;
                 default:
-                    $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data}</div>`);
+                    $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
                     break;
             }
         },
@@ -807,7 +797,8 @@ function mudarEndereco(id) {
     });
     return false;
 }
-$("#form").submit(function () {
+$("#form").submit(function (e) {
+    console.log(e);
     var formData = new FormData(this);
     var idProd = $('#chave').val();
     var idCar = $('#id_carrinho').val();
@@ -827,190 +818,57 @@ $("#form").submit(function () {
             $('.acaoBtnAtualizar').html('ATUALIZAR');
         },
         success: function (data) {
-            console.log(data)
-            switch (data) {
-                case 'Enviado o Código agora e só validar':
-                    $('#ValidaCode').modal("show");
-                    break;
-                case 'Aguarde estamos redirecionando para a pagina inicial':
-                    $('#ValidaCode').modal("hide");
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    localStorage.setItem('username', $('#emailOurTel').val());
-                    window.location = `/${link_site}/login/n`;
-                    break;
-                case 'Agradecemos pela sua avaliação!':
-                    $('.success-box').removeClass('hide');
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/meus-pedidos`;
-                    });
-                    break;
-                case 'Endereço definido como principal':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/enderecos`;
-                    });
-                    break;
-                case 'Enviamos em seu celular um código para validar seu acesso!':
-                    $('#ValidaCode').modal("show");
-                    break;
-                case 'Sua conta foi criada com sucesso! Enviamos um email com informações de acesso.':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    window.location = `/${link_site}/enderecos`;
-                    break;
-                case 'Dados atualizado com Sucesso!':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/perfil`;
-                    });
-                    break;
-                case 'Agora Cadastrar Endereço':
-                    window.location = `/${link_site}/carrinho/entrega`;
-                    break;
-                case 'Pronto vamos finalizar':
-                    window.location = `/${link_site}/carrinho`;
-                    break;
-                case 'Cadastro Realizado com Sucesso!':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    window.location = `/${link_site}/`;
-                    break;
-                case 'Cadastro Realizado com Sucesso!':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    window.location = `/${link_site}/`;
-                    break;
-                case 'Endereço atualizado com Sucesso!':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/enderecos`;
-                    });
-                    break;
-                case 'Status Informado ao Restaurante':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/motoboy/entregas`;
-                    });
-                    break;
-                case 'Endereço cadastrado com Sucesso!':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/enderecos`;
-                    });
-                    break;
-                case 'Primeiro endereço cadastrado com Sucesso!':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    window.location = `/${link_site}/`;
-                    break;
-                case 'Sua nova senha foi enviada com Sucesso!':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/login`;
-                    });
-                    break;
-                case 'Senha atualizado com Sucesso!':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/perfil`;
-                    });
-                    break;
-                case 'Email digitado já esta cadastrado! Faça o login ou solicite a recuperação de sua senha!':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    //window.location = `/${link_site}/login`;
-                    break;
-                case 'Mensagem enviada com sucesso!':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    window.location = `/${link_site}/perfil`;
-                    break;
-                case 'Senha Atualizada com Sucesso!':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/login`;
-                    });
-                    break;
-                case 'Placa atualizado com Sucesso!':
-                    $('#mensagem').html(data);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/motoboy/dados-veiculo`;
-                    });
-                    break;
-                case 'Pedido cancelado com sucesso!':
-                    window.location.reload(true);
-                    break;
-                case 'Seu produto foi adicionado a Sacola!':
-                    $('#mensagem').html(data);
-                    $('#FinalizarPedido').addClass('show');
-                    $('#FinalizarPedido').show();
-                    break;
-                case 'Seu produto foi adicionado a sacola aguarde que tem mais!':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    window.location = `/${link_site}/produto/adicional/${idProd}`;
-                    break;
-                case 'Seu produto foi atualizado na sacola aguarde que tem mais!':
-                    $('#mensagem').html(`<div class="alert alert-success" role="alert">${data}</div>`);
-                    window.location = `/${link_site}/produto/adicional/atualiza/${idProd}/${idCar}`;
-                    break;
-
-                case 'OK Direcionando para finalizar pedido':
-                    $('#mensagem').html('Seu item foi adicionado a Sacola!');
-                    $('#FinalizarPedido').addClass('show');
-                    $('#FinalizarPedido').show();
-                    break;
-                case 'Seu produto foi atualizado na Sacola!':
-                    $('#mensagem').html('Seu item foi atualizado na Sacola!');
-                    $('#FinalizarPedido').addClass('show');
-                    $('#FinalizarPedido').show();
-                    break;
-                case 'Seu pedido foi finalizado com sucesso!':
-                    $('#mensagem').html(data);
-                    $('#conten').html();
-                    $('#FinalizarPedido').addClass('show');
-                    $('#FinalizarPedido').show();
-                    break;
-                case 'Enviamos para você um email com informações para recuperar sua senha':
-                    $('#mensagem').html(`Enviamos para você um email com informações para recuperar sua senha`);
-                    $('.successSup').show();
-                    $('.errorSup').hide();
-                    $('#alertGeralSite').modal("show");
-                    $(".buttonAlert").on('click', function () {
-                        window.location = `/${link_site}/login`;
-                    });
-                    break;
-                default:
-                    $('#mensagem').html(data);
-                    $('.successSup').hide();
-                    $('.errorSup').show();
-                    $('#alertGeralSite').modal("show");
-                    break;
+            console.log(data);
+            if (data.id > 0) {
+                switch (data.mensagem) {
+                    case 'Enviado o Código agora e só validar':
+                        $('#ValidaCode').modal("show");
+                        break;
+                    case 'Aguarde estamos redirecionando para a pagina inicial':
+                        $('#ValidaCode').modal("hide");
+                        $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+                        localStorage.setItem('username', $('#emailOurTel').val());
+                        window.location = `/${link_site}/${data.url}`;
+                        break;
+                    case 'Pedido finalizado com sucesso':
+                        $('#FinalizarPedidoOK').modal("show");
+                        break;
+                    case 'Seu produto foi adicionado a sacola aguarde que tem mais!':
+                        window.location = `/${link_site}/${data.url}/${data.id}`;
+                        break;
+                    case 'Primeiro endereço cadastrado com Sucesso!':
+                        $('#mensagem').html('Pronto! Agora que tenho suas informações de entrega revise os itens de seu carrinho, adicione ou remova itens para finalizar seu pedido');
+                        $('.successSup').show();
+                        $('.errorSup').hide();
+                        $('#alertGeralSite').modal("show");
+                        if (data.url) {
+                            $(".buttonAlert").on('click', function () {
+                                window.location = `/${link_site}/${data.url}`;
+                            });
+                        }
+                        break;
+                    case 'Pedido cancelado com sucesso!':
+                        $('#cancelarPedido').modal("show");
+                        break;
+                    default:
+                        $('#mensagem').html(data.mensagem);
+                        $('.successSup').show();
+                        $('.errorSup').hide();
+                        $('#alertGeralSite').modal("show");
+                        if (data.url) {
+                            $(".buttonAlert").on('click', function () {
+                                window.location = `/${link_site}/${data.url}`;
+                            });
+                        }
+                        break;
+                }
+            } else {
+                $('.errorSup').show();
+                $('.successSup').hide();
+                $('#alertGeralSite').modal("show");
+                $('#mensagem').html(data.error);
             }
+
         },
         error: function (data) {
             $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
@@ -1058,15 +916,12 @@ $("#formFinish").submit(function () {
             },
             success: function (data) {
                 console.log(data);
-                switch (data) {
-                    case 'Pedido Finalizado com sucesso!':
-                        $('#mensagem').html(data);
-                        $('#FinalizarPedidoOK').addClass('show');
-                        $('#FinalizarPedidoOK').show();
-                        break;
-                    default:
-                        $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data}</div>`);
-                        break;
+                if (data.id > 0) {
+                    $('#mensagem').html(data.mensagem);
+                    $('#FinalizarPedidoOK').addClass('show');
+                    $('#FinalizarPedidoOK').show();
+                } else {
+                    $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
                 }
                 $(".btnValida").prop("disabled", false);
                 $('.btnValida').html('FINALIZAR PEDIDO');
@@ -1090,14 +945,13 @@ $("#formFinish").submit(function () {
 });
 
 function produtosModal(id_produto, id_carrinho) {
-    let chave = $(`#btMod${id_carrinho}`).attr('data-chave');
     $.get(`/${link_site}/carrinho/pedido/acao/${id_produto}/${id_carrinho}`, function (dd) {
         let retorno = `
         <p id="mensagem" class="mb-3 text-center">O que deseja fazer com o item <strong>${dd}</strong>?<p>
         <div class="mt-3 text-center">
-            <a href="/${link_site}/carrinho/${id_produto}/d/${id_carrinho}/${chave}" class="text-danger removerItem">Remover item</a><br/><br/>
+            <a href="/${link_site}/carrinho/${id_produto}/d/${id_carrinho}" class="text-danger removerItem">Remover item</a><br/><br/>
             ou <br/><br/>
-            <a href="/${link_site}/produto/${id_produto}/e/${id_carrinho}/${chave}" class="text-success">Editar item</a><br/>
+            <a href="/${link_site}/produto/${id_produto}/e/${id_carrinho}" class="text-success">Editar item</a><br/>
         </div>
         <div class="mt-3">
             <a href="#" class="mt-3 btn btn-primary btn-lg btn-block" data-dismiss="modal" aria-label="Close">Fechar e continuar</a>
@@ -1131,7 +985,7 @@ $("#formBusca").submit(function () {
                     $('.carregar').html('');
                 },
                 success: function (data) {
-                    $('#pesquisaEntregasMotoboy').html(data);
+                    $('#pesquisaEntregasMotoboy').html(data.mensagem);
 
                 },
                 error: function (data) {
@@ -1163,7 +1017,7 @@ function mudarStatusEntrega(id, status, id_caixa, motoboy, numero_pedido, id_emp
         data: valores,
         dataType: "text",
         success: function (dd) {
-            if (dd == 'Status alterado com sucesso') {
+            if (dd.mensagem == 'Status alterado com sucesso') {
                 $('#mensagem').html("Legal! Agora e só iniciar a entrega deste pedido!");
                 $('.successSup').show();
                 $('.errorSup').hide();
@@ -1213,7 +1067,6 @@ $(document).ready(function () {
     atualizarMes();
 
     function atualizar() {
-
         $.get(`/${link_site}/home/ultimaVenda`, function (dd) {
             if (parseInt($(dd).attr('data-status')) === 1) {
                 localStorage.setItem("sttInit", $(dd).attr('data-status'));
@@ -1223,6 +1076,7 @@ $(document).ready(function () {
                 var audio = new Audio('/audio/gS21.mp3');
                 audio.play();
             }
+            //console.log(dd)
             $('#listarUltimaVenda').html(dd);
         })
 
@@ -1260,25 +1114,28 @@ $(document).ready(function () {
         if (localStorage.getItem("u") && localStorage.getItem("n")) {
             let u = localStorage.getItem("u");
             let n = localStorage.getItem("n");
-            let valores = {u, n}
+            let valores = {
+                u,
+                n
+            }
             $.ajax({
-              url: `/${link_site}/u/l/val`,
-              method: "post",
-              data: valores,
-              dataType: "text",
-              success: function (dd) {
-                //console.log(dd);
-              },
+                url: `/${link_site}/u/l/val`,
+                method: "post",
+                data: valores,
+                dataType: "text",
+                success: function (dd) {
+                    //console.log(dd);
+                },
             })
-          } else {
+        } else {
             $.get(`/${link_site}/u/valid`, function (dd) {
-                if(dd.user !== null && dd.user !== null){
+                if (dd.user !== null && dd.user !== null) {
                     localStorage.setItem('u', dd.user);
                     localStorage.setItem('n', dd.nivel);
                 }
-                
+
             })
-          }
+        }
     }
     setInterval(atualizar, 10000);
     $(function () {
@@ -1362,15 +1219,15 @@ $("#button-addon2").on('click', function () {
     }
     $.ajax({
         url: `/${link_site}/cupomDesconto`,
-        type: 'get',
+        type: 'POST',
         data: formData,
         beforeSend: function () {
             $('.button-addon2').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         },
         success: function (dd) {
-            let retorno = parseFloat(dd)
+            let retorno = parseFloat(dd.id)
             if (isNaN(retorno)) {
-                $('.mensagemID').html(dd);
+                $('.mensagemID').html(dd.mensagem);
                 $('.successSup').hide();
                 $('.errorSup').show();
                 $('#alertGeralSite').modal("show");
@@ -1431,7 +1288,7 @@ $("#btnValidarCode").on('click', function () {
         },
         success: function (dd) {
             console.log(dd)
-            switch (dd) {
+            switch (dd.mensagem) {
                 case 'OK Vai para o carrinho':
                     $('#ValidaCode').modal("hide");
                     window.location = `/${link_site}/carrinho`;
@@ -1473,7 +1330,7 @@ $("#btnValidarCodeLogin").on('click', function () {
         },
         success: function (dd) {
             console.log(dd)
-            switch (dd) {
+            switch (dd.mensagem) {
                 case 'Aguarde estamos redirecionando para a pagina inicial':
                     $('#ValidaCode').modal("hide");
                     localStorage.setItem('username', $('#emailOurTel').val());
@@ -1490,3 +1347,5 @@ $("#btnValidarCodeLogin").on('click', function () {
         },
     })
 });
+
+$('.abreelemento').show();

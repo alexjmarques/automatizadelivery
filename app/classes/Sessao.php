@@ -51,12 +51,58 @@ class Sessao
         $session->setCookieParams(array('path' => BASE . 'cache/session'));
         $session->setCookieParams(array('domain' => 'automatizadelivery.com.br'));
 
-        $_SESSION = array(
+        return $_SESSION = array(
             'Vendor\Aura\Segment' => array(
                 'id_usuario' => $id,
                 'usuario' => $email,
                 'nivel' => $nivel,
             ),
         );
+    }
+
+    public function getSessao(string $field)
+    {
+        $session = $this->sessao->newInstance($_COOKIE);
+        $segment = $session->getSegment('Vendor\Aura\Segment');
+
+        return $segment->get($field);
+    }
+
+    public function sessaoNew(string $field,string $valor)
+    {
+        $session = $this->sessao->newInstance($_COOKIE);
+        $segment = $session->getSegment('Vendor\Aura\Segment');
+        return $segment->set($field, $valor);
+        exit;
+    }
+
+    public function sair(string $empresa)
+    {
+        $session = $this->sessao->newInstance($_COOKIE);
+        $segment = $session->getSegment('Vendor\Aura\Segment');
+
+        switch ($segment->get('nivel')) {
+            case 0:
+                $session->destroy();
+                redirect(BASE . "{$empresa}/admin/login");
+                break;
+            case 1:
+                $session->destroy();
+                redirect(BASE . "{$empresa}/atendente/login");
+                break;
+            case 2:
+                $session->destroy();
+                redirect(BASE . "{$empresa}/motoboy/login");
+                break;
+            case 3:
+                $session->destroy();
+                redirect(BASE . "{$empresa}/login");
+                break;
+            default :
+                $session->destroy();
+                redirect(BASE . "admin/login");
+                break;
+        }
+        
     }
 }

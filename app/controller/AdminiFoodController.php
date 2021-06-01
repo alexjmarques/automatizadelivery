@@ -68,7 +68,7 @@ class AdminIfoodController extends Controller
     private $apdPlanosModel;
     private $assinaturaModel;
     private $resulifood;
-    private $preferencias;
+    
     private $cache;
 
     /**
@@ -100,7 +100,7 @@ class AdminIfoodController extends Controller
         $this->ifoodCatalogProduct = new Product();
         $this->allController = new AllController();
         $this->adminMoedaModel = new MoedaModel();
-        $this->preferencias = new Preferencias();
+        
         $this->adminDiasModel = new DiasModel();
         $this->ifoodMerchant = new Merchants();
         $this->ifoodCatalog = new Catalog();
@@ -112,7 +112,7 @@ class AdminIfoodController extends Controller
 
     public function index($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $result = $this->configEmpresaModel->getById($empresaAct[':id']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -121,7 +121,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -166,7 +166,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
             'usuarioLogado' => $resulUsuario,
             'estabelecimento' => $estabelecimento,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $resulCaixa,
 
         ]);
@@ -175,7 +175,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function autorizar($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $autorizacao = $this->authetication->autorizarCliente();
         if($autorizacao){
             $id_marketplaces = 1;
@@ -190,7 +190,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function autorizarCode($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $userCode = Input::post('userCode');
         $result = $this->marketplace->updateCode(1, $userCode);
         $dd = $this->authetication->gerarToken();
@@ -208,7 +208,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function polling($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
      if($this->cache->readTime('tokenIfood')){
         $time = $this->cache->readTime('tokenIfood') - time();
         if($time < 500){
@@ -221,7 +221,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
     
     public function syncCategory($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resulifood = $this->marketplace->getById(1);
         if($resulifood[':idLoja'] != null){
             $catalogs = $this->ifoodCatalog->catalogs();
@@ -266,7 +266,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function syncProduct($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resulifood = $this->marketplace->getById(1);
         if($resulifood[':idLoja'] != null){
             $idProduct = Input::post('id');
@@ -294,7 +294,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function ifoodTest($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $dd = $this->cache->read('tokenIfood');
         //$time = $this->cache->readTime('tokenIfood') - time();
 

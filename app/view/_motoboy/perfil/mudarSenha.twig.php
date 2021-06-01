@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Alterar Senha - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Alterar Senha - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">

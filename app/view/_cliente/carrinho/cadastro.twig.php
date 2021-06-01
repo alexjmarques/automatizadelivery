@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Carrinho - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Carrinho - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 
@@ -11,7 +11,7 @@
     </div>
 
 <div class="p-3 osahan-cart-item osahan-home-page">
-<form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/carrinho/cadastro">
+<form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/carrinho/cadastro/valida">
     <div class="bg-white rounded shadow mb-3 mt-n5">
     <p class="mb-0 text-left p-3 pb-0"><span class="sx-20">Olá, Tudo bem?</span> <br/> Poderia me informar seu nome é número de telefone!</p>
     

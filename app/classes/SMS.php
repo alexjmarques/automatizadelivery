@@ -26,7 +26,7 @@ class SMS extends Controller
         $this->token = "7f266a9cf9c11939c09f9d549f6bbcd6e1120476";
 
         $this->tokenBasic = "automatiza:02W@9889forev";
-        $this->preferencias = new Preferencias();
+        
         $this->allController = new AllController();
         $this->configEmpresaModel = new AdminConfigEmpresaModel();
     }

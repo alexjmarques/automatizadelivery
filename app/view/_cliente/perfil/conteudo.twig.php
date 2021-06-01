@@ -34,9 +34,9 @@
             </svg>
         </div>
         <div class="col-md-8">
-            <h6 class="mb-1 font-weight-bold">{{usuarioAtivo[':nome']}}</h6>
+            <h6 class="mb-1 font-weight-bold">{{usuarioAtivo.nome}}</h6>
 
-            <p class="text-muted m-0 small __cf_email__">Telefone: {{usuarioAtivo[':telefone']}}</p>
+            <p class="text-muted m-0 small __cf_email__">Telefone: {{usuarioAtivo.telefone}}</p>
         </div>
     </div>
 </div>
@@ -60,7 +60,7 @@
             <h6 class="font-weight-bold m-0"><i class="feather-chevron-right"></i></h6>
         </div>
     </a>
-    <a href="{{BASE}}{{empresa.link_site}}/alterar-senha" class="d-flex w-100  border-bottom p-3">
+    <!-- <a href="{{BASE}}{{empresa.link_site}}/alterar-senha" class="d-flex w-100  border-bottom p-3">
         <div class="left mr-3">
             <h6 class="font-weight-bold mb-1 text-dark">Alterar Senha</h6>
             <p class="small text-muted m-0">Perder ou não lembra a senha? Altere sua senha diretamente por aqui</p>
@@ -68,7 +68,7 @@
         <div class="right ml-auto">
             <h6 class="font-weight-bold m-0"><i class="feather-chevron-right"></i></h6>
         </div>
-    </a>
+    </a> -->
 
     <a href="{{BASE}}{{empresa.link_site}}/delivery" class="d-flex w-100  border-bottom px-3 py-4">
         <div class="left mr-3">
@@ -98,9 +98,4 @@
                 <h6 class="font-weight-bold m-0"><i class="feather-chevron-right"></i></h6>
             </div>
         </a>
-</div>
-<div class="bg-white rounded shadow mt-3">
-    <div class="d-flex  border-bottom p-0">
-        <a href="{{BASE}}{{empresa.link_site}}/sair" class="btnEnderecos btnDeletarFloatMod sair mt-0">Sair da conta <i class="feather-power text-danger"></i></a>
-    </div>
 </div>

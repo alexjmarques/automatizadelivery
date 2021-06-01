@@ -25,8 +25,24 @@
   <title>{% block title %}{% endblock %}</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H85LB3TTM9"></script>
 
-  {% if not detect.isMobile() %}
-  <link href="{{BASE}}pc/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+{% if detect.isMobile() %}
+<link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;1,300&display=swap"
+      rel="stylesheet">
+    <link href="{{BASE}}css/star-rating-svg.css" rel="stylesheet" type="text/css">
+    <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{BASE}}css/feather.css" rel="stylesheet" type="text/css">
+    <link href="{{BASE}}css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="{{BASE}}css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="{{BASE}}css/select2.min.css" rel="stylesheet" type="text/css">
+    <link href="{{BASE}}css/style.css" rel="stylesheet" type="text/css">
+    <link href="{{BASE}}css/automatiza.css" rel="stylesheet" type="text/css">
+  {% else %}
+   <link href="{{BASE}}pc/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="{{BASE}}pc/css/automatiza.css" rel="stylesheet">
   <link href="{{BASE}}pc/font/stylesheet.css" rel="stylesheet">
   <link href="{{BASE}}pc/vendor/mdi-icons/css/materialdesignicons.min.css" rel="stylesheet">
@@ -39,123 +55,8 @@
     gtag('js', new Date());
     gtag('config', 'G-P14WHHWPWF');
   </script>
-  {% if detect.isMobile() %}
+  {# {% if detect.isMobile() %} #}
   <style>
-    .mdc-top-app-bar-sub {
-      background-color: {
-          {
-          preferencias.corsecundaria()
-        }
-      }
-
-       !important
-    }
-
-    .cad_mod {
-      background: {
-          {
-          preferencias.cor()
-        }
-      }
-
-      ;
-
-      border-color: {
-          {
-          preferencias.cor()
-        }
-      }
-
-      ;
-    }
-
-    #menuCat a.active {
-      border: 1px solid {
-          {
-          preferencias.cor()
-        }
-      }
-
-       !important;
-
-      color: {
-          {
-          preferencias.cor()
-        }
-      }
-
-       !important;
-    }
-
-    .sabor_item_ok,
-    .sabor_item,
-    .adicional_item_ok,
-    .adicional_item,
-    .list-card a:hover {
-      color: {
-          {
-          preferencias.cor()
-        }
-      }
-    }
-
-    #menuCat a {
-      border: 1px solid {
-          {
-          preferencias.cor()
-        }
-      }
-
-      ;
-
-      background-color: {
-          {
-          preferencias.cor()
-        }
-      }
-
-      ;
-    }
-
-    .bg-primary,
-    .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
-    .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
-    .mdc-checkbox__native-control[data-indeterminate="true"]:enabled~.mdc-checkbox__background,
-    .mdc-top-app-bar,
-    #overlayer,
-    .StatusRest,
-    .mdc-radio .mdc-radio__background::before,
-    .mdc-radio .mdc-radio__ripple::before,
-    #listar-carrinho .cart-inline-item .ml-2,
-    .mdc-radio .mdc-radio__ripple::after {
-      background: {
-          {
-          preferencias.cor()
-        }
-      }
-
-      ;
-
-      background-color: {
-          {
-          preferencias.cor()
-        }
-      }
-
-       !important
-    }
-
-    .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle,
-    .mdc-radio .mdc-radio__native-control:enabled:checked+.mdc-radio__background .mdc-radio__outer-circle {
-      border-color: {
-          {
-          preferencias.cor()
-        }
-      }
-
-       !important
-    }
-
     #overlayer {
       width: 100%;
       height: 100%;
@@ -273,7 +174,7 @@
       }
     }
   </style>
-  {% endif %}
+  {# {% endif %} #}
 
 
 
@@ -291,27 +192,12 @@
     <div></div>
     <div></div>
   </div>
-  {% else %}
+{% else %}
   <body id="page-top" data-link_site="{{empresa.link_site}}">
   <div id="wrapper">
     {% endif %}
     {% block body %}{% endblock %}
-    {% if detect.isMobile() %}
-    <link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;1,300&display=swap"
-      rel="stylesheet">
-    <link href="{{BASE}}css/star-rating-svg.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/feather.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/font-awesome.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/select2.min.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/style.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/automatiza.css" rel="stylesheet" type="text/css">
+{% if detect.isMobile() %}
     <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery-ui.js"></script>
     <script src="{{BASE}}js/jquery.complexify.js"></script>
@@ -323,7 +209,7 @@
     <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
-    {% else %}
+ {% else %}
     </div>
     <script src="{{BASE}}pc/vendor/jquery/jquery.min.js"></script>
     <script src="{{BASE}}pc/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

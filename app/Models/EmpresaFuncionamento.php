@@ -10,7 +10,7 @@ use app\Models\Dias;
  * Class EnderecosEmpresa
  * @package app\Models
  */
-class EmpresaMarketplaces extends DataLayer
+class EmpresaFuncionamento extends DataLayer
 {
     public function __construct()
     {

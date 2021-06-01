@@ -3,52 +3,25 @@
 namespace app\controller;
 
 use app\classes\Input;
-use app\classes\Preferencias;
+use app\classes\Acoes;
+use app\classes\Cache;
 use app\core\Controller;
-use Aura\Session\SessionFactory;
-use app\Models\AdminCategoriaModel;
-use app\Models\AdminConfigEmpresaModel;
-use DElfimov\Translate\Translate;
 use DElfimov\Translate\Loader\PhpFilesLoader;
-use app\Models\AdminConfigFreteModel;
-use app\Models\AdminProdutoModel;
-use app\Models\AdminProdutoAdicionalModel;
-use app\Models\DiasModel;
-use app\Models\EnderecosModel;
-use app\Models\EstadosModel;
-use app\Models\MoedaModel;
-use app\Models\VendasModel;
-use app\Models\CarrinhoModel;
-use app\Models\AdminPagamentoModel;
-use app\Models\AdminProdutoSaborModel;
-use app\Models\AdminTipoModel;
-use app\Models\CarrinhoAdicionalModel;
-use app\Models\UsuarioModel;
-use app\Models\RatingModel;
+use DElfimov\Translate\Translate;
+use app\controller\AllController;
+use function JBZoo\Data\json;
+use app\classes\Preferencias;
+use app\classes\Sessao;
+use app\Models\CarrinhoPedidos;
+use Browser;
 
 
 class PedidosController extends Controller
 {
-    //Instancia da Classe AdminConfigEmpresaModel
-    private $configEmpresaModel;
-    private $deliveryModel;
-    private $moedaModel;
-    private $categoriaModel;
-    private $produtoModel;
-    private $diasModel;
-    private $usuarioModel;
-    private $enderecosModel;
-    private $sessionFactory;
-    private $estadosModel;
-    private $produtoAdicionalModel;
-    private $produtoSaboresModel;
-    private $carrinhoModel;
-    private $pagamentoModel;
-    private $tipoModel;
-    private $carrinhoAdicionalModel;
-    private $vendasModel;
-    private $ratingModel;
-    private $preferencias;
+    private $acoes;
+    private $sessao;
+    private $geral;
+    private $trans;
 
     /**
      *
@@ -58,25 +31,12 @@ class PedidosController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
-        $this->ratingModel = new RatingModel();
-        $this->moedaModel = new MoedaModel();
-        $this->deliveryModel = new AdminConfigFreteModel();
-        $this->categoriaModel = new AdminCategoriaModel();
-        $this->produtoModel = new AdminProdutoModel();
-        $this->produtoAdicionalModel = new AdminProdutoAdicionalModel();
-        $this->produtoSaboresModel = new AdminProdutoSaborModel();
-        $this->diasModel = new DiasModel();
-        $this->usuarioModel = new UsuarioModel();
-        $this->enderecosModel = new EnderecosModel();
-        $this->estadosModel = new EstadosModel();
-        $this->carrinhoModel = new CarrinhoModel();
-        $this->pagamentoModel = new AdminPagamentoModel();
-        $this->tipoModel = new AdminTipoModel();
-        $this->carrinhoAdicionalModel = new CarrinhoAdicionalModel();
-        $this->vendasModel = new VendasModel();
-        $this->sessionFactory = new SessionFactory();
+        
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+        $this->sessao = new Sessao();
+        $this->geral = new AllController();
+        $this->cache = new Cache();
+        $this->acoes = new Acoes();
     }
     /**
      * Pagina do pedidos já feitos
@@ -84,129 +44,50 @@ class PedidosController extends Controller
      */
     public function index($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        $empresas = $this->acoes->getFind('empresa');
+        $status = $this->acoes->getFind('status');
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-
-
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinho = $this->carrinhoModel->getAll($SessionIdUsuario);
-            $resultVendas = $this->vendasModel->getAllUser($SessionIdUsuario);
-            $resultUltimaVenda = $this->vendasModel->getLast($SessionIdUsuario);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
         }
 
-        $resultEnderecos = $this->enderecosModel->getAll();
-        $resultEstados = $this->estadosModel->getAll();
-        $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultProdutoAdicional = $this->produtoAdicionalModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultPagamento = $this->pagamentoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
+        $count = $this->acoes->counts('carrinhoPedidos', 'id_empresa', $empresa->id);
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 10, $page);
+        $pedidos = $this->acoes->pagination('carrinhoPedidos','id_cliente', $this->sessao->getUser(), $pager->limit(), $pager->offset(), 'id ASC');
+     
         $this->load('_cliente/pedidos/main', [
-            'empresa' => $resultEmpresa,
-            'moeda' => $resultMoeda,
-            'delivery' => $resultDelivery,
-            'produto' => $resultProdutos,
-            'produtoAdicional' => $resultProdutoAdicional,
-            'usuario' => $resulUsuario,
-            'enderecos' => $resultEnderecos,
-            'estados' => $resultEstados,
-            'carrinho' => $resultCarrinho,
-            'tipo_frete' => $resultTipo,
-            'tipo_pagamento' => $resultPagamento,
-            'vendas' => $resultVendas,
+            'moeda' => $moeda,
+            'paginacao' => $pager->render('mt-4 pagin'),
+            'status' => $status,
+            'pedidos' => $pedidos,
+            'empresa' => $empresa,
+            'empresas' => $empresas,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'usuario' => $usuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
-    /**
-     * Pagina do pedido
-     *
-     */
     public function view($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-
-
-
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-
-        if (!isset($SessionIdUsuario)) {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
-        }
-
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-
-        $resultVendas = $this->vendasModel->getPedidoFeitoChave($data['chave']);
-
-        $resultCarrinhoProdutoAdicional = $this->carrinhoAdicionalModel->getPedidoFeito($resultVendas[':numero_pedido'],$empresaAct[':id']);
-        $resultCarrinho = $this->carrinhoModel->getPedidoFeito($resultVendas[':numero_pedido'],$empresaAct[':id']);
-
-
-        $resultProdutoAdicional = $this->produtoAdicionalModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultSabores = $this->produtoSaboresModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultPagamento = $this->pagamentoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultEnderecos = $this->enderecosModel->getAll();
-        $resultCategoria = $this->categoriaModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultEstados = $this->estadosModel->getAll();
-        $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-
-        unset($_SESSION['numero_pedido']);
-        $segment->set('numero_pedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $venda = $this->acoes->getByField('carrinhoPedidos', 'chave', $data['chave']);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         $this->load('_cliente/pedidos/view', [
-            'empresa' => $resultEmpresa,
-            'moeda' => $resultMoeda,
-            'delivery' => $resultDelivery,
-            'produto' => $resultProdutos,
-            'usuario' => $resulUsuario,
-            'enderecos' => $resultEnderecos,
-            'estados' => $resultEstados,
-            'carrinhoAdicional' => $resultCarrinhoProdutoAdicional,
-            'adicionais' => $resultProdutoAdicional,
-            'carrinho' => $resultCarrinho,
-            'tipo_frete' => $resultTipo,
-            'tipo_pagamento' => $resultPagamento,
-            'sabores' => $resultSabores,
-            'venda' => $resultVendas,
-            'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'empresa' => $empresa,
+            'moeda' => $moeda,
+            'venda' => $venda,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser()
         ]);
+
     }
 
     /**
@@ -215,95 +96,76 @@ class PedidosController extends Controller
      */
     public function statusPedidoFull($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $SessionIdUsuario = $segment->get('id_usuario');
-
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
-        }
-        $resultCarrinhoProdutoAdicional = $this->carrinhoAdicionalModel->getPedidoFeito($data['numero_pedido'],$empresaAct[':id']);
-        $resultCarrinho = $this->carrinhoModel->getPedidoFeito($data['numero_pedido'],$empresaAct[':id']);
-        $resultVendas = $this->vendasModel->getPedidoFeito($data['numero_pedido'],$empresaAct[':id']);
-
-        $resultProdutoAdicional = $this->produtoAdicionalModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultSabores = $this->produtoSaboresModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultPagamento = $this->pagamentoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultEnderecos = $this->enderecosModel->getAll();
-        $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultEstados = $this->estadosModel->getAll();
-        $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        $resultAvaliacao = $this->ratingModel->getExist($data['numero_pedido'],$empresaAct[':id']);
-        $avaliacao = $resultAvaliacao[':numero_pedido'] == null ? 0 : 1;
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $venda = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $carrinho = $this->acoes->getByFieldTwoAll('carrinho', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+        $carrinhoAdicional = $this->acoes->getByFieldTwoAll('carrinhoAdicional', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+        $carrinho = $this->acoes->getByFieldAll('carrinho', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+        $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
+        }
+
+        $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        $estados = $this->acoes->getFind('estados');
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $adicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+        $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
+        $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
+        $avaliacao = $this->acoes->countsTwo('avaliacao', 'id_cliente', $this->sessao->getUser(), 'id_motoboy', $venda->id, 'id_motoboy', $empresa->id);
+
+        if ($this->sessao->getUser()) {
+            if ($this->sessao->getNivel() != 3) {
+                redirect(BASE . "{$empresa->link_site}/motoboy");
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}");
+        }
 
         $this->load('_cliente/pedidos/pedidoAcompanharTotal', [
-            'empresa' => $resultEmpresa,
-            'moeda' => $resultMoeda,
-            'delivery' => $resultDelivery,
-            'produto' => $resultProdutos,
-            'usuario' => $resulUsuario,
+            'moeda' => $moeda,
+            'moeda' => $moeda,
+            'carrinho' => $carrinho,
+            'usuario' => $usuario,
+            'endereco' => $endereco,
+            'estados' => $estados,
+            'delivery' => $delivery,
+            'tipo' => $tipo,
+            'agamento' => $pagamento,
+            'deliveryEntregaExcedente' => $delivery->km_entrega_excedente * 1000,
+            'carrinho' => $carrinho,
+            'carrinhoAdicional' => $carrinhoAdicional,
+            'produto' => $produto,
+            'adicionais' => $adicionais,
+            'sabores' => $sabores,
+            'tipo' => $tipo,
+            'pagamento' => $pagamento,
+            'empresaEndereco' => $empresaEndereco,
             'avaliacao' => $avaliacao,
-            'enderecos' => $resultEnderecos,
-            'estados' => $resultEstados,
-            'carrinhoAdicional' => $resultCarrinhoProdutoAdicional,
-            'adicionais' => $resultProdutoAdicional,
-            'carrinho' => $resultCarrinho,
-            'tipo_frete' => $resultTipo,
-            'tipo_pagamento' => $resultPagamento,
-            'sabores' => $resultSabores,
-            'venda' => $resultVendas,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'venda' => $venda,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser()
         ]);
     }
-
-    /**
-     * Cancelar os pedidos feitos pelo cliente
-     *
-     */
     public function cancelarPedido($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $venda = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
 
-        $valores = $this->getInput();
-        $result = $this->vendasModel->cancelarPedidoFeito($valores);
+        $valor = (new CarrinhoPedidos())->findById($venda->id);
+        $valor->status = 6;
+        $valor->save();
 
-        if ($result > 0) {
-            echo 'Pedido cancelado com sucesso!';
-        } else {
-            echo 'Erro ao cancelar seu pedido';
-        }
-    }
-
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInput()
-    {
-        return (object) [
-            'id' => Input::post('id'),
-            'numero_pedido' => Input::post('numero_pedido'),
-            'status' => 6,
-            'id_empresa' => Input::post('id_empresa')
-        ];
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Pedido cancelado com sucesso!', 'error' => 'Erro ao cancelar seu pedido']);
+        exit($json);
     }
 }

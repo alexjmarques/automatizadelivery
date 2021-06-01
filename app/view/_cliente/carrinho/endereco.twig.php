@@ -1,5 +1,5 @@
 {% extends 'partials/body.twig.php'  %}
-{% block title %}Carrinho - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Carrinho - {{empresa.nome_fantasia }}{% endblock %}
 {% block body %}
 
 <div class="osahan-checkout">
@@ -7,9 +7,8 @@
         <a class="toggle" href="#"><span></span></a>
         <h5 class="font-weight-bold m-0 text-white text-center">Novo por aqui</h5>
     </div>
-
 <div class="p-3 osahan-cart-item osahan-home-page">
-<form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/carrinho/cadastro-endereco" novalidate>
+<form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/endereco/i" novalidate>
     <div class="bg-white rounded shadow mb-3 mt-n5">
     <p class="mb-0 text-center p-3 pb-0"><span class="sx-20">Legal <strong>{{nome}}</strong>!</span> <br/> Agora preciso que me inform o endereço para entrega!</p>
     
@@ -47,14 +46,14 @@
     <input type="hidden" id="cidade" name="cidade">
     <select id="estado" name="estado" style="display: none;">
         {% for e in estadosSelecao %}
-            <option value="{{ e[':id }}">{{ e[':uf }}</option>
+            <option value="{{ e.id }}">{{ e.uf }}</option>
         {% endfor %}
     </select>
 
-    <input type="hidden" id="cidadePrinc" name="cidadePrinc" value="{{ empresa[':cidade }}">
+    <input type="hidden" id="cidadePrinc" name="cidadePrinc" value="{{ empresa.cidade }}">
     {% for end in estadosSelecao %}
-    {% if end[':id'] == empresa[':estado'] %}
-    <input type="hidden" id="estadoPrinc" name="estadoPrinc" value="{{ end[':uf }}">
+    {% if end.id == empresa.estado %}
+    <input type="hidden" id="estadoPrinc" name="estadoPrinc" value="{{ end.uf }}">
     {% endif %}
     {% endfor %}
     <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">

@@ -27,7 +27,7 @@ use Mike42\Escpos\CapabilityProfile;
 
 class AdminPedidos extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -36,7 +36,7 @@ class AdminPedidos extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -82,7 +82,7 @@ class AdminPedidos extends Controller
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
             'caixaId' => $estabelecimento[0]->id,
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
             'pedidos' => $resultPedidos,
             'clientes' => $resultClientes,
@@ -106,7 +106,7 @@ class AdminPedidos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,
@@ -132,7 +132,7 @@ class AdminPedidos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,
@@ -158,7 +158,7 @@ class AdminPedidos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,
@@ -223,7 +223,7 @@ class AdminPedidos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
             'estabelecimento' => $estabelecimento[0]->id,
             'pedido' => $pedido,
@@ -276,7 +276,7 @@ class AdminPedidos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,
@@ -286,7 +286,7 @@ class AdminPedidos extends Controller
     }
     public function pedidoTestImprimir($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $connector = new FilePrintConnector("php://dev/usb/lp0");
         $profile = CapabilityProfile::load("simple");
         //$connector = new WindowsPrintConnector("php://computer/printer");
@@ -298,7 +298,7 @@ class AdminPedidos extends Controller
 
     public function pedidoImprimir($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
         date_default_timezone_set('America/Sao_Paulo');
 
@@ -389,7 +389,7 @@ class AdminPedidos extends Controller
 
         /* Name of shop */
         $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-        $printer->text($empresa[':nomeFantasia'] . "\n");
+        $printer->text($empresa.nome_fantasia  . "\n");
         $printer->selectPrintMode();
         $printer->text("Numero do Pedido. " . $pedido[':numero_pedido'] . "\n");
         $printer->feed();
@@ -485,10 +485,10 @@ class AdminPedidos extends Controller
 
     public function entregas($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);;;
         $resultPedidos = $this->adminVendasModel->getAllPorEmpresa($empresaAct[':id']);
@@ -502,7 +502,7 @@ class AdminPedidos extends Controller
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -526,24 +526,24 @@ class AdminPedidos extends Controller
         $this->load('_admin/pedidos/entregas', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'usuarioLogado' => $resulUsuario,
             'estabelecimento' => $estabelecimento,
             'pedidos' => $resultPedidos,
             'clientes' => $resultClientes,
             'planoAtivo' => $planoAtivo,
             'motoboy' => $resultMotoboy,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'caixa' => $resulCaixa
         ]);
     }
 
     public function entregasBuscar($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
         $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);;;
 
         $session = $this->sessionFactory->newInstance($_COOKIE);
@@ -553,7 +553,7 @@ class AdminPedidos extends Controller
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -591,7 +591,7 @@ class AdminPedidos extends Controller
         $this->load('_admin/pedidos/entregaResultado', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'usuarioLogado' => $resulUsuario,
             'estabelecimento' => $estabelecimento,
             'busca' => $resultBuscaAll,
@@ -599,7 +599,7 @@ class AdminPedidos extends Controller
             'planoAtivo' => $planoAtivo,
             'motoboy' => $resultMotoboy,
             'frete' => $resultDelivery,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'caixa' => $resulCaixa,
             'data_inicio' => $data_inicio,
             'dataTermino' => $dataTermino
@@ -643,7 +643,7 @@ class AdminPedidos extends Controller
         // $valor->save();
 
         // header('Content-Type: application/json');
-        // $json = json_encode(['id' => $valor->id,'resp' => 'update', 'titulo' => 'Status','url' => 'motoboys']);
+        // $json = json_encode(['id' => $valor->id,'resp' => 'update', 'mensagem' => 'Status','url' => 'motoboys']);
         // exit($json);
 
         $plano = $_GET['pago'];

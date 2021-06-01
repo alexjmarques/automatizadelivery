@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Carrinho - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Carrinho - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 

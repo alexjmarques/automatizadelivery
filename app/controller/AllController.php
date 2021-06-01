@@ -7,7 +7,6 @@ use app\classes\Acoes;
 use app\classes\Cache;
 use app\core\Controller;
 use app\api\iFood\Authetication;
-use Aura\Session\SessionFactory;
 use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\classes\Sessao;
@@ -17,7 +16,7 @@ use Bcrypt\Bcrypt;
 class AllController extends Controller
 {
     //Instancia da Classe Adminempresa
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $bcrypt;
@@ -32,9 +31,10 @@ class AllController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
+        
         $this->bcrypt = new Bcrypt();
         //$this->ifood = new iFood();
+        $this->sessao = new Sessao();
         $this->acoes = new Acoes();
     }
 
@@ -62,29 +62,8 @@ class AllController extends Controller
 
     public function sair($data)
     {
-        if (is_int($data)) {
-            $empresaAct = $this->empresa->getById($data);
-            $this->acoes->getByField('empresa', 'id', $data);
-        } else {
-            $empresaAct = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        }
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $session->destroy();
-        redirect(BASE . $empresaAct->link_site);
-        exit();
-    }
-
-    public function sairAdmin($data)
-    {
-        if (is_int($data)) {
-            $empresaAct = $this->acoes->getByField('empresa', 'id', $data);;
-        } else {
-            $empresaAct = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        }
-        $session = $this->sessao->newInstance($_COOKIE);
-        $session->destroy();
-        redirect(BASE . "{$empresaAct->link_site}/admin/login");
-        exit();
+        $empresa = $data['linkSite'] ? $data['linkSite'] : "";
+        $this->sessao->sair($empresa);
     }
 
     public function geraSenha($tamanho = 8, $maiusculas = true, $numeros = true, $simbolos = false)
@@ -233,7 +212,7 @@ class AllController extends Controller
 
     // public function iniciarAtendimento($data)
     // {
-    //     $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+    //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
     //     $resulifood = $this->marketplace->getById(1);
 
 
@@ -293,7 +272,7 @@ class AllController extends Controller
 
     // public function finalizarAtendimento($data)
     // {
-    //     $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+    //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
     //     $idDelivery = $this->deliveryModel->getAllPorEmpresa($empresaAct[':id']);
     //     $resulifood = $this->marketplace->getById(1);
     //     //$caixa = $this->getInputFim();

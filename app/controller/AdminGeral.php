@@ -17,7 +17,7 @@ use app\classes\Sessao;
 
 class AdminGeral extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,7 +32,7 @@ class AdminGeral extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -61,7 +61,7 @@ class AdminGeral extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }

@@ -19,7 +19,7 @@ use app\Models\Empresa;
 
 class AdminDashboard extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -34,7 +34,7 @@ class AdminDashboard extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -98,7 +98,7 @@ class AdminDashboard extends Controller
             'moeda' => $moeda,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'categorias' => $resultCategorias,
             'empresa' => $empresa,
             'planoAtivo' => $planoAtivo,
@@ -140,7 +140,7 @@ class AdminDashboard extends Controller
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -167,7 +167,7 @@ class AdminDashboard extends Controller
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -224,7 +224,7 @@ class AdminDashboard extends Controller
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final
         ]);
     }
@@ -261,7 +261,7 @@ class AdminDashboard extends Controller
 
         $this->load('_admin/dashboard/caixaVisaoGeral', [
             'caixa' => $estabelecimento[0]->data_final,
-            'preferencias' => $this->preferencias,
+            
             'estabelecimento' => $estabelecimento,
             'isLogin' => $this->sessao->getUser(),
             'totalPedidos' => $totalPedidos,

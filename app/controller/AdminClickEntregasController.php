@@ -51,7 +51,7 @@ class AdminClickEntregasController extends Controller
     private $apdPlanosModel;
     private $assinaturaModel;
     private $resulifood;
-    private $preferencias;
+    
     private $cache;
 
     /**
@@ -78,7 +78,7 @@ class AdminClickEntregasController extends Controller
         $this->adminVendasModel = new VendasModel();
         $this->allController = new AllController();
         $this->adminMoedaModel = new MoedaModel();
-        $this->preferencias = new Preferencias();
+        
         $this->adminDiasModel = new DiasModel();
         $this->cache = new Cache();
         $this->resulifood = $this->marketplace->getById(1);
@@ -86,7 +86,7 @@ class AdminClickEntregasController extends Controller
 
     public function index($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $result = $this->configEmpresaModel->getById($empresaAct[':id']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -95,7 +95,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -122,7 +122,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
             'usuarioLogado' => $resulUsuario,
             'estabelecimento' => $estabelecimento,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $resulCaixa,
 
         ]);

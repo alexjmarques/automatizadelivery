@@ -12810,8 +12810,8 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 
 .ml-1 {
     position: absolute;
-    top: 2px;
-    right: 12px;
+    top: -5px;
+    right: -10px;
     background: green;
     width: 25px;
     text-align: center;
@@ -14395,8 +14395,6 @@ p {
 
 .statusSpan {
     font-size: 15px !important;
-    color: #000 !important;
-    background: #fff;
     padding: 2px 5px;
     border-radius: 6px;
     margin-top: 3px
@@ -15213,3 +15211,115 @@ h6.d-inline{
     font-weight: 600;
     color: #01411f !important
 }
+
+
+.mdc-top-app-bar-sub {
+    background-color: #880a1f !important
+  }
+
+  .cad_mod {
+    background: #ea1d2c
+
+    ;
+
+    border-color: #ea1d2c
+
+    ;
+  }
+
+  #menuCat a.active {
+    border: 1px solid #ea1d2c !important;
+
+    color: #ea1d2c !important;
+  }
+
+  .sabor_item_ok,
+  .sabor_item,
+  .adicional_item_ok,
+  .adicional_item,
+  .list-card a:hover {
+    color: #ea1d2c
+  }
+
+  #menuCat a {
+    border: 1px solid #ea1d2c;
+
+    background-color: #ea1d2c;
+  }
+
+  .bg-primary,
+  .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
+  .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
+  .mdc-checkbox__native-control[data-indeterminate="true"]:enabled~.mdc-checkbox__background,
+  .mdc-top-app-bar,
+  #overlayer,
+  .StatusRest,
+  .mdc-radio .mdc-radio__background::before,
+  .mdc-radio .mdc-radio__ripple::before,
+  #listar-carrinho .cart-inline-item .ml-2,
+  .mdc-radio .mdc-radio__ripple::after {
+    background: #ea1d2c;
+    background-color: #ea1d2c !important;
+  }
+
+  .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle,
+  .mdc-radio .mdc-radio__native-control:enabled:checked+.mdc-radio__background .mdc-radio__outer-circle {
+    border-color: #ea1d2c!important
+  }
+
+  @media only screen and (max-width: 760px),(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+        font-size: 16px;
+        color: #000;
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 0;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+	
+	/*
+	Label the data
+	*/
+	td:nth-of-type(1):before { content: "Número Pedido"; }
+	td:nth-of-type(2):before { content: "Data"; }
+	td:nth-of-type(3):before { content: "Status"; }
+	td:nth-of-type(4):before { content: "Total"; }
+}
+.linhaTop{
+    background: #ea1d2c;
+    color: #fff;
+    padding: 5px;
+}
+.border-r0{
+    border-radius: 0 !important;
+}
+.text-cian {
+    color: rgb(138, 136, 136) !important;
+  }

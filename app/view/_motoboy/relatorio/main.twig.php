@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Dashboard - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Dashboard - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 
@@ -19,7 +19,7 @@
                 <span class="text-muted text-small d-block">Ganhos deste Mês com entregas</span>
             </div>
             <div class="pt-3 pb-3 text-center">
-                <h5 class="d-inline valorFullSize">{{ moeda[':simbolo }} {{ entregasFeitas|number_format(2, ',', '.') }}</h5>
+                <h5 class="d-inline valorFullSize">{{ moeda.simbolo }} {{ entregasFeitas|number_format(2, ',', '.') }}</h5>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
                         <h6 class="d-inline">Ganhos do Dia</h6>
                     </div>
                     <div class="pt-1 pb-1 text-center">
-                        <h5 class="d-inline valorFullSizeMini">{{ moeda[':simbolo }} {{ entregasFeitasDia|number_format(2, ',', '.') }}</h5>
+                        <h5 class="d-inline valorFullSizeMini">{{ moeda.simbolo }} {{ entregasFeitasDia|number_format(2, ',', '.') }}</h5>
                     </div>
                 </div>
             </div>

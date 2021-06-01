@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Meus Pedidos - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Meus Pedidos - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">
@@ -16,31 +16,31 @@
             <div class="linePreloader"></div>
                 <div class="d-flex  border-bottom p-3">
                     <div class="left col-md-8 p-0">
-                    <h6 class="mb-1 font-weight-bold">Pedido #{{ venda[':numero_pedido }}
-                    {% if venda[':status'] == 1 %}
+                    <h6 class="mb-1 font-weight-bold">Pedido #{{ venda.numero_pedido }}
+                    {% if venda.status == 1 %}
                     <span class="badge badge-info">Recebido</span>
                     {% endif %}
 
-                    {% if venda[':status'] == 2 %}
+                    {% if venda.status == 2 %}
                     <span class="badge badge-warning">Produção</span>
                     {% endif %}
 
-                    {% if venda[':status'] == 3 %}
-                        {% if venda[':tipo_frete'] == 1 %}
+                    {% if venda.status == 3 %}
+                        {% if venda.tipo_frete == 1 %}
                             <span class="badge badge-secondary">Pronto para retirar</span>
                         {% else %}
                             <span class="badge badge-secondary">Saiu para entregar</span>
                         {% endif %}
                     {% endif %}
-                    {% if venda[':status'] == 4 %}
+                    {% if venda.status == 4 %}
                     <span class="badge badge-success">Entregue</span>
                     {% endif %}
 
-                    {% if venda[':status'] == 5 %}
+                    {% if venda.status == 5 %}
                     <span class="badge badge-danger">Recusado</span>
                     {% endif %}
 
-                    {% if venda[':status'] == 6 %}
+                    {% if venda.status == 6 %}
                     <span class="badge badge-secondary">Cancelado</span>
                     {% endif %}</h6>
                     
@@ -54,16 +54,16 @@
                 <div class="gold-members d-flex justify-content-between px-3 py-2 pt-0">
                     <p class=" mt-2 __cf_email__">
                     {% for user in usuarios %}
-                        {% if user[':id'] == venda[':id_cliente'] %}
-                            <strong class="mediumNome">{{ user[':nome }} </strong><br/>
-                        Telefone: <a href="tel:{{ user[':telefone }}">{{ user[':telefone }}</a> <br/>
+                        {% if user.id == venda.id_cliente %}
+                            <strong class="mediumNome">{{ user.nome }} </strong><br/>
+                        Telefone: <a href="tel:{{ user.telefone }}">{{ user.telefone }}</a> <br/>
                         {% endif %}
                     {% endfor %}
 
                     {% for end in enderecos %}
-                        {% if end[':id_usuario'] == venda[':id_cliente'] %}
-                            {{ end[':rua }}, {{ end[':numero }} {{ end[':complemento }} - {{ end[':bairro }} <br/>
-                            CEP: {{ end[':cep }}
+                        {% if end.id_usuario == venda.id_cliente %}
+                            {{ end.rua }}, {{ end.numero }} {{ end.complemento }} - {{ end.bairro }} <br/>
+                            CEP: {{ end.cep }}
                         {% endif %}
                     {% endfor %}
                     </p>
@@ -105,16 +105,16 @@
                             </div>
                         </div>
                         {% for user in usuarios %}
-                            {% if user[':id'] == venda[':id_cliente'] %}
-                                <input type="hidden" value="{{ user[':email }}" name="email" id="email">
-                                <input type="hidden" value="{{ user[':id }}" name="id_cliente" id="id_cliente">
+                            {% if user.id == venda.id_cliente %}
+                                <input type="hidden" value="{{ user.email }}" name="email" id="email">
+                                <input type="hidden" value="{{ user.id }}" name="id_cliente" id="id_cliente">
                             {% endif %}
                         {% endfor %}
 
-                        <input type="hidden" value="{{ venda[':id }}" name="id" id="id">
-                        <input type="hidden" value="{{ venda[':numero_pedido }}" name="numero_pedido" id="numero_pedido">
-                        <input type="hidden" value="{{ venda[':chave }}" name="chave" id="chave">
-                        <input type="hidden" value="{{ venda[':motoboy }}" name="id_motoboy" id="id_motoboy">
+                        <input type="hidden" value="{{ venda.id }}" name="id" id="id">
+                        <input type="hidden" value="{{ venda.numero_pedido }}" name="numero_pedido" id="numero_pedido">
+                        <input type="hidden" value="{{ venda.chave }}" name="chave" id="chave">
+                        <input type="hidden" value="{{ venda.motoboy }}" name="id_motoboy" id="id_motoboy">
                         <div class="pt-1">
                         <button id="fullBtnNac" class="btn btn-success mb-2 mt-3 full-btn  p-3"> INFORMAR AO RESTAURANTE</button>
                         </div>

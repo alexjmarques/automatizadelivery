@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Alterar Número de Telefone - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Alterar Número de Telefone - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">

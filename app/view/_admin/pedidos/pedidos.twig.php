@@ -3,8 +3,9 @@
 {% block body %}
 <h1>Pedidos Finalizados</h1>
 <div class="separator mb-5"></div>
-<div class="row mb-4">
+<div class="row mb-4"> 
 <div class="col-12 data-tables-hide-filter">
+<div class="mb-3 osahan-cart-item osahan-home-page">
                     <div class="card">
                         <div class="card-body">
                         <table class="data-table data-table-simple responsive" >
@@ -23,7 +24,7 @@
                                 {% for p in pedidos %}
                                 {% for stats in status %}
                                         {% if p.status == stats.id %}
-                                            <tr class="formStatus{{ stats.id }}">
+                                            <tr class="formStatus{{ stats.id }} ">
                                         {% endif %}
                                 {% endfor %}
                                         <td>

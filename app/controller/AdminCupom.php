@@ -17,7 +17,7 @@ use app\Models\CupomDesconto;
 
 class AdminCupom extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -31,7 +31,7 @@ class AdminCupom extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -68,7 +68,7 @@ class AdminCupom extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -94,7 +94,7 @@ class AdminCupom extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -128,7 +128,7 @@ class AdminCupom extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
 
@@ -154,7 +154,7 @@ class AdminCupom extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert','titulo' => 'Cupom Desconto','url' => 'cupons',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert','mensagem' => 'Cupom Desconto cadastrado com sucesso','error' => 'Não foi posível cadastrar o Cupom de Desconto','url' => 'cupons',]);
         exit($json);
     }
 
@@ -178,7 +178,7 @@ class AdminCupom extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Cupom Desconto','url' => 'cupons',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Cupom Desconto atualizado com sucesso','error' => 'Não foi posível atualizar o Cupom de desconto','url' => 'cupons',]);
         exit($json);
     }
 

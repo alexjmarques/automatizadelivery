@@ -18,7 +18,7 @@ use app\classes\Sessao;
 class AdminTipoAdicional extends Controller
 {
     //Instancia da Classe AdminTipoModel
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -33,7 +33,7 @@ class AdminTipoAdicional extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -71,7 +71,7 @@ class AdminTipoAdicional extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
 
@@ -81,7 +81,7 @@ class AdminTipoAdicional extends Controller
 
     public function novo($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
 
@@ -89,7 +89,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -121,14 +121,14 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
 
     public function insert($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $tipo = $this->getInput();
         $result = $this->adminTipoAdicionalModel->insert($tipo);
 
@@ -146,7 +146,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
      */
     public function editar($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
 
@@ -155,7 +155,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $SessionNivel = $segment->get('nivel');
         $resultTipo = $this->adminTipoAdicionalModel->getById($data['id']);
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -187,7 +187,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -200,7 +200,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
      */
     public function update($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $tipo = $this->getInput();
         $result = $this->adminTipoAdicionalModel->update($tipo);
 
@@ -219,7 +219,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
      */
     public function deletar($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $result = $this->adminTipoAdicionalModel->delete($data['id']);
         if ($result <= 0) {
             redirect(BASE . $empresaAct[':link_site'] . '/admin/tipo-adicionais');

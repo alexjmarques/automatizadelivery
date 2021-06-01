@@ -40,7 +40,7 @@ class FavoritosController extends Controller
     private $allController;
     private $favoritosModel;
     private $carrinhoModel;
-    private $preferencias;
+    
 
     /**
      *
@@ -50,7 +50,7 @@ class FavoritosController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
+        
         $this->allController = new AllController();
         $this->configEmpresaModel = new AdminConfigEmpresaModel();
         $this->moedaModel = new MoedaModel();
@@ -70,7 +70,7 @@ class FavoritosController extends Controller
 
     public function index($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -83,14 +83,15 @@ class FavoritosController extends Controller
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $resultDias = $this->diasModel->getAll();
         $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
         $resultUsuario = $this->usuarioModel->getAll();
 
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
             $verificaLogin = $this->allController->verificaPrimeiroAcesso($empresaAct[':id']);
             $favoritos = $this->favoritosModel->getAllCli($SessionIdUsuario);
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
@@ -106,7 +107,7 @@ class FavoritosController extends Controller
 
         $this->load('_cliente/favoritos/main', [
             'empresa' => $resultEmpresa,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'delivery' => $resultDelivery,
             'produto' => $resultProdutos,
             'dias' => $resultDias,
@@ -114,7 +115,7 @@ class FavoritosController extends Controller
             'favoritos' => $favoritos,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
 
         ]);
     }
@@ -126,7 +127,7 @@ class FavoritosController extends Controller
      */
     public function deletarFavorito($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $result = $this->favoritosModel->delete($data['id']);
 
         if ($result <= 0) {
@@ -138,7 +139,7 @@ class FavoritosController extends Controller
 
     public function inserirFavorito($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
 

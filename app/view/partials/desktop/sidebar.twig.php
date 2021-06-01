@@ -2,7 +2,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center" href="index.html">
                 <div class="sidebar-brand-icon">
-                    <img src="img/logo.png" class="img-fluid">
+                    <img src="/img/logo-pb.png" class="img-fluid">
                 </div>
             </a>
             <!-- Nav Item - Home -->

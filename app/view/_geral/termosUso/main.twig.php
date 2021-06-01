@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Termos de Uso - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Termos de Uso - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">
@@ -13,18 +13,18 @@
     <div class="p-3 osahan-cart-item osahan-home-page mb-3">
     <div class="d-flex mb-3 osahan-cart-item-profile bg-white shadow rounded p-3 mt-n5">
         <div class="full_page">
-        <h6 class="mb-1 font-weight-bold full_page">{{ empresa[':nomeFantasia }}</h6>
-            <p class="pb-0"><strong>CNPJ:</strong> {{empresa[':cnpj']}}</p>
+        <h6 class="mb-1 font-weight-bold full_page">{{ empresa.nomeFantasia }}</h6>
+            <p class="pb-0"><strong>CNPJ:</strong> {{empresa.cnpj}}</p>
             
-            <p class="pt-0 mt-0 mb-3"><strong>Endereço:</strong> {{empresa[':rua']}}, {{empresa[':numero']}} {{empresa[':complemento']}} - {{empresa[':bairro']}} - {{empresa[':cidade']}} | 
+            <p class="pt-0 mt-0 mb-3"><strong>Endereço:</strong> {{empresa.rua}}, {{empresa.numero}} {{empresa.complemento}} - {{empresa.bairro}} - {{empresa.cidade}} | 
             {% for e in estados %}
-                {% if e[':id'] == empresa[':estado'] %}
-                    {{ e[':uf }}
+                {% if e.id == empresa.estado %}
+                    {{ e.uf }}
                 {% endif %}
             {% endfor %}
         </p>
         <hr>
-            <p class="mb-0">{{empresa[':sobre']}}</p>
+            <p class="mb-0">{{empresa.sobre}}</p>
         </div>
     </div>
     </div>

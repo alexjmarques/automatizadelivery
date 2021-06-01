@@ -17,7 +17,7 @@ use app\classes\Sessao;
 
 class AdminCategorias extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,7 +32,7 @@ class AdminCategorias extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -70,7 +70,7 @@ class AdminCategorias extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -96,7 +96,7 @@ class AdminCategorias extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -124,7 +124,7 @@ class AdminCategorias extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -141,7 +141,7 @@ class AdminCategorias extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert','titulo' => 'Categoria','url' => 'categorias',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert','mensagem' => 'Categoria cadastrada com sucesso','error' => 'Não foi posível cadastrar a categoria','url' => 'categorias',]);
         exit($json);
     }
 
@@ -157,7 +157,7 @@ class AdminCategorias extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Categoria','url' => 'categorias',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria','url' => 'categorias',]);
         exit($json);
     }
 

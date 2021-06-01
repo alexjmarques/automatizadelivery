@@ -84,14 +84,14 @@
                                             {% for t in tipo %}
                                                 {% if t[':status'] == 1 and t[':id'] == 1 %}
                                                 <option value="1" selected>Retirada</option>
-                                                {%endif%}
+                                                {% endif %}
                                             {% endfor %}
                                             {% else %}
-                                            <option value="" {% if endereco is null %}selected{%endif%}>Tipo de Entrega</option>
+                                            <option value="" {% if endereco is null %}selected{% endif %}>Tipo de Entrega</option>
                                             {% for t in tipo %}
-                                            <option value="{{t[':id']}}" {% if endereco is not null %}{% if t[':id'] == 2 %}selected{%endif%}{%endif%}>{{t[':tipo']}}</option>
+                                            <option value="{{t[':id']}}" {% if endereco is not null %}{% if t[':id'] == 2 %}selected{% endif %}{% endif %}>{{t[':tipo']}}</option>
                                             {% endfor %}
-                                            {%endif%}
+                                            {% endif %}
                                         </select>
                                     </div>
                                     {% if km > delivery[':km_entrega_excedente'] %}
@@ -99,12 +99,12 @@
                                     {% if t[':status'] == 1 and t[':id'] == 1 %}
                                     <div class="clearfix"></div>
                                     <div class="dados-usuario row pt-3 m-0">
-                                    {%endif%}
+                                    {% endif %}
                                     {% endfor %}
-                                    {%else%}
+                                    {% else %}
                                     <div class="clearfix"></div>
                                     <div id="entrega_end" class="dados-usuario pt-3 m-0">
-                                    {%endif%}
+                                    {% endif %}
                                         <div class="card">
                                             <div>
                                             <h4>Nosso Endereço para Retirada</h4>
@@ -131,7 +131,7 @@
                                                 </p>
                                                 </div>
                                             </div>
-                                        {%endif%}
+                                        {% endif %}
                                 </div>
 
                                 <div class="mb-3 p-3 py-3 mt-0 clearfix">
@@ -172,24 +172,24 @@
                                         <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF">
                                     </div>
                                 </div>
-                                {%endif%}
+                                {% endif %}
 
                                 <input type="hidden" name="valorProduto" id="valorProduto" value="{% if p[':valor_promocional'] != '0.00' %}{{ produto[':valor_promocional }}{% else %}{{ produto[':valor }}{% endif %}">
                                 <div class="p-3 clearfix">
                                 <p class="mb-1">Subtotal<span class="float-right text-dark">{{ moeda[':simbolo }} {{ valorPedido|number_format(2, ',', '.') }}</span></p>
                                 {% if km <= delivery[':km_entrega_excedente'] %}
                                 <p class="mb-1" id="freteCal">Taxa de Entrega<span class="float-right text-dark">{{ moeda[':simbolo }} {{ calculoFrete|number_format(2, ',', '.') }}</span></p>
-                                {%endif%}
+                                {% endif %}
                                 <!-- {% if produto[':valor_promocional'] != '0.00' %}{{ produto[':valor_promocional']|number_format(2, ',', '.') }}{% else %}{{ produto[':valor']|number_format(2, ',', '.') }}{% endif %}</span></p> -->
                                 <p class="mb-1 text-success" id="trocoCliente" style="display:none;">Seu Troco<span class="float-right text-success"> </span></p>
                                 <hr>
                                 {% if km > delivery[':km_entrega_excedente'] %}
                                 <input type="hidden" name="total_pago" id="total_pago" value="{{ valorPedido }}">
                                 <input type="hidden" name="valor_frete" id="valor_frete" value="0">
-                                {%else%}
+                                {% else %}
                                 <input type="hidden" name="total_pago" id="total_pago" value="{{ calculoFrete + valorPedido }}">
                                 <input type="hidden" name="valor_frete" id="valor_frete" value="{{ calculoFrete }}">
-                                {%endif%}
+                                {% endif %}
                                 <input type="hidden" name="numero_pedido" id="numero_pedido" value="{{ numero_pedido }}">
                                 <input type="hidden" name="troco" id="troco" value="0">
                                 <input type="hidden" name="km" id="km" value="{{km}}">
@@ -197,13 +197,13 @@
                                 {% for t in tipo %}
                                     {% if t[':status'] == 1 and t[':id'] == 1 %}
                                     <h6 class="font-weight-bold mb-0">Total <span class="float-right">  <span id="valorProdutoMostra">{{ moeda[':simbolo }} {{ (valorPedido)|number_format(2, ',', '.') }}</span></span></h6>
-                                    {%else%}
+                                    {% else %}
                                     <h6 class="font-weight-bold mb-0">Você está fora da Área de Entrega</h6>
-                                    {%endif%}
+                                    {% endif %}
                                     {% endfor %}
-                                {%else%}
+                                {% else %}
                                 <h6 class="font-weight-bold mb-0">Total <span class="float-right">  <span id="valorProdutoMostra">{{ moeda[':simbolo }} {{ (calculoFrete + valorPedido)|number_format(2, ',', '.') }}</span></span></h6>
-                                {%endif%}
+                                {% endif %}
                                 <!--{% if produto[':valor_promocional'] != '0.00' %}{{ produto[':valor_promocional']|number_format(2, ',', '.') }}{% else %}{{ produto[':valor']|number_format(2, ',', '.') }}{% endif %}--> 
                                 </div>
                                 {% if km > delivery[':km_entrega_excedente'] %}
@@ -211,12 +211,12 @@
                                         {% if t[':status'] == 1 and t[':id'] == 1 %}
                                             
 <button class="btn btn-success btn-block btn-lg acaoBtn btnValida" type="submit">FINALIZAR PEDIDO<i class="icofont-long-arrow-right"></i></button>
-                                        {%endif%}
+                                        {% endif %}
                                     {% endfor %}
-                                {%else%}
+                                {% else %}
                                     
 <button class="btn btn-success btn-block btn-lg acaoBtn btnValida" type="submit">FINALIZAR PEDIDO<i class="icofont-long-arrow-right"></i></button>
-                                {%endif%}
+                                {% endif %}
                                 </form>
                                 </div>
                                 </div>          

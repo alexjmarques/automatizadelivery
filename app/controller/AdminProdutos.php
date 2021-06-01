@@ -19,7 +19,7 @@ use app\Models\Produtos;
 class AdminProdutos extends Controller
 {
     //Instancia da Classe AdminProdutoModel
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -34,7 +34,7 @@ class AdminProdutos extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -76,7 +76,7 @@ class AdminProdutos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -122,7 +122,7 @@ class AdminProdutos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -172,7 +172,7 @@ class AdminProdutos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -239,7 +239,7 @@ class AdminProdutos extends Controller
         $valorNCat->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert','titulo' => 'Produtos','url' => 'produtos',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert','mensagem' => 'Produto cadastrado com sucesso','error' => 'Não foi possível cadastrar o Produto','url' => 'produtos',]);
         exit($json);
     }
 
@@ -305,7 +305,7 @@ class AdminProdutos extends Controller
         }
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Produtos','url' => 'produtos',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Produto atualizado com sucesso','error' => 'Não foi possível atualizar o produto','url' => 'produtos',]);
         exit($json);
     }
 

@@ -24,7 +24,7 @@ class RatingController extends Controller
     private $allController;
     private $vendasModel;
     private $sessionFactory;
-    private $preferencias;
+    
 
     /**
      * 
@@ -34,7 +34,7 @@ class RatingController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
+        
         $this->ratingModel = new RatingModel();
         $this->configEmpresaModel = new AdminConfigEmpresaModel();
         $this->adminUsuarioModel = new AdminUsuarioModel();
@@ -46,7 +46,7 @@ class RatingController extends Controller
 
     public function index($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
 
@@ -76,14 +76,14 @@ class RatingController extends Controller
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
 
     public function rating($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
         $avaliacao = $this->getInput();
         $result = $this->ratingModel->insert($avaliacao);

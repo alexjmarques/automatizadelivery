@@ -16,7 +16,7 @@ use app\classes\Sessao;
 
 class AdminProdutosSabores extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -25,7 +25,7 @@ class AdminProdutosSabores extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -61,7 +61,7 @@ class AdminProdutosSabores extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -87,7 +87,7 @@ class AdminProdutosSabores extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -115,7 +115,7 @@ class AdminProdutosSabores extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -128,7 +128,7 @@ class AdminProdutosSabores extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'titulo' => 'Sabor','url' => 'produtos-sabores']);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Sabor cadastrado com sucesso','error' => 'Não foi possível cadastrar o sabor','url' => 'produtos-sabores']);
         exit($json);
     }
 
@@ -140,7 +140,7 @@ class AdminProdutosSabores extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update', 'titulo' => 'Sabor','url' => 'produtos-sabores']);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update', 'mensagem' => 'Sabor atualizado com sucesso','error' => 'Não foi possível atualizar o Sabor','url' => 'produtos-sabores']);
         exit($json);
     }
 

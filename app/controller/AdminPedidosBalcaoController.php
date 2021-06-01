@@ -49,7 +49,7 @@ class AdminPedidosBalcaoController extends Controller
     private $adminCategoriasModel;
     private $adminDiasModel;
     private $adminUsuarioModel;
-    private $preferencias;
+    
     private $adminCaixaModel;
     private $allController;
     private $adminVendasModel;
@@ -72,7 +72,7 @@ class AdminPedidosBalcaoController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
+        
         $this->moedaModel = new MoedaModel();
         $this->calculoFrete = new CalculoFrete();
         $this->estadosModel = new EstadosModel();
@@ -100,10 +100,10 @@ class AdminPedidosBalcaoController extends Controller
 
     public function index($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);;;
         $resultPedidos = $this->adminVendasModel->getAllPorEmpresa($empresaAct[':id']);
@@ -121,7 +121,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -142,9 +142,9 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $this->load('_admin/pedidos/novo', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'usuarioLogado' => $resulUsuario,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'estabelecimento' => $estabelecimento,
             'nivelUsuario' => $SessionNivel,
             'statusiFood' => $resulifood,
@@ -161,7 +161,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function start($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $sessionFactory = new \Aura\Session\SessionFactory;
 
         $session = $sessionFactory->newInstance($_COOKIE);
@@ -176,10 +176,10 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function produtos($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);;;
         $resultPedidos = $this->adminVendasModel->getAllPorEmpresa($empresaAct[':id']);
@@ -198,7 +198,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -221,9 +221,9 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $this->load('_admin/pedidos/novoProduto', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'usuarioLogado' => $resulUsuario,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'estabelecimento' => $estabelecimento,
             'pedidos' => $resultPedidos,
             'planoAtivo' => $planoAtivo,
@@ -241,9 +241,9 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function produtoMostrar($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
         $resultProduto = $this->adminProdutosModel->getById($data['id']);
         $resultProdutosAdicionais = $this->adminProdutosAdicionaisModel->getAllPorEmpresa($empresaAct[':id']);
         $resultSabores = $this->adminProdutosSaboresModel->getAllPorEmpresa($empresaAct[':id']);
@@ -268,8 +268,8 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $this->load('_admin/pedidos/produtoMostrar', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
-            'moeda' => $resultMoeda,
+            
+            'moeda' => $moeda,
             'caixa' => $resulCaixa,
             'produto' => $resultProduto,
             'planoAtivo' => $planoAtivo,
@@ -284,7 +284,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function carrinho($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
         $SessionIdUsuario = $segment->get('id_usuario');
@@ -297,7 +297,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
         //$resultDias = $this->diasModel->getAllPorEmpresa($empresaAct[':id']);
         $resultCategoria = $this->adminCategoriasModel->getAllPorEmpresa($empresaAct[':id']);
         $resultProdutos = $this->adminProdutosModel->getAllPorEmpresa($empresaAct[':id']);
@@ -331,9 +331,9 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $this->load('_admin/pedidos/carrinhoMostrarProdutos', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'empresa' => $resultEmpresa,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'estados' => $resultEstados,
             'delivery' => $resultDelivery,
             'carrinho' => $resultCarrinho,
@@ -357,7 +357,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
     public function carrinhoFinalizar($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
         $SessionIdUsuario = $segment->get('id_usuario');
@@ -369,7 +369,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
         $resultCategoria = $this->adminCategoriasModel->getAllPorEmpresa($empresaAct[':id']);
         $resultProdutos = $this->adminProdutosModel->getAllPorEmpresa($empresaAct[':id']);
         $resultEstados = $this->estadosModel->getAll();
@@ -415,9 +415,9 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
         $this->load('_admin/pedidos/novoDetalhes', [
             'empresa' => $empresaAct,
             'trans' => $trans,
-            'preferencias' => $this->preferencias,
+            
             'empresa' => $resultEmpresa,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'estados' => $resultEstados,
             'planoAtivo' => $planoAtivo,
             'delivery' => $resultDelivery,
@@ -491,7 +491,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
     //Cadastra, Deleta ou Atualiza item adicional
     public function addCarrinhoCheckoutAdicional($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $quantidade = Input::get('quantidade');
         $chave = Input::get('chave');
         if ($quantidade > 0) {
@@ -531,7 +531,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
     //Cadastra, Deleta ou Atualiza item adicional
     public function removeCarrinhoCheckoutAdicional($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $chave = Input::get('chave');
         $id_carrinho = Input::get('id_carrinho');
         $id_adicional = Input::get('id_adicional');
@@ -564,7 +564,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
     //Finaliza e fecha o pedido do cliente
     public function carrinhoFinalizarPedido($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $pedido = $this->getFinalizaPedido();
         $pedidoCarrinho = $this->getFinalizaPedidoCarrinho();
         $result = $this->adminVendasModel->insert($pedido);
@@ -597,7 +597,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
     //Deletar Item do carrinho
     public function deletarItemCarrinho($data)
     {
-$empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
         $SessionIdUsuario = $segment->get('id_usuario');
@@ -607,7 +607,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $resultUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
         /**
@@ -627,7 +627,7 @@ $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
             echo 'Seu item foi removido de sua Sacola!';
             redirect(BASE . $empresaAct[':link_site'] . '/admin/pedido/novo/produtos');
         } else {
-            echo 'Não foi possivel remover seu item!';
+            echo 'Não foi posível remover seu item!';
             redirect(BASE . $empresaAct[':link_site'] . '/admin/pedido/novo/produtos');
         }
     }

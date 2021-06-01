@@ -47,5 +47,5 @@
 [2021-05-25T08:48:06.793166-03:00] Translate.WARNING: [translate] Message must be a string {"language":"pt_BR","message":80} []
 [2021-05-25T08:48:06.793577-03:00] Translate.WARNING: [translate] Message not found {"language":"pt_BR","message":"tree"} []
 [2021-05-25T08:48:06.793920-03:00] Translate.WARNING: [translate] Message must be a string {"language":"pt_BR","message":80} []
-[2021-05-25T08:48:06.886678-03:00] Translate.WARNING: [translate] Message not found {"language":"pt_BR","message":"Portal de pedidos - Automatiza.App"} []
+[2021-05-25T08:48:06.886678-03:00] Translate.WARNING: [translate] Message not found {"language":"pt_BR","message":"Automatiza Delivery - Automatiza.App"} []
 [2021-05-25T08:48:06.887357-03:00] Translate.WARNING: [translate] Message not found {"language":"pt_BR","message":"Home"} []

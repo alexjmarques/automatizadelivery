@@ -2,46 +2,28 @@
 
 namespace app\controller;
 
-use CoffeeCode\Router\Router;
 use app\classes\Input;
-use app\classes\Preferencias;
+use app\classes\Acoes;
+use app\classes\Cache;
 use app\core\Controller;
-use app\controller\AllController;
-use app\Models\AdminCategoriaModel;
-use app\Models\AdminConfigEmpresaModel;
-use DElfimov\Translate\Translate;
 use DElfimov\Translate\Loader\PhpFilesLoader;
-use app\Models\AdminConfigFreteModel;
-use app\Models\AdminProdutoAdicionalModel;
-use app\Models\CarrinhoModel;
-use app\Models\AdminProdutoModel;
-use Aura\Session\SessionFactory;
-use app\Models\DiasModel;
-use app\Models\EnderecosModel;
-use app\Models\EstadosModel;
-use app\Models\MoedaModel;
-use app\Models\UsuarioModel;
-use app\Models\VendasModel;
-use Bcrypt\Bcrypt;
+use DElfimov\Translate\Translate;
+use app\controller\AllController;
+use function JBZoo\Data\json;
+use app\classes\Preferencias;
+use app\classes\Sessao;
+use app\Models\Usuarios;
+use app\Models\UsuariosEnderecos;
+use Browser;
+
 
 class PerfilController extends Controller
 {
-    //Instancia da Classe AdminConfigEmpresaModel
-    private $configEmpresaModel;
-    private $deliveryModel;
-    private $moedaModel;
-    private $categoriaModel;
-    private $produtoModel;
-    private $diasModel;
-    private $usuarioModel;
-    private $enderecoModel;
-    private $estadosModel;
-    private $produtoAdicionalModel;
-    private $vendasModel;
-    private $allController;
-    private $carrinhoModel;
-    private $sessionFactory;
-    private $preferencias;
+    private $acoes;
+    private $sessao;
+    private $geral;
+    private $trans;
+
 
     /**
      *
@@ -51,161 +33,91 @@ class PerfilController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
-        $this->moedaModel = new MoedaModel();
-        $this->deliveryModel = new AdminConfigFreteModel();
-        $this->categoriaModel = new AdminCategoriaModel();
-        $this->produtoModel = new AdminProdutoModel();
-        $this->produtoAdicionalModel = new AdminProdutoAdicionalModel();
-        $this->diasModel = new DiasModel();
-        $this->usuarioModel = new UsuarioModel();
-        $this->enderecoModel = new EnderecosModel();
-        $this->estadosModel = new EstadosModel();
-        $this->vendasModel = new VendasModel();
-        $this->sessionFactory = new SessionFactory();
-        $this->carrinhoModel = new CarrinhoModel();
-        $this->allController = new AllController();
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+        $this->sessao = new Sessao();
+        $this->geral = new AllController();
+        $this->cache = new Cache();
+        $this->acoes = new Acoes();
     }
 
     public function index($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $csrf_value = $session->getCsrfToken()->getValue();
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-            $verificaAcesso = $this->allController->verificaPrimeiroAcesso($empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
         $this->load('_cliente/perfil/main', [
-            'empresa' => $resultEmpresa,
-            'usuarioAtivo' => $resulUsuario,
+            'empresa' => $empresa,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+
         ]);
     }
     public function perfil($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
-        }
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+        }
 
         $this->load('_cliente/perfil/perfil', [
-            'empresa' => $resultEmpresa,
+            'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+
         ]);
     }
 
     public function dadosCadastrais($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
 
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $SessionIdUsuario = $segment->get('id_usuario');
-
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
-        }
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+        }
 
         $this->load('_cliente/perfil/dadosCadastrais', [
-            'empresa' => $resultEmpresa,
+            'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+
         ]);
     }
 
 
     public function enderecos($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
-        }
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resulEnderecos = $this->enderecoModel->getAll();
-        $resulEstados = $this->estadosModel->getAll();
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        $resulEnderecos = $this->acoes->getByFieldAll('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+        $resulEstados = $this->acoes->getFind('estados');
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+        }
 
         $this->load('_cliente/perfil/enderecos', [
-            'empresa' => $resultEmpresa,
+            'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
-            'enderecos' => $resulEnderecos,
-            'estadosSelecao' => $resulEstados,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'enderecos' => $resulEnderecos,
+            'estados' => $resulEstados,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -213,413 +125,193 @@ class PerfilController extends Controller
 
     public function novoEndereco($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        $resulEnderecos = $this->enderecoModel->checkById($SessionIdUsuario);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
-        }
-        $resultEstados = $this->estadosModel->getAll();
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+        $resulEstados = $this->acoes->getFind('estados');
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+        }
 
         $this->load('_cliente/perfil/endereco', [
-            'empresa' => $resultEmpresa,
-            'resulEnderecos' => $resulEnderecos,
-            'estadosSelecao' => $resultEstados,
+            'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'enderecos' => $resulEnderecos,
+            'estadosSelecao' => $resulEstados,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+
         ]);
     }
 
     public function novoEnderecoPrimeiro($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        $resulEnderecos = $this->enderecoModel->checkById($SessionIdUsuario);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-
-        if (isset($SessionIdUsuario)) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
-        }
-        $resultEstados = $this->estadosModel->getAll();
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+        $resulEstados = $this->acoes->getFind('estados');
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+        }
 
         $this->load('_cliente/perfil/primeiroEndereco', [
-            'empresa' => $resultEmpresa,
-            'resulEnderecos' => $resulEnderecos,
-            'estadosSelecao' => $resultEstados,
+            'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
+            'resulEnderecos' => $resulEnderecos,
+            'estadosSelecao' => $resulEstados,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+
+        ]);
+    }
+
+
+    public function editarEndereco($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+        $resulEstados = $this->acoes->getFind('estados');
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+        }
+
+        $this->load('_cliente/perfil/editar', [
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'carrinhoQtd' => $resultCarrinhoQtd,
+            'enderecoAtivo' => $resulEnderecos,
+            'estadosSelecao' => $resulEstados,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+
+        ]);
+    }
+
+
+    public function telefone($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+        $resulEstados = $this->acoes->getFind('estados');
+
+        if ($this->sessao->getUser()) {
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+        }
+
+        $this->load('_cliente/perfil/mudarTelefone', [
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'carrinhoQtd' => $resultCarrinhoQtd,
+            'resulEnderecos' => $resulEnderecos,
+            'estadosSelecao' => $resulEstados,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+
         ]);
     }
 
     public function insertEndereco($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        $resulEnderecos = $this->enderecoModel->checkById($SessionIdUsuario);
-        $resultEnderecoAntigo = $this->enderecoModel->getByIdPedido($SessionIdUsuario);
-
-        $usuario = $this->getInput();
+        $enderecos = $this->acoes->counts('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+        $resulEnderecos = $this->acoes->countsTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         if ($resulEnderecos > 0) {
-            if (Input::post('principal') == 1) {
-                if ($resultEnderecoAntigo[':principal'] != null) {
-                    $result = $this->enderecoModel->removePrincipal($resultEnderecoAntigo[':id']);
-                }
-            }
-            $result = $this->enderecoModel->insert($usuario);
-            if ($result <= 0) {
-                echo 'Erro ao cadastrar um novo endereço';
-            } else {
-                echo 'Endereço cadastrado com Sucesso!';
-            }
-        } else {
-            $result = $this->enderecoModel->insert($usuario);
-            if ($result <= 0) {
-                echo 'Erro ao cadastrar seu primeiro endereço';
-            } else {
-                echo 'Primeiro endereço cadastrado com Sucesso!';
-            }
+            $endereco = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            $valor = (new UsuariosEnderecos())->findById($endereco->id);
+            $valor->principal = 0;
+            $valor->save();
         }
-    }
+        if ($enderecos > 0) {
+            $nome_endereco =  $data['nome_endereco'];
+            $principal =  $data['principal'];
+        } else {
+            $nome_endereco =  'Principal';
+            $principal =  1;
+        }
 
-    public function editarEndereco($data)
-    {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $novo = new UsuariosEnderecos();
+        $novo->id_usuario = $data['id_usuario'];
+        $novo->nome_endereco = $nome_endereco;
+        $novo->rua = $data['rua'];
+        $novo->numero = $data['numero'];
+        $novo->complemento = $data['complemento'];
+        $novo->bairro = $data['bairro'];
+        $novo->cidade = $data['cidade'];
+        $novo->estado = $data['estado'];
+        $novo->cep = $data['cep'];
+        $novo->principal = $principal;
+        $novo->save();
 
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        $verificaLogin = $this->allController->verificaLogin($empresaAct[':id']);
-        $resulEnderecos = $this->enderecoModel->checkById($SessionIdUsuario);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resulEndereco = $this->enderecoModel->getById($data['id']);
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-        $resultEstados = $this->estadosModel->getAll();
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('_cliente/perfil/editar', [
-            'empresa' => $resultEmpresa,
-            'resulEnderecos' => $resulEnderecos,
-            'enderecoAtivo' => $resulEndereco,
-            'estadosSelecao' => $resultEstados,
-            'usuarioAtivo' => $resulUsuario,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
-        ]);
+        header('Content-Type: application/json');
+        if ($enderecos > 0) {
+            $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar um novo endereço', 'url' => 'enderecos',]);
+        } else {
+            $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço', 'url' => 'carrinho',]);
+        }
+        exit($json);
     }
 
     public function updateEndereco($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $endereco = $this->getInputUpdate();
-
-        $result = $this->enderecoModel->update($endereco);
-        if ($result > 0) {
-            echo 'Endereço atualizado com Sucesso!';
-        } else {
-            echo 'Erro ao atualizar seu endereço';
+        $enderecos = $this->acoes->counts('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+        $resulEnderecos = $this->acoes->countsTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        if ($resulEnderecos > 0) {
+            $endereco = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            $valor = (new UsuariosEnderecos())->findById($endereco->id);
+            $valor->principal = 0;
+            $valor->save();
         }
+        if ($enderecos > 0) {
+            $nome_endereco =  $data['nome_endereco'];
+            $principal =  $data['principal'];
+        } else {
+            $nome_endereco =  'Principal';
+            $principal =  1;
+        }
+
+        $novo = (new UsuariosEnderecos())->findById($data['id_endereco']);
+        $novo->id_usuario = $data['id_usuario'];
+        $novo->nome_endereco = $nome_endereco;
+        $novo->rua = $data['rua'];
+        $novo->numero = $data['numero'];
+        $novo->complemento = $data['complemento'];
+        $novo->bairro = $data['bairro'];
+        $novo->cidade = $data['cidade'];
+        $novo->estado = $data['estado'];
+        $novo->cep = $data['cep'];
+        $novo->principal = $principal;
+        $novo->save();
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Endereço atualizado com Sucesso!', 'error' => 'Erro ao atualizar o endereço', 'url' => 'enderecos',]);
+        exit($json);
+    }
+
+    public function deletarEndereco($data)
+    {
+        $valor = (new UsuariosEnderecos())->findById($data['id']);
+        $valor->destroy();
+        redirect(BASE . "{$data['linkSite']}/enderecos");
     }
 
     public function updateDados($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $dados = $this->getInputDados();
+        $valor = (new Usuarios())->findById($data['id_usuario']);
+        $valor->email = $data['email'];
+        $valor->save();
 
-        $result = $this->usuarioModel->updateEmail($dados);
-        if ($result > 0) {
-            echo 'Dados atualizado com Sucesso!';
-        } else {
-            echo 'Erro ao atualizar seus dados';
-        }
-    }
-
-    public function senha($data)
-    {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('_cliente/perfil/mudarSenha', [
-            'empresa' => $resultEmpresa,
-            'usuarioAtivo' => $resulUsuario,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
-        ]);
-    }
-
-    public function telefone($data)
-    {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $csrf_value = $session->getCsrfToken()->getValue();
-        $SessionIdUsuario = $segment->get('id_usuario');
-
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('_cliente/perfil/mudarTelefone', [
-            'empresa' => $resultEmpresa,
-            'usuarioAtivo' => $resulUsuario,
-            'trans' => $trans,
-            'preferencias' => $this->preferencias
-        ]);
-    }
-
-    /**
-     *
-     * Faz a atualização da pagina de proutos
-     *
-     */
-    public function deletarEndereco($data)
-    {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $result = $this->enderecoModel->delete($data['id']);
-        if ($result > 0) {
-            redirect(BASE.$empresaAct[':link_site'].'/enderecos');
-            exit;
-        }
-        redirect(BASE.$empresaAct[':link_site'].'/enderecos');
-    }
-
-    public function updateSenha($data)
-    {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $senha = $this->getInputUpdateSenha();
-        //dd($senha);
-        $result = $this->usuarioModel->update($senha);
-        if ($result > 0) {
-            echo 'Senha atualizado com Sucesso!';
-        } else {
-            echo 'Erro ao atualizar sua senha';
-        }
-    }
-
-    public function updateTelefone($data)
-    {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $telefone = $this->getInputUpdateTelefone();
-        $result = $this->usuarioModel->update($telefone);
-        if ($result > 0) {
-            echo 'Telefone atualizado com Sucesso!';
-        } else {
-            echo 'Erro ao atualizar seu telefone';
-        }
-    }
-
-
-    public function editarPrincipal($data)
-    {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionNivel = $segment->get('nivel');
-        $resultEndereco = $this->enderecoModel->getByIdPedido($SessionIdUsuario);
-        $result = $this->enderecoModel->removePrincipal($resultEndereco[':id']);
-        $result .= $this->enderecoModel->informPrincipal($data['id']);
-        if ($result > 0) {
-            if ($result > 0) {
-                echo 'Endereço definido como principal';
-            }
-        } else {
-            echo 'Erro ao definir o endereço como principal';
-        }
-    }
-
-
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputUpdateSenha()
-    {
-        $bcrypt = new Bcrypt();
-
-        $bcrypt_version = '2a';
-        $getSenha = Input::post('senha');
-        $senha = $bcrypt->encrypt($getSenha, $bcrypt_version);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-
-        return (object) [
-            'id' => $resulUsuario[':id'],
-            'nome' => $resulUsuario[':nome'],
-            'email' => $resulUsuario[':email'],
-            'telefone' => $resulUsuario[':telefone'],
-            'senha' => $senha,
-            'nivel' => $resulUsuario[':nivel']
-        ];
-    }
-
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputUpdateTelefone()
-    {
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-
-        return (object) [
-            'id' => $resulUsuario[':id'],
-            'nome' => $resulUsuario[':nome'],
-            'email' => $resulUsuario[':email'],
-            'telefone' => Input::post('telefone'),
-            'senha' => $resulUsuario[':senha'],
-            'nivel' => $resulUsuario[':nivel']
-        ];
-    }
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputUpdate()
-    {
-        return (object) [
-            'id' => Input::post('id'),
-            'id_usuario' => Input::post('id_usuario'),
-            'email' => Input::post('email'),
-            'nome_endereco' => Input::post('nome_endereco'),
-            'rua' => Input::post('rua'),
-            'numero' => Input::post('numero'),
-            'complemento' => Input::post('complemento'),
-            'bairro' => Input::post('bairro'),
-            'cidade' => Input::post('cidade'),
-            'estado' => Input::post('estado'),
-            'cep' => Input::post('cep'),
-            'principal' => Input::post('principal')
-
-        ];
-    }
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInput()
-    {
-
-        return (object) [
-            'id_usuario' => Input::post('id_usuario'),
-            'email' => Input::post('email'),
-            'nome_endereco' => Input::post('nome_endereco'),
-            'rua' => Input::post('rua'),
-            'numero' => Input::post('numero'),
-            'complemento' => Input::post('complemento'),
-            'bairro' => Input::post('bairro'),
-            'cidade' => Input::post('cidade'),
-            'estado' => Input::post('estado'),
-            'cep' => Input::post('cep'),
-            'principal' => Input::post('principal')
-        ];
-    }
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputDados()
-    {
-        return (object) [
-            'id' => Input::post('id_usuario'),
-            'email' => Input::post('email'),
-            
-        ];
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados atualizado com sucesso', 'error' => 'Erro ao atualizar o seus dados', 'url' => 'perfil',]);
+        exit($json);
     }
 }

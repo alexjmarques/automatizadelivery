@@ -18,7 +18,7 @@ use app\Models\Motoboy;
 class AdminMotoboys extends Controller
 {
     //Instancia da Classe AdminMotoboyModel
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -33,7 +33,7 @@ class AdminMotoboys extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -72,7 +72,7 @@ class AdminMotoboys extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -98,7 +98,7 @@ class AdminMotoboys extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -128,7 +128,7 @@ class AdminMotoboys extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -144,7 +144,7 @@ class AdminMotoboys extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'titulo' => 'Motoboy','url' => 'motoboys']);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Motoboy cadastrado com sucesso','error' => 'Não foi possível cadastrar o Motoboy','url' => 'motoboys']);
         exit($json);
     }
 
@@ -160,7 +160,7 @@ class AdminMotoboys extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Motoboy','url' => 'motoboys']);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Motoboy atualizado com sucesso','error' => 'Não foi possível atualizar o Motoboy','url' => 'motoboys']);
         exit($json);
     }
 

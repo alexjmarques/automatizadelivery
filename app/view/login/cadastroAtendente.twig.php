@@ -1,16 +1,16 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Cadastre-se - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Cadastre-se - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="login-page" style="">
     <div class="p-4 osahan-home-page">
         <h2 class="text-white my-0">Olá Novamente</h2>
-        <p class="text-white text-50">Finalize seu cadastro para que possa efetuar pedidos internos no {{empresa[':nomeFantasia']}}</p>
+        <p class="text-white text-50">Finalize seu cadastro para que possa efetuar pedidos internos no {{empresa.nome_fantasia }}</p>
             <form class="mt-5 mb-4" method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/cadastro/novo">
                 <div class="form-group">
                 <label for="nome" class="text-white">Nome</label>
-                <input type="text" placeholder="Nome Completo" class="form-control" id="nome" name="nome" value="{{usuario[':nome']}}" aria-describedby="emailHelp" required>
+                <input type="text" placeholder="Nome Completo" class="form-control" id="nome" name="nome" value="{{usuario.nome}}" aria-describedby="emailHelp" required>
                 </div>
 
                 <div class="form-group">
@@ -20,7 +20,7 @@
 
                 <div class="form-group">
                 <label for="email" class="text-white">Email</label>
-                <input type="email" placeholder="Email" class="form-control" id="email" name="email" value="{{usuario[':email']}}" aria-describedby="emailHelp" required>
+                <input type="email" placeholder="Email" class="form-control" id="email" name="email" value="{{usuario.email}}" aria-describedby="emailHelp" required>
                 </div>
 
                 <div class="form-group">
@@ -43,10 +43,10 @@
 
 </div>
 {% include 'partials/modalAlertSite.twig.php' %}
-{% if empresa[':capa'] is null %}
+{% if empresa.capa is null %}
 <style>.fixed-bottom-bar{margin:0 !important;background: url(/uploads/capa_modelo.jpg); background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;}</style>
 {% else %}
-<style>.fixed-bottom-bar{margin:0 !important;background: url(/uploads/{{empresa[':capa']}}); background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;}</style>
+<style>.fixed-bottom-bar{margin:0 !important;background: url(/uploads/{{empresa.capa}}); background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;}</style>
 {% endif %}
 
 

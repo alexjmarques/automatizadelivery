@@ -5,6 +5,7 @@ namespace app\classes;
 use Aura\Session\SessionFactory;
 use app\Models\Assinatura;
 use app\Models\Empresa;
+use app\Models\EmpresaFuncionamento;
 use app\Models\Usuarios;
 use app\Models\Dias;
 use app\Models\Estados;
@@ -45,6 +46,7 @@ use app\Models\CategoriaTipoAdicional;
 class Acoes
 {
     private $empresa;
+    private $empresaFuncionamento;
     private $assinatura;
     private $dias;
     private $estados;
@@ -93,6 +95,7 @@ class Acoes
     {
         $this->sessao = new SessionFactory();
         $this->empresa = new Empresa();
+        $this->empresaFuncionamento = new EmpresaFuncionamento();
         $this->assinatura = new Assinatura();
         $this->dias = new Dias();
         $this->estados = new Estados();
@@ -141,6 +144,33 @@ class Acoes
         return $this->{$table}->find("{$field} = :{$field}", "{$field}={$valor}")->fetch(false);
     }
 
+    
+
+    public function getByFieldTwo(string $table, string $field, string $valor, string $field2, string $valor2)
+    {
+        return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2}", "{$field}={$valor}")->fetch(false);
+    }
+
+    public function getByFieldTwoAll(string $table, string $field, string $valor, string $field2, string $valor2)
+    {
+        return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2}", "{$field}={$valor}")->fetch(true);
+    }
+
+    public function getByFieldTree(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
+    {
+        return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} = {$valor3}", "{$field}={$valor}")->fetch(false);
+    }
+
+    public function getByFieldTreeMenor(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
+    {
+        return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} < {$valor3}", "{$field}={$valor}")->order("id DESC")->fetch(false);
+    }
+
+    public function getByFieldTreeNull(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} is {$valor3}")->fetch(true);
+    }
+
     public function getById(string $table, int $id)
     {
         return $this->{$table}->find($id)->fetch(true);
@@ -152,14 +182,32 @@ class Acoes
         return $this->{$table}->find("{$field} = {$valor}")->fetch(true);
     }
 
+    
+
+    public function getByFieldAllLoop(string $table, string $field, string $valor, string $field2, string $valor2)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND numero_pedido is null")->fetch(true);
+    }
+
     public function getByFieldAllTwo(string $table, string $field, string $valor, string $field2, string $valor2)
     {
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2}")->fetch(true);
     }
 
+    public function getByFieldAllTwoNull(string $table, string $field, string $valor, string $field2, string $valor2)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND numero_pedido is null")->fetch(true);
+    }
+
     public function limitOrder(string $table, string $field, string $valor,int $limit, string $field2, string $order)
     {
         return $this->{$table}->find("{$field} ={$valor}")->limit($limit)->order("{$field2} {$order}")->fetch(true);
+       
+    }
+
+    public function limitOrderFill(string $table, string $field, string $valor,string $field1, string $valor1,string $field3, string $valor3,int $limit, string $field2, string $order)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field1} = {$valor1} AND {$field3} < {$valor3} ")->limit($limit)->order("{$field2} {$order}")->fetch(true);
        
     }
 
@@ -190,10 +238,17 @@ class Acoes
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} < {$valor2}", null, "SUM($linha) AS total")->fetch();
         
     }
+    
 
     public function sumFielsTree(string $table, string $field,string $valor, string $field2,string $valor2,string $field3,string $valor3, string $linha)
     {
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} = {$valor3}", null, "SUM($linha) AS total")->fetch();
+        
+    }
+
+    public function sumFielsTreeNull(string $table, string $field,string $valor, string $field2,string $valor2,string $field3,string $valor3, string $linha)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} is {$valor3}", null, "SUM($linha) AS total")->fetch();
         
     }
 
@@ -220,6 +275,24 @@ class Acoes
     public function counts(string $table, string $field, string $valor)
     {
         return $this->{$table}->find("{$field} = {$valor}")->count();
+        
+    }
+
+    public function countsTwo(string $table, string $field, string $valor, string $field2, string $valor2)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2}")->count();
+        
+    }
+
+    public function countsTwoNull(string $table, string $field, string $valor, string $field2, string $valor2)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND numero_pedido is null")->count();
+        
+    }
+
+    public function countsTree(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} = {$valor3}")->count();
         
     }
 

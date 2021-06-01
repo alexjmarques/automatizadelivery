@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Favoritos - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Favoritos - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">
@@ -12,17 +12,17 @@
 
     {% for f in favoritos %}
     {% for p in produto %}
-    {% if(p[':id'] == f[':id_produto'] ) %}
+    {% if(p.id == f.id_produto ) %}
     <div class="p-3 osahan-cart-item osahan-home-page mb-3">
     <div class="d-flex mb-3 osahan-cart-item-profile bg-white shadow rounded p-3 mt-n5">
-        <img alt="osahan" src="/uploads/{{ p.imagem }}" class="mr-2 rounded-circle img-fluid">
+        <img alt="{{ p.nome }}" src="/uploads/{{ p.imagem }}" class="mr-2 rounded-circle img-fluid">
         <div class="d-flex flex-column">
             <h6 class="mb-1 font-weight-bold">{{ p.nome }}</h6>
             <p class="mb-0">{{ p.descricao }}</p>
         </div>
 
         <div class="right col-md-3 p-0">
-           <a href="{{BASE}}{{empresa.link_site}}/favorito/d/{{f[':id']}}" class="btnEnderecos btnDeletarFloatMod">Remover <i class="feather-delete text-danger"></i></a>
+           <a href="{{BASE}}{{empresa.link_site}}/favorito/d/{{f.id}}" class="btnEnderecos btnDeletarFloatMod">Remover <i class="feather-delete text-danger"></i></a>
         </div>
     </div>
     </div>

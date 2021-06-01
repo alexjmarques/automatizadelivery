@@ -36,7 +36,7 @@ class PerfilMotoboyController extends Controller
     private $categoriaModel;
     private $produtoModel;
     private $diasModel;
-    private $preferencias;
+    
     private $usuarioModel;
     private $enderecoModel;
     private $estadosModel;
@@ -54,7 +54,7 @@ class PerfilMotoboyController extends Controller
      */
     public function __construct()
     {
-        $this->preferencias = new Preferencias();
+        
         $this->configEmpresaModel = new AdminConfigEmpresaModel();
         $this->moedaModel = new MoedaModel();
         $this->deliveryModel = new AdminConfigFreteModel();
@@ -76,7 +76,7 @@ class PerfilMotoboyController extends Controller
      */
     public function index($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
 
@@ -84,7 +84,7 @@ class PerfilMotoboyController extends Controller
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
             //if($resulUsuario[':nivel'] != 3){redirect(BASE . $empresaAct[':link_site']);}
         } else {
@@ -105,7 +105,7 @@ class PerfilMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
     /**
@@ -113,11 +113,11 @@ class PerfilMotoboyController extends Controller
      */
     public function editar($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $resultMoeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -126,7 +126,7 @@ class PerfilMotoboyController extends Controller
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
             $resultCarrinhoQtd = $this->vendasModel->carrinhoQtdListMoto($SessionIdUsuario,$empresaAct[':id']);
             //if($resulUsuario[':nivel'] != 3){redirect(BASE. 'motoboy');}
@@ -147,9 +147,9 @@ class PerfilMotoboyController extends Controller
             'motoboy' => $resulMotoboy,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'empresa' => $resultEmpresa,
-            'moeda' => $resultMoeda,
+            'moeda' => $moeda,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
     /**
@@ -157,7 +157,7 @@ class PerfilMotoboyController extends Controller
      */
     public function senha($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -165,7 +165,7 @@ class PerfilMotoboyController extends Controller
         $SessionIdUsuario = $segment->get('id_usuario');
         $SessionUsuarioEmail = $segment->get('usuario');
         $SessionNivel = $segment->get('nivel');
-        if (!isset($SessionIdUsuario)) {
+        if (!$this->sessao->getUser()) {
             redirect(BASE . $empresaAct[':link_site'] . 'login');
         }
 
@@ -184,7 +184,7 @@ class PerfilMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
 
@@ -195,7 +195,7 @@ class PerfilMotoboyController extends Controller
      */
     public function deletarEndereco($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $result = $this->enderecoModel->delete($data['id']);
 
         if ($result <= 0) {
@@ -212,7 +212,7 @@ class PerfilMotoboyController extends Controller
      */
     public function updateSenha($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $senha = $this->getInputUpdateSenha();
         $result = $this->usuarioModel->update($senha);
         if ($result > 0) {
@@ -229,7 +229,7 @@ class PerfilMotoboyController extends Controller
      */
     public function updatePlaca($data)
     {
-        $empresaAct = $this->configEmpresaModel->getByName($data['clienteID']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $dadosMoto = $this->getInputUpdatePlaca();
         $result = $this->motoboyModel->update($dadosMoto);
         if ($result > 0) {

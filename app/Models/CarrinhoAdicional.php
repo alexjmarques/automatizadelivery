@@ -17,10 +17,10 @@ class CarrinhoAdicional extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("carrinhoAdicional", ["id_carrinho","id_produto", "id_cliente", "id_adicional","id_empresa"]);
+        parent::__construct("carrinhoAdicional", []);
     }
 
-    public function add(Carrinho $carrinho,Produtos $produto, Usuarios $usuario, ProdutoAdicional $adicional,Empresa $empresa,string $quantidade, string $valor, string $numero_pedido, string $chave, string $sessao_id)
+    public function add(Carrinho $carrinho,Produtos $produto, Usuarios $usuario, ProdutoAdicional $adicional,Empresa $empresa,string $quantidade, string $valor, string $numero_pedido)
     {
         $this->id_carrinho = $carrinho->id;
         $this->id_produto = $produto->id;
@@ -30,8 +30,6 @@ class CarrinhoAdicional extends DataLayer
         $this->quantidade = $quantidade;
         $this->valor = $valor;
         $this->numero_pedido = $numero_pedido;
-        $this->chave = $chave;
-        $this->sessao_id = $sessao_id;
 
         $this->save();
         return $this;

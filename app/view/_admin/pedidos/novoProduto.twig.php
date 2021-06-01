@@ -27,22 +27,22 @@
                             <div class="card-body">
                                 <div id="step-1" class="tab-pane step-content" style="display: block;">
                                         {% for c in categoria %}
-                                            {% if c[':produtos'] > 1 %}
+                                            {% if c.produtos > 1 %}
                                                 <div class="px-3 pt-3 title d-flex bg-white">
-                                                    <h5 id="{{ c[':slug }}" name="{{ c[':slug }}" class="mt-1">{{ c[':nome }}</h5>
+                                                    <h5 id="{{ c.slug }}" name="{{ c.slug }}" class="mt-1">{{ c.nome }}</h5>
                                                 </div>
                                             {% endif %}
                                         <ul class="lista">
                                         {% for p in produto %}
-                                        {% if c[':id'] == p[':categoria'] %}
-                                            <li class="col-md-3 disable-text-selection bg-white" data-toggle="modal" data-target="#modProduto" onclick="produtoModal({{p[':id']}})">
+                                        {% if c.id == p.id_categoria %}
+                                            <li class="col-md-3 disable-text-selection bg-white" data-toggle="modal" data-target="#modProduto" onclick="produtoModal({{p.id}})">
                                             <div class="col-md-12 mb-4 p-0">
                                                 <div class="card">
                                                     <div class="position-relative">
-                                                        {% if p[':imagem'] is not empty %}
-                                                            <img src="{{BASE}}uploads/{{p[':imagem']}}" class="card-img-top">
+                                                        {% if p.imagem is not empty %}
+                                                            <img src="{{BASE}}uploads/{{p.imagem}}" class="card-img-top">
                                                         {% endif %}
-                                                        {% if p[':status_produto'] == 0 %}
+                                                        {% if p.status == 0 %}
                                                             <span class="badge badge-secondary badge-theme-1 position-absolute badge-top-left">ESGOTADO</span>
                                                         {% endif %}
 
@@ -51,13 +51,13 @@
                                                         <div class="row">
                                                             <div class="col-12 p-0">
                                                             <h6 class="mb-1">
-                                                            <a href="#" class="text-black">{{p[':nome']}}</a></h6>
+                                                            <a href="#" class="text-black">{{p.nome}}</a></h6>
 
-                                                            {% if p[':valor_promocional'] != '0.00' %}
-                                                                <p class="text-black mb-1 dequanto pmais"><span class="float-left por mr-2">De</span> <span class="float-left text-black-50"> {{moeda[':simbolo']}} {{ p.valor']|number_format(2, ',', '.') }}</span></p>
-                                                                <p class="text-black mb-1 porquanto pmais"> <span class="float-left por pl-4 mr-2">Por</span> <span class="float-left text-black-50"> {{moeda[':simbolo']}} {{ p.valor_promocional']|number_format(2, ',', '.') }}</span></p>
+                                                            {% if p.valor_promocional != '0.00' %}
+                                                                <p class="text-black mb-1 dequanto pmais"><span class="float-left por mr-2">De</span> <span class="float-left text-black-50"> {{moeda.simbolo}} {{ p.valor|number_format(2, ',', '.') }}</span></p>
+                                                                <p class="text-black mb-1 porquanto pmais"> <span class="float-left por pl-4 mr-2">Por</span> <span class="float-left text-black-50"> {{moeda.simbolo}} {{ p.valor_promocional|number_format(2, ',', '.') }}</span></p>
                                                             {% else %}
-                                                                <p class="text-black mb-1 porquanto pmais"> <span class="float-left text-black-50"> {{moeda[':simbolo']}} {{ p.valor']|number_format(2, ',', '.') }}</span></p>
+                                                                <p class="text-black mb-1 porquanto pmais"> <span class="float-left text-black-50"> {{moeda.simbolo}} {{ p.valor|number_format(2, ',', '.') }}</span></p>
                                                             {% endif %}
                                                             </div>
                                                         </div>

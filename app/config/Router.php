@@ -3,7 +3,7 @@ use CoffeeCode\Router\Router;
 /*
     Inclusão das Controllers
 */
-//require "../app/controller/AllController.php";
+require "../app/controller/AllController.php";
 require "../app/controller/PagesController.php";
 require "../app/controller/PerfilController.php";
 require "../app/controller/RatingController.php";
@@ -66,7 +66,7 @@ $router->get('/{linkSite}/politica-de-privacidade', 'PagesController:politicaPri
  * Listagem para tempo de execução
  */
 $router->get('/{linkSite}/home/ultimaVenda', 'PagesController:ultimaVenda');
-$router->get('/{linkSite}/login', 'UsuarioController:index');
+$router->get('/{linkSite}/login', 'UsuarioController:login');
 $router->post('/{linkSite}/login/valida', 'UsuarioController:login');
 $router->get('/{linkSite}/login/validaFacebook', 'UsuarioController:loginFacebook');
 $router->get('/{linkSite}/login/n', 'AllController:verificaNivel');
@@ -92,27 +92,32 @@ $router->post('/{linkSite}/u/l/val', 'UsuarioController:usuarioLogin');
     Cliente
 */
 $router->get('/{linkSite}/produto/{id}', 'CarrinhoController:index');
-$router->post('/{linkSite}/produto/addCarrinho/{id}', 'CarrinhoController:carrinhoCheckout');
+$router->post('/{linkSite}/produto/addCarrinho/{id}', 'CarrinhoController:insert');
 $router->post('/{linkSite}/produto/updateCarrinho/{id}', 'CarrinhoController:carrinhoCheckoutUpdate');
-$router->get('/{linkSite}/produto/adicional/{chave}', 'CarrinhoController:carrinhoCheckoutAdicional');
-$router->get('/{linkSite}/produto/adicional/atualiza/{chave}/{id}', 'CarrinhoController:carrinhoCheckoutAdicionalUpdate');
-$router->post('/{linkSite}/produto/addCarrinho/adicional/{chave}', 'CarrinhoController:carrinhoCheckoutFinal');
-$router->get('/{linkSite}/produto/addCarrinho/adicionalis/{chave}', 'CarrinhoController:addCarrinhoCheckoutAdicional');
-$router->get('/{linkSite}/produto/removeCarrinho/adicionalis/{chave}', 'CarrinhoController:removeCarrinhoCheckoutAdicional');
+
+$router->get('/{linkSite}/produto/adicional/{id}', 'CarrinhoController:carrinhoAdicional');
+$router->get('/{linkSite}/produto/adicional/atualiza/{id}', 'CarrinhoController:carrinhoCheckoutAdicionalUpdate');
+$router->post('/{linkSite}/produto/addCarrinho/adicionais', 'CarrinhoController:insertUpdateProdutoAdicional');
+$router->post('/{linkSite}/carrinho/finaliza', 'CarrinhoController:carrinhoCheckoutFinal');
+$router->get('/{linkSite}/carrinho/pedido/acao/{id_produto}/{id_carrinho}', 'CarrinhoController:carrinhoProdutoAcao');
+$router->get('/{linkSite}/carrinho/{id_produto}/d/{id_carrinho}', 'CarrinhoController:deletarProdutoCarrinho');
+
+// $router->get('/{linkSite}/produto/adicional/atualiza/{chave}/{id}', 'CarrinhoController:carrinhoCheckoutAdicionalUpdate');
+// $router->get('/{linkSite}/produto/removeCarrinho/adicionalis/{chave}', 'CarrinhoController:removeCarrinhoCheckoutAdicional');
+
 $router->get('/{linkSite}/carrinho', 'CarrinhoController:carrinho');
-$router->get('/{linkSite}/carrinho-visitante', 'CarrinhoController:carrinhoVisitante');
-$router->get('/{linkSite}/carrinho/dados', 'CarrinhoController:carrinhoVisitanteCadastro');
+
+$router->get('/{linkSite}/carrinho/dados', 'CarrinhoController:carrinhoCadastro');
+$router->post('/{linkSite}/carrinho/cadastro/valida', 'CarrinhoController:carrinhoCadastroValida');
+
 $router->get('/{linkSite}/carrinho/valida/acesso', 'CarrinhoController:carrinhoVisitanteCadastroValida');
 $router->post('/{linkSite}/carrinho/valida/acesso/code', 'CarrinhoController:carrinhoValidaAcessoCode');
 $router->get('/{linkSite}/carrinho/entrega', 'CarrinhoController:carrinhoVisitanteEndereco');
-$router->post('/{linkSite}/carrinho/cadastro', 'CarrinhoController:carrinhoCadastro');
-$router->post('/{linkSite}/carrinho/cadastro-endereco', 'CarrinhoController:carrinhoEndereco');
-$router->post('/{linkSite}/carrinho/finaliza', 'CarrinhoController:carrinhoFinalizarPedido');
-$router->get('/{linkSite}/carrinho/pedido/acao/{id_produto}/{id_carrinho}', 'CarrinhoController:carrinhoProdutoAcao');
-$router->get('/{linkSite}/carrinho/{id_produto}/d/{id_carrinho}/{chave}', 'CarrinhoController:carrinhoDeletarItem');
-$router->get('/{linkSite}/cupomDesconto', 'CarrinhoController:carrinhoValidaCupom');
+$router->get('/{linkSite}/produto/{id_produto}/e/{id_carrinho}', 'CarrinhoController:carrinhoProdutoEditar');
 
-$router->get('/{linkSite}/produto/{id_produto}/e/{id_carrinho}/{chave}', 'CarrinhoController:carrinhoProdutoEditar');
+
+$router->post('/{linkSite}/cupomDesconto', 'CarrinhoController:carrinhoValidaCupom');
+
 $router->get('/{linkSite}/avaliacao/{numero_pedido}', 'RatingController:index');
 $router->post('/{linkSite}/avaliar/pedido', 'RatingController:rating');
 $router->get('/{linkSite}/meus-pedidos', 'PedidosController:index');
@@ -132,13 +137,14 @@ $router->get('/{linkSite}/perfil/{id}', 'PerfilController:editar');
 $router->get('/{linkSite}/alterar-senha', 'PerfilController:senha');
 $router->get('/{linkSite}/dados-cadastrais', 'PerfilController:dadosCadastrais');
 $router->post('/{linkSite}/dados-cadastrais/u', 'PerfilController:updateDados');
-$router->post('/{linkSite}/perfil/senha/u', 'PerfilController:updateSenha');
-$router->post('/{linkSite}/senha/u', 'PerfilController:updateSenha');
+
+
 $router->get('/{linkSite}/enderecos', 'PerfilController:enderecos');
 $router->get('/{linkSite}/endereco/novo', 'PerfilController:novoEndereco');
 $router->get('/{linkSite}/endereco/novo/cadastro', 'PerfilController:novoEnderecoPrimeiro');
 $router->get('/{linkSite}/endereco/{id}/editar', 'PerfilController:editarEndereco');
 $router->post('/{linkSite}/endereco/principal/{id}', 'PerfilController:editarPrincipal');
+
 $router->post('/{linkSite}/endereco/i', 'PerfilController:insertEndereco');
 $router->post('/{linkSite}/endereco/u', 'PerfilController:updateEndereco');
 $router->get('/{linkSite}/endereco/d/{id}', 'PerfilController:deletarEndereco');

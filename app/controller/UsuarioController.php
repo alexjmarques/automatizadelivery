@@ -11,17 +11,16 @@ use DElfimov\Translate\Translate;
 use app\controller\AllController;
 use Aura\Session\SessionFactory;
 use function JBZoo\Data\json;
-use app\classes\Preferencias;
 use app\classes\Sessao;
 use Twilio\Rest\Client;
 use app\Models\Usuarios;
 use app\Models\Empresa;
-use app\classes\SMS;
+//use app\classes\SMS;
 use Bcrypt\Bcrypt;
 
 class UsuarioController extends Controller
 {
-    private $preferencias;
+    
     private $empresa;
     private $acoes;
     private $usuario;
@@ -40,14 +39,14 @@ class UsuarioController extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->empresa = new Empresa();
         $this->usuario = new Usuarios();
         $this->bcrypt = new Bcrypt();
         $this->acoes = new Acoes();
-        $this->sms = new SMS();
+        //$this->sms = new SMS();
     }
     /**
      * Login Geral Clientes
@@ -68,7 +67,7 @@ class UsuarioController extends Controller
             'empresa' => $empresa,
             'isLogin' => $isLogin,
             'trans' => $this->trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
     /**
@@ -90,7 +89,7 @@ class UsuarioController extends Controller
             'empresa' => $empresa,
             'isLogin' => $isLogin,
             'trans' => $this->trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
     /**
@@ -110,7 +109,7 @@ class UsuarioController extends Controller
         $this->load('_admin/login/main', [
             'trans' => $this->trans,
             'isLogin' => $isLogin,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
     /**
@@ -136,7 +135,7 @@ class UsuarioController extends Controller
         $email = Input::post('email');
         $senha = Input::post('senha');
 
-        $usuario = $this->acoes->getByField('usuario', 'email', $email);
+        $usuario = $this->acoes->getByField('usuarios', 'email', $email);
         if ($usuario <= 0) {
             echo 'Email não encontrado em nossa plataforma! Cadastre-se.';
         } else {
@@ -214,7 +213,7 @@ class UsuarioController extends Controller
 
     //         // if ($retorno->status == "success") {
     //         // } else {
-    //         //     echo 'Não foi possivel enviar validação de senha, tente novamente mais tarde!';
+    //         //     echo 'Não foi posível enviar validação de senha, tente novamente mais tarde!';
     //         // }
     //         exit;
     //     } else {
@@ -271,7 +270,7 @@ class UsuarioController extends Controller
             $segment = $session->getSegment('Vendor\Aura\Segment');
             $SessionIdUsuario = $segment->get('id_usuario');
 
-            if (isset($SessionIdUsuario)) {
+            if ($this->sessao->getUser()) {
                 echo 'Aguarde estamos redirecionando para a pagina inicial';
             }
         }
@@ -288,7 +287,7 @@ class UsuarioController extends Controller
             $segment = $session->getSegment('Vendor\Aura\Segment');
             $SessionIdUsuario = $segment->get('id_usuario');
 
-            if (!isset($SessionIdUsuario)) {
+            if (!$this->sessao->getUser()) {
                 $session->setCookieParams(array('lifetime' => '2592000'));
                 $_SESSION = array(
                     'Vendor\Aura\Segment' => array(
@@ -318,7 +317,7 @@ class UsuarioController extends Controller
         $verificaLogin = $this->allController->verificaNivel($empresaAct[':id']);
         $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
         }
 
@@ -331,7 +330,7 @@ class UsuarioController extends Controller
             'empresa' => $resultEmpresa,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
 
@@ -349,7 +348,7 @@ class UsuarioController extends Controller
         $verificaLogin = $this->allController->verificaNivel($empresaAct[':id']);
         $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
         }
 
@@ -362,7 +361,7 @@ class UsuarioController extends Controller
             'empresa' => $resultEmpresa,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
 
@@ -380,7 +379,7 @@ class UsuarioController extends Controller
         $verificaLogin = $this->allController->verificaNivel($empresaAct[':id']);
         $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
         }
 
@@ -393,7 +392,7 @@ class UsuarioController extends Controller
             'empresa' => $resultEmpresa,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
 
@@ -411,7 +410,7 @@ class UsuarioController extends Controller
         $this->load('login/senhaPerdida', [
             'empresa' => $resultEmpresa,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
 
@@ -432,7 +431,7 @@ class UsuarioController extends Controller
         if ($result <= 0) {
             echo 'Erro ao atualizar sua senha';
         } else {
-            $mensagem = "Olá " . $pegarUsuario[':nome'] . " segue a nova senha para acessar sua conta no " . $resultEmpresa[':nomeFantasia'] . "! Sua senha é: " . $geradorSenha;
+            $mensagem = "Olá " . $pegarUsuario[':nome'] . " segue a nova senha para acessar sua conta no " . $resultempresa.nome_fantasia  . "! Sua senha é: " . $geradorSenha;
             $numeroTelefone = preg_replace('/[^0-9]/', '', $telefone);
             $ddi = 55;
             $numerofinal = $ddi . $numeroTelefone;
@@ -442,7 +441,7 @@ class UsuarioController extends Controller
             if ($retorno->status == "success") {
                 echo 'Sua nova senha foi enviada com Sucesso!';
             } else {
-                echo 'Não foi possivel enviar sua nova senha, tente novamente mais tarde!';
+                echo 'Não foi posível enviar sua nova senha, tente novamente mais tarde!';
             }
         }
     }
@@ -460,7 +459,7 @@ class UsuarioController extends Controller
         $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
         $resultUsuario = $this->usuarioModel->getById($data['id']);
 
-        if (isset($SessionIdUsuario)) {
+        if ($this->sessao->getUser()) {
             $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
         }
 
@@ -474,7 +473,7 @@ class UsuarioController extends Controller
             'usuario' => $resultUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $trans,
-            'preferencias' => $this->preferencias
+            
         ]);
     }
 

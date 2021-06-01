@@ -18,7 +18,7 @@ use app\Models\TipoDelivery;
 class AdminDeliveryTipo extends Controller
 {
     //Instancia da Classe AdminDeliveryTipoModel
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -33,7 +33,7 @@ class AdminDeliveryTipo extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -70,7 +70,7 @@ class AdminDeliveryTipo extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -99,7 +99,7 @@ class AdminDeliveryTipo extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -115,7 +115,7 @@ class AdminDeliveryTipo extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'titulo' => 'Tipo de Delivery','url' => 'delivery',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Tipo de Delivery cadastrado com sucesso','error' => 'Não foi posível cadastrar o Tipo de Delivery','url' => 'delivery',]);
         exit($json);
     }
 
@@ -129,7 +129,7 @@ class AdminDeliveryTipo extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Tipo de Delivery','url' => 'delivery',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Tipo de Delivery atualizado com sucesso','error' => 'Não foi posível atualizar o Tipo de Delivery','url' => 'delivery',]);
         exit($json);
     }
 

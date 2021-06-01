@@ -29,17 +29,17 @@
                         </svg>
                     </div>
                     <p class="mb-3 text-center size16 bold"><i class="simple-icon-check text-success"></i> Loja online Aberta</p>
-                        {% if statusiFood[':idLoja'] is not null %}
+                        {% if statusiFood.idLoja is not null %}
                     <p class="mb-3 text-center size16 bold"><i class="simple-icon-check text-success"></i> Loja Conectada à rede do iFood</p>
                         {% endif %}
-                        {% if statusUber[':idLoja'] is not null %}
+                        {% if statusUber.idLoja is not null %}
                     <p class="mb-3 text-center size16 bold"><i class="simple-icon-check text-success"></i> Loja Conectada à rede do UberEats</p>
                         {% endif %}
                 </div>
                 <p class="mb-3 text-center size16">Para finalizar o atendimento, clique no botão abaixo</p>
                 <div class="mt-3">
                     <form method="post" id="formAtendimento" action="{{BASE}}{{empresa.link_site}}/admin/finalizar-atendimento" novalidate>
-                        <input type="hidden" value="{{caixa[':id']}}" name="id_caixa" id="id_caixa">
+                        <input type="hidden" value="{{caixa.id}}" name="id_caixa" id="id_caixa">
                         <button class="mt-3 btn btn-lg btn-block btn-continuar btn-finalizar">Finalizar
                             Atendimento</button>
                     </form>
@@ -54,10 +54,10 @@
                     </div>
 
                     <p class="mb-3 text-center size16 bold"><i class="simple-icon-close text-danger"></i> Loja online desconectada</p>
-                        {% if statusiFood[':idLoja'] is not null %}
+                        {% if statusiFood.idLoja is not null %}
                     <p class="mb-3 text-center size16 bold"><i class="simple-icon-close text-danger"></i> Loja desconectada da rede do iFood</p>
                         {% endif %}
-                        {% if statusUber[':idLoja'] is not null %}
+                        {% if statusUber.idLoja is not null %}
                     <p class="mb-3 text-center size16 bold"><i class="simple-icon-close text-danger"></i> Loja desconectada da rede do UberEats</p>
                         {% endif %}
                         {% if planoAtivo is null %}

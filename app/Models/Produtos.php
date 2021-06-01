@@ -16,7 +16,7 @@ class Produtos extends DataLayer
         parent::__construct("produtos", ["nome", "valor", "id_categoria", "id_empresa"]);
     }
 
-    public function add(Categorias $categoria, Empresa $empresa, $nome, $descricao, $observacao, $valor, $valor_promocional, $imagem, $sabores, $dias_disponiveis, $status_produto, $vendas )
+    public function add(Categorias $categoria, Empresa $empresa, $nome, $descricao, $observacao, $valor, $valor_promocional, $imagem, $sabores, $dias_disponiveis, $status, $vendas )
     {
         $this->id_categoria = $categoria->id;
         $this->id_empresa = $empresa->id;
@@ -28,7 +28,7 @@ class Produtos extends DataLayer
         $this->imagem = $imagem;
         $this->sabores = $sabores;
         $this->dias_disponiveis = $dias_disponiveis;
-        $this->status_produto = $status_produto;
+        $this->status = $status;
         $this->vendas = $vendas;
 
         $this->save();

@@ -20,7 +20,7 @@ use app\Models\EmpresaFrete;
 class AdminConfiguracoesController extends Controller
 {
     //Instancia da Classe AdminConfigEmpresaModel
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -34,7 +34,7 @@ class AdminConfiguracoesController extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -72,7 +72,7 @@ class AdminConfiguracoesController extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
         
@@ -142,7 +142,7 @@ class AdminConfiguracoesController extends Controller
         dd($valorEnd);
         
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Configurações da Empresa','url' => 'conf/e',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Configurações da empresa atualizada com sucesso','error' => 'Não foi posível atualizar as informações da sua empresa','url' => 'conf/e',]);
         exit($json);
 
     }

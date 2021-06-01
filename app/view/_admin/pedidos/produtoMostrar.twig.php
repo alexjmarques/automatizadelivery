@@ -1,8 +1,8 @@
-<form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/admin/produto/addCarrinho/produto/{{produto[':id']}}" novalidate>
+<form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/admin/produto/addCarrinho/produto/{{produto.id}}" novalidate>
 <div class="bg-primary border-bottom px-3 pt-3  d-flex ">
 <div class="col-md-7 float-left pl-0">
-    <h3 class="font-weight-bold m-0 text-white">{{ produto[':nome }}</h3>
-    <p class=" text-white">{{ produto[':descricao }}</p>
+    <h3 class="font-weight-bold m-0 text-white">{{ produto.nome }}</h3>
+    <p class=" text-white">{{ produto.descricao }}</p>
 </div>
 <div class="col-md-5 float-left pr-0">
     <div class="quantidade">
@@ -21,15 +21,15 @@
     </div>
 
 <div class="col-md-12 pt-3 pb-3">
-    {% if produto[':sabores'] is not null %}
+    {% if produto.sabores is not null %}
         <div class="col-md-12 pl-0">
             <div class="mdc-card" id="add_itenSabores">
                 <h5>Sabores </h5>
                     {% for padici in produtoSabores %}
-                        {% if padici[':id'] in produto[':sabores'] %}
+                        {% if padici.id in produto.sabores %}
                         <div class="custom-control custom-radio border-bottom py-2">
-                            <input class="custom-control-input" type="radio" id="id_sabor{{padici[':id']}}" name="sabores[]" value="{{padici[':id']}}">
-                            <label class="custom-control-label" for="id_sabor{{padici[':id']}}">{{padici[':nome']}}</label>
+                            <input class="custom-control-input" type="radio" id="id_sabor{{padici.id}}" name="sabores[]" value="{{padici.id}}">
+                            <label class="custom-control-label" for="id_sabor{{padici.id}}">{{padici.nome}}</label>
                         </div>
                         {% endif%}
                     {% endfor%}
@@ -42,42 +42,42 @@
     
     <div class="clearfix"></div>
 
-    {% if produto[':adicional'] is not null %}
+    {% if produto.adicional is not null %}
     <div class="bg-cian turbine">
         <div class="col-md-12 p-0">
             <div class="mdc-card" id="add_itens">
                 <h5>Turbinar pedido
-                    {% if produto[':tipoAdicional'] == 1 %}
-                    <span class="adicional_item"> (escolha {{produto[':tipoAdicional']}} item) </span> <span class="adicional_item_ok"> {{produto[':tipoAdicional']}} item selecionado </span>
+                    {% if produto.tipoAdicional == 1 %}
+                    <span class="adicional_item"> (escolha {{produto.tipoAdicional}} item) </span> <span class="adicional_item_ok"> {{produto.tipoAdicional}} item selecionado </span>
                     {% else %}
-                    <span class="adicional_item"> (escolha {{produto[':tipoAdicional']}} itens) </span> <span class="adicional_item_ok"> {{produto[':tipoAdicional']}} itens selecionados </span>
+                    <span class="adicional_item"> (escolha {{produto.tipoAdicional}} itens) </span> <span class="adicional_item_ok"> {{produto.tipoAdicional}} itens selecionados </span>
                     {% endif%}   
                 </h5>
                 <p>Complementos para o pedido!</p>
-                <div id="itens_value" class="hide">{{produto[':tipoAdicional']}}</div>
-                {% if produto[':tipoAdicional'] == 1 %}
+                <div id="itens_value" class="hide">{{produto.tipoAdicional}}</div>
+                {% if produto.tipoAdicional == 1 %}
                     {% for padici in produtoAdicional %}
-                    {% if padici[':id'] in produto[':adicional'] %}
+                    {% if padici.id in produto.adicional %}
                     <div class="custom-control custom-radio col-md-9 border-bottom py-2">
-                        <input class="custom-control-input" type="radio" id="id_adicional{{padici[':id']}}" name="adicional[]" value="{{padici[':id']}}" valor="{% if padici[':valor'] is null %}0.00{% else %}{{padici[':valor']}}{% endif %}">
-                        <label class="custom-control-label" for="id_adicional{{padici[':id']}}">{{padici[':nome']}} 
-                        {% if padici[':valor'] == 0.00 %}
+                        <input class="custom-control-input" type="radio" id="id_adicional{{padici.id}}" name="adicional[]" value="{{padici.id}}" valor="{% if padici.valor is null %}0.00{% else %}{{padici.valor}}{% endif %}">
+                        <label class="custom-control-label" for="id_adicional{{padici.id}}">{{padici.nome}} 
+                        {% if padici.valor == 0.00 %}
                         <span class="text-muted">Gratis</span>
                         {% else %}
-                        <span class="text-muted">{{moeda[':simbolo']}} {{padici[':valor']|number_format(2, ',', '.')}}</span>
-                        <input type="hidden" id="valor{{padici[':id']}}" name="valor{{padici[':id']}}" value="{{padici[':valor']}}">
+                        <span class="text-muted">{{moeda.simbolo}} {{padici.valor|number_format(2, ',', '.')}}</span>
+                        <input type="hidden" id="valor{{padici.id}}" name="valor{{padici.id}}" value="{{padici.valor}}">
                         {% endif %}
                     </label>
 
-                    <div class="input-group plus-minus-input boRight col-md-3 p-0 id_adicional{{padici[':id']}}" style="display:none;">
+                    <div class="input-group plus-minus-input boRight col-md-3 p-0 id_adicional{{padici.id}}" style="display:none;">
                             <div class="input-group-button">
-                                <button type="button" class="btn btn-danger btn-number minuss" id-select="{{padici[':id']}}" data-quantity="minus" data-field="qtd_ad{{padici[':id']}}">
+                                <button type="button" class="btn btn-danger btn-number minuss" id-select="{{padici.id}}" data-quantity="minus" data-field="qtd_ad{{padici.id}}">
                                 <i class="simple-icon-minus"></i>
                                 </button>
                             </div>
-                            <input type="number" id="qtd_ad{{padici[':id']}}" min="1" name="qtd_ad{{padici[':id']}}" class="input-group-field qtd-control id_adicional{{padici[':id']}}"  value="0">
+                            <input type="number" id="qtd_ad{{padici.id}}" min="1" name="qtd_ad{{padici.id}}" class="input-group-field qtd-control id_adicional{{padici.id}}"  value="0">
                             <div class="input-group-button">
-                                <button type="button" class="btn btn-success btn-number" id-select="{{padici[':id']}}" data-quantity="plus" data-field="qtd_ad{{padici[':id']}}">
+                                <button type="button" class="btn btn-success btn-number" id-select="{{padici.id}}" data-quantity="plus" data-field="qtd_ad{{padici.id}}">
                                 <i class="simple-icon-plus"></i>
                                 </button>
                             </div>
@@ -89,28 +89,28 @@
 
                 {% else %}
                 {% for padici in produtoAdicional %}
-                    {% if padici[':id'] in produto[':adicional'] %}
+                    {% if padici.id in produto.adicional %}
                     <div class="custom-control border-bottom py-2">
-                        <input class="custom-control-input" type="checkbox" id="id_adicional{{padici[':id']}}" name="adicional[]" value="{{padici[':id']}}" valor="{% if padici[':valor'] is null %}0.00{% else %}{{padici[':valor']}}{% endif %}">
+                        <input class="custom-control-input" type="checkbox" id="id_adicional{{padici.id}}" name="adicional[]" value="{{padici.id}}" valor="{% if padici.valor is null %}0.00{% else %}{{padici.valor}}{% endif %}">
 
-                    <label class="custom-control-label col-md-9" for="id_adicional{{padici[':id']}}">{{padici[':nome']}} 
-                        {% if padici[':valor'] == 0.00 %}
+                    <label class="custom-control-label col-md-9" for="id_adicional{{padici.id}}">{{padici.nome}} 
+                        {% if padici.valor == 0.00 %}
                         <br/><span class="text-success">Grátis</span>
                         {% else %}
-                        <br/><span class="text-muted">{{moeda[':simbolo']}} {{padici[':valor']|number_format(2, ',', '.')}}</span>
-                        <input type="hidden" id="valor{{padici[':id']}}" name="valor{{padici[':id']}}" value="{{padici[':valor']}}">
+                        <br/><span class="text-muted">{{moeda.simbolo}} {{padici.valor|number_format(2, ',', '.')}}</span>
+                        <input type="hidden" id="valor{{padici.id}}" name="valor{{padici.id}}" value="{{padici.valor}}">
                         {% endif %}
                     </label>
                     
-                        <div class="input-group boRight plus-minus-input col-md-3 id_adicional{{padici[':id']}}" style="display:none;">
+                        <div class="input-group boRight plus-minus-input col-md-3 id_adicional{{padici.id}}" style="display:none;">
                             <div class="input-group-button">
-                                <button type="button" class="btn btn-danger btn-number minuss" id-select="{{padici[':id']}}" data-quantity="minus" data-field="qtd_ad{{padici[':id']}}">
+                                <button type="button" class="btn btn-danger btn-number minuss" id-select="{{padici.id}}" data-quantity="minus" data-field="qtd_ad{{padici.id}}">
                                 <i class="simple-icon-minus"></i>
                                 </button>
                             </div>
-                            <input type="number" id="qtd_ad{{padici[':id']}}" min="1" name="qtd_ad{{padici[':id']}}" class="input-group-field qtd-control id_adicional{{padici[':id']}}"  value="0">
+                            <input type="number" id="qtd_ad{{padici.id}}" min="1" name="qtd_ad{{padici.id}}" class="input-group-field qtd-control id_adicional{{padici.id}}"  value="0">
                             <div class="input-group-button">
-                                <button type="button" class="btn btn-success btn-number" id-select="{{padici[':id']}}" data-quantity="plus" data-field="qtd_ad{{padici[':id']}}">
+                                <button type="button" class="btn btn-success btn-number" id-select="{{padici.id}}" data-quantity="plus" data-field="qtd_ad{{padici.id}}">
                                 <i class="simple-icon-plus"></i>
                                 </button>
                             </div>
@@ -137,15 +137,15 @@
     <hr>
     <div class="clearfix"></div>
 
-        {% if produto[':sabores'] is null %}
+        {% if produto.sabores is null %}
             <input type="hidden" name="id_adicional" id="id_adicional" value="0">
         {% else %}
             <input type="hidden" name="id_adicional" id="id_adicional" value="1">
         {% endif %}
-        <input type="hidden" name="id_produto" id="id_produto" value="{{produto[':id']}}">
-        <input type="hidden" name="tipoAdicional" id="tipoAdicional" value="{{produto[':tipoAdicional']}}">
+        <input type="hidden" name="id_produto" id="id_produto" value="{{produto.id}}">
+        <input type="hidden" name="tipoAdicional" id="tipoAdicional" value="{{produto.tipoAdicional}}">
 
-        <input type="hidden" name="valorFinal" id="valorFinal" value="{{ produto[':valor }}">
+        <input type="hidden" name="valorFinal" id="valorFinal" value="{{ produto.valor }}">
 
         <input type="hidden" name="chave" id="chave" value="{{chave}}">
         <input type="hidden" name="id_cliente" id="id_cliente" value="{{id_cliente}}">
@@ -153,15 +153,15 @@
         <input type="hidden" name="id_carrinho" id="id_carrinho" value="">
         
         
-        <input type="hidden" name="valor" id="valor" value="{% if produto[':valor_promocional'] != '0.00' %}{{ produto[':valor_promocional }}{% else %}{{ produto[':valor }}{% endif %}">
+        <input type="hidden" name="valor" id="valor" value="{% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
 
-        <p class="mb-1">Valor unitário <span class="float-right text-dark">{{ moeda[':simbolo }} 
-        {% if produto[':valor_promocional'] != '0.00' %}{{ produto[':valor_promocional']|number_format(2, ',', '.') }}{% else %}{{ produto[':valor']|number_format(2, ',', '.') }}{% endif %}</span></p>
+        <p class="mb-1">Valor unitário <span class="float-right text-dark">{{ moeda.simbolo }} 
+        {% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional|number_format(2, ',', '.') }}{% else %}{{ produto.valor|number_format(2, ',', '.') }}{% endif %}</span></p>
         <hr>
-        <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span id="total">{{ moeda[':simbolo }} {% if produto[':valor_promocional'] != '0.00' %}{{ produto[':valor_promocional']|number_format(2, ',', '.') }}{% else %}{{ produto[':valor']|number_format(2, ',', '.') }}{% endif %}</span></span></h6>
+        <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span id="total">{{ moeda.simbolo }} {% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional|number_format(2, ',', '.') }}{% else %}{{ produto.valor|number_format(2, ',', '.') }}{% endif %}</span></span></h6>
 
 
-        {% if produto[':status_produto'] == 1 %}
+        {% if produto.status == 1 %}
                 
 <button class="btn btn-success btn-block btn-lg addStyle mt-4">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
         {% endif %}
@@ -412,10 +412,10 @@ $('[data-quantity="plus"]').click(function (e) {
     }
 
     fieldName = $(this).attr('data-field');
-    var currentVal = parseInt($('input[name=' + fieldName + ']').val());
+    var currentVal = parseInt($('input[name=' + fieldName + ').val());
 
     if (!isNaN(currentVal)) {
-        $('input[name=' + fieldName + ']').val(currentVal + 1);
+        $('input[name=' + fieldName + ').val(currentVal + 1);
 
         var advS = $(this).attr('id-select');
         var vrecAd = $(`#id_adicional${advS}`).attr('valor');
@@ -427,7 +427,7 @@ $('[data-quantity="plus"]').click(function (e) {
         $('#valorFinal').val(vAdicional);
 
     } else {
-        $('input[name=' + fieldName + ']').val(0);
+        $('input[name=' + fieldName + ').val(0);
     }
 
     var id_adicional = $(`#id_adicional${advS}`).val();
@@ -437,9 +437,8 @@ $('[data-quantity="plus"]').click(function (e) {
     var id_carrinho = $('#id_carrinho').val();
     var id_cliente = $('#id_cliente').val();
     var valor = $(`#valor${advS}`).val();
-    var chave = $('#chave').val();
     $.ajax({
-        url: `{{BASE}}admin/produto/addCarrinho/adicionalis/${chave}`,
+        url: `{{BASE}}admin/produto/addCarrinho/adicionais`,
         type: 'get',
         data: {
             id_adicional: id_adicional,
@@ -517,10 +516,10 @@ $('[data-quantity="minus"]').click(function (e) {
     e.preventDefault();
 
     fieldName = $(this).attr('data-field');
-    var currentVal = parseInt($('input[name=' + fieldName + ']').val());
+    var currentVal = parseInt($('input[name=' + fieldName + ').val());
 
     if (!isNaN(currentVal) && currentVal > 0) {
-        $('input[name=' + fieldName + ']').val(currentVal - 1);
+        $('input[name=' + fieldName + ').val(currentVal - 1);
         var advS = $(this).attr('id-select');
         var vrecAd = $(`#id_adicional${advS}`).attr('valor');
         let vbA = $('#valorFinal').val();
@@ -529,9 +528,9 @@ $('[data-quantity="minus"]').click(function (e) {
         $('#valorFinal').val(vAdicional);
 
     } else {
-        $('input[name=' + fieldName + ']').val(0);
+        $('input[name=' + fieldName + ').val(0);
     }
-    var currentVal = parseInt($('input[name=' + fieldName + ']').val());
+    var currentVal = parseInt($('input[name=' + fieldName + ').val());
 
     if (currentVal === 0) {
         $(`#id_adicional${advS}`).prop('checked', false);
@@ -564,10 +563,9 @@ $('[data-quantity="minus"]').click(function (e) {
     var id_carrinho = $('#id_carrinho').val();
     var id_cliente = $('#id_cliente').val();
     var valor = $(`#valor${advS}`).val();
-    var chave = $('#chave').val();
 
     $.ajax({
-        url: `{{BASE}}admin/produto/addCarrinho/adicionalis/${chave}`,
+        url: `{{BASE}}admin/produto/addCarrinho/adicionais`,
         type: 'get',
         data: {
             id_adicional: id_adicional,

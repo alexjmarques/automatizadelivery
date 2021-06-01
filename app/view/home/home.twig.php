@@ -1,9 +1,9 @@
 {% extends 'partials/body.twig.php'  %}
-{% block title %}{{ trans.t('Portal de pedidos - Automatiza.App') }}{% endblock %}
+{% block title %}{{ trans.t('Automatiza Delivery - Automatiza.App') }}{% endblock %}
 {% block body %}
 {% block head %}
 {% endblock %}
-{% if sessaoLogin is not empty %}
+{% if isLogin is not empty %}
 <!-- Sidebar -->
 {% include 'partials/desktop/sidebar.twig.php' %}
 <!-- End of Sidebar -->
@@ -84,10 +84,10 @@
                         <a href="detail.html" class="text-dark text-decoration-none col-xl-4 col-lg-12 col-md-12">
                             <div class="bg-white shadow-sm rounded d-flex align-items-center p-1 mb-4 osahan-list">
                                 <div class="bg-light p-3 rounded">
-                                    <img src="{{ BASE~'uploads/'~emp[':logo']}}" class="img-fluid">
+                                    <img src="{{ BASE~'uploads/'~emp.logo}}" class="img-fluid">
                                 </div>
                                 <div class="mx-3 py-2 w-100">
-                                    <p class="mb-2 text-black">{{emp[':nomeFantasia']}}</p>
+                                    <p class="mb-2 text-black">{{emp.nomeFantasia}}</p>
                                     <p class="small mb-2">
                                         <!-- <i class="mdi mdi-star text-warning mr-1"></i> <span class="font-weight-bold text-dark">0.8</span> (873) -->
                                         <i class="mdi mdi-silverware-fork-knife mr-1"></i> Burger
@@ -108,7 +108,7 @@
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
-            {% if sessaoLogin is empty %}
+            {% if isLogin is empty %}
             <section class="section pt-5 pb-5 becomemember-section border-bottom">
          <div class="container">
             <div class="section-header text-center white-text">

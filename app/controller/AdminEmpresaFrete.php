@@ -18,7 +18,7 @@ use app\Models\EmpresaFrete;
 class AdminEmpresaFrete extends Controller
 {
     //Instancia da Classe AdminConfigEmpresaModel
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,7 +32,7 @@ class AdminEmpresaFrete extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -63,7 +63,7 @@ class AdminEmpresaFrete extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -88,7 +88,7 @@ class AdminEmpresaFrete extends Controller
         $valor->save();
         
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Dados de Entrega','url' => 'conf/delivery/e',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Dados de Entrega atualizado com sucesso','error' => 'Não foi possível atualizar os dados de entrega','url' => 'conf/delivery/e',]);
         exit($json);
 
     }

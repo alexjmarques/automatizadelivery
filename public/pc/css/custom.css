@@ -68,13 +68,13 @@ small,
 
 .sidebar-brand {
     height: auto !important;
-    padding: 1rem !important;
+    padding: .8rem .8rem 1rem .8rem !important;
     margin-left: auto;
     margin-right: auto;
 }
 
 .sidebar-brand img {
-    height: 37px;
+    height: 50px;
 }
 
 .text-black {

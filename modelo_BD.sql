@@ -770,7 +770,7 @@ CREATE TABLE `produtos` (
   `imagem` longtext,
   `adicional` varchar(255) DEFAULT NULL,
   `sabores` varchar(255) DEFAULT NULL,
-  `status_produto` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `dias_disponiveis` char(20) DEFAULT NULL,
   `vendas` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),

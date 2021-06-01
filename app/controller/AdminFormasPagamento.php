@@ -17,7 +17,7 @@ use app\Models\FormasPagamento;
 
 class AdminFormasPagamento extends Controller
 {
-    private $preferencias;
+    
     private $acoes;
     private $sessao;
     private $geral;
@@ -26,7 +26,7 @@ class AdminFormasPagamento extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        $this->preferencias = new Preferencias();
+        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -63,7 +63,7 @@ class AdminFormasPagamento extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -89,7 +89,7 @@ class AdminFormasPagamento extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -117,7 +117,7 @@ class AdminFormasPagamento extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
-            'preferencias' => $this->preferencias,
+            
             'caixa' => $estabelecimento[0]->data_final,
         ]);
     }
@@ -132,7 +132,7 @@ class AdminFormasPagamento extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'titulo' => 'Forma de Pagamento','url' => 'formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Forma de Pagamento cadastrado com sucesso','error' => 'Não foi possível cadastrar a Forma de Pagamento','url' => 'formas-pagamento',]);
         exit($json);
     }
 
@@ -146,7 +146,7 @@ class AdminFormasPagamento extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','titulo' => 'Forma de Pagamento','url' => 'formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Forma de Pagamento atualizada com sucesso','error' => 'Não foi possível atualizar a Forma de Pagamento','url' => 'formas-pagamento',]);
         exit($json);
     }
 

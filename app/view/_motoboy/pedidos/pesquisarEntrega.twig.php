@@ -1,6 +1,6 @@
 {% extends 'partials/body.twig.php' %}
 
-{% block title %}Busca de Pedidos - {{empresa[':nomeFantasia']}}{% endblock %}
+{% block title %}Busca de Pedidos - {{empresa.nome_fantasia }}{% endblock %}
 
 {% block body %}
 <div class="osahan-checkout">
