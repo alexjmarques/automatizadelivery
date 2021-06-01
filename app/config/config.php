@@ -6,10 +6,10 @@ define('BASE', '/');
 define('UNSET_URI_COUNT', 0);
 define('DEBUG_URI', true);
 
-$online = false;
+$online = true;
 if($online){
     $client = 'temakicampolimpo';
-    define('UPLOADS_BASE', '/var/www/portal.automatiza.app/public_html/public/uploads/');
+    define('UPLOADS_BASE', '/var/www/automatizadelivery.com.br/public_html/public/uploads/');
     define("DATA_LAYER_CONFIG", [
         "driver" => "mysql",
         "host" => "159.65.220.187",
