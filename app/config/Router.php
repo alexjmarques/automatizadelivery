@@ -36,6 +36,7 @@ require "../app/controller/AdminProdutoSabores.php";
 require "../app/controller/AdminProdutosAdicionais.php";
 require "../app/controller/TestAPIController.php";
 
+
 $router = new Router(BASE);
 $router->namespace("app\controller");
 

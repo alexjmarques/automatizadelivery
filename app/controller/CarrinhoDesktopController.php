@@ -25,7 +25,7 @@ use app\Models\UsuariosEmpresa;
 use Bcrypt\Bcrypt;
 use Browser;
 
-class CarrinhoController extends Controller
+class CarrinhoDesktopController extends Controller
 {
 
     private $acoes;
@@ -58,7 +58,6 @@ class CarrinhoController extends Controller
         $resultchave = md5(uniqid(rand(), true));
         $resultCarrinhoQtd = 0;
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -68,7 +67,6 @@ class CarrinhoController extends Controller
             'empresa' => $empresa,
             'moeda' => $moeda,
             'produto' => $produto,
-            'enderecoAtivo' => $enderecoAtivo,
             'delivery' => $delivery,
             'produtoAdicional' => $resultProdutoAdicional,
             'tipoAdicional' => $resulTipoAdicional,
@@ -123,7 +121,6 @@ class CarrinhoController extends Controller
 
         $resultchave = md5(uniqid(rand(), true));
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
@@ -135,7 +132,6 @@ class CarrinhoController extends Controller
             'delivery' => $delivery,
             'produto' => $produto,
             'carrinho' => $carrinho,
-            'enderecoAtivo' => $enderecoAtivo,
             'produtoAdicional' => $resultProdutoAdicional,
             'tipoAdicional' => $resulTipoAdicional,
             'produtoSabores' => $resultSabores,
@@ -196,7 +192,6 @@ class CarrinhoController extends Controller
         $resultchave = md5(uniqid(rand(), true));
         $resultCarrinhoQtd = 0;
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -208,7 +203,6 @@ class CarrinhoController extends Controller
             'carrinho' => $carrinho,
             'produto' => $produto,
             'delivery' => $delivery,
-            'enderecoAtivo' => $enderecoAtivo,
             'produtoAdicional' => $resultProdutoAdicional,
             'tipoAdicional' => $resulTipoAdicional,
             'produtoSabores' => $resultSabores,
@@ -229,7 +223,6 @@ class CarrinhoController extends Controller
         
 
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -321,7 +314,6 @@ class CarrinhoController extends Controller
             'endereco' => $endereco,
             'estados' => $estados,
             'delivery' => $delivery,
-            'enderecoAtivo' => $enderecoAtivo,
             'deliveryEntregaExcedente' => $delivery->km_entrega_excedente * 1000,
             'carrinho' => $carrinho,
             'carrinhoAdicional' => $carrinhoAdicional,
@@ -400,12 +392,8 @@ class CarrinhoController extends Controller
         // dd($_SESSION);
         // dd($this->sessao->getSessao('carrinho'));
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-        }
         $this->load('_cliente/carrinho/cadastro', [
             'empresa' => $empresa,
-            'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
         ]);
@@ -537,16 +525,12 @@ class CarrinhoController extends Controller
         $resulTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
-        if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-        }
 
         $this->load('produto/adicionalEditar', [
             'empresa' => $empresa,
             'moeda' => $moeda,
             'delivery' => $resultDelivery,
             'produto' => $produto,
-            'enderecoAtivo' => $enderecoAtivo,
             'produtoAdicional' => $resultProdutoAdicional,
             'tipoAdicional' => $resulTipoAdicional,
             'produtoAdicionalCart' => $resultProdutoAdicionalCart,

@@ -45,7 +45,6 @@ class AdminPedidos extends Controller
 
     public function index($data)
     {
-
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -54,8 +53,6 @@ class AdminPedidos extends Controller
         $resultClientes = $this->acoes->getFind('usuarios');
         $resultMotoboy = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
         $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
-
-       
 
         if ($this->sessao->getUser()) {
             if ($this->sessao->getNivel() != 0) {

@@ -39,7 +39,6 @@ class PagesController extends Controller
 
     public function index($data)
     {
-
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
@@ -52,6 +51,7 @@ class PagesController extends Controller
         if ($this->sessao->getUser()) {
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
             $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
 
             if ($verificaVendaAtiva > 0) {
                 $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
@@ -62,7 +62,6 @@ class PagesController extends Controller
         if ($hoje == 0) {
             $hoje = 7;
         }
-
 
         if ($this->sessao->getUser()) {
             if ($this->sessao->getNivel() != 3) {
@@ -80,6 +79,7 @@ class PagesController extends Controller
             'dias' => $dias,
             'ultimaVenda' => $ultimaVenda,
             'carrinhoQtd' => $resultCarrinhoQtd,
+            'enderecoAtivo' => $enderecoAtivo,
             'veriFavoritos' => $veriFavoritos,
             'favoritos' => $favoritos,
             'produtoQtd' => $produtoQtd,
@@ -95,6 +95,7 @@ class PagesController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
             $resultUltimaVenda = $this->acoes->getByFieldTreeMenor('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'status', 4);
         }
@@ -103,6 +104,7 @@ class PagesController extends Controller
             'empresa' => $empresa,
             'status' => $status,
             'ultimaVenda' => $resultUltimaVenda,
+            'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
 
         ]);
@@ -119,6 +121,7 @@ class PagesController extends Controller
         $dias = $this->acoes->getFind('dias');
         
         if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
         $this->load('_geral/quem-somos/main', [
@@ -128,6 +131,7 @@ class PagesController extends Controller
             'endereco' => $empresaEndereco,
             'estados' => $estados,
             'funcionamento' => $empresaFuncionamento,
+            'enderecoAtivo' => $enderecoAtivo,
             'dias' => $dias,
             'formasPagamento' => $formasPagamento,
             'trans' => $this->trans,
@@ -138,29 +142,41 @@ class PagesController extends Controller
 
     public function bemVindo($data)
     {
+        if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $this->load('_geral/bemVindo/main', [
             'empresa' => $empresa,
+            'enderecoAtivo' => $enderecoAtivo,
 
         ]);
     }
 
     public function novoDelivery($data)
     {
+        if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $this->load('_geral/bemVindo/semProduto', [
             'empresa' => $empresa,
             'trans' => $this->trans,
+            'enderecoAtivo' => $enderecoAtivo,
 
         ]);
     }
 
     public function contato($data)
     {
+        if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+        }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $this->load('_geral/contato/main', [
             'empresa' => $empresa,
             'trans' => $this->trans,
+            'enderecoAtivo' => $enderecoAtivo,
 
         ]);
     }
@@ -171,12 +187,15 @@ class PagesController extends Controller
         $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
+
         $this->load('_cliente/contato/main', [
             'empresa' => $empresa,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'usuarioAtivo' => $resulUsuario,
+            'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
 
@@ -186,8 +205,12 @@ class PagesController extends Controller
     public function termosUso($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+        }
         $this->load('_geral/termosUso/main', [
             'empresa' => $empresa,
+            'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans
         ]);
     }
@@ -195,30 +218,13 @@ class PagesController extends Controller
     public function politicaPrivacidade($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        if ($this->sessao->getUser()) {
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+        }
         $this->load('_geral/politicaPrivacidade/main', [
             'empresa' => $empresa,
+            'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans
         ]);
-    }
-
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputVisitante()
-    {
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-
-        return (object) [
-            'id_cliente' => $resulUsuario[':id'],
-            'sessao_id' => session_id(),
-            'id_empresa' => Input::post('id_empresa')
-        ];
     }
 }

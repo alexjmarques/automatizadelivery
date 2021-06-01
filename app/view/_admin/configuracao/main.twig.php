@@ -18,7 +18,7 @@
         <h5 class="mb-4">Sobre a Empresa</h5>
         <div class="form-row">
           <div class="form-group col-md-4">
-            <label for="inputAddress">Nome Fantasia</label>
+            <label for="nomeFantasia">Nome Fantasia</label>
             <input type="text" class="form-control" id="nomeFantasia" name="nomeFantasia"
               value="{{empresa.nome_fantasia}}">
           </div>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="form-group">
-          <label for="inputAddress">Logo da Empresa (400px x 400px)</label>
+          <label for="inputLogo">Logo da Empresa (400px x 400px)</label>
           <div class="form-group col-md-12 form-gr-md" style="float: left;">
             <div class="image_area">
               <label for="upload_image">
@@ -105,7 +105,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="inputAddress">Capa de apresentação (1600px x 300px)</label>
+            <label for="inputCapa">Capa de apresentação (1600px x 300px)</label>
             <div class="custom-file">
               <input type="file" name="capa" id="capa" class="form-control">
             </div>

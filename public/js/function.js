@@ -1349,3 +1349,16 @@ $("#btnValidarCodeLogin").on('click', function () {
 });
 
 $('.abreelemento').show();
+
+function produtoModalView(id_produto) {
+    $('#myitemsModal').modal("show");
+    $.ajax({
+      url: `/${link_site}/pedido/desk/mostrar/${id_produto}`,
+      method: "post",
+      data: {id_produto},
+      dataType: "html",
+      success: function (dd) {
+        $('#productTitle').html(dd.titulo)
+      },
+    })
+  }

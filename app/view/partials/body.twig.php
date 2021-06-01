@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
+  
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -211,10 +211,16 @@
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
  {% else %}
     </div>
+    <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
+    <script src="{{BASE}}js/jquery-ui.js"></script>
+    <script src="{{BASE}}js/jquery.complexify.js"></script>
     <script src="{{BASE}}pc/vendor/jquery/jquery.min.js"></script>
     <script src="{{BASE}}pc/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{BASE}}pc/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="{{BASE}}pc/js/automatiza.min.js"></script>
+    <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
+    <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
+    <script src="{{BASE}}js/function.js" type="text/javascript"></script>
     {% endif %}
   </body>
 

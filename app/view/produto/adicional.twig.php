@@ -1,6 +1,7 @@
 {% extends 'partials/body.twig.php' %}
 {% block title %}{{ produto.nome }} - {{empresa.nome_fantasia }}{% endblock %}
 {% block body %}
+{% if detect.isMobile() %}
 <div class="osahan-checkout">
     <div class="bg-primary border-bottom px-3 pt-3 pb-5 d-flex ">
         <a class="toggle" href="#"><span></span></a>
@@ -140,6 +141,38 @@
     </div>
     <form>
 </div>
+
+{% else %}
+
+<!-- Sidebar -->
+{% include 'partials/desktop/sidebar.twig.php' %}
+<!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                {% include 'partials/desktop/menuTop.twig.php' %}
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                   asasa
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            {% include 'partials/desktop/footer.twig.php' %}
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    {% include 'partials/desktop/modal.twig.php' %}
+
+
+{% endif %}
 
 {% include 'partials/modal.twig.php' %}
 {% endblock %}

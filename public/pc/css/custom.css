@@ -692,3 +692,138 @@ small,
 }
 
 @media (min-width: 1024px) and (max-width: 1200px) {}
+
+
+.btn-black,
+.btn-black:focus,
+.btn-black:hover{
+    background-color: #000;
+    color: #fff !important;
+}
+.numero_pedidoMoto{
+    font-size: 30px !important;
+    line-height: 30px;
+    padding: 0 !important;
+    height: calc(1.2em + 1.2rem + 2px) !important;
+}
+.btn.btn-primary.d-block.mt-3{
+  margin: 15px auto 0 auto !important;
+  float:none;
+}
+.full-width.col-md-6.text-center{
+  margin: 0 auto !important;
+  float:none;
+}
+.btn-success{
+    text-transform: uppercase;
+}
+.verdeNf{
+    background-color: #28a7453d !important
+}
+.count-number .btn {
+    padding: 2px 5px;
+    font-size: 25px !important;
+    border-radius: 0
+}
+
+.count-number-input {
+    width: 39px;
+    text-align: center;
+    margin: 0 4px;
+    border: none;
+    font-size: 16px;
+    color: #6c757d;
+    height: 39px;
+    border-radius: 0px;
+    vertical-align: bottom;
+}
+.sabor_item_ok, .sabor_item, .adicional_item_ok, .adicional_item {
+    float: right;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ea1d2c;
+}
+
+button.quantity-right-plus,
+button.quantity-left-minus,
+button.quantity-right-plus:hover,
+button.quantity-left-minus:hover,
+button.quantity-right-plus:active,
+button.quantity-left-minus:active,
+button.quantity-right-plus:focus,
+button.quantity-left-minus:focus{
+    padding: 0 8px !important;
+    font-size: 20px;
+    border: none;
+}
+.sabor_item_ok, .adicional_item_ok {
+    color: green;
+}
+.boRight{
+    text-align: right;
+    float: right;
+    width: 93px;
+}
+
+nav.pagin {
+    display: inline-block;
+    padding: 0;
+    margin: 0 auto;
+}
+
+nav.pagin .pagin_item {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 16px;
+}
+.pagin_item:hover{
+    background-color: #4d4a4b;
+    color: white !important;
+}
+.pagin_active:hover,
+.pagin_active{
+    background-color: #880a1f;
+    color: white !important;
+}
+
+.float-ceter{
+    margin: 0 auto;
+}
+.formStatus5 p.text-muted,
+.formStatus5 p.text-danger{
+    color: #909090 !important;
+    text-decoration: line-through !important;
+}
+.formStatus5 p strong{
+    color: #dc3545 !important;
+}
+.formStatus6 p{
+    color: #dc3545 !important;
+    text-decoration: line-through !important;
+}
+.even{
+    background: #f5f5f5;
+}
+.linhaFooter{
+    margin-top: 10px;
+}
+.linhaFooter th{
+    padding: 15px;
+    font-size: 18px;
+}
+.bc-danger{
+    border-color: #880a1f !important;
+    color: #880a1f !important;
+}
+
+.count-number .btn {
+    padding: 2px 5px;
+    font-size: 25px !important;
+    border-radius: 0
+}
+.btn-number{
+    width: 40px;
+    background: #c60021 !important;
+}

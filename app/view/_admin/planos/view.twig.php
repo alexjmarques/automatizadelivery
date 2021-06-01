@@ -41,7 +41,7 @@
                     <h5 class="mb-4 mt-3">Dados de Cobrança</h5>
                                 <div class="form-row mt-4">
                                   <div class="form-group col-md-6">
-                                      <label for="inputAddress">Nome</label>
+                                      <label for="nome">Nome</label>
                                       <input type="text" class="form-control" id="nome" name="nome">
                                   </div>
                                     <div class="form-group col-md-6">

@@ -13984,7 +13984,9 @@ p {
     font-size: 25px !important;
     border-radius: 0
 }
-
+.btn-number{
+    background: #c60021 !important;
+}
 .count-number-input {
     width: 39px;
     text-align: center;

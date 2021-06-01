@@ -3,7 +3,7 @@
         <div class="modal-dialog border-bottom">
             <div class="modal-content osahan-item-detail-pop">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title" id="exampleModalLabel">Rice choice</h5>
+                    <h5 class="modal-title" id="productTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                   </button>
@@ -266,16 +266,16 @@
                             <input type="text" class="form-control form-control-sm border-0 p-0 border-input rounded-0" id="inputAddress" placeholder="" value="300 Post Street">
                         </div>
                         <div class="form-group">
-                            <label for="inputAddress" class="small font-weight-bold text-dark mb-0">City</label>
-                            <input type="text" class="form-control form-control-sm border-0 p-0 border-input rounded-0" id="inputAddress" placeholder="" value="San Francisco">
+                            <label for="cidade" class="small font-weight-bold text-dark mb-0">City</label>
+                            <input type="text" class="form-control form-control-sm border-0 p-0 border-input rounded-0" id="cidade" placeholder="" value="San Francisco">
                         </div>
                         <div class="form-group">
-                            <label for="inputAddress" class="small font-weight-bold text-dark mb-0">State</label>
-                            <input type="text" class="form-control form-control-sm border-0 p-0 border-input rounded-0" id="inputAddress" placeholder="" value="California">
+                            <label for="state" class="small font-weight-bold text-dark mb-0">State</label>
+                            <input type="text" class="form-control form-control-sm border-0 p-0 border-input rounded-0" id="state" placeholder="" value="California">
                         </div>
                         <div class="form-group">
-                            <label for="inputAddress" class="small font-weight-bold text-dark mb-0">Zip Code</label>
-                            <input type="text" class="form-control form-control-sm border-0 p-0 border-input rounded-0" id="inputAddress" placeholder="" value="123456">
+                            <label for="codezip" class="small font-weight-bold text-dark mb-0">Zip Code</label>
+                            <input type="text" class="form-control form-control-sm border-0 p-0 border-input rounded-0" id="codezip" placeholder="" value="123456">
                         </div>
                     </form>
                 </div>

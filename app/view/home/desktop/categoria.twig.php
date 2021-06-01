@@ -18,11 +18,9 @@
         <div class="row">
             {% for p in produto %}
             {% if p.status == 1 %}
-            {% if c.id == p.categoria %}
+            {% if c.id == p.id_categoria %}
             {% if hoje in p.dias_disponiveis %}
-            <a href="{{BASE}}{{empresa.link_site}}/produto/{{p.id}}"
-                class="text-decoration-none text-dark col-xl-4 col-md-12 mb-4" data-toggle="modal"
-                data-target="#myitemsModal">
+            <a href="{{BASE}}{{empresa.link_site}}/produto/{{p.id}}"  class="text-decoration-none text-dark col-xl-4 col-md-12 mb-4">
                 <div class="shadow bg-white rounded">
                 <div class="envImage rounded overflow-hidden">
                     <img src="{{ BASE~'uploads/'~p.imagem}}" class="img-fluid">

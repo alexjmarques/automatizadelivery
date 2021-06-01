@@ -9,12 +9,22 @@ define('DEBUG_URI', true);
 $online = false;
 if($online){
     $client = 'temakicampolimpo';
-    define('UPLOADS_BASE', '/var/www/'.$client.'.automatiza.app/public_html/public/uploads/');
-    define('DB_NAME', 'apd_'.$client);
-    define('DB_HOST', '159.65.220.187');
-    define('DB_USER', 'root');
-    define('DB_PASS', '02W@9889forev');
-    define('DB_PORT', '9889');
+    define('UPLOADS_BASE', '/var/www/portal.automatiza.app/public_html/public/uploads/');
+    define("DATA_LAYER_CONFIG", [
+        "driver" => "mysql",
+        "host" => "159.65.220.187",
+        "port" => "9889",
+        "dbname" => "automatiza_delivery",
+        "username" => "root",
+        "passwd" => "02W@9889forev",
+        "options" => [
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+            PDO::ATTR_CASE => PDO::CASE_NATURAL
+        ]
+    ]);
+
 }else{
     define('UPLOADS_BASE', '/Users/alexmarques/Localhost/automatiza/public/uploads/');
     define("DATA_LAYER_CONFIG", [
@@ -42,7 +52,7 @@ define('IFOOD', [
     "CLIENT_SECRET" => "13uze1cwav3ca1no8o68h1ewzwsoao4x528i3lxc7pjpk3mtfi39333huw861nl9yifv6ykqkeuqpuzywva6im3766gg0r57n91d"
 ]);
 
-$live = false;
+$live = true;
 if($live){
     define('pagarme_api_key', 'ak_live_kYgEGMeWd702Qx1xsXXBip43F5MANs');
 }else{
