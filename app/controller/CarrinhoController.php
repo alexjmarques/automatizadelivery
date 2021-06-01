@@ -340,7 +340,7 @@ class CarrinhoController extends Controller
             'chave' => $resultchave,
             'cupomValor' => $resultado,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser()
+            'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
     }
