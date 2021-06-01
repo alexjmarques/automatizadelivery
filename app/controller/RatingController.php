@@ -2,28 +2,24 @@
 
 namespace app\controller;
 
-use app\core\Controller;
-use app\Models\RatingModel;
-use app\Models\AdminConfigEmpresaModel;
-use DElfimov\Translate\Translate;
-use DElfimov\Translate\Loader\PhpFilesLoader;
-use app\Models\AdminUsuarioModel;
 use app\classes\Input;
-use app\classes\Preferencias;
+use app\classes\Acoes;
+use app\classes\Cache;
+use app\core\Controller;
+use DElfimov\Translate\Loader\PhpFilesLoader;
+use DElfimov\Translate\Translate;
 use app\controller\AllController;
-use app\Models\VendasModel;
-use Aura\Session\SessionFactory;
-use app\Models\AdminCaixaModel;
+use function JBZoo\Data\json;
+use app\classes\Preferencias;
+use app\classes\Sessao;
+use Browser;
 
 class RatingController extends Controller
 {
-    private $configEmpresaModel;
-    private $ratingModel;
-    private $adminUsuarioModel;
-    private $adminCaixaModel;
-    private $allController;
-    private $vendasModel;
-    private $sessionFactory;
+    private $acoes;
+    private $sessao;
+    private $geral;
+    private $trans;
     
 
     /**
@@ -34,14 +30,11 @@ class RatingController extends Controller
      */
     public function __construct()
     {
-        
-        $this->ratingModel = new RatingModel();
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
-        $this->adminUsuarioModel = new AdminUsuarioModel();
-        $this->vendasModel = new VendasModel();
-        $this->allController = new AllController();
-        $this->adminCaixaModel = new AdminCaixaModel();
-        $this->sessionFactory = new SessionFactory();
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+        $this->sessao = new Sessao();
+        $this->geral = new AllController();
+        $this->cache = new Cache();
+        $this->acoes = new Acoes();
     }
 
     public function index($data)

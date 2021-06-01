@@ -16,12 +16,10 @@
 
                 <div class="gold-members d-flex justify-content-between px-3 py-2 pt-0">
                     <p class=" m-0 __cf_email__">
-                    {% for user in usuarios %}
-                        {% if user.id == venda.id_cliente %}
-                            <strong class="mediumNome">{{ user.nome }} </strong><br/>
-                        Telefone: <a href="tel:{{ user.telefone }}">{{ user.telefone }}</a> <br/>
-                        {% endif %}
-                    {% endfor %}
+
+                            <strong class="mediumNome">{{ cliente.nome }} </strong><br/>
+                        Telefone: <a href="tel:{{ cliente.telefone }}">{{ numero }}</a> <br/>
+
                     </p>
                 </div>
         
@@ -42,7 +40,7 @@
         <div class="gold-members d-flex justify-content-between p-2 border-bottom pt-2">
             {% set count = venda.status %}
             {% set count = count + 1 %}
-            <a onclick="mudarStatusEntrega({{venda.id}}, {{count}}, {{caixa.id}}, {{motoboy}}, {{venda.numero_pedido}}, {{venda.id_cliente}})" class="btn btn-success full_id">Entregar este pedido</a>
+            <a onclick="mudarStatusEntrega({{venda.id}}, {{count}}, {{caixa}}, {{id_motoboy}}, {{venda.numero_pedido}}, {{venda.id_cliente}})" class="btn btn-success full_id">Entregar este pedido</a>
         </div>
     </div>
     

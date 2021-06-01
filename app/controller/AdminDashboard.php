@@ -160,15 +160,13 @@ class AdminDashboard extends Controller
 
 
         $this->load('_admin/dashboard/caixaLista', [
-            'caixas' => $resultCaixa,
             'paginacao' => $pager->render('mt-4 pagin'),
             'empresa' => $empresa,
             'moeda' => $moeda,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'isLogin' => $this->sessao->getUser(),
-            
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixas' => $estabelecimento[0]->data_final,
         ]);
     }
 

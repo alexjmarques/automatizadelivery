@@ -2,32 +2,23 @@
 
 namespace app\controller;
 
-use Dompdf\Dompdf;
-use app\classes\item;
 use app\classes\Input;
 use app\classes\Acoes;
 use app\classes\Cache;
-use app\classes\Sessao;
 use app\core\Controller;
-use app\classes\CalculoFrete;
-use app\api\iFood\Authetication;
 use DElfimov\Translate\Loader\PhpFilesLoader;
 use DElfimov\Translate\Translate;
 use app\controller\AllController;
 use function JBZoo\Data\json;
 use app\classes\Preferencias;
-use app\Models\CarrinhoPedidos;
+use app\classes\Sessao;
 use app\Models\CarrinhoEntregas;
-use Mike42\Escpos\Printer;
-use Mike42\Escpos\EscposImage;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-use Mike42\Escpos\CapabilityProfile;
+use app\Models\CarrinhoPedidos;
+use Browser;
 
 
 class AdminPedidos extends Controller
 {
-    
     private $acoes;
     private $sessao;
     private $geral;
@@ -606,7 +597,7 @@ class AdminPedidos extends Controller
     //Mudar Status
     public function mudarStatus($data)
     {
-        //dd($data);
+        dd($data);
         $valor = (new CarrinhoPedidos())->findById($data['id']);
         $valor->status = $data['status'];
         $valor->id_motoboy = $data['motoboy'];
@@ -631,43 +622,14 @@ class AdminPedidos extends Controller
     //Mudar Status Pagamento Motoboy
     public function entregasPagamento($data)
     {
-        // $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-
-        // $valor = (new CarrinhoPedidos())->findById($data['id']);
-        // $valor->status = $data['status'];
-        // $valor->id_motoboy = $data['motoboy'];
-        // $valor->id_empresa = $empresa->id;
-        // $valor->save();
-
-        // header('Content-Type: application/json');
-        // $json = json_encode(['id' => $valor->id,'resp' => 'update', 'mensagem' => 'Status','url' => 'motoboys']);
-        // exit($json);
-
         $plano = $_GET['pago'];
         $count = count($plano);
-        $result = null;
         for ($i = 0; $i < $count; $i++) {
-            $result . $plano[$i] = $this->adminEntregasModel->updatePagamento($plano[$i]);
+            $valor = (new CarrinhoPedidos())->findById($plano[$i]);
+            $valor->pago = 1;
+            $valor->status = 4;
+            $valor->save();
         }
     }
 
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputVenda()
-    {
-        $empresaAct = $this->configEmpresaModel->getById(Input::post('id_empresa'));
-        $resulCaixa = $this->adminCaixaModel->getUll($empresaAct[':id']);
-        $resulifood = $this->marketplace->getById(1);
-        return (object) [
-            'id_motoboy' => Input::post('motoboy'),
-            'id_caixa' => $resulCaixa[':id'],
-            'id_cliente' => Input::post('id_cliente'),
-            'chave' => md5(uniqid(rand(), true)),
-            'numero_pedido' => Input::post('numero_pedido'),
-            'id_empresa' => Input::post('id_empresa')
-        ];
-    }
 }

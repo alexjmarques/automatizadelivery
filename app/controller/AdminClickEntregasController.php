@@ -3,56 +3,26 @@
 namespace app\controller;
 
 use app\classes\Input;
-use app\classes\Preferencias;
-use app\core\Controller;
-use app\controller\AllController;
-use Aura\Session\SessionFactory;
-use app\Models\AdminConfigFreteModel;
-use app\Models\AdminCaixaModel;
-use app\Models\AdminMarketplacesModel;
-use app\Models\AdminDashboardModel;
-use app\Models\AdminIfoodCategoriaModel;
-use app\Models\AdminConfigEmpresaModel;
-use DElfimov\Translate\Translate;
-use DElfimov\Translate\Loader\PhpFilesLoader;
-use app\Models\AdminProdutoAdicionalModel;
-use app\Models\AdminProdutoSaborModel;
-use app\Models\AdminProdutoModel;
-use app\Models\AdminUsuarioModel;
-use app\Models\VendasModel;
-use app\Models\DiasModel;
-use app\Models\MoedaModel;
-use app\Models\ApdPlanosModel;
-use app\Models\AdminAssinaturaModel;
+use app\classes\Acoes;
 use app\classes\Cache;
+use app\core\Controller;
+use DElfimov\Translate\Loader\PhpFilesLoader;
+use DElfimov\Translate\Translate;
+use app\controller\AllController;
+use function JBZoo\Data\json;
+use app\classes\Preferencias;
+use app\classes\Sessao;
+use Browser;
 
 
 //use MatheusHack\IFood\Restaurant;
 
 class AdminClickEntregasController extends Controller
 {
-    //Instancia da Classe AdminProdutoModel
-    private $deliveryModel;
-    private $adminProdutosModel;
-    private $adminProdutosAdicionaisModel;
-    private $adminProdutosSaboresModel;
-    private $adminConfigEmpresaModel;
-    private $adminMoedaModel;
-    private $adminUberEatsCategoriasModel;
-    private $adminVendasModel;
-    private $sessionFactory;
-    private $adminDashboardModel;
-    private $adminDiasModel;
-    private $adminUsuarioModel;
-    private $adminCaixaModel;
-    private $allController;
-    private $authetication;
-    private $marketplace;
-    private $apdPlanosModel;
-    private $assinaturaModel;
-    private $resulifood;
-    
-    private $cache;
+    private $acoes;
+    private $sessao;
+    private $geral;
+    private $trans;
 
     /**
      *
@@ -62,26 +32,11 @@ class AdminClickEntregasController extends Controller
      */
     public function __construct()
     {
-        $this->adminProdutosAdicionaisModel = new AdminProdutoAdicionalModel();
-        $this->adminProdutosSaboresModel = new AdminProdutoSaborModel();
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
-        $this->adminUberEatsCategoriasModel = new AdminIfoodCategoriaModel();
-        $this->adminDashboardModel = new AdminDashboardModel();
-        $this->adminProdutosModel = new AdminProdutoModel();
-        $this->assinaturaModel = new AdminAssinaturaModel();
-        $this->deliveryModel = new AdminConfigFreteModel();
-        $this->adminUsuarioModel = new AdminUsuarioModel();
-        $this->marketplace = new AdminMarketplacesModel();
-        $this->adminCaixaModel = new AdminCaixaModel();
-        $this->apdPlanosModel = new ApdPlanosModel();
-        $this->sessionFactory = new SessionFactory();
-        $this->adminVendasModel = new VendasModel();
-        $this->allController = new AllController();
-        $this->adminMoedaModel = new MoedaModel();
-        
-        $this->adminDiasModel = new DiasModel();
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+        $this->sessao = new Sessao();
+        $this->geral = new AllController();
         $this->cache = new Cache();
-        $this->resulifood = $this->marketplace->getById(1);
+        $this->acoes = new Acoes();
     }
 
     public function index($data)

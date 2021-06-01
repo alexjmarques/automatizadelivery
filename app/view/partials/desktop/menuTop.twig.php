@@ -49,8 +49,8 @@
                         </li> -->
     </ul>
     <!-- Topbar Search -->
-    <div class="ml-auto">
+    <!-- <div class="ml-auto">
         <a href="{{BASE}}{{empresa.link_site}}/carrinho" class="btn btn-danger"><i
                 class="mdi mdi-shopping-outline"></i></a>
-    </div>
+    </div> -->
 </nav>

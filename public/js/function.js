@@ -985,7 +985,8 @@ $("#formBusca").submit(function () {
                     $('.carregar').html('');
                 },
                 success: function (data) {
-                    $('#pesquisaEntregasMotoboy').html(data.mensagem);
+                    console.log(data);
+                    $('#pesquisaEntregasMotoboy').html(data);
 
                 },
                 error: function (data) {
@@ -999,20 +1000,20 @@ $("#formBusca").submit(function () {
     return false;
 });
 
-function mudarStatusEntrega(id, status, id_caixa, motoboy, numero_pedido, id_empresa, id_cliente) {
+function mudarStatusEntrega(id, status, id_caixa, id_motoboy, numero_pedido, id_empresa, id_cliente) {
 
     let valores = {
         id,
         status,
         id_caixa,
-        motoboy,
+        id_motoboy,
         numero_pedido,
         id_empresa,
         id_cliente
     }
     //console.log(valores);
     $.ajax({
-        url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${motoboy}`,
+        url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${id_motoboy}`,
         method: "post",
         data: valores,
         dataType: "text",

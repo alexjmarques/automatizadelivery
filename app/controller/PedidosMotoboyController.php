@@ -3,56 +3,24 @@
 namespace app\controller;
 
 use app\classes\Input;
-use app\classes\Preferencias;
+use app\classes\Acoes;
+use app\classes\Cache;
 use app\core\Controller;
-use app\controller\AllController;
-use app\Models\AdminCategoriaModel;
-use app\Models\AdminConfigEmpresaModel;
-use DElfimov\Translate\Translate;
 use DElfimov\Translate\Loader\PhpFilesLoader;
-use app\Models\AdminConfigFreteModel;
-use app\Models\AdminProdutoModel;
-use app\Models\AdminProdutoAdicionalModel;
-use app\Models\AdminUsuarioModel;
-use app\Models\AdminCaixaModel;
-use app\Models\DiasModel;
-use app\Models\EnderecosModel;
-use app\Models\EstadosModel;
-use app\Models\MoedaModel;
-use app\Models\VendasModel;
-use app\Models\CarrinhoModel;
-use app\Models\AdminPagamentoModel;
-use app\Models\AdminProdutoSaborModel;
-use Aura\Session\SessionFactory;
-use app\Models\AdminTipoModel;
-use app\Models\CarrinhoAdicionalModel;
-use app\Models\UsuarioModel;
-use app\Models\MotoboyEntregasModel;
+use DElfimov\Translate\Translate;
+use app\controller\AllController;
+use function JBZoo\Data\json;
+use app\classes\Preferencias;
+use app\classes\Sessao;
+use Browser;
 
 
 class PedidosMotoboyController extends Controller
 {
-    //Instancia da Classe AdminConfigEmpresaModel
-    private $configEmpresaModel;
-    private $deliveryModel;
-    private $moedaModel;
-    private $caixaModel;
-    private $categoriaModel;
-    private $produtoModel;
-    private $diasModel;
-    private $usuarioModel;
-    private $enderecosModel;
-    private $estadosModel;
-    private $sessionFactory;
-    private $allController;
-    private $produtoAdicionalModel;
-    private $produtoSaboresModel;
-    private $carrinhoModel;
-    private $pagamentoModel;
-    private $tipoModel;
-    private $carrinhoAdicionalModel;
-    private $vendasModel;
-    private $entregasModel;
+    private $acoes;
+    private $sessao;
+    private $geral;
+    private $trans;
     
 
     /**
@@ -63,27 +31,11 @@ class PedidosMotoboyController extends Controller
      */
     public function __construct()
     {
-        
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
-        $this->moedaModel = new MoedaModel();
-        $this->caixaModel = new AdminCaixaModel();
-        $this->deliveryModel = new AdminConfigFreteModel();
-        $this->categoriaModel = new AdminCategoriaModel();
-        $this->produtoModel = new AdminProdutoModel();
-        $this->produtoAdicionalModel = new AdminProdutoAdicionalModel();
-        $this->produtoSaboresModel = new AdminProdutoSaborModel();
-        $this->diasModel = new DiasModel();
-        $this->sessionFactory = new SessionFactory();
-        $this->usuarioModel = new UsuarioModel();
-        $this->enderecosModel = new EnderecosModel();
-        $this->estadosModel = new EstadosModel();
-        $this->carrinhoModel = new CarrinhoModel();
-        $this->allController = new AllController();
-        $this->pagamentoModel = new AdminPagamentoModel();
-        $this->tipoModel = new AdminTipoModel();
-        $this->carrinhoAdicionalModel = new CarrinhoAdicionalModel();
-        $this->vendasModel = new VendasModel();
-        $this->entregasModel = new MotoboyEntregasModel();
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+        $this->sessao = new Sessao();
+        $this->geral = new AllController();
+        $this->cache = new Cache();
+        $this->acoes = new Acoes();
     }
 
     /**s
@@ -97,50 +49,21 @@ class PedidosMotoboyController extends Controller
     public function relatorio($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $verificaLogin = $this->allController->verificaLogin($empresaAct[':id']);
-        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
+        $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
 
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         if ($this->sessao->getUser()) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
-
-        $dataEscolhida = Input::get('mes');
-        if ($dataEscolhida == null) {
-            $dataEscolhida = date('m');
-        } else {
-            $dataEscolhida = Input::get('mes');
-        }
-
-        $resulCaixa = $this->caixaModel->getUll($empresaAct[':id']);
-        $resultPedidos = $this->vendasModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultBuscaAll = $this->entregasModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultEntregas = $this->vendasModel->somaEntregasMes($SessionIdUsuario,$empresaAct[':id']);
-        $resultEntregasQtd = $this->vendasModel->qtdEntregasMes($SessionIdUsuario,$empresaAct[':id']);
-        $resultEntregasDia = $this->vendasModel->somaEntregasDia($SessionIdUsuario, $resulCaixa[':id'],$empresaAct[':id']);
-        $resultEntregasDiaCont = $this->vendasModel->qtdEntregasDia($SessionIdUsuario, $resulCaixa[':id'],$empresaAct[':id']);
-
-        $totalMotoboyMes = $resultEntregas['total'] - ($resultEntregasQtd * $resultDelivery[':taxa_entrega_motoboy']);
-        $totalMotoboyDia = $resultEntregasDia['total'] - ($resultEntregasDiaCont * $resultDelivery[':taxa_entrega_motoboy']);
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/relatorio/main', [
-            'empresa' => $resultEmpresa,
+            'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'entregasFeitas' => $totalMotoboyMes,
@@ -152,7 +75,9 @@ class PedidosMotoboyController extends Controller
             'moeda' => $moeda,
             'dataEscolhida' => $dataEscolhida,
             'mesAtual' => date('m'),
-            'trans' => $trans,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
             
         ]);
     }
@@ -162,41 +87,29 @@ class PedidosMotoboyController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $verificaLogin = $this->allController->verificaLogin($empresaAct[':id']);
-        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
+        $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        
         if ($this->sessao->getUser()) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresaAct[':id']);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
-        $dataEscolhida = Input::get('mes');
+        $dataEscolhida = $data['mes'];
         if ($dataEscolhida == null) {
             $dataEscolhida = date('m');
         } else {
-            $dataEscolhida = Input::get('mes');
+            $dataEscolhida = $data['mes'];
         }
         $resultPedidos = $this->vendasModel->getAllPorEmpresa($empresaAct[':id']);
         $resultBuscaAll = $this->entregasModel->getAllPorEmpresa($empresaAct[':id']);
 
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/relatorio/relatorioMes', [
-            'empresa' => $resultEmpresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'busca' => $resultBuscaAll,
@@ -204,8 +117,10 @@ class PedidosMotoboyController extends Controller
             'frete' => $resultDelivery,
             'moeda' => $moeda,
             'dataEscolhida' => $dataEscolhida,
-            'trans' => $trans,
-            
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
@@ -217,43 +132,36 @@ class PedidosMotoboyController extends Controller
      */
     public function index($data)
     {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-        $resultCarrinho = $this->carrinhoModel->getCart($empresaAct[':id']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
 
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $resultDelivery = $this->acoes->getByFieldAll('carrinho', 'id_empresa', $empresa->id);
+
+        $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
+
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        
 
 
         if ($this->sessao->getUser()) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultVendas = $this->vendasModel->getAllUserMotoboy($SessionIdUsuario);
-            $resultPedidoQtd = $this->vendasModel->vendasQtdMotoboy($SessionIdUsuario);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
-        $resultEnderecos = $this->enderecosModel->getAll();
-        $resultEstados = $this->estadosModel->getAll();
+        // $resultEnderecos = $this->enderecosModel->getAll();
+        // $resultEstados = $this->estadosModel->getAll();
 
-        $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultProdutoAdicional = $this->produtoAdicionalModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultPagamento = $this->pagamentoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultUsuarios = $this->usuarioModel->getAll();
+        // $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
+        // $resultProdutoAdicional = $this->produtoAdicionalModel->getAllPorEmpresa($empresaAct[':id']);
+        // $resultPagamento = $this->pagamentoModel->getAllPorEmpresa($empresaAct[':id']);
+        // $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
+        // $resultUsuarios = $this->usuarioModel->getAll();
 
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/pedidos/main', [
-            'empresa' => $resultEmpresa,
             'moeda' => $moeda,
             'delivery' => $resultDelivery,
             'produto' => $resultProdutos,
@@ -267,9 +175,10 @@ class PedidosMotoboyController extends Controller
             'vendas' => $resultVendas,
             'usuarios' => $resultUsuarios,
             'pedidosQtd' => $resultPedidoQtd,
-            'trans' => $trans,
-            
-
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
@@ -280,131 +189,65 @@ class PedidosMotoboyController extends Controller
     public function pesquisarEntrega($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-
-        $resultCarrinho = $this->carrinhoModel->getCart($empresaAct[':id']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-
         if ($this->sessao->getUser()) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultVendas = $this->vendasModel->getAllUserMotoboy($SessionIdUsuario);
-            $resultPedidoQtd = $this->vendasModel->vendasQtdMotoboy($SessionIdUsuario);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         }
 
-        $resultEnderecos = $this->enderecosModel->getAll();
-        $resultEstados = $this->estadosModel->getAll();
-
-        $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultProdutoAdicional = $this->produtoAdicionalModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultPagamento = $this->pagamentoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
-
-        $resultUsuarios = $this->usuarioModel->getAll();
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
         $this->load('_motoboy/pedidos/pesquisarEntrega', [
-            'empresa' => $resultEmpresa,
-            'moeda' => $moeda,
-            'delivery' => $resultDelivery,
-            'produto' => $resultProdutos,
-            'produtoAdicional' => $resultProdutoAdicional,
-            'usuario' => $resulUsuario,
-            'carrinho' => $resultCarrinho,
-            'enderecos' => $resultEnderecos,
-            'estados' => $resultEstados,
-            'tipo_frete' => $resultTipo,
-            'tipo_pagamento' => $resultPagamento,
-            'vendas' => $resultVendas,
-            'usuarios' => $resultUsuarios,
-            'pedidosQtd' => $resultPedidoQtd,
-            'trans' => $trans,
-            
-
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
 
     public function getEntrega($data)
     {
+     
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $resultCarrinho = $this->acoes->getByFieldAll('carrinho', 'id_empresa', $empresa->id);
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
+        $resultTipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
+        $resultPagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
 
-        $resultCarrinho = $this->carrinhoModel->getCart($empresaAct[':id']);
-
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
-
-
-        $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-        $resultPedidoQtd = $this->vendasModel->vendasQtdMotoboy($SessionIdUsuario);
-        $resultEnderecos = $this->enderecosModel->getAll();
-        $resultEstados = $this->estadosModel->getAll();
-        $resultProdutos = $this->produtoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultProdutoAdicional = $this->produtoAdicionalModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultPagamento = $this->pagamentoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
-        $resultUsuarios = $this->usuarioModel->getAll();
+        $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+        $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+        $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
         $numero_pedido = Input::get('numero_pedido');
 
-        if (!$this->sessao->getUser()) {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+        if ($this->sessao->getUser()) {
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $pedidosQtd = $this->acoes->countsTwoNull('carrinhoPedidos', 'id_motoboy', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($numero_pedido != null){
+                $resultVendas = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'numero_pedido', $numero_pedido);
+                $cliente = $this->acoes->getByField('usuarios', 'id', $resultVendas->id_cliente);
+            }
+        }else{
+            redirect(BASE."{$empresa->link_site}/login");
         }
 
-        if ($numero_pedido != null)
-            $resultVendas = $this->vendasModel->getByNumPedido($numero_pedido);
-
-
-        $resulCaixa = $this->caixaModel->getUll($empresaAct[':id']);
-
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        $resulCaixa = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/pedidos/pesquisarEntregaView', [
-            'empresa' => $resultEmpresa,
             'moeda' => $moeda,
-            'delivery' => $resultDelivery,
-            'motoboy' => $SessionIdUsuario,
             'usuario' => $resulUsuario,
-            'usuarios' => $resultUsuarios,
+            'cliente' => $cliente,
             'carrinho' => $resultCarrinho,
             'tipo_frete' => $resultTipo,
             'tipo_pagamento' => $resultPagamento,
             'venda' => $resultVendas,
-            'caixa' => $resulCaixa,
-            'pedidosQtd' => $resultPedidoQtd,
-            'trans' => $trans,
-            
-
+            'id_motoboy' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->id,
+            'pedidosQtd' => $pedidosQtd,
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
+            'numero' => $this->geral->formataTelefone($cliente->telefone)
         ]);
     }
 
@@ -431,11 +274,8 @@ class PedidosMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultVendas = $this->vendasModel->getAllUserMotoboy($SessionIdUsuario);
-            $resultPedidoQtd = $this->vendasModel->vendasQtdMotoboy($SessionIdUsuario);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
         $resultEnderecos = $this->enderecosModel->getAll();
@@ -455,7 +295,6 @@ class PedidosMotoboyController extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/pedidos/vendasEntregas', [
-            'empresa' => $resultEmpresa,
             'moeda' => $moeda,
             'delivery' => $resultDelivery,
             'produto' => $resultProdutos,
@@ -469,8 +308,10 @@ class PedidosMotoboyController extends Controller
             'vendas' => $resultVendas,
             'usuarios' => $resultUsuarios,
             'pedidosQtd' => $resultPedidoQtd,
-            'trans' => $trans,
-            
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
@@ -491,9 +332,8 @@ class PedidosMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
-            $resultPedidoQtd = $this->vendasModel->vendasQtdMotoboy($SessionIdUsuario);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
 
@@ -503,11 +343,11 @@ class PedidosMotoboyController extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/pedidos/pedidoQtd', [
-            'empresa' => $empresaAct,
             'pedidosQtd' => $resultPedidoQtd,
-            'trans' => $trans,
-            
-
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -542,12 +382,8 @@ class PedidosMotoboyController extends Controller
         $resultEstados = $this->estadosModel->getAll();
 
         if ($this->sessao->getUser()) {
-            $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultVendas = $this->vendasModel->getAllUserMotoboy($SessionIdUsuario);
-            $resultVenda = $this->vendasModel->getPedidoFeito($data['numero_pedido'],$empresaAct[':id']);
-            $resultPedidoQtd = $this->vendasModel->vendasQtdMotoboy($SessionIdUsuario);
-        } else {
-            redirect(BASE . $empresaAct[':link_site'] . 'login');
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
         $resultTipo = $this->tipoModel->getAllPorEmpresa($empresaAct[':id']);
@@ -558,7 +394,6 @@ class PedidosMotoboyController extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/pedidos/view', [
-            'empresa' => $resultEmpresa,
             'moeda' => $moeda,
             'delivery' => $resultDelivery,
             'produto' => $resultProdutos,
@@ -575,8 +410,10 @@ class PedidosMotoboyController extends Controller
             'vendas' => $resultVendas,
             'usuarios' => $resultUsuarios,
             'pedidosQtd' => $resultPedidoQtd,
-            'trans' => $trans,
-            
+            'empresa' => $empresa,
+            'usuarioAtivo' => $resulUsuario,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
 

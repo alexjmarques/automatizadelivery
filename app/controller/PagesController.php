@@ -80,9 +80,9 @@ class PagesController extends Controller
             'ultimaVenda' => $ultimaVenda,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'enderecoAtivo' => $enderecoAtivo,
-            'veriFavoritos' => $veriFavoritos,
-            'favoritos' => $favoritos,
-            'produtoQtd' => $produtoQtd,
+            // 'veriFavoritos' => $veriFavoritos,
+            // 'favoritos' => $favoritos,
+            // 'produtoQtd' => $produtoQtd,
             'hoje' =>  $hoje,
             'trans' => $this->trans,
             'isLogin' => $this->sessao->getUser(),
@@ -116,11 +116,11 @@ class PagesController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $formasPagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
         $empresaFuncionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
-        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         $estados = $this->acoes->getFind('estados');
         $dias = $this->acoes->getFind('dias');
         
         if ($this->sessao->getUser()) {
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }

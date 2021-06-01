@@ -2,44 +2,24 @@
 
 namespace app\controller;
 
-use app\classes\Preferencias;
-use app\controller\AllController;
+use app\classes\Input;
+use app\classes\Acoes;
+use app\classes\Cache;
 use app\core\Controller;
-use app\Models\AdminCategoriaModel;
-use app\Models\AdminConfigEmpresaModel;
-use DElfimov\Translate\Translate;
 use DElfimov\Translate\Loader\PhpFilesLoader;
-use app\Models\AdminConfigFreteModel;
-use app\Models\AdminProdutoAdicionalModel;
-use app\Models\AdminProdutoModel;
-use app\Models\AdminUsuarioModel;
-use app\Models\CarrinhoModel;
-use app\Models\DiasModel;
-use app\Models\EnderecosModel;
-use app\Models\EstadosModel;
-use app\Models\FavoritosModel;
-use app\Models\MoedaModel;
-use app\Models\VendasModel;
-use Aura\Session\SessionFactory;
+use DElfimov\Translate\Translate;
+use app\controller\AllController;
+use function JBZoo\Data\json;
+use app\classes\Preferencias;
+use app\classes\Sessao;
+use Browser;
 
 class FavoritosController extends Controller
 {
-    //Instancia da Classe AdminConfigEmpresaModel
-    private $configEmpresaModel;
-    private $deliveryModel;
-    private $moedaModel;
-    private $categoriaModel;
-    private $produtoModel;
-    private $diasModel;
-    private $usuarioModel;
-    private $enderecosModel;
-    private $estadosModel;
-    private $produtoAdicionalModel;
-    private $sessionFactory;
-    private $vendasModel;
-    private $allController;
-    private $favoritosModel;
-    private $carrinhoModel;
+    private $acoes;
+    private $sessao;
+    private $geral;
+    private $trans;
     
 
     /**
@@ -51,21 +31,11 @@ class FavoritosController extends Controller
     public function __construct()
     {
         
-        $this->allController = new AllController();
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
-        $this->moedaModel = new MoedaModel();
-        $this->deliveryModel = new AdminConfigFreteModel();
-        $this->sessionFactory = new SessionFactory();
-        $this->categoriaModel = new AdminCategoriaModel();
-        $this->produtoModel = new AdminProdutoModel();
-        $this->produtoAdicionalModel = new AdminProdutoAdicionalModel();
-        $this->diasModel = new DiasModel();
-        $this->usuarioModel = new AdminUsuarioModel();
-        $this->enderecosModel = new EnderecosModel();
-        $this->estadosModel = new EstadosModel();
-        $this->carrinhoModel = new CarrinhoModel();
-        $this->vendasModel = new VendasModel();
-        $this->favoritosModel = new FavoritosModel();
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+        $this->sessao = new Sessao();
+        $this->geral = new AllController();
+        $this->cache = new Cache();
+        $this->acoes = new Acoes();
     }
 
     public function index($data)
@@ -114,8 +84,8 @@ class FavoritosController extends Controller
             'usuario' => $resultUsuario,
             'favoritos' => $favoritos,
             'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }

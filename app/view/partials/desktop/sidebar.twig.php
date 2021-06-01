@@ -9,7 +9,7 @@
             <!-- Nav Item - Home -->
             <li class="nav-item active">
                 <a class="nav-link" href="{{BASE}}{{empresa.link_site}}/">
-                    <i class="mdi mdi-home-variant-outline"></i>
+                    <!-- <i class="mdi mdi-home-variant-outline"></i> -->
                     <span>{{ trans.t('Home') }} </span></a>
             </li>
             <!-- Nav Item - Explore -->
@@ -20,11 +20,11 @@
             </li> -->
             <!-- Nav Item - Orders -->
             {% if isLogin is null %}
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="{{BASE}}{{empresa.link_site}}/login">
                     <i class="mdi mdi-book-open"></i>
                     <span>{{ trans.t('Meus Pedidos')}}</span></a>
-            </li>
+            </li> -->
 
             {% endif %}
 
@@ -60,19 +60,19 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{BASE}}{{empresa.link_site}}/delivery">
-                    <i class="mdi mdi-cog"></i>
+
                     <span>{{ trans.t('Delivery')}}</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{BASE}}{{empresa.link_site}}/fale-conosco">
-                    <i class="mdi mdi-cog"></i>
+
                     <span>{{ trans.t('Fale Conosco')}}</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{BASE}}{{empresa.link_site}}/perfil">
-                    <i class="mdi mdi-cog"></i>
+                <a class="nav-link" href="{{BASE}}{{empresa.link_site}}/politica-de-privacidade">
+
                     <span>{{ trans.t('Política de Privacidade')}}</span></a>
             </li>
 

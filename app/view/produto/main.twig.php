@@ -270,12 +270,12 @@
                                     {% if delivery.status == 1 %}
                                     {% if produto.status == 1 %}
                                     {% if produto.adicional is null %}
-                                    <button class="btn btn-success btn-block btn-lg addStyle">ADICIONAR AO PEDIDO <i
-                                            class="feather-shopping-cart"></i></button>
+                                    {# <button class="btn btn-success btn-block btn-lg addStyle">ADICIONAR AO PEDIDO <i
+                                            class="feather-shopping-cart"></i></button> #}
                                     {% else %}
 
-                                    <button class="btn btn-block btn-lg btn-primary btn-block addStyle">PROSSEGUIR <i
-                                            class="feather-next"></i></button>
+                                    {# <button class="btn btn-block btn-lg btn-primary btn-block addStyle">PROSSEGUIR <i
+                                            class="feather-next"></i></button> #}
                                     {% endif %}
 
                                     {% endif %}

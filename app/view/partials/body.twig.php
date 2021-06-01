@@ -25,28 +25,29 @@
   <title>{% block title %}{% endblock %}</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H85LB3TTM9"></script>
 
-{% if detect.isMobile() %}
-<link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;1,300&display=swap"
-      rel="stylesheet">
-    <link href="{{BASE}}css/star-rating-svg.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{BASE}}css/feather.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/font-awesome.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/select2.min.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/style.css" rel="stylesheet" type="text/css">
-    <link href="{{BASE}}css/automatiza.css" rel="stylesheet" type="text/css">
-  {% else %}
+  <link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
+  <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;1,300&display=swap"
+  rel="stylesheet">
+  <link href="{{BASE}}css/star-rating-svg.css" rel="stylesheet" type="text/css">
+  <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
+  <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
+  <link href="{{BASE}}css/feather.css" rel="stylesheet" type="text/css">
+  <link href="{{BASE}}css/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="{{BASE}}css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="{{BASE}}css/select2.min.css" rel="stylesheet" type="text/css">
+  <link href="{{BASE}}css/style.css" rel="stylesheet" type="text/css">
+  <link href="{{BASE}}css/automatiza.css" rel="stylesheet" type="text/css">
+  {% if detect.isMobile() %}
+  
    <link href="{{BASE}}pc/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="{{BASE}}pc/css/automatiza.css" rel="stylesheet">
   <link href="{{BASE}}pc/font/stylesheet.css" rel="stylesheet">
   <link href="{{BASE}}pc/vendor/mdi-icons/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="{{BASE}}pc/css/custom.css" rel="stylesheet">
+  {% else %}
   {% endif %}
 
   <script>
@@ -197,7 +198,7 @@
   <div id="wrapper">
     {% endif %}
     {% block body %}{% endblock %}
-{% if detect.isMobile() %}
+
     <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery-ui.js"></script>
     <script src="{{BASE}}js/jquery.complexify.js"></script>
@@ -209,7 +210,8 @@
     <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
- {% else %}
+    {% if detect.isMobile() %}
+ 
     </div>
     <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery-ui.js"></script>
@@ -221,6 +223,7 @@
     <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
+    {% else %}
     {% endif %}
   </body>
 

@@ -2,66 +2,25 @@
 
 namespace app\controller;
 
-use Dompdf\Dompdf;
 use app\classes\Input;
-use app\classes\Preferencias;
-use app\classes\CalculoFrete;
+use app\classes\Acoes;
+use app\classes\Cache;
 use app\core\Controller;
-use app\Models\AdminCategoriaModel;
-use app\Models\AdminConfigEmpresaModel;
-use DElfimov\Translate\Translate;
 use DElfimov\Translate\Loader\PhpFilesLoader;
-use app\Models\AdminConfigFreteModel;
-use app\Models\AdminProdutoAdicionalModel;
-use app\Models\AdminProdutoSaborModel;
-use app\Models\AdminProdutoModel;
-use app\Models\AdminUsuarioModel;
-use app\Models\AdminPagamentoModel;
-use app\Models\AdminEntregasModel;
-use app\Models\AdminTipoModel;
-use app\Models\AdminMarketplacesModel;
-use app\Models\DiasModel;
-use app\Models\MoedaModel;
-use app\Models\VendasModel;
+use DElfimov\Translate\Translate;
 use app\controller\AllController;
-use Aura\Session\SessionFactory;
-use app\Models\AdminCaixaModel;
-use app\Models\EnderecosModel;
-use app\Models\ContatoModel;
-use app\Models\EstadosModel;
-use app\Models\CarrinhoModel;
-use app\Models\CarrinhoAdicionalModel;
-use app\Models\FavoritosModel;
-use app\Models\MotoboyEntregasModel;
+use function JBZoo\Data\json;
+use app\classes\Preferencias;
+use app\classes\Sessao;
+use Browser;
 
 class AdminPedidosBalcaoController extends Controller
 {
     //Instancia da Classe AdminPagamentoModel
-    private $configEmpresaModel;
-    private $deliveryModel;
-    private $moedaModel;
-    private $sessionFactory;
-    private $adminProdutosModel;
-    private $adminProdutosAdicionaisModel;
-    private $adminProdutosSaboresModel;
-    private $adminEntregasModel;
-    private $adminConfigEmpresaModel;
-    private $adminCategoriasModel;
-    private $adminDiasModel;
-    private $adminUsuarioModel;
-    
-    private $adminCaixaModel;
-    private $allController;
-    private $adminVendasModel;
-    private $adminTipoModel;
-    private $adminEnderecoModel;
-    private $adminPagamentoModel;
-    private $adminCarrinhoModel;
-    private $carrinhoAdicionalModel;
-    private $adminMotoboyEntregaModel;
-    private $estadosModel;
-    private $calculoFrete;
-    private $marketplace;
+    private $acoes;
+    private $sessao;
+    private $geral;
+    private $trans;
 
 
     /**
@@ -72,30 +31,11 @@ class AdminPedidosBalcaoController extends Controller
      */
     public function __construct()
     {
-        
-        $this->moedaModel = new MoedaModel();
-        $this->calculoFrete = new CalculoFrete();
-        $this->estadosModel = new EstadosModel();
-        $this->deliveryModel = new AdminConfigFreteModel();
-        $this->adminPagamentoModel = new AdminPagamentoModel();
-        $this->adminProdutosModel = new AdminProdutoModel();
-        $this->adminProdutosAdicionaisModel = new AdminProdutoAdicionalModel();
-        $this->marketplace = new AdminMarketplacesModel();
-        $this->adminProdutosSaboresModel = new AdminProdutoSaborModel();
-        $this->configEmpresaModel = new AdminConfigEmpresaModel();
-        $this->adminEntregasModel = new adminEntregasModel();
-        $this->adminUsuarioModel = new AdminUsuarioModel();
-        $this->adminCategoriasModel = new AdminCategoriaModel();
-        $this->adminVendasModel = new VendasModel();
-        $this->adminDiasModel = new DiasModel();
-        $this->sessionFactory = new SessionFactory();
-        $this->adminCaixaModel = new AdminCaixaModel();
-        $this->allController = new AllController();
-        $this->adminTipoModel = new AdminTipoModel();
-        $this->adminEnderecoModel = new EnderecosModel();
-        $this->adminCarrinhoModel = new CarrinhoModel();
-        $this->carrinhoAdicionalModel = new CarrinhoAdicionalModel();
-        $this->adminMotoboyEntregaModel = new MotoboyEntregasModel();
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+        $this->sessao = new Sessao();
+        $this->geral = new AllController();
+        $this->cache = new Cache();
+        $this->acoes = new Acoes();
     }
 
     public function index($data)
@@ -132,16 +72,11 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resulCaixa = $this->adminCaixaModel->getUll($empresaAct[':id']);
         $resulifood = $this->marketplace->getById(1);
 
-        $planoAtivo = $this->allController->verificaPlano($empresaAct[':id']);
-        $this->allController->verificaAdmin($empresaAct[':id']);
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/pedidos/novo', [
-            'empresa' => $empresaAct,
-            'trans' => $trans,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
             
             'usuarioLogado' => $resulUsuario,
             'moeda' => $moeda,
@@ -219,8 +154,9 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/pedidos/novoProduto', [
-            'empresa' => $empresaAct,
-            'trans' => $trans,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
             
             'usuarioLogado' => $resulUsuario,
             'moeda' => $moeda,
@@ -266,9 +202,9 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/pedidos/produtoMostrar', [
-            'empresa' => $empresaAct,
-            'trans' => $trans,
-            
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
             'moeda' => $moeda,
             'caixa' => $resulCaixa,
             'produto' => $resultProduto,
@@ -329,10 +265,9 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/pedidos/carrinhoMostrarProdutos', [
-            'empresa' => $empresaAct,
-            'trans' => $trans,
-            
-            'empresa' => $resultEmpresa,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
             'moeda' => $moeda,
             'estados' => $resultEstados,
             'delivery' => $resultDelivery,
@@ -413,10 +348,9 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/pedidos/novoDetalhes', [
-            'empresa' => $empresaAct,
-            'trans' => $trans,
-            
-            'empresa' => $resultEmpresa,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'isLogin' => $this->sessao->getUser(),
             'moeda' => $moeda,
             'estados' => $resultEstados,
             'planoAtivo' => $planoAtivo,
