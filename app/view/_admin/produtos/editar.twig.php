@@ -147,18 +147,18 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <h5>{{preferencias.sabores()}}</h5>
+            <h5>Sabores</h5>
             <p class="mb-4">Este elemento serve para definir se seu produto possui complemento de escolha antes da
                 adição do mesmo ao carrinho do cliente</p>
             {% if qtdSabores == 0 %}
             <div class="alert alert-warning" role="alert"> Para cadastrar um novo produdo com todos os detalhes e
-            {{preferencias.sabores()}}! <a href="{{BASE}}{{empresa.link_site}}/admin/produto-sabor/novo">Clique aqui</a> para Cadastrar.
+            Sabores! <a href="{{BASE}}{{empresa.link_site}}/admin/produto-sabor/novo">Clique aqui</a> para Cadastrar.
             </div>
             {% else %}
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <div id="prodSabor">
-                        <label>{{preferencias.sabores()}} para escolha</label>
+                        <label>Sabores para escolha</label>
                         <div class="form-row">
                             {% for sab in produtosSabores%}
                             {% if sab.id in retorno.sabores %}

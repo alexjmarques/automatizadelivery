@@ -24,16 +24,25 @@
 
                             <div class="card-body">
                                 <div id="step-0">
-                                <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/pedido/novo/start" class="tooltip-label-right" enctype="multipart/form-data" novalidate>
+                                <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/pedido/novo/start" class="tooltip-label-right" enctype="multipart/form-data">
                                         <div class="form-row">
-                                            <div class="form-group col-md-5">
+                                            <div class="form-group col-md-5 mb-5">
                                             <label class="col-12 col-form-label" style="padding-left: 0;">Nome do Cliente</label>
                                                 <select id="cliente" name="cliente" class="form-control select2-single" required>
                                                 <option value="">Nome do Cliente</option>
+                                                {% for ce in clientesEmpresa %}
                                                 {% for c in clientes %}
-                                                    <option value="{{ c[':id }}">{{ c[':nome }} - {{ c[':telefone }}</option>
+                                                {% if c.id == ce.id_usuario %}
+                                                    <option value="{{ c.id }}">{{ c.nome }} - {{ c.telefone }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
                                                 {% endfor %}
                                                 </select>
+                                            </div>
+                                            <div class="form-group col-md-6 mt-4 pl-5 pt-2">
+                                                <p class="p-0 mt-2 pr-2 left">Cliente não tem cadastro?</p>
+                                                    <a data-toggle="modal" data-target="#modalNovoCliente" href="#" class="btn btn-info btn-sm left">Cadastrar Cliente</a>
+                                                </div>
                                             </div>
                                              <!-- <div class="form-group row mb-1 pl-6 col-md-6 ">
                                                 <div class="col-12">
@@ -45,18 +54,13 @@
                                                 </div>
                                             </div> -->
 
-                                            <div class="form-group col-md-12 mt-5">
-                                                <p class="p-0 mt-2 pr-2 left">Cliente não tem cadastro?</p>
-                                                    <a href="{{BASE}}{{empresa.link_site}}/admin/cliente/novo" class="btn btn-info btn-sm left">Cadastrar Cliente</a>
-                                                </div>
-                                            </div>
-
-                                        
-<button class="btn btn-info btn-sm float-right" type="submit">Continuar</button>
+                                            
+                                        <button class="btn btn-success btn-block btn-lg float-letf btn_Pedido mb-5" type="submit">Continuar</button>
                                         <div class="clearfix"></div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-{% endblock %}
+                    {% include 'partials/modalNovoCliente.twig.php'  %}
+                    {% endblock %}

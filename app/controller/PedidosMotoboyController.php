@@ -59,6 +59,7 @@ class PedidosMotoboyController extends Controller
 
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -79,7 +80,8 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
         ]);
     }
@@ -97,6 +99,7 @@ class PedidosMotoboyController extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -123,7 +126,8 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
@@ -150,6 +154,7 @@ class PedidosMotoboyController extends Controller
 
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -182,7 +187,8 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
@@ -194,6 +200,7 @@ class PedidosMotoboyController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         }
 
@@ -202,7 +209,8 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
@@ -224,6 +232,7 @@ class PedidosMotoboyController extends Controller
         $numero_pedido = Input::get('numero_pedido');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $pedidosQtd = $this->acoes->countsTwoNull('carrinhoPedidos', 'id_motoboy', $this->sessao->getUser(), 'id_empresa', $empresa->id);
             if ($numero_pedido != null){
@@ -251,7 +260,8 @@ class PedidosMotoboyController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
             'numero' => $this->geral->formataTelefone($cliente->telefone)
         ]);
@@ -280,6 +290,7 @@ class PedidosMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -318,7 +329,8 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
 
@@ -339,6 +351,7 @@ class PedidosMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -355,7 +368,8 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -390,6 +404,7 @@ class PedidosMotoboyController extends Controller
         $resultEstados = $this->estadosModel->getAll();
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -422,7 +437,8 @@ class PedidosMotoboyController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
 

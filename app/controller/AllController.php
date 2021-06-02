@@ -97,6 +97,7 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             if ($this->sessao->getNivel() == 0) {
                 redirect(BASE . "{$empresaAct->link_site}/admin");
             } else if ($this->sessao->getNivel() == 1) {
@@ -126,6 +127,7 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             if ($this->sessao->getNivel() == 0) {
             } else if ($this->sessao->getNivel() == 1) {
                 redirect(BASE . "{$empresaAct->link_site}/motoboy/entregas");
@@ -188,6 +190,7 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa',$empresaAct->id, 'id_usuario', $this->sessao->getUser());
             if ($resulEnderecos == 0) {
                 redirect(BASE . "{$empresaAct->link_site}/endereco/novo/cadastro");

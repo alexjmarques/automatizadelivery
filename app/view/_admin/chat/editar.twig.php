@@ -18,7 +18,7 @@
                 <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/categoria/u/{{categoriaAtivo[':id']}}"  enctype="multipart/form-data">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 id="titleBy" data-id="{{categoriaAtivo[':id']}}">Categia dos produtos</h5>
+                            <h5 id="titleBy" data-id="{{categoriaAtivo[':id']}}">Categoria dos produtos</h5>
                                 <div class="form-row">
                                   <div class="form-group col-md-8 catProds">
                                        <label>Nome da Categoria</label>

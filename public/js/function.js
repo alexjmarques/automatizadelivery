@@ -1053,11 +1053,6 @@ $(document).ready(function () {
         }
     });
 
-
-
-
-
-
     function atualizarMes() {
         $('.carregar').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         $.get(`/${link_site}/motoboy/buscar/entregas/mes`, function (dd) {
@@ -1354,12 +1349,14 @@ $('.abreelemento').show();
 function produtoModalView(id_produto) {
     $('#myitemsModal').modal("show");
     $.ajax({
-      url: `/${link_site}/pedido/desk/mostrar/${id_produto}`,
-      method: "post",
-      data: {id_produto},
-      dataType: "html",
-      success: function (dd) {
-        $('#productTitle').html(dd.titulo)
-      },
+        url: `/${link_site}/pedido/desk/mostrar/${id_produto}`,
+        method: "post",
+        data: {
+            id_produto
+        },
+        dataType: "html",
+        success: function (dd) {
+            $('#productTitle').html(dd.titulo)
+        },
     })
-  }
+}

@@ -85,6 +85,7 @@ class PerfilMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
             //if($resulUsuario[':nivel'] != 3){redirect(BASE . $empresaAct[':link_site']);}
         } else {
@@ -106,7 +107,8 @@ class PerfilMotoboyController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -128,6 +130,7 @@ class PerfilMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
             $resultCarrinhoQtd = $this->vendasModel->carrinhoQtdListMoto($SessionIdUsuario,$empresaAct[':id']);
             //if($resulUsuario[':nivel'] != 3){redirect(BASE. 'motoboy');}
@@ -151,7 +154,8 @@ class PerfilMotoboyController extends Controller
             'moeda' => $moeda,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -187,7 +191,8 @@ class PerfilMotoboyController extends Controller
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
         ]);
     }

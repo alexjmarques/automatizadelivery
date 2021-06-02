@@ -50,6 +50,7 @@ class AdminTipoAdicional extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -70,9 +71,10 @@ class AdminTipoAdicional extends Controller
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
 
 
@@ -90,6 +92,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -120,9 +123,10 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'empresa' => $empresa,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
 
@@ -156,6 +160,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultTipo = $this->adminTipoAdicionalModel->getById($data['id']);
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -186,9 +191,10 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'empresa' => $empresa,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
 

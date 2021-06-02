@@ -53,13 +53,15 @@ class CarrinhoController extends Controller
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByField('produtos', 'id', $data['id']);
         $resultProdutoAdicional = $this->acoes->getByFieldAll('produtoAdicional', 'id', $empresa->id);
-        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id', $empresa->id);
+        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $resulTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $resultchave = md5(uniqid(rand(), true));
         $resultCarrinhoQtd = 0;
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -77,6 +79,7 @@ class CarrinhoController extends Controller
             'chave' => $resultchave,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
@@ -103,9 +106,9 @@ class CarrinhoController extends Controller
 
         header('Content-Type: application/json');
         if ($valor->id_adicional != null) {
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'var' => $valor->id_adicional, 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!','error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'url' => 'produto/adicional']);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'var' => $valor->id_adicional, 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'url' => 'produto/adicional']);
         } else {
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!','error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'url' => 'carrinho',]);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'url' => 'carrinho',]);
         }
         exit($json);
     }
@@ -124,8 +127,9 @@ class CarrinhoController extends Controller
 
         $resultchave = md5(uniqid(rand(), true));
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -142,6 +146,7 @@ class CarrinhoController extends Controller
             'produtoSabores' => $resultSabores,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
@@ -191,13 +196,14 @@ class CarrinhoController extends Controller
         $carrinho = $this->acoes->getByFieldTwo('carrinho', 'id_produto', $data['id_produto'], 'id', $data['id_carrinho']);
 
         $resultProdutoAdicional = $this->acoes->getByFieldAll('produtoAdicional', 'id', $empresa->id);
-        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id', $empresa->id);
+        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $resulTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $resultchave = md5(uniqid(rand(), true));
         $resultCarrinhoQtd = 0;
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -216,6 +222,7 @@ class CarrinhoController extends Controller
             'chave' => $resultchave,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
@@ -227,10 +234,11 @@ class CarrinhoController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        
+
 
         if ($this->sessao->getUser()) {
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -282,11 +290,8 @@ class CarrinhoController extends Controller
                 }
             }
 
-            $numeroPedido = $this->sessao->getSessao('numeroPedido');
-            if ($numeroPedido == null) {
-                $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
-            }
-
+            
+            $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
             $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
             if ($cupomVerifica > 0) {
@@ -303,15 +308,14 @@ class CarrinhoController extends Controller
                 }
                 $valorCarrinho = $valorCarrinho - $resultado;
             }
-
         } else {
             redirect(BASE . "{$empresa->link_site}/carrinho/dados");
         }
         $resultchave = md5(uniqid(rand(), true));
 
-        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
+        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
-        if($resultCarrinhoQtd == 0){
+        if ($resultCarrinhoQtd == 0) {
             redirect(BASE . "{$empresa->link_site}");
         }
 
@@ -340,6 +344,7 @@ class CarrinhoController extends Controller
             'chave' => $resultchave,
             'cupomValor' => $resultado,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
@@ -352,14 +357,14 @@ class CarrinhoController extends Controller
         $cupomValidaCount = $this->acoes->getByField('cupomDesconto', 'nome_cupom', $data['cupomDesconto'], 'id_empresa', $empresa->id);
 
         //$cupomValidaCount = $this->acoes->countsTwo('cupomDesconto', 'id_empresa', $empresa->id, 'nome_cupom', $data['cupomDesconto']);
-        
+
         if (!isset($cupomValidaCount->id)) {
             echo 'Cupom de desconto inválido';
         } else {
             //Verifica se pode utilizar esse cupom novamente
             $cupomValida = $this->acoes->getByField('cupomDesconto', 'nome_cupom', $data['cupomDesconto'], 'id_empresa', $empresa->id);
             $cupomValidaUtil = $this->acoes->countsTwo('cupomDescontoUtilizadores', 'id_cupom', $cupomValida->id, 'id_empresa', $empresa->id);
-            
+
             if ($cupomValidaUtil != 0) {
                 if ($cupomValida->qtd_utilizacoes >= $$cupomValidaUtil) {
                     echo 'Você excedeu o número de vezes para utilização deste Cupom';
@@ -369,7 +374,7 @@ class CarrinhoController extends Controller
 
             $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
             $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
-            
+
 
             $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
 
@@ -381,7 +386,7 @@ class CarrinhoController extends Controller
             } else {
                 $resultado = $cupomValida->valor_cupom;
             }
-           
+
             $valor = new CupomDescontoUtilizadores();
             $valor->id_cupom = $cupomValida->id;
             $valor->id_cliente = $this->sessao->getUser();
@@ -390,7 +395,7 @@ class CarrinhoController extends Controller
             $valor->save();
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $resultado,'resp' => 'apply','mensagem' => 'Cupom Aplicado com sucesso']);
+            $json = json_encode(['id' => $resultado, 'resp' => 'apply', 'mensagem' => 'Cupom Aplicado com sucesso']);
             exit($json);
         }
     }
@@ -402,12 +407,14 @@ class CarrinhoController extends Controller
         // dd($this->sessao->getSessao('carrinho'));
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $this->load('_cliente/carrinho/cadastro', [
             'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
@@ -426,19 +433,17 @@ class CarrinhoController extends Controller
             $ddi = '+55';
             $numerofinal = $ddi . $numeroTelefone;
 
-            $account_sid = 'AC3891f3248b6bd5bd3f299c1a89886814';
-            $auth_token = '3ce669b5e06e3a12578e1824dc75f132';
+            $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
+            $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
 
-            $client = new Client($account_sid, $auth_token);
-            $client->messages->create($numerofinal, array('from' => '+19096555675', 'body' => $mensagem));
             echo 'Enviamos em seu celular um código para validar seu acesso!';
             $usuario = $this->acoes->getByField('usuarios', 'telefone', $data['telefone']);
         } else {
             $getSenha = preg_replace('/[^0-9]/', '', $data['telefone']);
             $senha = $this->bcrypt->encrypt($getSenha, '2a');
 
-            $geradorSenha =  $this->geral->geraSenha();
-            $email = $geradorSenha . 'ath@automatiza.app';
+            $hash =  md5(uniqid(rand(), true));
+            $email = $hash . 'ath@automatizadelivery.com.br';
 
             $valor = new Usuarios();
             $valor->nome = $data['nome'];
@@ -460,7 +465,7 @@ class CarrinhoController extends Controller
             $this->sessao->sessaoNew('id_usuario', $usuario->id);
             $this->sessao->sessaoNew('usuario', $usuario->email);
             $this->sessao->sessaoNew('nivel', $usuario->nivel);
-            
+
 
 
             //$this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
@@ -471,8 +476,8 @@ class CarrinhoController extends Controller
 
             $cartAdicional = $this->acoes->counts('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'));
             if ($cartAdicional > 0) {
-                $cartAdicional = $this->acoes->getByFieldAllLoop('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'),'id_empresa', $empresa->id);
-                foreach($cartAdicional as $res){
+                $cartAdicional = $this->acoes->getByFieldAllLoop('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'), 'id_empresa', $empresa->id);
+                foreach ($cartAdicional as $res) {
                     $resAdd = (new CarrinhoAdicional())->findById($res->id);
                     $resAdd->id_cliente = $usuario->id;
                     $resAdd->save();
@@ -494,6 +499,7 @@ class CarrinhoController extends Controller
 
 
             if ($this->sessao->getUser()) {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
                 $valor = (new Carrinho())->findById($this->sessao->getSessao('carrinho'));
                 $valor->id_cliente = $usuario->id;
                 $valor->save();
@@ -527,19 +533,20 @@ class CarrinhoController extends Controller
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $resultCarrinho = $this->acoes->getByField('carrinho', 'id', $data['id']);
         $produto = $this->acoes->getByField('produtos', 'id', $resultCarrinho->id_produto);
-        $resultProdutoAdicionalCart = $this->acoes->getByFieldAll('carrinhoAdicional', 'id_carrinho', $data['id'],'id_empresa', $empresa->id);
+        $resultProdutoAdicionalCart = $this->acoes->getByFieldAll('carrinhoAdicional', 'id_carrinho', $data['id'], 'id_empresa', $empresa->id);
 
 
         $resultCarrinhoQtd = 0;
-        $somaAdicional = $this->acoes->sumFielsTree('carrinhoAdicional', 'id_carrinho', $data['id'], 'id_produto', $produto->id,'id_empresa', $empresa->id, 'quantidade * valor');
-        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
+        $somaAdicional = $this->acoes->sumFielsTree('carrinhoAdicional', 'id_carrinho', $data['id'], 'id_produto', $produto->id, 'id_empresa', $empresa->id, 'quantidade * valor');
+        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
         $resultProdutoAdicional = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
-        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id', $empresa->id);
+        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $resulTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
 
@@ -557,6 +564,7 @@ class CarrinhoController extends Controller
             'carrinho' => $resultCarrinho,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
@@ -568,6 +576,7 @@ class CarrinhoController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultProduto = $this->acoes->getByField('produtos', 'id', $data['id_produto']);
             $resultCarrinho = $this->acoes->getByFieldTwo('carrinho', 'id', $data['id_carrinho'], 'id_produto', $data['id_produto']);
 
@@ -579,7 +588,7 @@ class CarrinhoController extends Controller
                 echo $resultProduto->nome;
             }
         } else {
-            redirect(BASE . "{$empresa->link_site }/login");
+            redirect(BASE . "{$empresa->link_site}/login");
         }
     }
     public function deletarProdutoCarrinho($data)
@@ -589,16 +598,16 @@ class CarrinhoController extends Controller
         $valor = (new Carrinho())->findById($data['id_carrinho']);
         $valor->destroy();
 
-        if($resultProduto){
-            foreach($resultProduto as $res){
+        if ($resultProduto) {
+            foreach ($resultProduto as $res) {
                 $valorAd = (new CarrinhoAdicional())->findById($res->id);
                 $valorAd->destroy();
             }
-            redirect(BASE. "{$data['linkSite']}/carrinho");
+            redirect(BASE . "{$data['linkSite']}/carrinho");
         }
-        redirect(BASE. "{$data['linkSite']}/carrinho");
+        redirect(BASE . "{$data['linkSite']}/carrinho");
     }
-    
+
     public function carrinhoCheckoutUpdate($data)
     {
         $valor = (new Carrinho())->findById($data['id_carrinho']);
@@ -607,9 +616,8 @@ class CarrinhoController extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'url' => 'produto/adicional/atualiza']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'url' => 'produto/adicional/atualiza']);
         exit($json);
-        
     }
 
     public function carrinhoCheckoutFinal($data)
@@ -617,8 +625,8 @@ class CarrinhoController extends Controller
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $data['id_empresa'], 1, 'id', 'DESC');
 
-        if($carrinho){
-            foreach($carrinho as $cart){
+        if ($carrinho) {
+            foreach ($carrinho as $cart) {
                 $cartAdicional = (new Carrinho())->findById($cart->id);
                 $cartAdicional->numero_pedido = $data['numero_pedido'];
                 $cartAdicional->save();
@@ -627,15 +635,15 @@ class CarrinhoController extends Controller
 
         $carrinhoAdicional = $this->acoes->getByFieldAllTwoNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
 
-        if($carrinhoAdicional){
-            foreach($carrinhoAdicional as $cartAdic){
+        if ($carrinhoAdicional) {
+            foreach ($carrinhoAdicional as $cartAdic) {
                 $cartAdicional = (new CarrinhoAdicional())->findById($cartAdic->id);
                 $cartAdicional->numero_pedido = $data['numero_pedido'];
                 $cartAdicional->save();
             }
         }
 
-        if($data['cpf'] != null){
+        if ($data['cpf'] != null) {
             $cpf = new CarrinhoCPFNota();
             $cpf->id_cliente = $this->sessao->getUser();
             $cpf->id_empresa = $data['id_empresa'];
@@ -644,17 +652,17 @@ class CarrinhoController extends Controller
             $cpf->save();
         }
 
-        
+
         $pagamento = $data['tipo_pagamento'] == 7 ? $data['dinheiro'] : 0;
 
-        if($data['tipo_pagamento'] == 7){
+        if ($data['tipo_pagamento'] == 7) {
             $pagamento = $data['dinheiro'];
             $pagamentoCartão = $data['dinheiro'] - $data['total_pago'];
-        }else{
+        } else {
             $pagamentoCartão = $data['total_pago'];
         }
 
-        
+
         $cpp = new CarrinhoPedidoPagamento();
         $cpp->pag_dinheiro = $pagamento;
         $cpp->pag_cartao = $pagamentoCartão;
@@ -664,7 +672,7 @@ class CarrinhoController extends Controller
         $cpp->id_empresa = $data['id_empresa'];
         $cpp->save();
 
-        
+
 
         $pedido = new CarrinhoPedidos();
         $pedido->id_caixa = $estabelecimento[0]->id;
@@ -689,7 +697,7 @@ class CarrinhoController extends Controller
         //dd($pedido);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert','mensagem' => 'Pedido finalizado com sucesso']);
+        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'url' => 'admin/pedidos']);
         exit($json);
     }
 }

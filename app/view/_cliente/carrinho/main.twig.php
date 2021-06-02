@@ -148,7 +148,7 @@
                     <input type="text" class="form-control" id="trocoCli" placeholder="Total em Dinheiro"
                         name="trocoCli">
 
-                    <a class="btn btn-primary full-btn" href="#" id="calcularTroco"> Calcular Troco </a>
+                    <a class="btn btn-primary full-btn mt-2" href="#" id="calcularTroco"> Calcular Troco </a>
                 </div>
 
 

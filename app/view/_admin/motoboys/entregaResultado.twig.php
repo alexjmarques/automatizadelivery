@@ -3,9 +3,9 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="mb-4">Dados Motoboy </h5>
-                <strong>Nome:</strong>   {{ motoboy[':nome']}}</br>
-                <strong>Email:</strong> {{ motoboy[':email']}}</br>
-                <strong>Telefone:</strong> {{ motoboy[':telefone']}}</br>
+                <strong>Nome:</strong>   {{ usuario.nome }}</br>
+                <strong>Email:</strong> {{ usuario.email }}</br>
+                <strong>Telefone:</strong> {{ usuario.telefone }}</br>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-md-12 pl-0 ml-0">
-                        <p class="text-left">Para informar que os valores já foram pagos ao Motoboy {{ motoboy[':nome']}}, selecione o item desejado. Após isso no menu "Ação", selecione a opção "Informar Pagamento".</p>
+                        <p class="text-left">Para informar que os valores já foram pagos ao Motoboy {{ usuario.nome}}, selecione o item desejado. Após isso no menu "Ação", selecione a opção "Informar Pagamento".</p>
                         </div>
                         
                             <table class="table table-striped">
@@ -53,18 +53,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                
 
                                 {% set count = 0 %}
                                 {% for en in busca %}
-                                    {% if en[':data'] >= data_inicio %}
-                                    {% if en[':data'] <= dataTermino %}
 
-                                    {% if en[':id_motoboy'] == motoboy[':id'] %}
+                                {% if en.id_motoboy == motoboy.id %}
+                                {% if data_inicio >= en.created_at|date('d/m/Y') %}
+                                    {% if en.created_at|date('d/m/Y') <= dataTermino %}
                                         <tr>
                                         <th scope="row">
-                                        {% if en[':pago'] is null %}
+                                        {% if en.pago is null %}
                                                 <label class="custom-control custom-checkbox mb-0 align-self-center mr-4 mb-1 check-button">
-                                                    <input type="checkbox" class="custom-control-input checkItem" name="pago[]" id="pago{{en[':id']}}" value="{{en[':id']}}">
+                                                    <input type="checkbox" class="custom-control-input checkItem" name="pago[]" id="pago{{en.id}}" value="{{en.id}}">
                                                     <span class="custom-control-label">&nbsp;</span>
                                                 </label>
                                                 {% endif %}
@@ -72,37 +73,37 @@
                                                 
                                             </th>
                                             <td>
-                                                #{{en[':numero_pedido']}}
+                                                #{{en.numero_pedido}}
                                             </td>
                                             <td>
-                                                {{en[':data']|date('d/m/Y')}} {{en[':hora']|date('H:i')}}
+                                                {{en.created_at|date('d/m/Y')}} {{en.created_at|date('H:i')}}
                                             </td>
                                             <td>
-                                                {% if en[':status'] == 4 %}
+                                                {% if en.status == 4 %}
                                                 <span class="badge badge-success white-color">Entregue</span>
                                                 {% endif %}
-                                                {% if en[':status'] == 5 %}
+                                                {% if en.status == 5 %}
                                                 <span class="badge badge-danger white-color">Recusado</span>
                                                 {% endif %}
-                                                {% if en[':status'] == 6 %}
+                                                {% if en.status == 6 %}
                                                 <span class="badge badge-secondary white-color">Cancelado</span>
                                                 {% endif %}
                                             </td>
 
                                             <td>
-                                                <p class="text-left">{{ en[':observacao }}</p>
+                                                <p class="text-left">{{ en.observacao }}</p>
                                             </td>
                                             <td>
-                                                {% if en[':pago'] is not null %}
-                                                <span class="text-success cartao text-center" data-toggle="tooltip" data-placement="top" title="Pago ao Motoboy {{ motoboy[':nome']}}"><i class="simple-icon-check"></i></span>
+                                                {% if en.pago is not null %}
+                                                <span class="text-success cartao text-center" data-toggle="tooltip" data-placement="top" title="Pago ao Motoboy {{ motoboy.nome}}"><i class="simple-icon-check"></i></span>
                                                 {% else %}
-                                                <span class="text-danger cartao text-center" data-toggle="tooltip" data-placement="top" title="Motoboy {{ motoboy[':nome']}} aguardando Pagamento"><i class="simple-icon-close"></i></span>
+                                                <span class="text-danger cartao text-center" data-toggle="tooltip" data-placement="top" title="Motoboy {{ motoboy.nome}} aguardando Pagamento"><i class="simple-icon-close"></i></span>
                                                 {% endif %}
                                             </td>
                                             <td>
                                             {% for p in pedidos %}
-                                                {% if p[':numero_pedido'] == en[':numero_pedido'] %}
-                                                    <span class="sum" data-valor="{{ (p[':valor_frete'] - frete[':taxa_entrega_motoboy'])}}">{{ moeda[':simbolo }} {{ (p[':valor_frete'] - frete[':taxa_entrega_motoboy'])|number_format(2, ',', '.')}}<span>
+                                                {% if en.numero_pedido in p.numero_pedido %}
+                                                    <span class="sum" data-valor="{{ (p.valor_frete - frete.taxa_entrega_motoboy)}}">{{ moeda.simbolo }} {{ (p.valor_frete - frete.taxa_entrega_motoboy)|number_format(2, ',', '.')}}<span>
                                                 {% endif %}
                                             {% endfor %}
 
@@ -152,41 +153,39 @@ $('#valorTotal').text(valorFormatado);
 $('#checkAll').click(function () {$(':checkbox.checkItem').prop('checked', this.checked)});
 $("#formInfoPagamento").submit(function () {
     var checkeds = new Array();
-    $("input[name='pago[]']:checked").each(function ()
+    $("input[name='pago[]:checked").each(function ()
     {
-    checkeds.push(parseInt($(this).val()));
+        checkeds.push(parseInt($(this).val()));
     })
-    var formData = { 'pago': checkeds }
+    var formData = {checkeds}
         $.ajax({
-          url: "{{BASE}}admin/informar/pagamento/entregas",
+          url: "{{BASE}}{{empresa.link_site}}/admin/informar/pagamento/entregas",
           type: 'get',
           data: formData,
-          success: function (data) {
-            $.get("{{BASE}}admin/buscar/entregas", function (dd) {
+          success: function (dd) {
+            console.log(dd);
+            $.post("{{BASE}}{{empresa.link_site}}/admin/buscar/entregas", function (dd) {
               var id_motoboy = $(`#id_motoboy option:selected`).val();
               var inicio = $(`#inicio`).val();
               var hora_inicio = $(`#hora_inicio`).val();
               var termino = $(`#termino`).val();
               var horaFim = $(`#horaFim`).val();
               var formData = { id_motoboy, inicio, hora_inicio, termino, horaFim }
-
               if (parseInt(id_motoboy) === 0) {
                 $('#mensagem').html(`<div class="alert alert-danger" role="alert">Para efetuar uma busca selecione um Motoboy as Data e Hora de Início e Fim para que o sistema possa carregar os dados</div>`)
               } else {
-                $.ajax({
-                  url: "{{BASE}}admin/buscar/entregas",
-                  type: 'get',
-                  data: formData,
-                  beforeSend: function () {
-                    $('.carregar').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-                  },
-                  complete: function (data) {
-                    $('.carregar').html('');
-                  },
-                  success: function (data) {
-                    $('#buscaResultado').html(data);
-                  }
-                });
+                    $.post({
+                    url: "{{BASE}}{{empresa.link_site}}/admin/buscar/entregas",
+                    type: 'get',
+                    data: formData,
+                    beforeSend: function () {$('.carregar').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');},
+                    complete: function (dd) {
+                        $('.carregar').html('');
+                    },
+                    success: function (dd) {
+                        $('#buscaResultado').html(dd);
+                    }
+                    });
               }
               $('#buscaResultado').html(dd);
               $('#mensagem').html('')

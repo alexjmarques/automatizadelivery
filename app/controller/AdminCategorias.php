@@ -17,7 +17,7 @@ use app\classes\Sessao;
 
 class AdminCategorias extends Controller
 {
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,13 +32,12 @@ class AdminCategorias extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
         $this->cache = new Cache();
         $this->acoes = new Acoes();
-        
     }
 
     public function index($data)
@@ -49,6 +48,7 @@ class AdminCategorias extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -60,8 +60,8 @@ class AdminCategorias extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $resultCategorias = $this->acoes->pagination('categorias','id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
-        
+        $resultCategorias = $this->acoes->pagination('categorias', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+
         $this->load('_admin/categorias/main', [
             'categorias' => $resultCategorias,
             'paginacao' => $pager->render('mt-4 pagin'),
@@ -69,9 +69,9 @@ class AdminCategorias extends Controller
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
 
@@ -83,21 +83,22 @@ class AdminCategorias extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/categorias/novo', [
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
 
@@ -110,22 +111,23 @@ class AdminCategorias extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/categorias/editar', [
             'retorno' => $retorno,
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
 
@@ -141,7 +143,7 @@ class AdminCategorias extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert','mensagem' => 'Categoria cadastrada com sucesso','error' => 'Não foi posível cadastrar a categoria','url' => 'categorias',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria', 'url' => 'categorias',]);
         exit($json);
     }
 
@@ -157,7 +159,7 @@ class AdminCategorias extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria','url' => 'categorias',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria', 'url' => 'categorias',]);
         exit($json);
     }
 
@@ -166,8 +168,6 @@ class AdminCategorias extends Controller
         $valor = (new Categorias())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE. "{$data['linkSite']}/admin/categorias");
+        redirect(BASE . "{$data['linkSite']}/admin/categorias");
     }
-
-    
 }

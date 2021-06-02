@@ -6,14 +6,14 @@
 </div>
 <div class="col-md-5 float-left pr-0">
     <div class="quantidade">
-        <div class="input-group">
+        <div class="input-group" style="width: 127px;">
             <span class="input-group-btn">
-                <button type="button" class="btn btn-danger btn-number quantity-left-minus"  data-type="minus" data-field=""><span class="simple-icon-minus"></span></button>
+                <button type="button" class="btn btn-danger btn-number quantity-left-minus"  data-type="minus" data-field=""><span class="fa fa-minus"></span></button>
             </span>
-                <input type="text" id="quantity" name="quantity" class="count-number-input input-number" value="0" min="1" max="100">
+                <input type="text" id="quantity" name="quantity" class="count-number-input input-number" value="1" min="1" max="100">
                 
             <span class="input-group-btn">
-                <button type="button" class="btn btn-success btn-number quantity-right-plus" data-type="plus" data-field=""><span class="simple-icon-plus"></span></button>
+                <button type="button" class="btn btn-success btn-number quantity-right-plus" data-type="plus" data-field=""><span class="fa fa-plus"></span></button>
             </span>
         </div>
    </div>
@@ -24,11 +24,11 @@
     {% if produto.sabores is not null %}
         <div class="col-md-12 pl-0">
             <div class="mdc-card" id="add_itenSabores">
-                <h5>Sabores </h5>
+                <h5>Sabores <span style="color:red;">*</span></h5>
                     {% for padici in produtoSabores %}
                         {% if padici.id in produto.sabores %}
                         <div class="custom-control custom-radio border-bottom py-2">
-                            <input class="custom-control-input" type="radio" id="id_sabor{{padici.id}}" name="sabores[]" value="{{padici.id}}">
+                            <input class="custom-control-input" type="radio" id="id_sabor{{padici.id}}" name="sabores[]" value="{{padici.id}}" required>
                             <label class="custom-control-label" for="id_sabor{{padici.id}}">{{padici.nome}}</label>
                         </div>
                         {% endif%}
@@ -46,80 +46,75 @@
     <div class="bg-cian turbine">
         <div class="col-md-12 p-0">
             <div class="mdc-card" id="add_itens">
-                <h5>Turbinar pedido
-                    {% if produto.tipoAdicional == 1 %}
-                    <span class="adicional_item"> (escolha {{produto.tipoAdicional}} item) </span> <span class="adicional_item_ok"> {{produto.tipoAdicional}} item selecionado </span>
-                    {% else %}
-                    <span class="adicional_item"> (escolha {{produto.tipoAdicional}} itens) </span> <span class="adicional_item_ok"> {{produto.tipoAdicional}} itens selecionados </span>
-                    {% endif%}   
-                </h5>
+                <h5>Turbinar pedido</h5>
                 <p>Complementos para o pedido!</p>
-                <div id="itens_value" class="hide">{{produto.tipoAdicional}}</div>
-                {% if produto.tipoAdicional == 1 %}
-                    {% for padici in produtoAdicional %}
-                    {% if padici.id in produto.adicional %}
-                    <div class="custom-control custom-radio col-md-9 border-bottom py-2">
-                        <input class="custom-control-input" type="radio" id="id_adicional{{padici.id}}" name="adicional[]" value="{{padici.id}}" valor="{% if padici.valor is null %}0.00{% else %}{{padici.valor}}{% endif %}">
-                        <label class="custom-control-label" for="id_adicional{{padici.id}}">{{padici.nome}} 
-                        {% if padici.valor == 0.00 %}
-                        <span class="text-muted">Gratis</span>
-                        {% else %}
-                        <span class="text-muted">{{moeda.simbolo}} {{padici.valor|number_format(2, ',', '.')}}</span>
-                        <input type="hidden" id="valor{{padici.id}}" name="valor{{padici.id}}" value="{{padici.valor}}">
-                        {% endif %}
-                    </label>
+                {% for ta in tipoAdicional %}
+                        <div id="{{ ta.slug }}" data-tipo="{{ ta.slug }}"
+                            data-tipo_escolha="{{ ta.tipo_escolha}}" data-qtd="{{ ta.qtd }}">
+                            <h6 class="clearfix mt-3 bold">{{ ta.tipo}}
+                                {% if ta.tipo_escolha == 2 %}
+                                {% if ta.qtd == 1 %}
+                                <span class="adicional_item"> ({{ta.qtd}} item Obrigatório) </span> <span
+                                    class="adicional_item_ok"> {{ta.qtd}} selecionado </span>
+                                {% else %}
+                                <span class="adicional_item"> ({{ta.qtd}} itens Obrigatórios) </span> <span
+                                    class="adicional_item_ok"> {{ta.qtd}} selecionados </span>
+                                {% endif %}
+                                {% endif %}
+                                {% if ta.tipo_escolha == 3 %}
+                                <span class="adicional_item"> (escolha até {{ta.qtd}} itens) </span> <span
+                                    class="adicional_item_ok"></span>
+                                {% endif%}
+                            </h6>
 
-                    <div class="input-group plus-minus-input boRight col-md-3 p-0 id_adicional{{padici.id}}" style="display:none;">
-                            <div class="input-group-button">
-                                <button type="button" class="btn btn-danger btn-number minuss" id-select="{{padici.id}}" data-quantity="minus" data-field="qtd_ad{{padici.id}}">
-                                <i class="simple-icon-minus"></i>
-                                </button>
+                            {% for padici in produtoAdicional %}
+                            {% if ta.id == padici.tipo_adicional %}
+                            {% if padici.id in produto.adicional %}
+                            <div class="custom-control border-bottom py-3">
+                                <input class="custom-control-input" type="checkbox" data-tipoSlug="{{ ta.slug}}"
+                                    id="id_adicional{{padici.id}}" name="adicional[]" value="{{padici.id}}"
+                                    valor="{% if padici.valor is null %}0.00{% else %}{{padici.valor}}{% endif %}">
+                                <label class="custom-control-label"
+                                    for="id_adicional{{padici.id}}">{{padici.nome}}
+                                    {% if padici.valor == 0.00 %}
+                                    - <span class="text-success">Grátis</span>
+                                    {% else %}
+                                    - <span class="text-muted">{{moeda.simbolo}}
+                                        {{padici.valor|number_format(2, ',', '.')}}</span>
+                                    <input type="hidden" id="valor{{padici.id}}" name="valor{{padici.id}}"
+                                        value="{{padici.valor}}">
+                                    {% endif %}
+                                </label>
+                                <div class="quantidade">
+                                <div class="input-group plus-minus-input id_adicional{{padici.id}}"
+                                    style="display:none;">
+                                    <div class="input-group-button">
+                                        <button type="button" class="btn btn-danger btn-number minuss"
+                                            id-select="{{padici.id}}" data-quantity="minus"
+                                            data-field="qtd_ad{{padici.id}}">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="number" id="qtd_ad{{padici.id}}" min="1"
+                                        name="qtd_ad{{padici.id}}"
+                                        class="input-group-field qtd-control id_adicional{{padici.id}}" value="1">
+                                    <div class="input-group-button">
+                                        <button type="button" class="btn btn-success btn-number"
+                                            id-select="{{padici.id}}" data-quantity="plus"
+                                            data-field="qtd_ad{{padici.id}}">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                </div>
+
                             </div>
-                            <input type="number" id="qtd_ad{{padici.id}}" min="1" name="qtd_ad{{padici.id}}" class="input-group-field qtd-control id_adicional{{padici.id}}"  value="0">
-                            <div class="input-group-button">
-                                <button type="button" class="btn btn-success btn-number" id-select="{{padici.id}}" data-quantity="plus" data-field="qtd_ad{{padici.id}}">
-                                <i class="simple-icon-plus"></i>
-                                </button>
-                            </div>
+                            {% endif%}
+                            {% endif%}
+                            {% endfor%}
                         </div>
-
-                    </div>
-                    {% endif%}
-                    {% endfor%}
-
-                {% else %}
-                {% for padici in produtoAdicional %}
-                    {% if padici.id in produto.adicional %}
-                    <div class="custom-control border-bottom py-2">
-                        <input class="custom-control-input" type="checkbox" id="id_adicional{{padici.id}}" name="adicional[]" value="{{padici.id}}" valor="{% if padici.valor is null %}0.00{% else %}{{padici.valor}}{% endif %}">
-
-                    <label class="custom-control-label col-md-9" for="id_adicional{{padici.id}}">{{padici.nome}} 
-                        {% if padici.valor == 0.00 %}
-                        <br/><span class="text-success">Grátis</span>
-                        {% else %}
-                        <br/><span class="text-muted">{{moeda.simbolo}} {{padici.valor|number_format(2, ',', '.')}}</span>
-                        <input type="hidden" id="valor{{padici.id}}" name="valor{{padici.id}}" value="{{padici.valor}}">
-                        {% endif %}
-                    </label>
-                    
-                        <div class="input-group boRight plus-minus-input col-md-3 id_adicional{{padici.id}}" style="display:none;">
-                            <div class="input-group-button">
-                                <button type="button" class="btn btn-danger btn-number minuss" id-select="{{padici.id}}" data-quantity="minus" data-field="qtd_ad{{padici.id}}">
-                                <i class="simple-icon-minus"></i>
-                                </button>
-                            </div>
-                            <input type="number" id="qtd_ad{{padici.id}}" min="1" name="qtd_ad{{padici.id}}" class="input-group-field qtd-control id_adicional{{padici.id}}"  value="0">
-                            <div class="input-group-button">
-                                <button type="button" class="btn btn-success btn-number" id-select="{{padici.id}}" data-quantity="plus" data-field="qtd_ad{{padici.id}}">
-                                <i class="simple-icon-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                    {% endif%}
-                    {% endfor%}
-                {% endif%}
+                        {% endfor%}
+             
                 </div>
             </div>
             <hr>
@@ -137,465 +132,39 @@
     <hr>
     <div class="clearfix"></div>
 
-        {% if produto.sabores is null %}
-            <input type="hidden" name="id_adicional" id="id_adicional" value="0">
-        {% else %}
-            <input type="hidden" name="id_adicional" id="id_adicional" value="1">
-        {% endif %}
-        <input type="hidden" name="id_produto" id="id_produto" value="{{produto.id}}">
-        <input type="hidden" name="tipoAdicional" id="tipoAdicional" value="{{produto.tipoAdicional}}">
-
-        <input type="hidden" name="valorFinal" id="valorFinal" value="{{ produto.valor }}">
-
+        <input type="hidden" name="id_adicional" id="id_adicional" value="{{ produto.adicional }}">
         <input type="hidden" name="chave" id="chave" value="{{chave}}">
-        <input type="hidden" name="id_cliente" id="id_cliente" value="{{id_cliente}}">
-
-        <input type="hidden" name="id_carrinho" id="id_carrinho" value="">
-        
-        
+        <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}"> 
         <input type="hidden" name="valor" id="valor" value="{% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
 
-        <p class="mb-1">Valor unitário <span class="float-right text-dark">{{ moeda.simbolo }} 
-        {% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional|number_format(2, ',', '.') }}{% else %}{{ produto.valor|number_format(2, ',', '.') }}{% endif %}</span></p>
-        <hr>
-        <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span id="total">{{ moeda.simbolo }} {% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional|number_format(2, ',', '.') }}{% else %}{{ produto.valor|number_format(2, ',', '.') }}{% endif %}</span></span></h6>
-
-
-        {% if produto.status == 1 %}
-                
-<button class="btn btn-success btn-block btn-lg addStyle mt-4">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
+        {% if produto.status == 1 %}   
+        <button class="btn btn-success btn-block btn-lg addStyle mt-4">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
         {% endif %}
 
 </div>
 </form>
 
+
 <script>
-    $('#add_itenSabores').hide();
-var formatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
-
-$('.adicional_item_ok, .sabor_item_ok').hide();
-var vi = $("#add_itens").length;
-var qb = $("#add_itens #itens_value").text();
-var vi2 = $("#add_itenSabores").length;
-var qb2 = $("#add_itenSabores #itens_value").text();
-var iqba = $("#add_itens #itens_value").text();
-
-(qb2 === "0") ? $('.sabor_item, .sabor_item_ok').hide() : $('.sabor_item').show();
-(qb === "0") ? $('.adicional_item, .adicional_item_ok').hide() : $('.adicional_item').show();
-
-var iqb2 = $("#add_itenSabores #itensSabores_value").text();
-
-$('#add_itenSabores input[type=checkbox]').on('change', function (e) {
-    e.preventDefault();
-    $('#add_itenSabores').show();
-    if($('#add_itenSabores input[type=radio]').length == 0){
-        $('.turbine').show();
+    $(document).ready(function () {
+    if ($(document).find(`[data-tipo_escolha='2']`).length > 0) {
+        $(`.addStyleMod, .addStyleModT, .addStyle`).hide();
     }
-    var a2 = $('#add_itenSabores input[type=checkbox]:checked').length;
-    var $this = $(this);
-    if (a2 == iqb2) {
-        $('.sabor_item').hide();
-        $('.sabor_item_ok').show();
-        $(".addStyle").show()
-    } else {
-        $('.sabor_item').show();
-        $('.sabor_item_ok').hide();
-        $(".addStyle").hide()
-    }
-    if (a2 > iqb) {
-        $this.prop('checked', false);
-        $this.closest('label').removeClass('active');
-        alert("Você só pode selecionar " + iqb2 + " itens");
-        $('.sabor_item').hide();
-        $('.sabor_item_ok').show();
-        $(".addStyle").show()
-        return;
-    }
-    $(this).closest('.hovereffect').toggleClass('clic');
-});
-
-if($('#add_itenSabores input[type=radio]').length == 0){
-        $('.turbine').hide();
-    }
-
-if($('#add_itenSabores input[type=radio]').length > 0){
-    $('.turbine').hide();
-}
-
-$('#add_itenSabores input[type=radio]').on('change', function (e) {
-    e.preventDefault();
-    var a2 = $('#add_itenSabores input[type=radio]:checked').length;
-    var $this = $(this);
-    $('#add_itenSabores').show();
-    if($('#add_itenSabores input[type=radio]').length == 0){
-        $('.turbine').show();
-    }
-
-    if (a2 == iqb2) {
-        $('.sabor_item').hide();
-        $('.sabor_item_ok').show();
-        $(".addStyle").show()
-        $('.turbine').show();
-    } else {
-        $('.sabor_item').show();
-        $('.sabor_item_ok').hide();
-        $(".addStyle").hide()
-        $('.turbine').hide();
-        
-    }
-    if (a2 > iqb2) {
-        $this.prop('checked', false);
-        $this.closest('label').removeClass('active');
-        alert("Você só pode selecionar " + iqb2 + " itens");
-        $('.sabor_item').hide();
-        $('.sabor_item_ok').show();
-        $(".addStyle").show()
-        return;
-    }
-    $(this).closest('.hovereffect').toggleClass('clic');
-});
-//Produto Adicional
-var iqb = $("#add_itens #itens_value").text();
-
-$('#add_itens input[type=checkbox]').on('change', function (e) {
-    e.preventDefault();
-
-    var a = $('#add_itens input[type=checkbox]:checked').length;
-    var adv = $(this).val();
-    var adv_att = $(this).attr('id'); //Get Id do item selecionado
-    var vrec = $(this).attr('valor'); //Coloca em uma variavel e pega o valor em R$
-    var vb = $('#valorFinal').val(); // Valor do Produto    
-    if ($(this).is(":checked")) {
-        $(`.${adv_att}`).show();
-        var vc = parseFloat(vb) + parseFloat(vrec);
-        $(".addStyle").hide();
-        $(`#qtd_ad${adv}`).val(0);
-        $(".addStyleMod").hide();
-        $(".addStyleModT").hide();
-        $(".quantity-left-minus").attr("disabled", true);
-        $(".quantity-right-plus").attr("disabled", true);
-        $(`#${adv_att}`).attr("disabled", true);
-    } else {
-        $(`.${adv_att}`).hide();
-        var vc = parseFloat(vb) - parseFloat(vrec);
-        $(`.${adv}`).hide();
-        $(".addStyle").show();
-        $(".addStyleMod").show();
-        $(".addStyleModT").show();
-
-        $(".quantity-left-minus").attr("disabled", false);
-        $(".quantity-right-plus").attr("disabled", false);
-        $(`#${adv_att}`).attr("disabled", false);
-
-        var chave = $('#chave').val();
-        var id_carrinho = $('#id_carrinho').val();
-        var id_cliente = $('#id_cliente').val();
-
-        $.ajax({
-            url: `{{BASE}}admin/produto/removeCarrinho/adicionalis/${chave}`,
-            type: 'get',
-            data: {
-                chave: chave,
-                id_carrinho: id_carrinho,
-                id_adicional: adv,
-                id_cliente: id_cliente
-            },
-            success: function (dd) {
-                var novoValor = (parseFloat(vb) - parseFloat(dd));
-                if(!isNaN(novoValor) ){
-                    $('#total').text(formatter.format(novoValor));
-                    $(`#id_adicional${advS}`).attr("disabled", false);
-                }
-            }, error: function (xhr) {
-            }
-        });
-        $(".addStyle").show();
-
-    }
-
-    if (iqb == 0) {
-
-    } else {
-        if (a == iqb) {
-            $('.adicional_item').hide();
-            $('.adicional_item_ok').show();
-            if (vi > 0) {
-                var a = $('#add_itens input[type=checkbox]:checked').length;
-            }
-        } else {
-            $('.adicional_item').show();
-            $('.adicional_item_ok').hide();
-        }
-        if (a > iqb) {
-            $this.prop('checked', false);
-            $this.closest('label').removeClass('active');
-            if (qb != 0) {
-                alert("Você só pode selecionar " + iqb + " itens");
-            }
-            $('.adicional_item').hide();
-            $('.adicional_item_ok').show();
-            return;
-        }
-    }
-    $(this).closest('.hovereffect').toggleClass('clic');
-});
-
-//Radio Buttom
-$('#add_itens input[type=radio]').on('change', function (e) {
-    e.preventDefault();
-    var a = $('#add_itens input[type=radio]:checked').length;
-    var $this = $(this);
-
-    var adv = $('input[name="adicional[]"]:checked').attr('id');
-    var vrec = $("#" + adv).attr('valor');
-    var adv_att = $(this).attr('id');
-    var vb = $('#valor').val();
-    var qtd_i = $('#quantity').val();
-
-    $('#valor_bd').val(parseFloat(vc));
-    if ($(this).is(":checked")) {
-        if (vrec === "") {
-            var vc = parseFloat(qtd_i) * parseFloat(vb);
-        } else {
-            var vc = (parseFloat(qtd_i) * parseFloat(vb)) + parseFloat(vrec);
-        }
-        $(".addStyleMod").hide();
-        $(".addStyleModT").hide();
-        $(".quantity-left-minus").attr("disabled", true);
-        $(".quantity-right-plus").attr("disabled", true);
-        $(`#${adv_att}`).attr("disabled", true);
-    } else {
-        if (vrec === "") {
-            var vc = parseFloat(qtd_i) * parseFloat(vb);
-        } else {
-            var vc = (parseFloat(qtd_i) * parseFloat(vb)) + parseFloat(vrec);
-        }
-        $(`.${adv}`).show();
-        $(".addStyleMod").show();
-        $(".addStyleModT").show();
-        $(".quantity-left-minus").attr("disabled", false);
-        $(".quantity-right-plus").attr("disabled", false);
-        $(`#${adv_att}`).attr("disabled", false);
-    }
-
-    if (a == iqb) {
-        $('.adicional_item').hide();
-        $('.adicional_item_ok').show();
-        $(`.${adv}`).show();
-    } else {
-        $('.adicional_item').show();
-        $('.adicional_item_ok').hide();
-        $(`.${adv}`).hide();
-    }
-    if (a > iqb) {
-        $this.prop('checked', false);
-        $this.closest('label').removeClass('active');
-        if (qb != 0) {
-            alert("Você só pode selecionar " + iqb + " itens");
-        }
-        $('.adicional_item').hide();
-        $('.adicional_item_ok').show();
-        $(`.${adv}`).show();
-        return;
-    }
-    $(this).closest('.hovereffect').toggleClass('clic');
-    $(".addStyle").hide()
-});
-
-
-$('[data-quantity="plus"]').click(function (e) {
-    e.preventDefault();
-    $('.minuss').prop("disabled", false);
-    $('#add_itenSabores').show();
-    if($('#add_itenSabores input[type=radio]').length == 0){
-        $('.turbine').show();
-    }
-
-    fieldName = $(this).attr('data-field');
-    var currentVal = parseInt($('input[name=' + fieldName + ').val());
-
-    if (!isNaN(currentVal)) {
-        $('input[name=' + fieldName + ').val(currentVal + 1);
-
-        var advS = $(this).attr('id-select');
-        var vrecAd = $(`#id_adicional${advS}`).attr('valor');
-
-        let vbA = $('#valorFinal').val();
-
-        let vAdicional = parseFloat(vrecAd) + parseFloat(vbA);;
-        $('#total').text(formatter.format(vAdicional));
-        $('#valorFinal').val(vAdicional);
-
-    } else {
-        $('input[name=' + fieldName + ').val(0);
-    }
-
-    var id_adicional = $(`#id_adicional${advS}`).val();
-    var quantidade = $(`#qtd_ad${advS}`).val();
-    var numero_pedido = $('#numero_pedido').val();
-    var id_produto = $('#id_produto').val();
-    var id_carrinho = $('#id_carrinho').val();
-    var id_cliente = $('#id_cliente').val();
-    var valor = $(`#valor${advS}`).val();
-    $.ajax({
-        url: `{{BASE}}admin/produto/addCarrinho/adicionais`,
-        type: 'get',
-        data: {
-            id_adicional: id_adicional,
-            id_produto: id_produto,
-            id_cliente: id_cliente,
-            id_carrinho: id_carrinho,
-            valor: valor,
-            quantidade: quantidade,
-            numero_pedido: numero_pedido,
-            chave: chave
-        },
-        success: function (response) {
-            //console.log(response)
-        }, error: function (xhr) {
+    $('#add_itenSabores').each(function () {
+        if (parseInt($(`#add_itenSabores`).length) > 0) {
+            $(`.addStyle`).hide();
         }
     });
-    $(".addStyle").show()
-});
-
-$('.addFavorito').click(function (e) {
-    e.preventDefault();
-    let id = $(this).attr('data-favorito');
-
-    $.ajax({
-        url: `favorito/${id}`,
-        type: 'get',
-        data: {
-            id: id
-        },
-        success: function (response) {
-            //console.log(response)
-
-            switch (response) {
-                case 'Favorito Cadastrado':
-                    $(`#itFavorito${id}`).removeClass('fa-heart-o')
-                    $(`#itFavorito${id}`).addClass('fa-heart')
-                    break;
-                default:
-                    $(`#itFavorito${id}`).removeClass('fa-heart')
-                    $(`#itFavorito${id}`).addClass('fa-heart-o')
-                    break;
-            }
-
-        }, error: function (xhr) {
+    $('[data-tipo]').each(function (i, ele) {
+        let verifica = $(`#${ele['id']} .custom-control`).length
+        if (parseInt(verifica) === 0) {
+            $(`#${ele['id']}`).remove();
         }
     });
 });
-
-
-//Radio Buttom
-$('.radioMoto input[type=radio]').on('change', function (e) {
-    e.preventDefault();
-    var status = $(this).val();
-
-    if ($(this).is(":checked")) {
-        if (status === "4") {
-            $('.status4').addClass('border-primary')
-            $('.status5').removeClass('border-primary')
-            $('.recusaInfo').hide()
-            $("#observacao").attr("required", "false");
-            $("#fullBtnNac").text("INFORMAR AO RESTAURANTE");
-        } else if (status === "5") {
-            $('.status4').removeClass('border-primary')
-            $('.status5').addClass('border-primary')
-            $('.recusaInfo').show()
-            $("#observacao").attr("required", "true");
-            $("#fullBtnNac").text("INFORMAR RECUSA DO CLIENTE");
-        }
-    }
-});
-
-
-// This button will decrement the value till 0
-$('[data-quantity="minus"]').click(function (e) {
-    e.preventDefault();
-
-    fieldName = $(this).attr('data-field');
-    var currentVal = parseInt($('input[name=' + fieldName + ').val());
-
-    if (!isNaN(currentVal) && currentVal > 0) {
-        $('input[name=' + fieldName + ').val(currentVal - 1);
-        var advS = $(this).attr('id-select');
-        var vrecAd = $(`#id_adicional${advS}`).attr('valor');
-        let vbA = $('#valorFinal').val();
-        let vAdicional = parseFloat(vbA) - parseFloat(vrecAd);
-        $('#total').text(formatter.format(vAdicional));
-        $('#valorFinal').val(vAdicional);
-
-    } else {
-        $('input[name=' + fieldName + ').val(0);
-    }
-    var currentVal = parseInt($('input[name=' + fieldName + ').val());
-
-    if (currentVal === 0) {
-        $(`#id_adicional${advS}`).prop('checked', false);
-        $(`.id_adicional${advS}`).hide();
-        $(".addStyle").show();
-        var chave = $('#chave').val();
-        var id_carrinho = $('#id_carrinho').val();
-        var id_cliente = $('#id_cliente').val();
-        $.ajax({
-            url: `{{BASE}}admin/produto/removeCarrinho/adicionalis/${chave}`,
-            type: 'get',
-            data: {
-                chave: chave,
-                id_carrinho: id_carrinho,
-                id_adicional: advS,
-                id_cliente: id_cliente
-            },
-            success: function (dd) {
-                //console.log(dd);
-                $(`#id_adicional${advS}`).attr("disabled", false);
-            }, error: function (xhr) {
-            }
-        });
-    }
-
-    var id_adicional = $(`#id_adicional${advS}`).val();
-    var quantidade = $(`#qtd_ad${advS}`).val();
-    var numero_pedido = $('#numero_pedido').val();
-    var id_produto = $('#id_produto').val();
-    var id_carrinho = $('#id_carrinho').val();
-    var id_cliente = $('#id_cliente').val();
-    var valor = $(`#valor${advS}`).val();
-
-    $.ajax({
-        url: `{{BASE}}admin/produto/addCarrinho/adicionais`,
-        type: 'get',
-        data: {
-            id_adicional: id_adicional,
-            id_produto: id_produto,
-            id_carrinho: id_carrinho,
-            id_cliente: id_cliente,
-            valor: valor,
-            quantidade: quantidade,
-            numero_pedido: numero_pedido,
-            chave: chave
-        },
-        success: function (response) {
-            //console.log(response)
-        }, error: function (xhr) {
-        }
-    });
-
-});
-
 
 $('.quantity-left-minus, .minuss').prop("disabled", true);
-
-
 $('.quantity-right-plus').click(function (e) {
-    e.preventDefault();
-    $('#add_itenSabores').show();
-    //console.log(this)
-    if($('#add_itenSabores input[type=radio]').length == 0){
-        $('.turbine').show();
-    }
 
     var a = $('#add_itens input[type=checkbox]:checked').length;
     var b = $('#add_itens input[type=radio]:checked').length;
@@ -606,18 +175,14 @@ $('.quantity-right-plus').click(function (e) {
 
     var quantity = parseInt($('#quantity').val());
     var valor = parseFloat($('#valor').val());
-    var valorFinalAtual = parseInt($('#valorFinal').val());
     if (quantity === 1) {
         $('.quantity-left-minus').prop("disabled", true);
     }
 
     $('#quantity').val(quantity + 1);
     var quantityAtual = parseInt($('#quantity').val());
-    var valorAdicional = quantityAtual * valor - valorFinalAtual;
-
-    console.log(valorAdicional);
-
-    
+    $('#valorFinal').val(parseFloat(quantityAtual * valor))
+    $('#total').text(formatter.format(quantityAtual * valor));
 
     $('.quantity-left-minus').prop("disabled", false);
 
@@ -627,7 +192,6 @@ $('.quantity-right-plus').click(function (e) {
 
         $('#valor_bd').val(parseFloat(vc));
         if ($(this).is(":checked")) {
-
             var vc = parseFloat(qtd_i) * parseFloat(vb);
             $('#total').text(formatter.format(vc));
             $('#valorFinal').val(vc);
@@ -639,68 +203,9 @@ $('.quantity-right-plus').click(function (e) {
         }
 
     }
-
-    var id_produto = $('#id_produto').val();
-    var id_cliente = $('#id_cliente').val();
-    var id_carrinho = $('#id_carrinho').val();
-    var valor = $('#valor').val();
-    var quantidade = $('#quantity').val();
-    var chave = $('#chave').val();
-
-    $.ajax({
-        url: `{{BASE}}admin/produto/addCarrinho/${id_produto}`,
-        type: 'get',
-        data: {
-            id_produto: id_produto,
-            id_cliente: id_cliente,
-            id_carrinho: id_carrinho,
-            valor: valor,
-            quantidade: quantidade,
-            chave: chave
-        },
-        success: function (dd) {
-            if(dd != ''){
-                $('#id_carrinho').val(dd);
-            }else{
-                //console.log('Vazio')
-            }
-        }, error: function (xhr) {
-        }
-    });
-    
-    var advS = $('#add_itens input[type=checkbox]:checked').val();
-    var bdvS = $('#add_itens input[type=radio]:checked').val();
-
-    var vrecAd = $(`#id_adicional${advS}`).attr('valor');
-    var vrecQtd = $(`#qtd_ad${advS}`).val();
-    var ValorMaisAdicional = parseFloat(vrecAd) * parseFloat(vrecQtd)
-
-    if(advS != undefined ){
-        console.log("aqui "+ValorMaisAdicional);
-
-        $('#total').text(formatter.format(quantityAtual * valor + ValorMaisAdicional));
-        $('#valorFinal').val(parseFloat(quantityAtual * valor + ValorMaisAdicional))
-    }
-
-    if(bdvS != undefined ){
-        var vrecAd = $(`#id_adicional${bdvS}`).attr('valor');
-        var vrecQtd = $(`#qtd_ad${bdvS}`).val();
-        var ValorMaisAdicional = parseFloat(vrecAd) * parseFloat(vrecQtd)
-
-        $('#total').text(formatter.format(quantityAtual * valor + ValorMaisAdicional));
-        $('#valorFinal').val(parseFloat(quantityAtual * valor + ValorMaisAdicional))
-    }
-
-    if(bdvS == undefined && advS == undefined ){
-        $('#total').text(formatter.format(quantityAtual * valor));
-        $('#valorFinal').val(parseFloat(quantityAtual * valor))
-    }
-
 });
 
 $('.quantity-left-minus').click(function (e) {
-    e.preventDefault();
-    console.log(this)
 
     var a = $('#add_itens input[type=checkbox]:checked').length;
     var b = $('#add_itens input[type=radio]:checked').length;
@@ -710,10 +215,15 @@ $('.quantity-left-minus').click(function (e) {
     var vb = $('#valor').val(); // Valor do Produto
 
     var quantity = parseInt($('#quantity').val());
-    var valorFinalAtual = parseInt($('#valorFinal').val());
     var valor = parseFloat($('#valor').val());
 
-    
+    if (quantity > 1) {
+        $('#quantity').val(quantity - 1);
+        var quantityAtual = parseInt($('#quantity').val());
+        $('#total').text(formatter.format(quantityAtual * valor));
+        //console.log(quantityAtual * valor)
+        $('#valorFinal').val(parseFloat(quantityAtual * valor))
+    }
     if (parseInt($('#quantity').val()) === 1) {
         $('.quantity-left-minus').prop("disabled", true);
     } else {
@@ -736,70 +246,155 @@ $('.quantity-left-minus').click(function (e) {
         }
 
     }
+});
 
-    var id_produto = $('#id_produto').val();
-    var id_cliente = $('#id_cliente').val();
-    var id_carrinho = $('#id_carrinho').val();
-    var valor = $('#valor').val();
-    var quantidade = $('#quantity').val();
-    var chave = $('#chave').val();
 
-    $.ajax({
-        url: `{{BASE}}admin/produto/addCarrinho/${id_produto}`,
-        type: 'get',
-        data: {
-            id_produto: id_produto,
-            id_cliente: id_cliente,
-            id_carrinho: id_carrinho,
-            valor: valor,
-            quantidade: quantidade,
-            chave: chave
-        },
-        success: function (dd) {
-            if(dd != ''){
-                $('#id_carrinho').val(dd);
-            }else{
-                console.log('Vazio')
+
+/**
+ * 
+ * Carrinho de Compra produtos
+ */
+$('.adicional_item_ok').hide();
+var vi = $("#add_itens").length;
+var qb = $("#add_itens #itens_value").text();
+var iqba = $("#add_itens #itens_value").text();
+
+(qb === "0") ? $('.adicional_item, .adicional_item_ok').hide(): $('.adicional_item').show();
+
+$('#add_itenSabores input[type=radio]').on('change', function (e) {
+    if ($(this).is(":checked")) {
+        $(".addStyle").show()
+    } else {
+        $(".addStyle").hide()
+    }
+    $(this).closest('.hovereffect').toggleClass('clic');
+});
+
+//Produto Adicional
+$('input[type=checkbox]').on('change', function (e1) {
+    let tipoSlug = $(this).attr('data-tiposlug')
+    let idEnvBlock = $(`#${tipoSlug}`).attr('id')
+    let tipo_escolha = $(`#${idEnvBlock}`).attr('data-tipo_escolha')
+    let tipo_escolhaQtd = $(`#${idEnvBlock}`).attr('data-qtd')
+    var a = $(`#${idEnvBlock} input[type=checkbox]:checked`).length;
+    var adv = $(this).val();
+    let adv_att = $(this).attr('id');
+    let vrec = $(this).attr('valor');
+    let vb = $('#valorFinal').val();
+    var a = $(`#${idEnvBlock} input[type=checkbox]:checked`).length;
+
+    if (parseInt(tipo_escolha) === 2) {
+        if (parseInt(a) === parseInt(tipo_escolhaQtd)) {
+            $(`#${idEnvBlock} .adicional_item, .addStyleMod, .addStyleModT`).hide();
+            $(`#${idEnvBlock} .adicional_item_ok, .addStyle`).show();
+            if (parseInt(a) === 1) {
+                $(`#${idEnvBlock} .adicional_item_ok`).text(`${a} de ${tipo_escolhaQtd} selecionado`);
             }
-        }, error: function (xhr) {
-        }
-    });
-
-    if (quantity > 1) {
-        $('#quantity').val(quantity - 1);
-        var quantityAtual = parseInt($('#quantity').val());
-
-        var advS = $('#add_itens input[type=checkbox]:checked').val();
-        var bdvS = $('#add_itens input[type=radio]:checked').val();
-        var vrecAd = $(`#id_adicional${advS}`).attr('valor');
-        var vrecQtd = $(`#qtd_ad${advS}`).val();
-        var ValorMaisAdicional = parseFloat(vrecAd) * parseFloat(vrecQtd)
-
-        if(advS != undefined ){
-            console.log("aqui Menos"+ValorMaisAdicional);
-
-            $('#total').text(formatter.format(quantityAtual * valor + ValorMaisAdicional));
-            $('#valorFinal').val(parseFloat(quantityAtual * valor + ValorMaisAdicional))
+            if (parseInt(a) <= parseInt(tipo_escolhaQtd)) {
+                $(`#${idEnvBlock} .adicional_item_ok`).text(`${a} de ${tipo_escolhaQtd} selecionados`);
+            }
+        } else {
+            $(`#${idEnvBlock} .adicional_item`).show();
+            $(`#${idEnvBlock} .adicional_item_ok, .addStyle, .addStyleMod, .addStyleModT`).hide();
         }
 
-        if(bdvS != undefined ){
-            $('#total').text(formatter.format(quantityAtual * valor + ValorMaisAdicional));
-            $('#valorFinal').val(parseFloat(quantityAtual * valor + ValorMaisAdicional))
-        }
-
-        if(bdvS == undefined && advS == undefined ){
-            $('#total').text(formatter.format(quantityAtual * valor));
-            $('#valorFinal').val(parseFloat(quantityAtual * valor))
+        if (parseInt(a) > parseInt(tipo_escolhaQtd)) {
+            $(this).prop('checked', false);
+            $(this).closest('label').removeClass('active');
+            if (parseInt(tipo_escolhaQtd) > 1) {
+                alert("Você só pode selecionar " + parseInt(tipo_escolhaQtd) + " itens");
+                return;
+            } else {
+                alert("Você só pode selecionar " + parseInt(tipo_escolhaQtd) + " item");
+                return;
+            }
         }
     }
 
-    
+    if (parseInt(tipo_escolha) === 3) {
+        if (parseInt(a) > 0 && parseInt(a) <= parseInt(tipo_escolhaQtd)) {
+            $(`#${idEnvBlock} .adicional_item, .addStyleMod, .addStyleModT`).hide();
+            $(`#${idEnvBlock} .adicional_item_ok`).show();
+            if (parseInt(a) === 1) {
+                $(`#${idEnvBlock} .adicional_item_ok`).text(`${a} de ${tipo_escolhaQtd} selecionado`);
+            }
+            if (parseInt(a) <= parseInt(tipo_escolhaQtd)) {
+                $(`#${idEnvBlock} .adicional_item_ok`).text(`${a} de ${tipo_escolhaQtd} selecionados`);
+            }
+            $(".addStyle").show()
+        } else {
+            $(`#${idEnvBlock} .adicional_item`).show();
+            $(`#${idEnvBlock} .adicional_item_ok`).hide();
+        }
+
+        if (parseInt(a) > parseInt(tipo_escolhaQtd)) {
+            $(this).prop('checked', false);
+            $(this).closest('label').removeClass('active');
+            if (parseInt(tipo_escolhaQtd) > 1) {
+                alert("Você só pode selecionar " + parseInt(tipo_escolhaQtd) + " itens");
+                return;
+            } else {
+                alert("Você só pode selecionar " + parseInt(tipo_escolhaQtd) + " item");
+                return;
+            }
+        }
+    }
+    $(this).closest('.hovereffect').toggleClass('clic');
+    var valorAdicional = $(`#id_adicional${adv}`).attr('valor');
+    if (parseFloat(valorAdicional) === 0.00) {
+        $(`.id_adicional${adv}`).hide();
+    }
+
+    var total = 0;
+    $('[data-qtd]').each(function (i, ele) {
+        let tipo_escolha = $(`#${ele['id']}`).attr('data-tipo_escolha')
+        let tipoQtd = $(`#${ele['id']}`).attr('data-qtd')
+        if (parseInt(tipo_escolha) === 2) {
+            var valor = Number(tipoQtd);
+            if (!isNaN(valor)) total += valor;
+        }
+        if (parseInt(tipo_escolha) === 3) {
+            total = total + 1;
+        }
+    });
+
+    total = total
+
+    let c = $(`input[type=checkbox]:checked`).length;
+    if (parseInt(c) >= total) {
+        $(`.addStyle`).show()
+    } else {
+        $(`.addStyle`).hide()
+    }
+
+    if (parseInt(tipo_escolha) === 1) {
+        $(`.addStyleMod, .addStyleModT`).hide();
+        $(`.addStyle`).show();
+    }
 });
+
+$('[data-quantity="plus"]').click(function (e) {
+    console.log(e);
+    $('.minuss').prop("disabled", false);
+    fieldName = $(this).attr('data-field');
+    var currentVal = parseInt($('input[name=' + fieldName + ']').val());
+
+    if (!isNaN(currentVal)) {
+        $('input[name=' + fieldName + ']').val(currentVal + 1);
+        var advS = $(this).attr('id-select');
+        var vbA = $('#valorFinal').val();
+    } else {
+        $('input[name=' + fieldName + ']').val(0);
+    }
+    $(".addStyle").show()
+});
+
+
 
 $("#form").submit(function () {
   var formData = new FormData(this);
   $.ajax({
-    url: $('#form').attr('action'),
+    url: $("#form").attr('action'),
     type: 'POST',
     data: formData,
     beforeSend: function () {
@@ -807,19 +402,46 @@ $("#form").submit(function () {
       $('.addStyle').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
     },
     complete: function () {
-      $('.addStyle').hide();
+      $(".addStyle").prop("disabled", false);
+      $('.addStyle').html('Adicionar ao pedido');
     },
     success: function (data) {
       console.log(data)
-      switch (data) {
-        case 'Produto Adicionado ao carrinho':
-          window.location = '{{BASE}}admin/pedido/novo/produtos';
-          break;
-        default:
-          $('.errorSup').show();
+      if (data.id > 0) {
+        $('#modProdutoCarrinho').removeClass("hide");
+        $('.btnFPedido').removeClass("hide");
+        $('#modProduto').modal("hide");
+        $('#mensagem').html(data.mensagem);
+        $('.successSup').show();
+        $('.errorSup').hide();
+        $('#alerta').modal("show");
+            if (data.url) {
+                $(".buttonAlert").on('click', function () {
+                    window.location = `/${link_site}/${data.url}`;
+            });
+        }
+    } else {
+        $('#modProduto').modal("hide");
+        $('.errorSup').show();
+        $('.successSup').hide();
+        $('#alertGeralSite').modal("show");
+        $('#mensagem').html(data.error);
+      
+    }
+
+      if(data.id > 0){
+        $('.successSup').show();
           $('#alerta').modal("show");
-          $('#mensagem').html(data);
-          break;
+          $('#mensagem').html(data.mensagem);
+          if(data.url){
+            $(".buttonAlert").on('click', function () {
+              window.location = `/${link_site}/admin/${data.url}`;
+            });
+          }
+      }else{
+        $('.errorSup').show();
+        $('#alerta').modal("show");
+        $('#mensagem').html(data.error);
       }
     },
     error: function (data) {
@@ -838,66 +460,6 @@ $("#form").submit(function () {
       return myXhr;
     }
   });
-  return false;
-});
-
-$("#formFinish").submit(function () {
-  var formData = new FormData(this);
-  var idProd = $('#chave').val();
-  var t_pg = $('#tipo_pagamento').val();
-  var t_ft = $('#tipo_frete').val();
-  if (t_ft == "") {
-      $('#tipo_frete').shake();
-      $('#acoes_carrinho').show();
-      $('#carregando_carrinho').hide();
-      exit();
-  } else if (t_pg == "") {
-      $('#tipo_pagamento').shake();
-      $('#acoes_carrinho').show();
-      $('#carregando_carrinho').hide();
-  } else {
-      $.ajax({
-          url: $('#formFinish').attr('action'),
-          type: 'POST',
-          data: formData,
-          beforeSend: function () {
-              $(".btnValida").prop("disabled", true);
-              
-          },
-          complete: function () {
-              $(".btnValida").prop("disabled", false);
-              $('.btnValida').html('FINALIZAR PEDIDO');
-          },
-          success: function (data) {
-              console.log(data);
-              switch (data) {
-                  case 'Pedido Finalizado com sucesso!':
-                      $('#mensagem').html(data);
-                      $('#FinalizarPedidoOK').addClass('show');
-                      $('#FinalizarPedidoOK').show();
-                      break;
-                  default:
-                      $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data}</div>`);
-                      break;
-              }
-              $(".btnValida").prop("disabled", false);
-              $('.btnValida').html('FINALIZAR PEDIDO');
-          }, error: function (data) {
-              $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema com seu pedido</div>`)
-          },
-          cache: false,
-          contentType: false,
-          processData: false,
-          xhr: function () {
-              var myXhr = $.ajaxSettings.xhr();
-              if (myXhr.upload) {
-                  myXhr.upload.addEventListener('progress', function () {
-                  }, false);
-              }
-              return myXhr;
-          }
-      });
-  }
   return false;
 });
     </script>

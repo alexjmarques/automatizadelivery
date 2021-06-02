@@ -1806,6 +1806,13 @@ table.dataTable td {
   position: absolute;
   right: 15px;
   top: 15px;
+  padding: 15px;
+  width: 200px;
+}
+
+.btn_Pedido {
+  padding: 15px;
+  width: 200px;
 }
 
 .dados-usuario .card {
@@ -1854,7 +1861,11 @@ table.dataTable td {
 }
 
 .cinza {
-  background-color: #d7d7d7;
+  background-color: #eaeaea;
+}
+
+.cinza p{
+  color: #000 !important;
 }
 
 .leadPrice {
@@ -5167,4 +5178,10 @@ table.dataTable td {
 }
 .text-cian {
   color: rgb(211, 209, 209) !important;
+}
+.hide{
+  display: none !important;
+}
+main {
+  margin-top: 140px !important;
 }

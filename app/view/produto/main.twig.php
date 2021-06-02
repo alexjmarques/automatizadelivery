@@ -53,7 +53,7 @@
             <div class="bg-white rounded shadow mb-3 py-2">
                 <div class="col-md-12">
                     <div class="mdc-card" id="add_itenSabores">
-                        <h4>{{preferencias.sabores()}}</h4>
+                        <h4>Sabores</h4>
                         {% for padici in produtoSabores %}
                         {% if padici.id in produto.sabores %}
                         <div class="custom-control custom-radio border-bottom py-2">
@@ -210,7 +210,7 @@
                                     <div class="bg-white rounded shadow mb-3 py-2">
                                         <div class="col-md-12">
                                             <div class="mdc-card" id="add_itenSabores">
-                                                <h4>{{preferencias.sabores()}}</h4>
+                                                <h4>Sabores</h4>
                                                 {% for padici in produtoSabores %}
                                                 {% if padici.id in produto.sabores %}
                                                 <div class="custom-control custom-radio border-bottom py-2">

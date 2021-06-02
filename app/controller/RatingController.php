@@ -71,8 +71,9 @@ class RatingController extends Controller
             'planoAtivo' => $planoAtivo,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
-            'caixa' => $estabelecimento[0]->data_final,
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
 

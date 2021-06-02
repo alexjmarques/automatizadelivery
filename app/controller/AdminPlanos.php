@@ -51,6 +51,7 @@ class AdminPlanos extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -96,6 +97,7 @@ class AdminPlanos extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
@@ -131,9 +133,10 @@ class AdminPlanos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
 
@@ -197,7 +200,7 @@ class AdminPlanos extends Controller
                     'card_holder_name' => Input::post('name'),
                     'card_expiration_date' => preg_replace("/[^0-9]/", "", Input::post('expiry')),
                     'card_cvv' => Input::post('cvc'),
-                    'postback_url' => $resultempresa.link_site . '/admin/planos/status',
+                    'postback_url' => $resultempresa->link_site . '/admin/planos/status',
                     'customer' => [
                         'email' => Input::post('email'),
                         'name' => Input::post('nome'),

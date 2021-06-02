@@ -51,6 +51,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);

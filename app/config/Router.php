@@ -215,14 +215,15 @@ $router->get('/{linkSite}/admin/pedidos', 'AdminPedidos:index');
 $router->get('/{linkSite}/admin/pedidos-finalizados', 'AdminPedidos:pedidosFinalizados');
 $router->get('/{linkSite}/admin/pedidos-cancelados', 'AdminPedidos:pedidosCancelados');
 $router->get('/{linkSite}/admin/todas-entregas', 'AdminPedidos:todasEntregas');
-$router->get('/{linkSite}/admin/entregas', 'AdminPedidos:entregas');
-$router->get('/{linkSite}/admin/entregas-finalizadas', 'AdminPedidos:entregasFinalizados');
+
+$router->get('/{linkSite}/admin/entregas', 'AdminMotoboys:entregas');
+$router->get('/{linkSite}/admin/entregas-finalizadas', 'AdminMotoboys:entregasFinalizados');
 
 /**
  * Busca das entregas de cada Motoboy
  */
-$router->get('/{linkSite}/admin/buscar/entregas', 'AdminPedidos:entregasBuscar');
-$router->get('/{linkSite}/admin/informar/pagamento/entregas', 'AdminPedidos:entregasPagamento');
+$router->post('/{linkSite}/admin/buscar/entregas', 'AdminMotoboys:entregasBuscar');
+$router->get('/{linkSite}/admin/informar/pagamento/entregas', 'AdminMotoboys:entregasPagamento');
 
 /**
  * Listagem para tempo de execução
@@ -235,20 +236,32 @@ $router->get('/{linkSite}/admin/pedido/imprimir/{id}', 'AdminPedidos:pedidoImpri
 $router->get('/{linkSite}/admin/pedido/imprimirtest', 'AdminPedidos:pedidoTestImprimir');
 
 $router->post('/{linkSite}/admin/pedido/mudar/{id}/{status}/{id_caixa}/{motoboy}', 'AdminPedidos:mudarStatus');
+
+
 $router->get('/{linkSite}/admin/pedido/novo', 'AdminPedidosBalcaoController:index');
-$router->post('/{linkSite}/admin/pedido/novo/start', 'AdminPedidosBalcaoController:start');
+$router->post('/{linkSite}/admin/novo/cliente', 'AdminPedidosBalcaoController:carrinhoCadastroValida');
+
 $router->get('/{linkSite}/admin/pedido/novo/produtos', 'AdminPedidosBalcaoController:produtos');
+
+$router->post('/{linkSite}/admin/produto/addCarrinho/produto/{id}', 'AdminPedidosBalcaoController:carrinhoAddProduto');
+
+$router->get('/{linkSite}/admin/carrinho/qtd', 'AdminPedidosBalcaoController:carrinhoQtd');
+
+
+$router->post('/{linkSite}/admin/pedido/novo/start', 'AdminPedidosBalcaoController:start');
 $router->get('/{linkSite}/admin/produto/novo/mostrar/{id}', 'AdminPedidosBalcaoController:produtoMostrar');
 $router->get('/{linkSite}/admin/pedido/novo/produtos/detalhes', 'AdminPedidosBalcaoController:carrinhoFinalizar');
-$router->get('/{linkSite}/admin/produto/addCarrinho/{id}', 'AdminPedidosBalcaoController:carrinhoCheckout');
 $router->get('/{linkSite}/admin/produto/adicional/atualiza/{chave}/{id}', 'AdminPedidosBalcaoController:carrinhoCheckoutAdicionalUpdate');
-$router->post('/{linkSite}/admin/produto/addCarrinho/produto/{id}', 'AdminPedidosBalcaoController:carrinhoCheckoutFinal');
+$router->get('/{linkSite}/admin/produto/addCarrinho/{id}', 'AdminPedidosBalcaoController:carrinhoCheckout');
 $router->get('/{linkSite}/admin/produto/addCarrinho/adicionalis/{chave}', 'AdminPedidosBalcaoController:addCarrinhoCheckoutAdicional');
 $router->get('/{linkSite}/admin/produto/removeCarrinho/adicionalis/{chave}', 'AdminPedidosBalcaoController:removeCarrinhoCheckoutAdicional');
+
 $router->get('/{linkSite}/admin/carrinho', 'AdminPedidosBalcaoController:carrinho');
 $router->get('/{linkSite}/admin/carrinho/deletar/{id_produto}/{id_carrinho}', 'AdminPedidosBalcaoController:deletarItemCarrinho');
 $router->post('/{linkSite}/admin/carrinho/finaliza', 'AdminPedidosBalcaoController:carrinhoFinalizarPedido');
 $router->get('/{linkSite}/admin/carrinho/pedido/acao/{id_produto}/{id_carrinho}', 'CarrinhoController:carrinhoProdutoAcao');
+
+
 $router->get('/{linkSite}/admin/produtos', 'AdminProdutos:index');
 $router->get('/{linkSite}/admin/produto/novo', 'AdminProdutos:novo');
 $router->get('/{linkSite}/admin/produto/editar/{id}', 'AdminProdutos:editar');

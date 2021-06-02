@@ -62,6 +62,7 @@ class FavoritosController extends Controller
 
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
             $verificaLogin = $this->allController->verificaPrimeiroAcesso($empresaAct[':id']);
             $favoritos = $this->favoritosModel->getAllCli($SessionIdUsuario);
@@ -86,7 +87,8 @@ class FavoritosController extends Controller
             'favoritos' => $favoritos,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }

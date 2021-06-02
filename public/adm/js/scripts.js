@@ -7,12 +7,12 @@ jQuery.fn.shake = function (interval, distance, times) {
   var jTarget = $(this);
   jTarget.css('position', 'relative');
   for (var iter = 0; iter < (times + 1); iter++) {
-      jTarget.animate({
-          left: ((iter % 2 == 0 ? distance : distance * -1))
-      }, interval);
+    jTarget.animate({
+      left: ((iter % 2 == 0 ? distance : distance * -1))
+    }, interval);
   }
   return jTarget.animate({
-      left: 0
+    left: 0
   }, interval);
 }
 
@@ -115,10 +115,10 @@ $('#frete_status').change(function () {
  * Formularios
  */
 
-$("#form, #formIfood").submit(function () {
+$("#form, #formIfood, #formCliente").submit(function () {
   var formData = new FormData(this);
   $.ajax({
-    url: $('#form').attr('action'),
+    url: $(this).attr('action'),
     type: 'POST',
     data: formData,
     beforeSend: function () {
@@ -135,19 +135,68 @@ $("#form, #formIfood").submit(function () {
     },
     success: function (data) {
       console.log(data)
-      if(data.id > 0){
-        $('.successSup').show();
-          $('#alerta').modal("show");
-          $('#mensagem').html(data.mensagem);
-          if(data.url){
-            $(".buttonAlert").on('click', function () {
-              window.location = `/${link_site}/admin/${data.url}`;
-            });
-          }
-      }else{
-        $('.errorSup').show();
-        $('#alerta').modal("show");
-        $('#mensagem').html(data.error);
+      if (data.id > 0) {
+        switch (data.mensagem) {
+          case 'Enviado o Código agora e só validar':
+            $('#ValidaCode').modal("show");
+            break;
+          case 'Aguarde estamos redirecionando para a pagina inicial':
+            $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+            window.location = data.url;
+            break;
+          case 'Primeiro endereço cadastrado com Sucesso!':
+            $('#mensagem').html('Pronto! Agora que tenho suas informações de entrega revise os itens de seu carrinho, adicione ou remova itens para finalizar seu pedido');
+            $('.successSup').show();
+            $('.errorSup').hide();
+            $('#alerta').modal("show");
+            if (data.url) {
+              $(".buttonAlert").on('click', function () {
+                window.location = `/${link_site}/${data.url}`;
+              });
+            }
+            break;
+          case 'Pedido cancelado com sucesso!':
+            $('#cancelarPedido').modal("show");
+            break;
+            case 'Carrinho interno iniciado':
+              $('#alerta').modal("hide");
+              $('#alertGeralSite').modal("hide");
+              window.location = `/${link_site}/${data.url}`;
+              break;
+          default:
+            $('#mensagem').html(data.mensagem);
+            $('#modalNovoCliente').modal("hide");
+            $('.successSup').show();
+            $('.errorSup').hide();
+            $('#alerta').modal("show");
+            atualizar()
+            atualizaCart()
+            if (data.url) {
+              $(".buttonAlert").on('click', function () {
+                atualizar();
+                window.location = `/${link_site}/${data.url}`;
+              });
+            }
+            break;
+        }
+      } else {
+        switch (data.mensagem) {
+          case 'Cliente já possuí conta cadastrada no sistema':
+            $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
+            $('#modalNovoCliente').modal("hide");
+            break;
+          case 'Carrinho interno iniciado':
+            $('#alerta').modal("hide");
+            $('#alertGeralSite').modal("hide");
+            window.location = `/${link_site}/${data.url}`;
+            break;
+          default:
+            $('.errorSup').show();
+            $('.successSup').hide();
+            $('#alertGeralSite').modal("show");
+            $('#mensagem').html(data.error);
+            break;
+        }
       }
     },
     error: function (data) {
@@ -287,7 +336,7 @@ $("#formAtendimento").submit(function () {
 });
 
 $("#formBusca").submit(function () {
-  $.get("/admin/buscar/entregas", function (dd) {
+  $.post(`/${link_site}/admin/buscar/entregas`, function (dd) {
     var id_motoboy = $(`#id_motoboy option:selected`).val();
     var inicio = $(`#inicio`).val();
     var hora_inicio = $(`#hora_inicio`).val();
@@ -308,7 +357,7 @@ $("#formBusca").submit(function () {
 
       $.ajax({
         url: `/${link_site}/admin/buscar/entregas`,
-        type: 'get',
+        type: 'post',
         data: formData,
         beforeSend: function () {
           $('.carregar').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
@@ -352,6 +401,24 @@ function produtosModal(id, numero_pedido) {
       numero_pedido
     },
     dataType: "html",
+    beforeSend: function () {
+      $('#mostrarPedido').html(
+        `<div class="text-center pb-3">
+                <h4 class="text-center pt-5">Carregando...</h4>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px"
+                    height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none">
+                        <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite"
+                            keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform>
+                    </path>
+                </svg>
+            </div>
+        `);
+    },
+    complete: function () {
+      $('#mostrarPedido').html();
+    },
     success: function (result) {
       $('#mostrarPedido').html(result)
     },
@@ -382,6 +449,15 @@ function loadStyle(href, callback) {
     head.appendChild(link);
   }
 }
+function atualizaCart() {
+$.get(`/${link_site}/admin/carrinho/qtd`, function (dd) {
+  $('#modProdutoCarrinho .qtd').html(dd);
+})
+}
+
+// $(function () {
+//   atualizaCart();
+// });
 
 function atualizar() {
   $.get(`/${link_site}/admin/pedidos/recebido`, function (dd) {
@@ -452,12 +528,26 @@ $("#inpFiltro").on("keyup", function () {
 function mudarStatus(id, status, id_caixa) {
   var id_motoboy = 0
   var id_empresa = $('#id_empresa').val();
-  let valores = {id,status,id_caixa,id_empresa,id_motoboy}
+  let valores = {
+    id,
+    status,
+    id_caixa,
+    id_empresa,
+    id_motoboy
+  }
   $.ajax({
     url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${id_motoboy}`,
     method: "POST",
     data: valores,
     dataType: "text",
+    beforeSend: function () {
+      $(".acaoBtn").prop("disabled", true);
+      $('#btn-carrinho').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+    },
+    complete: function () {
+      $(".acaoBtn").prop("disabled", false);
+      $('#btn-carrinho').html('Pedido entregue <i class="simple-icon-arrow-right"></i>');
+    },
     success: function (dd) {
       console.log(dd)
       if (dd == 'Status alterado com sucesso') {
@@ -475,35 +565,28 @@ function mudarStatusEntrega(id, status, id_caixa) {
     $('.select2-single').shake().addClass('bc-danger');
 
     $(`#mensagem${id}`).html(`<div class="alert alert-danger" role="alert">Selecione um Motoboy antes de mudar de Status!</div>`);
-    setTimeout(function () {
-      $(`#mensagem${id}`).html(``);
-      //$('.select2-single').removeClass('bc-danger');
-    }, 2000);
+    setTimeout(function () {$(`#mensagem${id}`).html(``)}, 2000);
   } else {
     var id_motoboy = $(`#motoboy-${id} option:selected`).val();
     var numero_pedido = $('#numero_pedido').val();
     var chave = $('#chave').val();
     var id_cliente = $('#id_cliente').val();
     var id_empresa = $('#id_empresa').val();
-
-    let valores = {
-      id,
-      status,
-      id_caixa,
-      id_motoboy,
-      numero_pedido,
-      id_empresa,
-      id_cliente,
-      chave
-    }
-    console.log(valores);
+    let valores = {id,status,id_caixa,id_motoboy,numero_pedido,id_empresa,id_cliente,chave}
     $.ajax({
       url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${id_motoboy}`,
       method: "post",
       data: valores,
       dataType: "text",
+      beforeSend: function () {
+        $(".acaoBtn").prop("disabled", true);
+        $('#btn-carrinho').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      },
+      complete: function () {
+        $(".acaoBtn").prop("disabled", false);
+        $('#btn-carrinho').html('Pedido entregue <i class="simple-icon-arrow-right"></i>');
+      },
       success: function (dd) {
-        console.log(dd)
         if (dd == 'Status alterado com sucesso') {
           atualizar();
           $('#close-modal').trigger('click');
@@ -743,25 +826,53 @@ $(document).ready(function () {
 
 
 $('#cep').mask('00000-000');
-$("#cep").blur(function () {
-  var cep = $(this).val().replace(/\D/g, '');
-  if (cep != "") {
-    var validacep = /^[0-9]{8}$/;
-    if (validacep.test(cep)) {
-      $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
-        if (!("erro" in dados)) {
-          $("#rua").val(dados.logradouro);
-          $("#bairro").val(dados.bairro);
-          $("#cidade").val(dados.localidade);
-          $(`#estado option:contains(${dados.uf})`).attr('selected', true);
-          $(`#select2-estado-container`).html(dados.uf).prop('title', dados.uf);
+$("#rua").on('blur touchleave touchcancel', function () {
+  var estado = $('#estadoPrinc').val();
+  var cidade = $('#cidadePrinc').val();
+  var rua = $(this).val();
+  if (rua != "") {
+    $.getJSON(`https://maps.google.com/maps/api/geocode/json?address=${rua},${cidade}-${estado}/&key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc`, function (dados) {
+      console.log(dados);
+      if (dados.status === "OK") {
+        $("#endOK").show();
+        $('.btnValida').attr("disabled", true);
+        $("#endPrint").text(dados.results[0].formatted_address);
+
+        if (dados.results[0].address_components[0].types[0] === "street_number") {
+          $("#rua").val(dados.results[0].address_components[1].long_name);
+          $("#bairro").val(dados.results[0].address_components[2].long_name);
+          $("#cidade").val(dados.results[0].address_components[3].long_name);
+          $("#estado").val(dados.results[0].address_components[4].short_name);
+          $("#cep").val(dados.results[0].address_components[6].long_name);
         } else {
-          alert("O CEP digitado não foi encontrado! Verifique e tente novamente");
+          $("#rua").val(dados.results[0].address_components[0].long_name);
+          $("#bairro").val(dados.results[0].address_components[1].long_name);
+          $("#cidade").val(dados.results[0].address_components[2].long_name);
+          $("#estado").val(dados.results[0].address_components[3].short_name);
+          $("#cep").val(dados.results[0].address_components[5].long_name);
         }
-      });
-    } else {
-      alert("Formato de CEP esta inválido.");
-    }
+
+        $("#numero").on('blur touchleave touchcancel', function () {
+          $("#numeroPrint").text($(this).val());
+        });
+
+        $("#complemento").on('blur touchleave touchcancel', function () {
+          $("#complementoPrint").text($(this).val());
+          $('.btnValida').attr("disabled", false);
+        });
+
+        if (dados.results[0].geometry.location_type === "APPROXIMATE") {
+          $("#alertGeralSite").modal("show");
+          $(".errorSup").show();
+          $("#mensagem").text("O Endereço informado é APROXIMADO, verifique se confere com sua localização antes de prosseguir!");
+        }
+      } else {
+        $("#alertGeralSite").modal("show");
+        $(".errorSup").show();
+        $("#mensagem").text("O Endereço informado não foi encontrado, verifique se digitou corretamente e tente novamente!");
+      }
+    });
+
   }
 });
 
@@ -794,6 +905,16 @@ switch (active_link) {
     $('#collapseMenuTypes').addClass('show')
     $('#menuPedido .primaryMenu').removeClass('collapsed')
     $('#subPd').addClass('active')
+    break;
+  case `/${link_site}/admin/pedido/novo/produtos`:
+    $('#collapseMenuTypes').addClass('show')
+    $('#menuPedido .primaryMenu').removeClass('collapsed')
+    $('#subPn').addClass('active')
+    break;
+  case `/${link_site}/admin/pedido/novo/produtos/detalhes`:
+    $('#collapseMenuTypes').addClass('show')
+    $('#menuPedido .primaryMenu').removeClass('collapsed')
+    $('#subPn').addClass('active')
     break;
   case `/${link_site}/admin/pedido/novo`:
     $('#collapseMenuTypes').addClass('show')
@@ -1016,6 +1137,24 @@ function produtoModal(id) {
       id
     },
     dataType: "html",
+    beforeSend: function () {
+      $('#mostrarProduto').html(
+        `<div class="text-center pb-3">
+                <h4 class="text-center pt-5">Carregando...</h4>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px"
+                    height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none">
+                        <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite"
+                            keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform>
+                    </path>
+                </svg>
+            </div>
+        `);
+    },
+    complete: function () {
+      $('#mostrarProduto').html();
+    },
     success: function (dd) {
       $('#mostrarProduto').html(dd)
     },
@@ -1024,7 +1163,7 @@ function produtoModal(id) {
 
 $("#modProdutoCarrinho").on("click", function () {
   console.log('dd aqui');
-  $.get("/admin/carrinho", function (dd) {
+  $.get(`/${link_site}/admin/carrinho`, function (dd) {
     $('#mostrarProduto').html(dd)
   })
 })
@@ -1153,19 +1292,23 @@ $("#formFinish").submit(function () {
         $(".btnValida").prop("disabled", false);
         $('.btnValida').html('FINALIZAR PEDIDO');
       },
-      success: function (data) {
-        console.log(data);
-        switch (data) {
-          case 'Pedido Finalizado com sucesso!':
-            $('.successSup').show();
-            $('#alerta').modal("show");
-            $('#mensagem').html(data);
-            window.location = `/${link_site}/admin/pedidos`;
-            break;
+      success: function (dd) {
+        switch (dd.mensagem) {
+          case 'Pedido finalizado com sucesso':
+          $('#mensagem').html(`Pedido Finalizado! Número do pedido: ${dd.pedido}`);
+          $('.successSup').show();
+          $('.errorSup').hide();
+          $('#alerta').modal("show");
+          if (dd.url) {
+            $(".buttonAlert").on('click', function () {
+              window.location = `/${link_site}/${dd.url}`;
+            });
+          }
+          break;
           default:
             $('.errorSup').show();
             $('#alerta').modal("show");
-            $('#mensagem').html(data);
+            $('#mensagem').html(dd.mensagem);
             break;
         }
         $(".btnValida").prop("disabled", false);
@@ -1189,7 +1332,13 @@ $("#formFinish").submit(function () {
   return false;
 });
 
-
+$('#entrega').on('change', function () {
+  if (parseInt($(this).val()) === 1) {
+    $('#endereco').show();
+  } else {
+    $('#endereco').hide();
+  }
+});
 
 /**
  * Checkout

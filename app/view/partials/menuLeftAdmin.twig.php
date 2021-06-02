@@ -127,7 +127,7 @@
                             
                             <li id="subSabores">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-sabores">
-                                    <span class="d-inline-block"><strong>{{preferencias.sabores()}}</strong></span>
+                                    <span class="d-inline-block"><strong>Sabores</strong></span>
                                 </a>
                             </li>
                             <li id="subCat">

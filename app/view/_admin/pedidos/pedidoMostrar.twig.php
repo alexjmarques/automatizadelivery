@@ -65,16 +65,16 @@
 
                     {% for cartAd in carrinhoAdicional %}
                             {% if prod.id == cartAd.id_produto %}
-                            {% if car.chave == cartAd.chave %}
+                            
                                 {% for a in adicionais %}
-                                    {% if a.id == cartAd.id_adicional %}
+                                {% if a.id == cartAd.id_adicional and prod.id == cartAd.id_produto and car.id == cartAd.id_carrinho %}
                                     <p class="m-0 small subprice">
                                     - <strong>{{ cartAd.quantidade }}
                                     x </strong>{{ a.nome }} <span class="moeda_valor right rtt">{{ moeda.simbolo }} {{ (a.valor * cartAd.quantidade)|number_format(2, ',', '.') }}</span>
                                     </p>
                                     {% endif %}
                                 {% endfor %}
-                            {% endif %}
+                       
                             {% endif %}
                         {% endfor %}
                 </li>
@@ -162,7 +162,11 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
 {% if pedido.status == 3 %}
     {% set count = pedido.status %}
     {% set count = count + 1 %}
-        <a class="col-meio btn-processo bg-secondary" onclick="mudarStatus({{pedido.id}}, {{count}}, {{estabelecimento}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></a>
+    <select class="form-control select2-single hidden" id="motoboy-{{pedido.id}}" name="motoboy-{{pedido.id}}">
+    <option value="{{pedido.id_motoboy}}" selected>{{pedido.id_motoboy}}</option>
+    </select>
+                    
+        <a class="col-meio btn-processo bg-secondary" onclick="mudarStatusEntrega({{pedido.id}}, {{count}}, {{estabelecimento}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></a>
 {% endif %}
 
 

@@ -48,6 +48,7 @@ class AdminDeliveryTipo extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -69,9 +70,10 @@ class AdminDeliveryTipo extends Controller
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
 
@@ -85,6 +87,7 @@ class AdminDeliveryTipo extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -98,9 +101,10 @@ class AdminDeliveryTipo extends Controller
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
             
-            'caixa' => $estabelecimento[0]->data_final,
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
 

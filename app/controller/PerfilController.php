@@ -46,6 +46,7 @@ class PerfilController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -56,7 +57,8 @@ class PerfilController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -65,6 +67,7 @@ class PerfilController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -74,7 +77,8 @@ class PerfilController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -85,6 +89,7 @@ class PerfilController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -94,7 +99,8 @@ class PerfilController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -106,6 +112,7 @@ class PerfilController extends Controller
         
         
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulEnderecos = $this->acoes->getByFieldAll('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
             $resulEstados = $this->acoes->getFind('estados');
@@ -119,7 +126,8 @@ class PerfilController extends Controller
             'enderecos' => $resulEnderecos,
             'estados' => $resulEstados,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -129,6 +137,7 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
         $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
@@ -144,7 +153,8 @@ class PerfilController extends Controller
             'enderecos' => $resulEnderecos,
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -153,6 +163,7 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
         $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
@@ -168,7 +179,8 @@ class PerfilController extends Controller
             'resulEnderecos' => $resulEnderecos,
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -178,6 +190,7 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
         $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
@@ -193,7 +206,8 @@ class PerfilController extends Controller
             'enderecoAtivo' => $resulEnderecos,
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -203,6 +217,7 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
         $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
@@ -218,7 +233,8 @@ class PerfilController extends Controller
             'resulEnderecos' => $resulEnderecos,
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
 
         ]);
     }

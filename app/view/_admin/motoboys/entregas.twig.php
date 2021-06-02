@@ -14,8 +14,12 @@
                             <div class="input-group ">
                                 <select class="form-control select2-single" id="id_motoboy" name="id_motoboy" autocomplete="off" required>
                                     <option value="0">Selecione um Motoboy</option>
-                                    {% for m in motoboy %}
-                                    <option value="{{ m[':id }}">{{ m[':nome }}</option>
+                                    {% for me in motoboysEmpresa %}
+                                    {% for m in motoboys %}
+                                    {% if m.id == me.id_usuario %}
+                                    <option value="{{ m.id }}">{{ m.nome }}</option>
+                                    {% endif %}
+                                    {% endfor %}
                                     {% endfor %}
                                 </select>
                                 </span>

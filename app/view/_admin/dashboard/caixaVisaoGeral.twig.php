@@ -16,7 +16,23 @@
         <div class="separator mb-5"></div>
 
 </div>
+{% if totalPedidos == 0 %}
 <div class="row">
+<div class="form-side col-lg-12">
+    <div class="text-center pt-4">
+
+        <p class="display-1 font-weight-bold mt-5">
+            <span class="iconsminds-digital-drawing iconeMenu"></span>
+        </p>
+        <p class="mb-0 text-muted text-small mb-2">Inicie seu atendimento e venda mais</p>
+        <h6 class="mb-4">Você não possui dados o suficiente para gerar relatório!</h6>
+        <a href="{{BASE}}{{empresa.link_site}}/admin" class="btn btn-primary btn-lg btn-shadow">Venda mais</a>
+    </div>
+</div>
+</div>
+{% else %}
+<div class="row">
+    
         <div class="col-lg-4">
             <div class="card mb-4 progress-banner">
                 <div class="card-body justify-content-between d-flex flex-row align-items-center">
@@ -124,4 +140,5 @@
 
 
         </div>
+{% endif %}      
 {% endblock %}

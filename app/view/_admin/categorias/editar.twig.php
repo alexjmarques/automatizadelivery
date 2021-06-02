@@ -18,7 +18,7 @@
     enctype="multipart/form-data">
     <div class="card mb-4">
         <div class="card-body">
-            <h5 id="titleBy" data-id="{{retorno.id}}">Categia dos produtos</h5>
+            <h5 id="titleBy" data-id="{{retorno.id}}">Categoria dos produtos</h5>
             <div class="form-row">
                 <div class="form-group col-md-8 catProds">
                     <label>Nome da Categoria</label>

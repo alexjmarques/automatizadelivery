@@ -53,6 +53,7 @@ class PedidosController extends Controller
         $status = $this->acoes->getFind('status');
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
         }
 
@@ -73,7 +74,8 @@ class PedidosController extends Controller
             'usuario' => $usuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser(),
         ]);
     }
     public function view($data)
@@ -88,7 +90,8 @@ class PedidosController extends Controller
             'venda' => $venda,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser()
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser()
         ]);
 
     }
@@ -109,6 +112,7 @@ class PedidosController extends Controller
         $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
         }
 
@@ -126,6 +130,7 @@ class PedidosController extends Controller
         $avaliacao = $this->acoes->countsTwo('avaliacao', 'id_cliente', $this->sessao->getUser(), 'id_motoboy', $venda->id, 'id_motoboy', $empresa->id);
 
         if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -157,7 +162,8 @@ class PedidosController extends Controller
             'venda' => $venda,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser()
+            'usuarioLogado' => $usuarioLogado,
+'isLogin' => $this->sessao->getUser()
         ]);
     }
     public function cancelarPedido($data)

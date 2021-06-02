@@ -45,10 +45,8 @@
 
                                 {% for cartAd in carrinhoAdicional %}
                                     {% if p.id == cartAd.id_produto %}
-
-                                    {% if c.chave == cartAd.chave %}
                                         {% for a in adicionais %}
-                                            {% if a.id == cartAd.id_adicional %}
+                                            {% if a.id == cartAd.id_adicional and p.id == cartAd.id_produto and c.id == cartAd.id_carrinho %}
                                             <p class="m-0 small subprice">
                                             - <strong>{{ cartAd.quantidade }}
                                             x </strong>{{ a.nome }} 
@@ -60,7 +58,7 @@
                                         </p>
                                             {% endif %}
                                         {% endfor %}
-                                        {% endif %}
+                                        
                                     {% endif %}
                                 {% endfor %}
                                 </a>

@@ -15,13 +15,13 @@ use app\classes\Sessao;
 use Twilio\Rest\Client;
 use app\Models\Usuarios;
 use app\Models\Empresa;
-//use app\classes\SMS;
+use app\classes\SMS;
 use Bcrypt\Bcrypt;
 use Mobile_Detect;
 
 class UsuarioController extends Controller
 {
-    
+
     private $empresa;
     private $acoes;
     private $usuario;
@@ -29,7 +29,6 @@ class UsuarioController extends Controller
     private $bcrypt;
     private $geral;
     private $trans;
-    private $sms;
 
     /**
      *
@@ -39,15 +38,14 @@ class UsuarioController extends Controller
      */
     public function __construct()
     {
-        $this->trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        
+        $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->empresa = new Empresa();
         $this->usuario = new Usuarios();
         $this->bcrypt = new Bcrypt();
         $this->acoes = new Acoes();
-        //$this->sms = new SMS();
     }
     /**
      * Login Geral Clientes
@@ -58,18 +56,18 @@ class UsuarioController extends Controller
     public function login($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $isLogin = $this->sessao->getUser() ? redirect(BASE.$empresa->link_site) : null;
+        $isLogin = $this->sessao->getUser() ? redirect(BASE . $empresa->link_site) : null;
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa','id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('login/main', [
             'empresa' => $empresa,
             'isLogin' => $isLogin,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            
+
         ]);
     }
     /**
@@ -81,11 +79,11 @@ class UsuarioController extends Controller
     public function loginEstabelecimento($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $isLogin = $this->sessao->getUser() ? redirect(BASE.$empresa->link_site.'/admin') : null;
+        $isLogin = $this->sessao->getUser() ? redirect(BASE . $empresa->link_site . '/admin') : null;
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa','id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/login/main', [
             'empresa' => $empresa,
@@ -102,11 +100,11 @@ class UsuarioController extends Controller
      */
     public function loginAdmin($data)
     {
-        $isLogin = $this->sessao->getUser() ? redirect(BASE.'admin') : null;
+        $isLogin = $this->sessao->getUser() ? redirect(BASE . 'admin') : null;
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa','id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/login/main', [
             'trans' => $this->trans,
@@ -144,18 +142,21 @@ class UsuarioController extends Controller
 
             if ($this->bcrypt->verify($senha, $usuario->senha)) {
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
-                if ($data['linkSite'] == null){
-                    echo "Aguarde estamos redirecionando para a pagina inicial";
-                }else{
+                if ($data['linkSite'] == null) {
+                    header('Content-Type: application/json');
+                    $json = json_encode(['url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    exit($json);
+                } else {
                     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
                     header('Content-Type: application/json');
-                    $json = json_encode(['link' => $empresa->link_site, 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    $json = json_encode(['url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                     exit($json);
                 }
             } else {
-                echo "Senha incorreta. Verifique se digitou sua senha corretamente!";
+                header('Content-Type: application/json');
+                $json = json_encode(['link' => "", 'resp' => 'login', 'error' => "Senha incorreta. Verifique se digitou sua senha corretamente!"]);
+                exit($json);
             }
-
         }
     }
 
@@ -198,9 +199,8 @@ class UsuarioController extends Controller
     //         $numerofinal = $ddi . $numeroTelefone;
 
     //         //$resultado = $this->smsClass->envioSMS($numerofinal, $mensagem);
-
-    //         $account_sid = 'AC3891f3248b6bd5bd3f299c1a89886814';
-    //         $auth_token = '3ce669b5e06e3a12578e1824dc75f132';
+    //$client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
+   // $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
 
     //         $client = new Client($account_sid, $auth_token);
     //         $client->messages->create(
@@ -255,7 +255,7 @@ class UsuarioController extends Controller
         $segment = $session->getSegment('Vendor\Aura\Segment');
         $codeValida = $segment->get('codeValida');
 
-        if($codeValida == $data['codeValida']){
+        if ($codeValida == $data['codeValida']) {
             $resultUp = $this->usuarioModel->getByTelefone($data['telefone']);
             $session = $this->sessionFactory->newInstance($_COOKIE);
             $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -273,6 +273,7 @@ class UsuarioController extends Controller
             $SessionIdUsuario = $segment->get('id_usuario');
 
             if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
                 echo 'Aguarde estamos redirecionando para a pagina inicial';
             }
         }
@@ -285,387 +286,56 @@ class UsuarioController extends Controller
         $codeValida = $segment->get('codeValida');
 
         $resultUp = $this->usuarioModel->getById($data['u']);
-            $session = $this->sessionFactory->newInstance($_COOKIE);
-            $segment = $session->getSegment('Vendor\Aura\Segment');
-            $SessionIdUsuario = $segment->get('id_usuario');
-
-            if (!$this->sessao->getUser()) {
-                $session->setCookieParams(array('lifetime' => '2592000'));
-                $_SESSION = array(
-                    'Vendor\Aura\Segment' => array(
-                        'id_usuario' => $resultUp[':id'],
-                        'usuario' => $resultUp[':email'],
-                        'nivel' => $resultUp[':nivel'],
-                        'numero_pedido' => substr(number_format(time() * Rand(), 0, '', ''), 0, 6),
-                    ),
-                );  
-            }
-
-            
-    }
-
-    public function cadastro($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
-
         $SessionIdUsuario = $segment->get('id_usuario');
-        // $SessionUsuarioEmail = $segment->get('usuario');
-        // $SessionNivel = $segment->get('nivel');
 
-        //Verifica se esta logado e bloqueia o acesso as paginas de login e Cadastro
-        $verificaLogin = $this->allController->verificaNivel($empresaAct[':id']);
-        $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
-
-        if ($this->sessao->getUser()) {
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
-        }
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('login/cadastro', [
-            'empresa' => $resultEmpresa,
-            'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            
-        ]);
-    }
-
-    public function cadastroAtendente($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        // $SessionUsuarioEmail = $segment->get('usuario');
-        // $SessionNivel = $segment->get('nivel');
-
-        //Verifica se esta logado e bloqueia o acesso as paginas de login e Cadastro
-        $verificaLogin = $this->allController->verificaNivel($empresaAct[':id']);
-        $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
-
-        if ($this->sessao->getUser()) {
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
-        }
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('login/cadastroAtendente', [
-            'empresa' => $resultEmpresa,
-            'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            
-        ]);
-    }
-
-    public function cadastroMotoca($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        // $SessionUsuarioEmail = $segment->get('usuario');
-        // $SessionNivel = $segment->get('nivel');
-
-        $verificaLogin = $this->allController->verificaNivel($empresaAct[':id']);
-        $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
-
-        if ($this->sessao->getUser()) {
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
-        }
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('login/cadastroMotoca', [
-            'empresa' => $resultEmpresa,
-            'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            
-        ]);
-    }
-
-    public function senhaPerdida($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $verificaLogin = $this->allController->verificaNivel($empresaAct[':id']);
-        $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('login/senhaPerdida', [
-            'empresa' => $resultEmpresa,
-            'trans' => $trans,
-            
-        ]);
-    }
-
-    public function senhaPerdidaRecupera($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-
-        $telefone = Input::post('emailOurTel');
-        $pegarUsuario =  $this->usuarioModel->getByTelefone($telefone);
-        $geradorSenha =  $this->allController->geraSenha();
-        $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
-
-        $bcrypt = new Bcrypt();
-        $bcrypt_version = '2a';
-        $senha = $bcrypt->encrypt($geradorSenha, $bcrypt_version);
-        $result = $this->usuarioModel->updateSenha($pegarUsuario[':id'], $senha);
-
-        if ($result <= 0) {
-            echo 'Erro ao atualizar sua senha';
-        } else {
-            $mensagem = "Olá " . $pegarUsuario[':nome'] . " segue a nova senha para acessar sua conta no " . $resultempresa.nome_fantasia  . "! Sua senha é: " . $geradorSenha;
-            $numeroTelefone = preg_replace('/[^0-9]/', '', $telefone);
-            $ddi = 55;
-            $numerofinal = $ddi . $numeroTelefone;
-
-            $resultado = $this->smsClass->envioSMS($numerofinal, $mensagem);
-            $retorno =  json($resultado);
-            if ($retorno->status == "success") {
-                echo 'Sua nova senha foi enviada com Sucesso!';
-            } else {
-                echo 'Não foi posível enviar sua nova senha, tente novamente mais tarde!';
-            }
-        }
-    }
-
-    public function novaSenhaPerdida($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-
-        $SessionIdUsuario = $segment->get('id_usuario');
-        //$SessionUsuarioEmail = $segment->get('usuario');
-        //$SessionNivel = $segment->get('nivel');
-
-        $resultEmpresa = $this->empresa->getById($empresaAct[':id']);
-        $resultUsuario = $this->usuarioModel->getById($data['id']);
-
-        if ($this->sessao->getUser()) {
-            $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario);
-        }
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('login/senhaPerdidaLogin', [
-            'empresa' => $resultEmpresa,
-            'usuario' => $resultUsuario,
-            'carrinhoQtd' => $resultCarrinhoQtd,
-            'trans' => $trans,
-            
-        ]);
-    }
-
-    public function endereco($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $verificaLogin = $this->allController->verificaLogin($empresaAct[':id']);
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
-        $this->load('_cliente/endereco/main', [
-            'empresa' => $empresaAct
-        ]);
-    }
-
-    public function insert($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $usuario = $this->getInput();
-
-        //$getEmail = $this->usuarioModel->getByEmail(Input::post('email'));
-        $getTelefone = $this->usuarioModel->verifyTelefoneCadastrado(Input::post('telefone'));
-
-        //dd($getTelefone);
-        if ($getTelefone > 0) {
-            echo 'Este Número de Telefone já esta cadastrado em nossa base de dados! Faça o <a href="' . BASE . $empresaAct[':link_site'] . '/sair">login</a> ou solicite a recuperação de senha!';
-            exit();
-        } else {
-            echo '';
-        }
-
-        $result = $this->usuarioModel->insert($usuario);
-
-        if ($result <= 0) {
-            echo 'Erro ao cadastrar um novo usuario';
-        } else {
-            $resultUp = $this->usuarioModel->getByTelefone(Input::post('telefone'));
-
-            $session = $this->sessionFactory->newInstance($_COOKIE);
-            $segment = $session->getSegment('Vendor\Aura\Segment');
-
+        if (!$this->sessao->getUser()) {
             $session->setCookieParams(array('lifetime' => '2592000'));
-            $session->setCookieParams(array('path' => BASE . $empresaAct[':link_site'] . 'cache/session'));
-            $session->setCookieParams(array('domain' => 'automatiza.app'));
-
             $_SESSION = array(
                 'Vendor\Aura\Segment' => array(
                     'id_usuario' => $resultUp[':id'],
                     'usuario' => $resultUp[':email'],
                     'nivel' => $resultUp[':nivel'],
+                    'numero_pedido' => substr(number_format(time() * Rand(), 0, '', ''), 0, 6),
                 ),
             );
-            echo 'Cadastro Realizado com Sucesso!';
         }
     }
 
 
-    public function insertSocial($data)
+    public function atendentes($data)
     {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $usuario = $this->getInputFacebook();
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
-        $result = $this->usuarioModel->insert($usuario);
-        if ($result <= 0) {
-            echo 'Erro ao cadastrar o novo usuario';
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
         } else {
-            echo 'Cadastro Realizado com Sucesso!';
-            $getEmail = Input::post('email');
-            $resultUp = $this->usuarioModel->getByEmail($getEmail);
-
-            $session = $this->sessionFactory->newInstance($_COOKIE);
-            $segment = $session->getSegment('Vendor\Aura\Segment');
-
-            $session->setCookieParams(array('lifetime' => '2592000'));
-            $session->setCookieParams(array('path' => BASE . $empresaAct[':link_site'] . 'cache/session'));
-            $session->setCookieParams(array('domain' => 'automatiza.app'));
-
-            $_SESSION = array(
-                'Vendor\Aura\Segment' => array(
-                    'id_usuario' => $resultUp[':id'],
-                    'usuario' => $resultUp[':email'],
-                    'nivel' => $resultUp[':nivel'],
-                ),
-            );
-            //redirect(BASE . $empresaAct[':link_site']); 
+            redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-    }
 
-    public function insertRecuperacaoSenha($data)
-    {
-        $empresaAct = $this->empresa->getByName($data['linkSite']);
-        $usuario = $this->getInputRecuperacao();
-        //dd($usuario);
-        $result = $this->usuarioModel->update($usuario);
-        if ($result <= 0) {
-            echo 'Erro ao atualizar sua nova senha';
-        } else {
-            echo 'Senha Atualizada com Sucesso!';
-        }
-    }
+        $count = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 10, $page);
+        $resultCategorias = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputRecuperacao()
-    {
-        $resultUsuario = $this->usuarioModel->getById(Input::post('id'));
-
-        $bcrypt = new Bcrypt();
-
-        $bcrypt_version = '2a';
-        $getSenha = Input::post('senha');
-        $senha = $bcrypt->encrypt($getSenha, $bcrypt_version);
-
-        return (object) [
-            'id' => $resultUsuario[':id'],
-            'nome' => $resultUsuario[':nome'],
-            'email' => $resultUsuario[':email'],
-            'telefone' => $resultUsuario[':telefone'],
-            'senha' => $senha,
-            'nivel' => $resultUsuario[':nivel'],
-        ];
-    }
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputFacebook()
-    {
-        $bcrypt = new Bcrypt();
-
-        $bcrypt_version = '2a';
-        $getSenha = 'mud@r123';
-        $senha = $bcrypt->encrypt($getSenha, $bcrypt_version);
-
-        return (object) [
-            'nome' => Input::post('nome'),
-            'email' => Input::post('email'),
-            'telefone' => Input::post('telefone'),
-            'senha' => $senha,
-            'nivel' => 3,
-        ];
-    }
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInput()
-    {
-        $bcrypt = new Bcrypt();
-
-        $bcrypt_version = '2a';
-        $getSenha = Input::post('senha');
-        $senha = $bcrypt->encrypt($getSenha, $bcrypt_version);
-
-        $geradorSenha =  $this->allController->geraSenha();
-        $email = $geradorSenha . '@automatiza.app';
-
-        return (object) [
-            'nome' => Input::post('nome'),
-            'email' => $email,
-            'telefone' => Input::post('telefone'),
-            'senha' => $senha,
-            'nivel' => Input::post('nivel'),
-
-        ];
-    }
-
-
-    /**
-     * Retorna os dados do formulário em uma classe padrão stdObject
-     *
-     * @return object
-     */
-    private function getInputUpdate()
-    {
-        return (object) [
-            'nome' => Input::post('nome'),
-            'email' => Input::post('email'),
-            'telefone' => Input::post('telefone'),
-            'senha' => Input::post('senha'),
-            'nivel' => Input::post('nivel'),
-        ];
+        $this->load('_admin/atendentes/main', [
+            'categorias' => $resultCategorias,
+            'paginacao' => $pager->render('mt-4 pagin'),
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
     }
 }
