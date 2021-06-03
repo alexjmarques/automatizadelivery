@@ -456,6 +456,7 @@ class CarrinhoController extends Controller
             $valorEmp = new UsuariosEmpresa();
             $valorEmp->id_usuario = $valor->id;
             $valorEmp->id_empresa = $empresa->id;
+            $valorEmp->nivel = 3;
             $valorEmp->save();
 
             $usuario = $this->acoes->getByField('usuarios', 'id', $valor->id);
@@ -516,6 +517,7 @@ class CarrinhoController extends Controller
                     $valorEmp = new UsuariosEmpresa();
                     $valorEmp->id_usuario = $usuario->id;
                     $valorEmp->id_empresa = $empresa->id;
+                    $valorEmp->nivel = 3;
                     $valorEmp->save();
                 }
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);

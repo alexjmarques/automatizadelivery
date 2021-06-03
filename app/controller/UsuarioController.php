@@ -16,6 +16,7 @@ use Twilio\Rest\Client;
 use app\Models\Usuarios;
 use app\Models\Empresa;
 use app\classes\SMS;
+use app\Models\UsuariosEmpresa;
 use Bcrypt\Bcrypt;
 use Mobile_Detect;
 
@@ -200,7 +201,7 @@ class UsuarioController extends Controller
 
     //         //$resultado = $this->smsClass->envioSMS($numerofinal, $mensagem);
     //$client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
-   // $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
+    // $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
 
     //         $client = new Client($account_sid, $auth_token);
     //         $client->messages->create(
@@ -273,7 +274,7 @@ class UsuarioController extends Controller
             $SessionIdUsuario = $segment->get('id_usuario');
 
             if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
                 echo 'Aguarde estamos redirecionando para a pagina inicial';
             }
         }
@@ -320,25 +321,351 @@ class UsuarioController extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $motoboys = $this->acoes->getByFieldAll('usuarios', 'nivel', 2);
-  
-        $count = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $motoboysEmpresa = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
         $this->load('_admin/atendentes/main', [
             'paginacao' => $pager->render('mt-4 pagin'),
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
-            'motoboys' => $motoboys,
-            'motoboysEmpresa' => $motoboysEmpresa,
+            'usuarios' => $usuarios,
+            'retorno' => $retorno,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
+    }
+
+    public function atendenteNovo($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $this->load('_admin/atendentes/novo', [
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+    public function atendenteEditar($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $this->load('_admin/atendentes/editar', [
+            'retorno' => $retorno,
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+
+
+    public function clientes($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 10, $page);
+        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+
+        $this->load('_admin/clientes/main', [
+            'paginacao' => $pager->render('mt-4 pagin'),
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'usuarios' => $usuarios,
+            'retorno' => $retorno,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+    public function clienteNovo($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $this->load('_admin/clientes/novo', [
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+    public function clienteEditar($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $this->load('_admin/clientes/editar', [
+            'retorno' => $retorno,
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+
+    public function administradores($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 0);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 10, $page);
+        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+
+        $this->load('_admin/administradores/main', [
+            'paginacao' => $pager->render('mt-4 pagin'),
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'usuarios' => $usuarios,
+            'retorno' => $retorno,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+    public function administradorNovo($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $this->load('_admin/administradores/novo', [
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+    public function administradorEditar($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $this->load('_admin/administradores/editar', [
+            'retorno' => $retorno,
+            'planoAtivo' => $planoAtivo,
+            'moeda' => $moeda,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
+        ]);
+    }
+
+
+
+
+
+    public function insert($data)
+    {
+        $email = $data['email'];
+        if($data['email'] == null){
+            $hash =  md5(uniqid(rand(), true));
+            $email = $hash . '@automatizadelivery.com.br';
+        }
+
+        $senha = $data['senha'];
+        if($data['senha'] == null){
+            $getSenha = preg_replace('/[^0-9]/', '', $data['telefone']);
+            $senha = $this->bcrypt->encrypt($getSenha, '2a');
+        }else{
+            $senha = $this->bcrypt->encrypt($data['senha'], '2a');
+        }
+
+        $valor = new Usuarios();
+        $valor->nome = $data['nome'];
+        $valor->email = $email;
+        $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
+        $valor->senha = $senha;
+        $valor->nivel = $data['nivel'];
+        $valor->save();
+
+        $valorEmp = new UsuariosEmpresa();
+        $valorEmp->id_usuario = $valor->id;
+        $valorEmp->id_empresa = $data['id_empresa'];
+        $valorEmp->nivel = $data['nivel'];
+        $valorEmp->save();
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => $data['mensagemSuccess'], 'error' => $data['mensagemError'], 'url' => $data['url']]);
+        exit($json);
+    }
+
+    public function update($data)
+    {
+        $valor = (new Usuarios())->findById($data['id']);
+        $valor->nome = $data['nome'];
+        $valor->email = $data['email'];
+        $valor->save();
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => $data['mensagemSuccess'], 'error' => $data['mensagemError'], 'url' => $data['url']]);
+        exit($json);
+    }
+
+    public function deletar($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $usuarioEmpresa = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $data['id'], 'id_empresa', $empresa->id);
+        $valor = (new Usuarios())->findById($data['id']);
+        $valor->destroy();
+
+        $valorE = (new UsuariosEmpresa())->findById($usuarioEmpresa->id);
+        $valorE->destroy();
+
+        switch ($data['url_dell']) {
+            case 0:
+                $url_dell = 'admin/administradores';
+                break;
+            case 1:
+                $url_dell = 'admin/atendentes';
+                break;
+            case 2:
+                $url_dell = 'admin/motoboys';
+                break;
+            case 3:
+                $url_dell = 'admin/clientes';
+                break;
+            default :
+                $url_dell = 'admin/clientes';
+                break;
+        }
+
+        redirect(BASE . "{$data['linkSite']}/{$url_dell}");
     }
 }

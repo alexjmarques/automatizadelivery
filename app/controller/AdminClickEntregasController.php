@@ -71,7 +71,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/marketplaces/clickEntregas', [
-            'empresa' => $empresaAct,
+            'empresa' => $empresa,
             'nivelUsuario' => $SessionNivel,
             'statusUberEats' => $resulUber,
             'planoAtivo' => $planoAtivo,
@@ -79,7 +79,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'estabelecimento' => $estabelecimento,
             'trans' => $trans,
             
-            'caixa' => $resulCaixa,
+            'caixa' => $estabelecimento[0]->data_inicio
 
         ]);
     }

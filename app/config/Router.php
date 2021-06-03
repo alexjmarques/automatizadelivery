@@ -3,38 +3,39 @@ use CoffeeCode\Router\Router;
 /*
     Inclusão das Controllers
 */
+require "../app/controller/AdminGeral.php";
+require "../app/controller/AdminCupom.php";
+require "../app/controller/AdminStatus.php";
+require "../app/controller/AdminPlanos.php";
+require "../app/controller/AdminRating.php";
+require "../app/controller/AdminPedidos.php";
 require "../app/controller/AllController.php";
+require "../app/controller/AdminMotoboys.php";
+require "../app/controller/AdminProdutos.php";
+require "../app/controller/AdminDashboard.php";
 require "../app/controller/PagesController.php";
+require "../app/controller/AdminCategorias.php";
 require "../app/controller/PerfilController.php";
 require "../app/controller/RatingController.php";
 require "../app/controller/MessageController.php";
+require "../app/controller/AdminDeliveryTipo.php";
 require "../app/controller/PedidosController.php";
 require "../app/controller/UsuarioController.php";
-require "../app/controller/CarrinhoController.php";
-require "../app/controller/AdminPlanos.php";
-require "../app/controller/FavoritosController.php";
-require "../app/controller/AdminGeral.php";
 require "../app/controller/AdminEmpresaFrete.php";
-require "../app/controller/AdminCupom.php";
-require "../app/controller/AdminRating.php";
-require "../app/controller/AdminFormasPagamento.php";
-require "../app/controller/AdminPedidos.php";
-require "../app/controller/AdminiFoodController.php";
-require "../app/controller/AdminClickEntregasController.php";
-require "../app/controller/AdminUberEatsController.php";
-require "../app/controller/PerfilMotoboyController.php";
-require "../app/controller/AdminMotoboys.php";
-require "../app/controller/AdminProdutos.php";
-require "../app/controller/PedidosMotoboyController.php";
-require "../app/controller/AdminDashboard.php";
-require "../app/controller/AdminCategorias.php";
-require "../app/controller/AdminDeliveryTipo.php";
+require "../app/controller/TestAPIController.php";
+require "../app/controller/CarrinhoController.php";
 require "../app/controller/AdminConfiguracoes.php";
 require "../app/controller/AdminTipoAdicional.php";
-require "../app/controller/AdminPedidosBalcaoController.php";
+require "../app/controller/FavoritosController.php";
 require "../app/controller/AdminProdutoSabores.php";
+require "../app/controller/AdminFormasPagamento.php";
+require "../app/controller/AdminiFoodController.php";
+require "../app/controller/AdminUberEatsController.php";
+require "../app/controller/PerfilMotoboyController.php";
 require "../app/controller/AdminProdutosAdicionais.php";
-require "../app/controller/TestAPIController.php";
+require "../app/controller/PedidosMotoboyController.php";
+require "../app/controller/AdminPedidosBalcaoController.php";
+require "../app/controller/AdminClickEntregasController.php";
 
 
 $router = new Router(BASE);
@@ -308,17 +309,34 @@ $router->get('/{linkSite}/admin/motoboy/novo', 'AdminMotoboys:novo');
 $router->post('/{linkSite}/admin/motoboy/i', 'AdminMotoboys:insert');
 $router->get('/{linkSite}/admin/motoboy/editar/{id}', 'AdminMotoboys:editar');
 $router->post('/{linkSite}/admin/motoboy/u/{id}', 'AdminMotoboys:update');
-$router->get('/{linkSite}/admin/motoboy/d/{id}', 'AdminMotoboys:deletar');
+$router->get('/{linkSite}/admin/motoboy/d/{id}/{url_dell}', 'AdminMotoboys:deletar');
+
 $router->get('/{linkSite}/admin/usuarios', 'UsuarioController:index');
 $router->get('/{linkSite}/admin/clientes', 'UsuarioController:clientes');
 $router->get('/{linkSite}/admin/cliente/novo', 'UsuarioController:novoCliente');
 $router->post('/{linkSite}/admin/cliente/novo/i', 'UsuarioController:insertNovoCliente');
+$router->get('/{linkSite}/admin/cliente/d/{id}/{url_dell}', 'UsuarioController:deletar');
+
 $router->get('/{linkSite}/admin/atendentes', 'UsuarioController:atendentes');
-$router->get('/{linkSite}/admin/usuario/novo', 'UsuarioController:novo');
-$router->post('/{linkSite}/admin/usuario/i', 'UsuarioController:insert');
-$router->get('/{linkSite}/admin/usuario/editar/{id}', 'UsuarioController:editar');
-$router->post('/{linkSite}/admin/usuario/u/{id}', 'UsuarioController:update');
-$router->get('/{linkSite}/admin/usuario/d/{id}', 'UsuarioController:deletar');
+$router->post('/{linkSite}/admin/atendente/i', 'UsuarioController:insert');
+$router->post('/{linkSite}/admin/atendente/u', 'UsuarioController:update');
+$router->get('/{linkSite}/admin/atendente/editar/{id}', 'UsuarioController:atendenteEditar');
+$router->get('/{linkSite}/admin/atendente/novo', 'UsuarioController:atendenteNovo');
+$router->get('/{linkSite}/admin/atendente/d/{id}/{url_dell}', 'UsuarioController:deletar');
+
+$router->get('/{linkSite}/admin/administradores', 'UsuarioController:administradores');
+$router->post('/{linkSite}/admin/administrador/i', 'UsuarioController:insert');
+$router->post('/{linkSite}/admin/administrador/u', 'UsuarioController:update');
+$router->get('/{linkSite}/admin/administrador/editar/{id}', 'UsuarioController:administradorEditar');
+$router->get('/{linkSite}/admin/administrador/novo', 'UsuarioController:administradorNovo');
+$router->get('/{linkSite}/admin/administrador/d/{id}/{url_dell}', 'UsuarioController:deletar');
+
+$router->get('/{linkSite}/admin/clientes', 'UsuarioController:clientes');
+$router->post('/{linkSite}/admin/cliente/i', 'UsuarioController:insert');
+$router->post('/{linkSite}/admin/cliente/u', 'UsuarioController:update');
+$router->get('/{linkSite}/admin/cliente/editar/{id}', 'UsuarioController:clienteEditar');
+$router->get('/{linkSite}/admin/cliente/novo', 'UsuarioController:clienteNovo');
+
 $router->get('/{linkSite}/admin/conf/e', 'AdminConfiguracoesController:index');
 $router->post('/{linkSite}/admin/conf/u', 'AdminConfiguracoesController:update');
 
@@ -331,6 +349,14 @@ $router->get('/{linkSite}/admin/formas-pagamento/editar/{id}', 'AdminFormasPagam
 $router->post('/{linkSite}/admin/formas-pagamento/i', 'AdminFormasPagamento:insert');
 $router->post('/{linkSite}/admin/formas-pagamento/u/{id}', 'AdminFormasPagamento:update');
 $router->get('/{linkSite}/admin/formas-pagamento/d/{id}', 'AdminFormasPagamento:deletar');
+
+
+$router->get('/{linkSite}/admin/status', 'AdminStatus:index');
+$router->get('/{linkSite}/admin/status/editar/{id}', 'AdminStatus:editar');
+$router->post('/{linkSite}/admin/status/u/{id}', 'AdminStatus:update');
+
+
+
 
 $router->get('/{linkSite}//adminpedidos/ifood', 'AdminIfoodController:polling');
 $router->post('/{linkSite}/admin/sync/categoria/ifood', 'AdminIfoodController:syncCategory');

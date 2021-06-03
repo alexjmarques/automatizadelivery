@@ -88,7 +88,7 @@ class AdminMotoboys extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $motoboys = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
-        $motoboysEmpresa = $this->acoes->getByFieldAll('usuariosEmpresa', 'id_empresa', $empresa->id);
+        $motoboysEmpresa = $this->acoes->getByFieldTwoAll('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
 
 
         if ($this->sessao->getUser()) {
@@ -193,7 +193,7 @@ class AdminMotoboys extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $motoboys = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
-        $motoboysEmpresa = $this->acoes->getByFieldAll('usuariosEmpresa', 'id_empresa', $empresa->id);
+        $motoboysEmpresa = $this->acoes->getByFieldTwoAll('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
 
 
         if ($this->sessao->getUser()) {

@@ -6,7 +6,7 @@ define('BASE', '/');
 define('UNSET_URI_COUNT', 0);
 define('DEBUG_URI', true);
 
-$online = true;
+$online = false;
 if($online){
     $client = 'temakicampolimpo';
     define('UPLOADS_BASE', '/var/www/automatizadelivery.com.br/public_html/public/uploads/');
@@ -55,6 +55,8 @@ define('IFOOD', [
 $live = true;
 if($live){
     define('pagarme_api_key', 'ak_live_kYgEGMeWd702Qx1xsXXBip43F5MANs');
+    define("TWILIO",['account_sid' => 'AC3891f3248b6bd5bd3f299c1a89886814','auth_token' => '3ce669b5e06e3a12578e1824dc75f132', 'number' => '+19096555675']);
 }else{
-    define('pagarme_api_key', 'ak_test_grvCpbW9zYWe8R8d0ByEimTzcmaOCC');
+    define("TWILIO",['account_sid' => 'AC516df197f0b1f4b239e004d44fb0e34e','auth_token' => 'f1c36649edd3469272b46e70970eb09e', 'number' => '+19096555675']);
+    define('pagarme_api_key', 'ak_live_kYgEGMeWd702Qx1xsXXBip43F5MANs');
 }

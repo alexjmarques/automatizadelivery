@@ -20,7 +20,7 @@ use app\Models\EmpresaFrete;
 class AdminConfiguracoesController extends Controller
 {
     //Instancia da Classe AdminConfigEmpresaModel
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -34,7 +34,7 @@ class AdminConfiguracoesController extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -55,14 +55,14 @@ class AdminConfiguracoesController extends Controller
         $diaSelecao = $this->acoes->getFind('dias');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/configuracao/main', [
             'endereco' => $endereco,
             'moedas' => $moedas,
@@ -73,16 +73,15 @@ class AdminConfiguracoesController extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
             'caixa' => $estabelecimento[0]->data_inicio,
+
         ]);
-        
     }
 
     public function update($data)
     {
-        
+
         if ($_FILES['capa']['name'] != "") {
             $extensao = pathinfo($_FILES['logo']['name']);
             $extensao = "." . $extensao['extension'];
@@ -130,7 +129,7 @@ class AdminConfiguracoesController extends Controller
         $valor->nf_paulista = Input::post('switch');
         $valor->save();
 
-        
+
         $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
         $valorEnd->cep = Input::post('cep');
         $valorEnd->rua = Input::post('rua');
@@ -142,12 +141,9 @@ class AdminConfiguracoesController extends Controller
         $valorEnd->id_empresa = Input::post('id_empresa');
         $valorEnd->save();
         dd($valorEnd);
-        
+
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Configurações da empresa atualizada com sucesso','error' => 'Não foi posível atualizar as informações da sua empresa','url' => 'conf/e',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'url' => 'conf/e',]);
         exit($json);
-
     }
-
-
 }

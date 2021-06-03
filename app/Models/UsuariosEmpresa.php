@@ -20,6 +20,7 @@ class UsuariosEmpresa extends DataLayer
     {
         $this->id_usuario = $usuario->id;
         $this->id_empresa = $empresa->id;
+        $this->id_nivel = $usuario->nivel;
 
         $this->save();
         return $this;

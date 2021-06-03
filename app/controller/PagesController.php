@@ -17,7 +17,6 @@ use Mobile_Detect;
 
 class PagesController extends Controller
 {
-
     private $acoes;
     private $sessao;
     private $geral;
@@ -50,10 +49,10 @@ class PagesController extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $ultimaVenda = null;
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
             $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
 
             if ($verificaVendaAtiva > 0) {
                 $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
@@ -66,7 +65,7 @@ class PagesController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 3) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
             }
@@ -89,7 +88,7 @@ class PagesController extends Controller
             'hoje' =>  $hoje,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
 
         ]);
@@ -100,8 +99,8 @@ class PagesController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
             $resultUltimaVenda = $this->acoes->getByFieldTreeMenor('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'status', 4);
         }
@@ -124,11 +123,11 @@ class PagesController extends Controller
         $empresaFuncionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
         $estados = $this->acoes->getFind('estados');
         $dias = $this->acoes->getFind('dias');
-        
+
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
         $this->load('_geral/quem-somos/main', [
@@ -143,7 +142,7 @@ class PagesController extends Controller
             'formasPagamento' => $formasPagamento,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
     }
@@ -151,7 +150,7 @@ class PagesController extends Controller
     public function bemVindo($data)
     {
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
@@ -165,7 +164,7 @@ class PagesController extends Controller
     public function novoDelivery($data)
     {
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
@@ -180,8 +179,8 @@ class PagesController extends Controller
     public function contato($data)
     {
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $this->load('_geral/contato/main', [
@@ -198,8 +197,8 @@ class PagesController extends Controller
         $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
@@ -210,7 +209,7 @@ class PagesController extends Controller
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()
         ]);
     }
@@ -219,8 +218,8 @@ class PagesController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $this->load('_geral/termosUso/main', [
             'empresa' => $empresa,
@@ -234,14 +233,32 @@ class PagesController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal',1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $this->load('_geral/politicaPrivacidade/main', [
             'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect()
+        ]);
+    }
+
+    public function home($data)
+    {
+        $empresas = $this->acoes->getFind('empresa');
+        $empresaEnderecos = $this->acoes->getFind('empresaEnderecos');
+        // $empresaAtendimento = $this->acoes->getFind('empresaAtendimento');
+        // $empresaCategorias = $this->acoes->getFind('empresaCategorias');
+
+        $this->load('home/home', [
+            'empresas' => $empresas,
+            'empresaEnderecos' => $empresaEnderecos,
+            'empresaAtendimento' => $empresaAtendimento,
+            'empresaCategorias' => $empresaCategorias,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+
         ]);
     }
 }

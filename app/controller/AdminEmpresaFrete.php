@@ -90,7 +90,7 @@ class AdminEmpresaFrete extends Controller
         $valor->save();
         
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Dados de Entrega atualizado com sucesso','error' => 'Não foi possível atualizar os dados de entrega','url' => 'conf/delivery/e',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Dados de Entrega atualizado com sucesso','error' => 'Não foi possível atualizar os dados de entrega','url' => 'admin/conf/delivery/e',]);
         exit($json);
 
     }

@@ -156,7 +156,7 @@
               <input type="text" class="form-control" id="cidade" name="cidade" value="{{endereco.cidade}}">
             </div>
   
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-2">
               <label for="estado">Estado</label>
               <select id="estado" name="estado" class="form-control select2-single">
                 <option value="">Selecione</option>

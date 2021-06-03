@@ -1,56 +1,81 @@
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow-sm osahan-nav-top">
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
-    </button>
-    <!-- Topbar Navbar -->
-    <ul class="navbar-nav">
-        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-        <li class="nav-item dropdown no-arrow d-sm-none">
-            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-            </a>
-            <!-- Dropdown - Messages -->
-            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light" placeholder="Search for..." aria-label="Search"
-                            aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="mdi mdi-magnify"></i>
-                            </button>
+<nav class="navbar navbar-expand-lg navbar-dark osahan-nav">
+         <div class="container">
+            <a class="navbar-brand" href="{{BASE}}"><img alt="logo" src="{{BASE}}img/logo-pb.png"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                     <a class="nav-link" href="{{BASE}}">Home </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{{BASE}}planos"><i class="icofont-sale-discount"></i> Nossos Planos <span class="badge badge-warning">New</span></a>
+                  </li>
+                  <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Restaurants
+                     </a>
+                     <div class="dropdown-menu dropdown-menu-right shadow-sm border-0">
+                        <a class="dropdown-item" href="listing.html">Listing</a>
+                        <a class="dropdown-item" href="detail.html">Detail + Cart</a>
+                        <a class="dropdown-item" href="checkout.html">Checkout</a>
+                     </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Pages
+                     </a>
+                     <div class="dropdown-menu dropdown-menu-right shadow-sm border-0">
+                        <a class="dropdown-item" href="track-order.html">Track Order</a>
+                        <a class="dropdown-item" href="invoice.html">Invoice</a>
+                        <a class="dropdown-item" href="login.html">Login</a>
+                        <a class="dropdown-item" href="register.html">Register</a>
+                        <a class="dropdown-item" href="404.html">404</a>
+                        <a class="dropdown-item" href="extra.html">Extra :)</a>
+                     </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <img alt="Generic placeholder image" src="img/user/4.png" class="nav-osahan-pic rounded-pill"> My Account
+                     </a>
+                     <div class="dropdown-menu dropdown-menu-right shadow-sm border-0">
+                        <a class="dropdown-item" href="orders.html#orders"><i class="icofont-food-cart"></i> Orders</a>
+                        <a class="dropdown-item" href="orders.html#offers"><i class="icofont-sale-discount"></i> Offers</a>
+                        <a class="dropdown-item" href="orders.html#favourites"><i class="icofont-heart"></i> Favourites</a>
+                        <a class="dropdown-item" href="orders.html#payments"><i class="icofont-credit-card"></i> Payments</a>
+                        <a class="dropdown-item" href="orders.html#addresses"><i class="icofont-location-pin"></i> Addresses</a>
+                     </div>
+                  </li>
+                  <li class="nav-item dropdown dropdown-cart">
+                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="fas fa-shopping-basket"></i> Cart
+                     <span class="badge badge-success">5</span>
+                     </a>
+                     <div class="dropdown-menu dropdown-cart-top p-0 dropdown-menu-right shadow-sm border-0">
+                        <div class="dropdown-cart-top-header p-4">
+                           <img class="img-fluid mr-3" alt="osahan" src="img/cart.jpg">
+                           <h6 class="mb-0">Gus's World Famous Chicken</h6>
+                           <p class="text-secondary mb-0">310 S Front St, Memphis, USA</p>
+                           <small><a class="text-primary font-weight-bold" href="#">View Full Menu</a></small>
                         </div>
-                    </div>
-                </form>
+                        <div class="dropdown-cart-top-body border-top p-4">
+                           <p class="mb-2"><i class="icofont-ui-press text-danger food-item"></i> Chicken Tikka Sub 12" (30 cm) x 1   <span class="float-right text-secondary">$314</span></p>
+                           <p class="mb-2"><i class="icofont-ui-press text-success food-item"></i> Corn & Peas Salad x 1   <span class="float-right text-secondary">$209</span></p>
+                           <p class="mb-2"><i class="icofont-ui-press text-success food-item"></i> Veg Seekh Sub 6" (15 cm) x 1  <span class="float-right text-secondary">$133</span></p>
+                           <p class="mb-2"><i class="icofont-ui-press text-danger food-item"></i> Chicken Tikka Sub 12" (30 cm) x 1   <span class="float-right text-secondary">$314</span></p>
+                           <p class="mb-2"><i class="icofont-ui-press text-danger food-item"></i> Corn & Peas Salad x 1   <span class="float-right text-secondary">$209</span></p>
+                        </div>
+                        <div class="dropdown-cart-top-footer border-top p-4">
+                           <p class="mb-0 font-weight-bold text-secondary">Sub Total <span class="float-right text-dark">$499</span></p>
+                           <small class="text-info">Extra charges may apply</small>  
+                        </div>
+                        <div class="dropdown-cart-top-footer border-top p-2">
+                           <a class="btn btn-success btn-block btn-lg" href="checkout.html"> Checkout</a>
+                        </div>
+                     </div>
+                  </li>
+               </ul>
             </div>
-        </li>
-        {% if isLogin is not null %}
-        <!-- Nav Item - location -->
-        <li class="nav-item dropdown no-arrow mx-2 osahan-t-loc">
-            <a class="nav-link dropdown-toggle text-dark" href="#" data-toggle="modal" data-target="#addressModal">
-                <span class="mdi mdi-crosshairs-gps"></span><span class="ml-2">{{enderecoAtivo.rua}}</span>
-            </a>
-        </li>
-        {% endif %}
-        <!-- Nav Item - pickup -->
-        <!-- <li class="nav-item dropdown no-arrow mx-2 osahan-t-pu">
-                            <a class="nav-link dropdown-toggle text-dark" href="orders.html">
-                                <i class="mdi mdi-shopping text-danger"></i><span class="ml-2">Pick up</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item dropdown no-arrow mx-2 osahan-t-bd">
-                            <a class="nav-link dropdown-toggle text-dark" data-toggle="modal" data-target="#mycoupansModal" href="#">
-                                <i class="mdi mdi-sack-percent text-warning"></i><span class="ml-2">Best Deals</span>
-                            </a>
-                        </li> -->
-    </ul>
-    <!-- Topbar Search -->
-    <!-- <div class="ml-auto">
-        <a href="{{BASE}}{{empresa.link_site}}/carrinho" class="btn btn-danger"><i
-                class="mdi mdi-shopping-outline"></i></a>
-    </div> -->
-</nav>
+         </div>
+      </nav>

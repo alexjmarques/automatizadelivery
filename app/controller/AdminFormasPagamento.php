@@ -138,7 +138,7 @@ class AdminFormasPagamento extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Forma de Pagamento cadastrado com sucesso','error' => 'Não foi possível cadastrar a Forma de Pagamento','url' => 'formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Forma de Pagamento cadastrado com sucesso','error' => 'Não foi possível cadastrar a Forma de Pagamento','url' => 'admin/formas-pagamento',]);
         exit($json);
     }
 
@@ -152,7 +152,7 @@ class AdminFormasPagamento extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Forma de Pagamento atualizada com sucesso','error' => 'Não foi possível atualizar a Forma de Pagamento','url' => 'formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Forma de Pagamento atualizada com sucesso','error' => 'Não foi possível atualizar a Forma de Pagamento','url' => 'admin/formas-pagamento',]);
         exit($json);
     }
 

@@ -145,7 +145,6 @@ class AdminDashboard extends Controller
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -158,6 +157,7 @@ class AdminDashboard extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $countCaixa = $this->acoes->counts('empresaCaixa', 'id_empresa', $empresa->id);
 
+
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$countCaixa, 10, $page);
@@ -166,8 +166,6 @@ class AdminDashboard extends Controller
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         }
-
-
         $this->load('_admin/dashboard/caixaLista', [
             'paginacao' => $pager->render('mt-4 pagin'),
             'empresa' => $empresa,
@@ -176,7 +174,7 @@ class AdminDashboard extends Controller
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'caixas' => $estabelecimento[0]->data_inicio,
+            'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
 
@@ -204,7 +202,6 @@ class AdminDashboard extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         //$totasEntregas = $this->acoes->sumFiels('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id,'valor_frete');
-
 
         $pedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $empresaCaixa->id);
         $status = $this->acoes->getFind('status');

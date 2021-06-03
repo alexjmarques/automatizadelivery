@@ -216,10 +216,6 @@ class AllController extends Controller
      }
 
 
-
-
-
-
     // public function iniciarAtendimento($data)
     // {
     //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);

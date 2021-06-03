@@ -3,141 +3,310 @@
 {% block body %}
 {% block head %}
 {% endblock %}
-{% if isLogin is not empty %}
-<!-- Sidebar -->
-{% include 'partials/desktop/sidebar.twig.php' %}
-<!-- End of Sidebar -->
-{% endif %}
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
-            <div id="content">
-                <!-- Topbar -->
-                {% include 'partials/desktop/menuTop.twig.php' %}
-                <!-- End of Topbar -->
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <div class="d-flex align-items-center justify-content-between mb-3 mt-2">
-                        <h5 class="mb-0">{{ trans.t('Por Categoria')}}</h5>
-                        <a href="listing.html" class="small font-weight-bold text-dark">{{ trans.t('Ver tudo')}} <i class="mdi mdi-chevron-right mr-2"></i></a>
-                    </div>
-                    <!-- Content Row -->
-                    <div class="row">
-                        <!-- Popular -->
-                        <a href="listing.html" class="text-decoration-none col-xl-2 col-md-4 mb-4">
-                            <div class="rounded py-4 bg-white shadow-sm text-center">
-                                <i class="mdi mdi-fire bg-danger text-white osahan-icon mx-auto rounded-pill"></i>
-                                <h6 class="mb-1 mt-3">Popular</h6>
-                                <p class="mb-0 small">286+ options</p>
-                            </div>
-                        </a>
-                        <!-- fast delivery -->
-                        <a href="listing.html" class="text-decoration-none col-xl-2 col-md-4 mb-4">
-                            <div class="rounded py-4 bg-white shadow-sm text-center">
-                                <i class="mdi mdi-motorbike bg-primary text-white osahan-icon mx-auto rounded-pill"></i>
-                                <h6 class="mb-1 mt-3">Fast Delivery</h6>
-                                <p class="mb-0 small">1,843+ options</p>
-                            </div>
-                        </a>
-                        <!-- high class -->
-                        <a href="listing.html" class="text-decoration-none col-xl-2 col-md-4 mb-4">
-                            <div class="rounded py-4 bg-white shadow-sm text-center">
-                                <i class="mdi mdi-wallet-outline bg-warning text-white osahan-icon mx-auto rounded-pill"></i>
-                                <h6 class="mb-1 mt-3">High class</h6>
-                                <p class="mb-0 small">25+ options</p>
-                            </div>
-                        </a>
-                        <!-- Dine in -->
-                        <a href="listing.html" class="text-decoration-none col-xl-2 col-md-4 mb-4">
-                            <div class="rounded py-4 bg-white shadow-sm text-center">
-                                <i class="mdi mdi-silverware-variant bg-danger text-white osahan-icon mx-auto rounded-pill"></i>
-                                <h6 class="mb-1 mt-3">Dine in</h6>
-                                <p class="mb-0 small">182+ options</p>
-                            </div>
-                        </a>
-                        <!-- Pick up -->
-                        <a href="listing.html" class="text-decoration-none col-xl-2 col-md-4 mb-4">
-                            <div class="rounded py-4 bg-white shadow-sm text-center">
-                                <i class="mdi mdi-home-variant-outline bg-primary text-white osahan-icon mx-auto rounded-pill"></i>
-                                <h6 class="mb-1 mt-3">Pick up</h6>
-                                <p class="mb-0 small">3,548+ options</p>
-                            </div>
-                        </a>
-                        <!-- Nearest -->
-                        <a href="listing.html" class="text-decoration-none col-xl-2 col-md-4 mb-4">
-                            <div class="rounded py-4 bg-white shadow-sm text-center">
-                                <i class="mdi mdi-map-outline bg-warning text-white osahan-icon mx-auto rounded-pill"></i>
-                                <h6 class="mb-1 mt-3">Nearest</h6>
-                                <p class="mb-0 small">44+ options</p>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Page Heading -->
-                    <div class="d-flex align-items-center justify-content-between mb-3 mt-2">
-                        <h5 class="mb-0">{{ trans.t('Em destaque')}}</h5>
-                    </div>
-                    <!-- Content Row -->
-                    <div class="row">
-                        <!-- Featured restaurants -->
-                    {% for emp in empresas%}
-                        <a href="detail.html" class="text-dark text-decoration-none col-xl-4 col-lg-12 col-md-12">
-                            <div class="bg-white shadow-sm rounded d-flex align-items-center p-1 mb-4 osahan-list">
-                                <div class="bg-light p-3 rounded">
-                                    <img src="{{ BASE~'uploads/'~emp.logo}}" class="img-fluid">
-                                </div>
-                                <div class="mx-3 py-2 w-100">
-                                    <p class="mb-2 text-black">{{emp.nomeFantasia}}</p>
-                                    <p class="small mb-2">
-                                        <!-- <i class="mdi mdi-star text-warning mr-1"></i> <span class="font-weight-bold text-dark">0.8</span> (873) -->
-                                        <i class="mdi mdi-silverware-fork-knife mr-1"></i> Burger
-                                        <i class="mdi mdi-currency-inr ml-3"></i> 340/-
-                                    </p>
-                                    <p class="mb-0 text-muted d-flex align-items-center">
-                                        
-                                        <span class="small ml-auto"><i class="mdi mdi-map-marker"></i> 0.3 km</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
-                    {% endfor %}
-                    </div>
-                    <!-- Content Row -->
-                    
-                </div>
-                <!-- /.container-fluid -->
+{% include 'partials/desktop/menuTop.twig.php' %}
+<section class="pt-5 pb-5 homepage-search-block position-relative">
+         <div class="banner-overlay"></div>
+         <div class="container">
+            <div class="row d-flex align-items-center py-lg-4">
+               <div class="col-lg-8 mx-auto">
+                  <div class="homepage-search-title text-center">
+                     <h1 class="mb-2 display-4 text-shadow text-white font-weight-normal"><span class="font-weight-bold">Discover the best food & drinks in India 🇮🇳
+                     </span></h1>
+                     <h5 class="mb-5 text-shadow text-white-50 font-weight-normal">Lists of top restaurants, cafes, pubs, and bars in Melbourne, based on trends</h5>
+                  </div>
+                  <div class="homepage-search-form">
+                     <form class="form-noborder">
+                        <div class="form-row">
+                           <div class="col-lg-3 col-md-3 col-sm-12 form-group">
+                              <div class="location-dropdown">
+                                 <i class="icofont-location-arrow"></i>
+                                 <select class="custom-select form-control-lg">
+                                    <option> Quick Searches </option>
+                                    <option> Breakfast </option>
+                                    <option> Lunch </option>
+                                    <option> Dinner </option>
+                                    <option> Cafés </option>
+                                    <option> Delivery </option>
+                                 </select>
+                              </div>
+                           </div>
+                           <div class="col-lg-7 col-md-7 col-sm-12 form-group">
+                              <input type="text" placeholder="Enter your delivery location" class="form-control form-control-lg">
+                              <a class="locate-me" href="#"><i class="icofont-ui-pointer"></i> Locate Me</a>
+                           </div>
+                           <div class="col-lg-2 col-md-2 col-sm-12 form-group">
+                              <a href="listing.html" class="btn btn-primary btn-block btn-lg btn-gradient">Search</a>
+                              <!--<button type="submit" class="btn btn-primary btn-block btn-lg btn-gradient">Search</button>-->
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+                  
+               </div>
+             
             </div>
-            <!-- End of Main Content -->
-            {% if isLogin is empty %}
-            <section class="section pt-5 pb-5 becomemember-section border-bottom">
+         </div>
+      </section>
+      </div>
+      <section class="section pt-5 pb-5 bg-white homepage-add-section">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-3 col-6">
+                  <div class="products-box">
+                     <a href="listing.html"><img alt="" src="{{BASE}}img/pro1.jpg" class="img-fluid rounded"></a>
+                  </div>
+               </div>
+               <div class="col-md-3 col-6">
+                  <div class="products-box">
+                     <a href="listing.html"><img alt="" src="{{BASE}}img/pro2.jpg" class="img-fluid rounded"></a>
+                  </div>
+               </div>
+               <div class="col-md-3 col-6">
+                  <div class="products-box">
+                     <a href="listing.html"><img alt="" src="{{BASE}}img/pro3.jpg" class="img-fluid rounded"></a>
+                  </div>
+               </div>
+               <div class="col-md-3 col-6">
+                  <div class="products-box">
+                     <a href="listing.html"><img alt="" src="{{BASE}}img/pro4.jpg" class="img-fluid rounded"></a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="section pt-5 pb-5 products-section">
+         <div class="container">
+            <div class="section-header text-center">
+               <h2>Popular Brands</h2>
+               <p>Top restaurants, cafes, pubs, and bars in Ludhiana, based on trends</p>
+               <span class="line"></span>
+            </div>
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="owl-carousel owl-carousel-four owl-theme">
+                     <div class="item">
+                        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                           <div class="list-card-image">
+                              <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
+                              <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
+                              <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
+                              <a href="detail.html">
+                              <img src="{{BASE}}img/list/1.png" class="img-fluid item-img">
+                              </a>
+                           </div>
+                           <div class="p-3 position-relative">
+                              <div class="list-card-body">
+                                 <h6 class="mb-1"><a href="detail.html" class="text-black">World Famous</a></h6>
+                                 <p class="text-gray mb-3">North Indian • American • Pure veg</p>
+                                 <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 20–25 min</span> <span class="float-right text-black-50"> $250 FOR TWO</span></p>
+                              </div>
+                              <div class="list-card-badge">
+                                 <span class="badge badge-success">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="item">
+                        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                           <div class="list-card-image">
+                              <div class="star position-absolute"><span class="badge badge-warning"><i class="icofont-star"></i> 3.1 (300+)</span></div>
+                              <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
+                              <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
+                              <a href="detail.html">
+                              <img src="{{BASE}}img/list/3.png" class="img-fluid item-img">
+                              </a>
+                           </div>
+                           <div class="p-3 position-relative">
+                              <div class="list-card-body">
+                                 <h6 class="mb-1"><a href="detail.html" class="text-black">Bite Me Sandwiches</a></h6>
+                                 <p class="text-gray mb-3">North Indian • Indian • Pure veg</p>
+                                 <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $100 FOR TWO</span></p>
+                              </div>
+                              <div class="list-card-badge">
+                                 <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="item">
+                        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                           <div class="list-card-image">
+                              <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
+                              <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
+                              <div class="member-plan position-absolute"><span class="badge badge-danger">Promoted</span></div>
+                              <a href="detail.html">
+                              <img src="{{BASE}}img/list/6.png" class="img-fluid item-img">
+                              </a>
+                           </div>
+                           <div class="p-3 position-relative">
+                              <div class="list-card-body">
+                                 <h6 class="mb-1"><a href="detail.html" class="text-black">The osahan Restaurant
+                                    </a>
+                                 </h6>
+                                 <p class="text-gray mb-3">North • Hamburgers • Pure veg</p>
+                                 <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $500 FOR TWO</span></p>
+                              </div>
+                              <div class="list-card-badge">
+                                 <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="item">
+                        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                           <div class="list-card-image">
+                              <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
+                              <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
+                              <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
+                              <a href="detail.html">
+                              <img src="{{BASE}}img/list/8.png" class="img-fluid item-img">
+                              </a>
+                           </div>
+                           <div class="p-3 position-relative">
+                              <div class="list-card-body">
+                                 <h6 class="mb-1"><a href="detail.html" class="text-black">Polo Lounge
+                                    </a>
+                                 </h6>
+                                 <p class="text-gray mb-3">North Indian • Indian • Pure veg</p>
+                                 <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $250 FOR TWO</span></p>
+                              </div>
+                              <div class="list-card-badge">
+                                 <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="item">
+                        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+                           <div class="list-card-image">
+                              <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
+                              <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
+                              <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
+                              <a href="detail.html">
+                              <img src="{{BASE}}img/list/9.png" class="img-fluid item-img">
+                              </a>
+                           </div>
+                           <div class="p-3 position-relative">
+                              <div class="list-card-body">
+                                 <h6 class="mb-1"><a href="detail.html" class="text-black">Jack Fry's
+                                    </a>
+                                 </h6>
+                                 <p class="text-gray mb-3">North Indian • Indian • Pure veg</p>
+                                 <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $250 FOR TWO</span></p>
+                              </div>
+                              <div class="list-card-badge">
+                                 <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="section pt-5 pb-5 bg-white becomemember-section border-bottom">
          <div class="container">
             <div class="section-header text-center white-text">
-               <h2>Você tem um Estabelecimento?</h2>
+               <h2>Become a Member</h2>
                <p>Lorem Ipsum is simply dummy text of</p>
                <span class="line"></span>
             </div>
             <div class="row">
                <div class="col-sm-12 text-center">
-                  <a href="{{BASE}}cadastrar" class="btn btn-success btn-lg">
-                  Cadastre-se <i class="fa fa-chevron-circle-right"></i>
+                  <a href="register.html" class="btn btn-success btn-lg">
+                  Create an Account <i class="fa fa-chevron-circle-right"></i>
                   </a>
                </div>
             </div>
          </div>
       </section>
-      {% endif %}
-
-            <!-- Footer -->
-            {% include 'partials/desktop/footer.twig.php' %}
-            <!-- End of Footer -->
-        </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    
-    {% include 'partials/desktop/modal.twig.php' %}
+      <section class="section pt-5 pb-5 text-center bg-white">
+         <div class="container">
+            <div class="row">
+               <div class="col-sm-12">
+                  <h5 class="m-0">Operate food store or restaurants? <a href="login.html">Work With Us</a></h5>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="footer pt-5 pb-5">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-4 col-12 col-sm-12">
+                  <h6 class="mb-3">Subscribe to our Newsletter</h6>
+                  <form class="newsletter-form mb-1">
+                     <div class="input-group">
+                        <input type="text" placeholder="Please enter your email" class="form-control">
+                        <div class="input-group-append">
+                           <button type="button" class="btn btn-primary">
+                           Subscribe
+                           </button>
+                        </div>
+                     </div>
+                  </form>
+                  <p><a class="text-info" href="register.html">Register now</a> to get updates on <a href="offers.html">Offers and Coupons</a></p>
+                  <div class="app">
+                     <p class="mb-2">DOWNLOAD APP</p>
+                     <a href="#">
+                     <img class="img-fluid" src="{{BASE}}img/google.png">
+                     </a>
+                     <a href="#">
+                     <img class="img-fluid" src="{{BASE}}img/apple.png">
+                     </a>
+                  </div>
+               </div>
+               <div class="col-md-1 col-sm-6 mobile-none">
+               </div>
+               <div class="col-md-2 col-6 col-sm-4">
+                  <h6 class="mb-3">About OE</h6>
+                  <ul>
+                     <li><a href="#">About Us</a></li>
+                     <li><a href="#">Culture</a></li>
+                     <li><a href="#">Blog</a></li>
+                     <li><a href="#">Careers</a></li>
+                     <li><a href="#">Contact</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-2 col-6 col-sm-4">
+                  <h6 class="mb-3">For Foodies</h6>
+                  <ul>
+                     <li><a href="#">Community</a></li>
+                     <li><a href="#">Developers</a></li>
+                     <li><a href="#">Blogger Help</a></li>
+                     <li><a href="#">Verified Users</a></li>
+                     <li><a href="#">Code of Conduct</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-2 m-none col-4 col-sm-4">
+                  <h6 class="mb-3">For Restaurants</h6>
+                  <ul>
+                     <li><a href="#">Advertise</a></li>
+                     <li><a href="#">Add a Restaurant</a></li>
+                     <li><a href="#">Claim your Listing</a></li>
+                     <li><a href="#">For Businesses</a></li>
+                     <li><a href="#">Owner Guidelines</a></li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="footer-bottom-search pt-5 pb-5 bg-white">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-12">
+                  <p class="text-black">POPULAR COUNTRIES</p>
+                  <div class="search-links">
+                     <a href="#">Australia</a> |  <a href="#">Brasil</a> | <a href="#">Canada</a> |  <a href="#">Chile</a>  |  <a href="#">Czech Republic</a> |  <a href="#">India</a>  |  <a href="#">Indonesia</a> |  <a href="#">Ireland</a> |  <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> |  <a href="#">Turkey</a>  |  <a href="#">Philippines</a> |  <a href="#">Sri Lanka</a>  |  <a href="#">Australia</a> |  <a href="#">Brasil</a> | <a href="#">Canada</a> |  <a href="#">Chile</a>  |  <a href="#">Czech Republic</a> |  <a href="#">India</a>  |  <a href="#">Indonesia</a> |  <a href="#">Ireland</a> |  <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> |  <a href="#">Turkey</a>  |  <a href="#">Philippines</a> |  <a href="#">Sri Lanka</a><a href="#">Australia</a> |  <a href="#">Brasil</a> | <a href="#">Canada</a> |  <a href="#">Chile</a>  |  <a href="#">Czech Republic</a> |  <a href="#">India</a>  |  <a href="#">Indonesia</a> |  <a href="#">Ireland</a> |  <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> |  <a href="#">Turkey</a>  |  <a href="#">Philippines</a> |  <a href="#">Sri Lanka</a>  |  <a href="#">Australia</a> |  <a href="#">Brasil</a> | <a href="#">Canada</a> |  <a href="#">Chile</a>  |  <a href="#">Czech Republic</a> |  <a href="#">India</a>  |  <a href="#">Indonesia</a> |  <a href="#">Ireland</a> |  <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> |  <a href="#">Turkey</a>  |  <a href="#">Philippines</a> |  <a href="#">Sri Lanka</a>
+                  </div>
+                  <p class="mt-4 text-black">POPULAR FOOD</p>
+                  <div class="search-links">
+                     <a href="#">Fast Food</a> |  <a href="#">Chinese</a> | <a href="#">Street Food</a> |  <a href="#">Continental</a>  |  <a href="#">Mithai</a> |  <a href="#">Cafe</a>  |  <a href="#">South Indian</a> |  <a href="#">Punjabi Food</a> |  <a href="#">Fast Food</a> |  <a href="#">Chinese</a> | <a href="#">Street Food</a> |  <a href="#">Continental</a>  |  <a href="#">Mithai</a> |  <a href="#">Cafe</a>  |  <a href="#">South Indian</a> |  <a href="#">Punjabi Food</a><a href="#">Fast Food</a> |  <a href="#">Chinese</a> | <a href="#">Street Food</a> |  <a href="#">Continental</a>  |  <a href="#">Mithai</a> |  <a href="#">Cafe</a>  |  <a href="#">South Indian</a> |  <a href="#">Punjabi Food</a> |  <a href="#">Fast Food</a> |  <a href="#">Chinese</a> | <a href="#">Street Food</a> |  <a href="#">Continental</a>  |  <a href="#">Mithai</a> |  <a href="#">Cafe</a>  |  <a href="#">South Indian</a> |  <a href="#">Punjabi Food</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+            
+      {% include 'partials/desktop/footer.twig.php' %}
 {% endblock %}

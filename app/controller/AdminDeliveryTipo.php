@@ -119,7 +119,7 @@ class AdminDeliveryTipo extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Tipo de Delivery cadastrado com sucesso','error' => 'Não foi posível cadastrar o Tipo de Delivery','url' => 'delivery',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Tipo de Delivery cadastrado com sucesso','error' => 'Não foi posível cadastrar o Tipo de Delivery','url' => 'admin/delivery',]);
         exit($json);
     }
 
@@ -133,7 +133,7 @@ class AdminDeliveryTipo extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Tipo de Delivery atualizado com sucesso','error' => 'Não foi posível atualizar o Tipo de Delivery','url' => 'delivery',]);
+        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Tipo de Delivery atualizado com sucesso','error' => 'Não foi posível atualizar o Tipo de Delivery','url' => 'admin/delivery',]);
         exit($json);
     }
 

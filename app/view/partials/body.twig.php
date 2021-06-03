@@ -29,10 +29,9 @@
 <link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;1,300&display=swap"
-      rel="stylesheet">
-    <link href="{{BASE}}css/star-rating-svg.css" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
+    <link href="{{BASE}}css/star-rating-svg.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/feather.css" rel="stylesheet" type="text/css">
@@ -42,11 +41,16 @@
     <link href="{{BASE}}css/style.css" rel="stylesheet" type="text/css">
     <link href="{{BASE}}css/automatiza.css" rel="stylesheet" type="text/css">
   {% else %}
-   <link href="{{BASE}}pc/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="{{BASE}}pc/css/automatiza.css" rel="stylesheet">
-  <link href="{{BASE}}pc/font/stylesheet.css" rel="stylesheet">
-  <link href="{{BASE}}pc/vendor/mdi-icons/css/materialdesignicons.min.css" rel="stylesheet">
-  <link href="{{BASE}}pc/css/custom.css" rel="stylesheet">
+  <!-- Bootstrap core CSS-->
+  <link href="{{BASE}}css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Font Awesome-->
+      <link href="{{BASE}}css/vendor/fontawesome/css/all.min.css" rel="stylesheet">
+      <!-- Font Awesome-->
+      <link href="{{BASE}}css/vendor/icofont/icofont.min.css" rel="stylesheet">
+      <!-- Select2 CSS-->
+      <link href="{{BASE}}css/vendor/select2/css/select2.min.css" rel="stylesheet">
+      <!-- Custom styles for this template-->
+      <link href="{{BASE}}css/osahan.css" rel="stylesheet">
   {% endif %}
 
   <script>
@@ -194,7 +198,8 @@
   </div>
 {% else %}
   <body id="page-top" data-link_site="{{empresa.link_site}}">
-  <div id="wrapper">
+  <div class="homepage-header">
+      <div class="overlay"></div>
     {% endif %}
     {% block body %}{% endblock %}
 {% if detect.isMobile() %}
@@ -210,17 +215,17 @@
     <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
  {% else %}
-    </div>
-    <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery-ui.js"></script>
-    <script src="{{BASE}}js/jquery.complexify.js"></script>
-    <script src="{{BASE}}pc/vendor/jquery/jquery.min.js"></script>
-    <script src="{{BASE}}pc/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="{{BASE}}pc/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="{{BASE}}pc/js/automatiza.min.js"></script>
-    <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/function.js" type="text/javascript"></script>
+   
+    <!-- jQuery -->
+    <script src="{{BASE}}js/vendor/jquery/jquery-3.3.1.slim.min.js"></script>
+      <!-- Bootstrap core JavaScript-->
+      <script src="{{BASE}}js/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- Select2 JavaScript-->
+      <script src="{{BASE}}js/vendor/select2/js/select2.min.js"></script>
+      <!-- Owl Carousel -->
+      <script src="{{BASE}}js/vendor/owl-carousel/owl.carousel.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="{{BASE}}js/custom.js"></script>
     {% endif %}
   </body>
 

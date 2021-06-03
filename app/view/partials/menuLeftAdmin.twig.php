@@ -169,8 +169,8 @@
                             </li>
                             {% if nivelUsuario == 0 %}
                             <li id="subUn">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/usuario/novo" >
-                                    <span class="d-inline-block"><strong>Novo Usuário</strong></span>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/administradores" >
+                                    <span class="d-inline-block"><strong>Administradores</strong></span>
                                 </a>
                             </li>
                             {% endif %}
@@ -202,6 +202,38 @@
                                     <span class="d-inline-block"><strong>Dados Delivery</strong></span>
                                 </a>
                             </li>
+
+                            <li id="subDeli">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento">
+                                    <span class="d-inline-block"><strong>Horário de Atendimento</strong></span>
+                                </a>
+                            </li>
+                           
+                            {% if planoAtivo > 1 %}
+                            <li  id="subCu">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/cupons">
+                                    <span class="d-inline-block"><strong>Cupom Desconto</strong></span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li id="menuAuxiliares">
+                        <a href="#" data-toggle="collapse" data-target="#collapseMenuAuxiliares" aria-expanded="true"
+                            aria-controls="collapseMenuAuxiliares" class="primaryMenu rotate-arrow-icon collapsed">
+                            <span class="simple-icon-layers iconeMenu"></span> <span class="d-inline-block">Auxiliares</span>
+                            <i class="simple-icon-arrow-down iconAcao"></i>
+                        </a>
+                        <div id="collapseMenuAuxiliares" class="collapse rounded-left cianColor" data-parent="#menuTypes">
+                        <span class="triangulo-top"></span>
+                            <ul class="list-unstyled inner-level-menu">
+                            <li id="subStatus">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/status">
+                                    <span class="d-inline-block"><strong>Status</strong></span>
+                                </a>
+                            </li>
                             <li id="subDeliTip">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/delivery">
                                     <span class="d-inline-block"><strong>Tipo de Delivery</strong></span>
@@ -212,13 +244,6 @@
                                     <span class="d-inline-block"><strong>Método de Pagamento</strong></span>
                                 </a>
                             </li>
-                            {% if planoAtivo > 1 %}
-                            <li  id="subCu">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/cupons">
-                                    <span class="d-inline-block"><strong>Cupom Desconto</strong></span>
-                                </a>
-                            </li>
-                            {% endif %}
                             </ul>
                         </div>
                     </li>
@@ -251,12 +276,12 @@
                             </ul>
                         </div>
                     </li>
-                    <li id="menuChat">
+                    <!-- <li id="menuChat">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/mensagens" class="primaryMenu">
                             <span class="simple-icon-earphones-alt iconeMenu"></span>
                             <span class="d-inline-block">Mensagens</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li id="menuAvaliacao">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/avaliacao" class="primaryMenu">
                             <span class="simple-icon-star iconeMenu"></span>

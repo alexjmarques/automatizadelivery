@@ -1,11 +1,8 @@
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-<footer class="sticky-footer bg-white">
-    <div class="container my-auto">
-        <div class="copyright text-center my-auto">
-            <span>&copy; {{ "now"|date('Y')}} {{ trans.t('Automatiza Delivery - Automatiza.App') }} </span>
-        </div>
-    </div>
-</footer>
+<footer class="pt-4 pb-4 text-center">
+         <div class="container">
+            <p class="mt-0 mb-0">{{ "now"|date('Y')}} {{ trans.t('Automatiza Delivery') }}</p>
+            <small class="mt-0 mb-0"> Desenvolvido e gerenciado  <i class="fas fa-heart heart-icon text-danger"></i> por
+            <a class="text-danger" target="_blank" href="https://automatiza.app">Automatiza App</a>
+            </small>
+         </div>
+      </footer>

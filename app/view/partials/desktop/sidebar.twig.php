@@ -76,7 +76,7 @@
                     <span>{{ trans.t('Política de Privacidade')}}</span></a>
             </li>
 
-            {% if isLogin is not null %}
+            
             <!-- offers -->
             <!-- <div class="bg-white m-3 p-3 sidebar-alert rounded text-center alert fade show d-none d-md-inline" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -88,12 +88,13 @@
                 <a href="explore.html" class="btn btn-primary btn-block btn-sm">Order now <i class="pl-3 fas fa-long-arrow-alt-right"></i></a>
             </div> -->
             <!-- User -->
+            {% if isLogin is not null %}
             <div class="d-none d-md-block">
                 <div class="user d-flex align-items-center p-3">
                     <div class="pr-3"><i class="mdi mdi-account-circle-outline text-white h3 mb-0"></i></div>
                     <div>
-                        <p class="mb-0 text-white">{{usuario[':nome']}}</p>
-                        <p class="mb-0 text-white-50 small">Telefone: {{usuario[':telefone']}}</p>
+                        <p class="mb-0 text-white">{{usuario.nome}}</p>
+                        <p class="mb-0 text-white-50 small">Telefone: {{usuario.telefone}}</p>
                     </div>
                 </div>
             </div>
@@ -101,8 +102,8 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
+            <!-- <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+            </div> -->
 
         </ul>

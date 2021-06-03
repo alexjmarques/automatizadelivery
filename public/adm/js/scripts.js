@@ -158,11 +158,11 @@ $("#form, #formIfood, #formCliente").submit(function () {
           case 'Pedido cancelado com sucesso!':
             $('#cancelarPedido').modal("show");
             break;
-            case 'Carrinho interno iniciado':
-              $('#alerta').modal("hide");
-              $('#alertGeralSite').modal("hide");
-              window.location = `/${link_site}/${data.url}`;
-              break;
+          case 'Carrinho interno iniciado':
+            $('#alerta').modal("hide");
+            $('#alertGeralSite').modal("hide");
+            window.location = `/${link_site}/${data.url}`;
+            break;
           default:
             $('#mensagem').html(data.mensagem);
             $('#modalNovoCliente').modal("hide");
@@ -449,10 +449,11 @@ function loadStyle(href, callback) {
     head.appendChild(link);
   }
 }
+
 function atualizaCart() {
-$.get(`/${link_site}/admin/carrinho/qtd`, function (dd) {
-  $('#modProdutoCarrinho .qtd').html(dd);
-})
+  $.get(`/${link_site}/admin/carrinho/qtd`, function (dd) {
+    $('#modProdutoCarrinho .qtd').html(dd);
+  })
 }
 
 // $(function () {
@@ -565,14 +566,25 @@ function mudarStatusEntrega(id, status, id_caixa) {
     $('.select2-single').shake().addClass('bc-danger');
 
     $(`#mensagem${id}`).html(`<div class="alert alert-danger" role="alert">Selecione um Motoboy antes de mudar de Status!</div>`);
-    setTimeout(function () {$(`#mensagem${id}`).html(``)}, 2000);
+    setTimeout(function () {
+      $(`#mensagem${id}`).html(``)
+    }, 2000);
   } else {
     var id_motoboy = $(`#motoboy-${id} option:selected`).val();
     var numero_pedido = $('#numero_pedido').val();
     var chave = $('#chave').val();
     var id_cliente = $('#id_cliente').val();
     var id_empresa = $('#id_empresa').val();
-    let valores = {id,status,id_caixa,id_motoboy,numero_pedido,id_empresa,id_cliente,chave}
+    let valores = {
+      id,
+      status,
+      id_caixa,
+      id_motoboy,
+      numero_pedido,
+      id_empresa,
+      id_cliente,
+      chave
+    }
     $.ajax({
       url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${id_motoboy}`,
       method: "post",
@@ -1047,11 +1059,42 @@ switch (active_link) {
     $('#menuUsuarios .primaryMenu').removeClass('collapsed')
     $('#subCli').addClass('active')
     break;
-  case `/${link_site}/admin/usuario/novo`:
+
+  case `/${link_site}/admin/cliente/novo`:
+    $('#collapseMenuUsuarios').addClass('show')
+    $('#menuUsuarios .primaryMenu').removeClass('collapsed')
+    $('#subCli').addClass('active')
+    break;
+
+  case `/${link_site}/admin/cliente/editar/${activeId}`:
+    $('#collapseMenuUsuarios').addClass('show')
+    $('#menuUsuarios .primaryMenu').removeClass('collapsed')
+    $('#subCli').addClass('active')
+    break;
+
+  case `/${link_site}/admin/administradores`:
     $('#collapseMenuUsuarios').addClass('show')
     $('#menuUsuarios .primaryMenu').removeClass('collapsed')
     $('#subUn').addClass('active')
     break;
+  case `/${link_site}/admin/administrador/novo`:
+    $('#collapseMenuUsuarios').addClass('show')
+    $('#menuUsuarios .primaryMenu').removeClass('collapsed')
+    $('#subUn').addClass('active')
+    break;
+  case `/${link_site}/admin/administrador/editar/${activeId}`:
+    $('#collapseMenuUsuarios').addClass('show')
+    $('#menuUsuarios .primaryMenu').removeClass('collapsed')
+    $('#subUn').addClass('active')
+    break;
+
+    // case `/${link_site}/admin/planos`:
+    // $('#collapseMenuConfiguracoes').addClass('show')
+    // $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+    // $('#subMp').addClass('active')
+    // break;
+
+
   case `/${link_site}/admin/planos`:
     $('#collapseMenuConfiguracoes').addClass('show')
     $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
@@ -1078,13 +1121,13 @@ switch (active_link) {
     $('#subEmp').addClass('active')
     break;
   case `/${link_site}/admin/delivery`:
-    $('#collapseMenuConfiguracoes').addClass('show')
-    $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+    $('#collapseMenuAuxiliares').addClass('show')
+    $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
     $('#subDeliTip').addClass('active')
     break;
   case `/${link_site}/admin/delivery/editar/${activeId}`:
-    $('#collapseMenuConfiguracoes').addClass('show')
-    $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+    $('#collapseMenuAuxiliares').addClass('show')
+    $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
     $('#subDeliTip').addClass('active')
     break;
   case `/${link_site}/admin/conf/delivery/e`:
@@ -1105,10 +1148,32 @@ switch (active_link) {
 
 
   case `/${link_site}/admin/formas-pagamento`:
-    $('#collapseMenuConfiguracoes').addClass('show')
-    $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+    $('#collapseMenuAuxiliares').addClass('show')
+    $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
     $('#subFp').addClass('active')
     break;
+    case `/${link_site}/admin/formas-pagamento/editar/${activeId}`:
+    $('#collapseMenuAuxiliares').addClass('show')
+    $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
+    $('#subFp').addClass('active')
+    break;
+
+    case `/${link_site}/admin/status`:
+    $('#collapseMenuAuxiliares').addClass('show')
+    $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
+    $('#subStatus').addClass('active')
+    break;
+    case `/${link_site}/admin/status/editar/${activeId}`:
+    $('#collapseMenuAuxiliares').addClass('show')
+    $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
+    $('#subStatus').addClass('active')
+    break;
+
+    case `/${link_site}/admin/formas-pagamento/nova`:
+      $('#collapseMenuAuxiliares').addClass('show')
+      $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
+      $('#subFp').addClass('active')
+      break;
   case `/${link_site}/admin/docs`:
     $('#menuDocs').addClass('active')
     break;
@@ -1295,16 +1360,16 @@ $("#formFinish").submit(function () {
       success: function (dd) {
         switch (dd.mensagem) {
           case 'Pedido finalizado com sucesso':
-          $('#mensagem').html(`Pedido Finalizado! Número do pedido: ${dd.pedido}`);
-          $('.successSup').show();
-          $('.errorSup').hide();
-          $('#alerta').modal("show");
-          if (dd.url) {
-            $(".buttonAlert").on('click', function () {
-              window.location = `/${link_site}/${dd.url}`;
-            });
-          }
-          break;
+            $('#mensagem').html(`Pedido Finalizado! Número do pedido: ${dd.pedido}`);
+            $('.successSup').show();
+            $('.errorSup').hide();
+            $('#alerta').modal("show");
+            if (dd.url) {
+              $(".buttonAlert").on('click', function () {
+                window.location = `/${link_site}/${dd.url}`;
+              });
+            }
+            break;
           default:
             $('.errorSup').show();
             $('#alerta').modal("show");

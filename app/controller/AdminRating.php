@@ -17,7 +17,6 @@ use app\classes\Sessao;
 
 class AdminRating extends Controller
 {
-    
     private $acoes;
     private $sessao;
     private $geral;
@@ -43,39 +42,41 @@ class AdminRating extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $rating = $this->ratingModel->qtdRating($empresaAct[':id']);
-        $ratingAll = $this->ratingModel->getAllPorEmpresa($empresaAct[':id']);
-        $ratingPedidos = $this->ratingModel->mediaPedidos($empresaAct[':id']);
-        $ratingEntrega = $this->ratingModel->mediaEntrega($empresaAct[':id']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $rating = $this->acoes->counts('avaliacao', 'id_empresa', $empresa->id);
+        $ratingAll = $this->acoes->getByFieldAll('avaliacao', 'id_empresa', $empresa->id);
+        $ratingPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id);
+        $ratingEntrega = $this->acoes->getByFieldAll('carrinhoEntregas', 'id_empresa', $empresa->id);
 
-        $day = date('w');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+         $day = date('w');
         $domingo = date('Y-m-d', strtotime('-' . $day . ' days'));
         $noventa = date('Y-m-d', strtotime('-' . (90 - $day) . ' days'));
 
-        $planoAtivo = $this->allController->verificaPlano($empresaAct[':id']);
-        $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);
-        $resulCaixa = $this->adminCaixaModel->getUll($empresaAct[':id']);
-        $this->allController->verificaAdmin($empresaAct[':id']);
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
 
         $this->load('_admin/avaliacao/main', [
-            'empresa' => $empresaAct,
+            'empresa' => $empresa,
             'noventa' => $noventa,
             'planoAtivo' => $planoAtivo,
-            'estabelecimento' => $estabelecimento,
-            'caixa' => $resulCaixa,
             'hoje' => $domingo,
             'domingo' => $domingo,
             'ratingAll' => $ratingAll,
             'rating' => $rating,
-            'votacaoEntrega' => $ratingEntrega['avaliacao_motoboy'],
-            'votacaoPedidos' => $ratingPedidos['avaliacao_pedido'],
-            'trans' => $trans,
-            
+            'votacaoEntrega' => $ratingEntrega[0]->avaliacao_motoboy,
+            'votacaoPedidos' => $ratingPedidos[0]->avaliacao_pedido,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
 }

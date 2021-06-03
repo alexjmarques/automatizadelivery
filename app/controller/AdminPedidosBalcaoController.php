@@ -62,7 +62,7 @@ class AdminPedidosBalcaoController extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $resultClientes = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
-        $clientesEmpresa = $this->acoes->getByFieldAll('usuariosEmpresa', 'id_empresa', $empresa->id);
+        $clientesEmpresa = $this->acoes->getByFieldTwoAll('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 3);
 
         $resultMotoboy = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
         $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
@@ -604,6 +604,7 @@ class AdminPedidosBalcaoController extends Controller
             $valorEmp = new UsuariosEmpresa();
             $valorEmp->id_usuario = $valor->id;
             $valorEmp->id_empresa = $empresa->id;
+            $valorEmp->nivel = 3;
             $valorEmp->save();
 
             if ($data['entrega'] == 1) {

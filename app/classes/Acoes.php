@@ -296,13 +296,13 @@ class Acoes
         return $this->{$table}->find("{$field} ={$valor} AND {$data} = CURDATE()")->count();
     }
 
-    public function countStatusCompany(string $table,string $field, string $valor, int $status)
+    public function countStatusCompany(string $table,string $field, string $valor, int $statuss)
     {
-        return $this->{$table}->find("{$field} = {$valor} AND status = {$status}")->count();
+        return $this->{$table}->find("{$field} = {$valor} AND status = {$statuss}")->count();
     }
 
-    public function countStatusCompanyDay(string $table,string $field, string $valor, int $status, string $data)
+    public function countStatusCompanyDay(string $table,string $field, string $valor, int $statuss, string $data)
     {
-        return $this->{$table}->find("{$field} = {$valor} AND status = {$status} AND {$data} = CURDATE()")->count();
+        return $this->{$table}->find("{$field} = {$valor} AND status = {$statuss} AND {$data} = CURDATE()")->count();
     }
 }
