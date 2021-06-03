@@ -29,16 +29,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for p in usuario%}
+                    {% for me in motoboysEmpresa %}
+                        {% for m in motoboys %}
+                            {% if m.id == me.id_usuario %}
                         <tr>
                             <td>
-                               <p class="list-item-heading"><a href="{{BASE}}{{empresa.link_site}}/admin/usuario/editar/{{ p.id }}">{{ p.nome }}</a></p>
+                               <p class="list-item-heading"><a href="{{BASE}}{{empresa.link_site}}/admin/usuario/editar/{{ p.id }}">{{ m.nome }}</a></p>
                             </td>
                             <td>
-                                <p class="text-muted">{{ p.email }}</p>
+                                <p class="text-muted">{{ m.email }}</p>
                             </td>
                             <td>
-                                <p class="text-muted">{{ p.telefone }}</p>
+                                <p class="text-muted">{{ m.telefone }}</p>
                             </td>
                             
                             <td>
@@ -48,7 +50,9 @@
                                 {% endif%}
                             </td>
                         </tr>
-                        {% endfor %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
                     </tbody>
             </table>
             <div class="col-4 center-block text-center float-ceter">

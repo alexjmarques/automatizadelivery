@@ -320,17 +320,20 @@ class UsuarioController extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
+        $motoboys = $this->acoes->getByFieldAll('usuarios', 'nivel', 2);
+  
         $count = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $resultCategorias = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $motoboysEmpresa = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
         $this->load('_admin/atendentes/main', [
-            'categorias' => $resultCategorias,
             'paginacao' => $pager->render('mt-4 pagin'),
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
+            'motoboys' => $motoboys,
+            'motoboysEmpresa' => $motoboysEmpresa,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
