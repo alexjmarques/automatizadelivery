@@ -52,7 +52,7 @@ define('IFOOD', [
     "CLIENT_SECRET" => "13uze1cwav3ca1no8o68h1ewzwsoao4x528i3lxc7pjpk3mtfi39333huw861nl9yifv6ykqkeuqpuzywva6im3766gg0r57n91d"
 ]);
 
-$live = true;
+$live = false;
 if($live){
     define('pagarme_api_key', 'ak_live_kYgEGMeWd702Qx1xsXXBip43F5MANs');
     define("TWILIO",['account_sid' => 'AC3891f3248b6bd5bd3f299c1a89886814','auth_token' => '3ce669b5e06e3a12578e1824dc75f132', 'number' => '+19096555675']);

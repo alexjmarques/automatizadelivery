@@ -1,32 +1,14 @@
-/*
-Template Name: Osahan Eat - Online Food Ordering Website HTML Template
-Author: Askbootstrap
-Author URI: https://themeforest.net/user/askbootstrap
-Version: 1.0
-*/
-/*
--- Body
--- Nav
--- login/Register
--- Homepage Search Block
--- Homepage
--- Customize Bootstrap
--- Listing
--- Detail
--- Checkout Page
--- My Account
--- Track Order Page
--- Footer
--- Mobile Media
-*/
 /* Body */
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 body {
     background: #f3f7f8;
-    font-size: 13px;
-    font-weight: 500;
-    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: "Open Sans",sans-serif;
+}
+h1,h2,h3,h4,h5,h6{
+    font-family: "Raleway",sans-serif;
 }
 button, a {
     outline: none !important;
@@ -34,8 +16,9 @@ button, a {
     text-decoration: none !important;
 }
 p {
-    font-size: 13px;
+    font-size: 16px;
     color: #7a7e8a;
+    font-weight: 100;
 }
 img{
     image-rendering: auto;
@@ -71,6 +54,7 @@ img{
     z-index: 9;
 }
 .osahan-nav .nav-link {
+    font-size: 16px;
     font-weight: 600;
     padding: 28px 0px !important;
     margin: 0 0 0 31px;
@@ -209,7 +193,7 @@ img{
 }
 /* Homepage Search Block */
 .homepage-header{
-    background: url(../img/bg.png);
+    background: url(../img/bg.jpg);
     position: relative;
     background-repeat: no-repeat;
     background-position: center;
@@ -1553,4 +1537,243 @@ p{
 
 .navbar-brand img{
     height: 60px;
+}
+.bg_full{
+    background-color: #880A1F;
+}
+.image_effect{
+
+}
+
+.image_effect img{
+    width: 100%;
+}
+.elementor-button {
+    display: inline-block;
+    line-height: 1;
+    background-color: #818a91;
+    font-size: 15px;
+    padding: 12px 24px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #fff;
+    fill: #fff;
+    text-align: center;
+    border: 2px double #818a91;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+}
+.elementor-button-link {
+    font-family: "Actor", Sans-serif;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 9px rgb(0 0 0 / 30%);
+    background-color: #880A1F;
+    border-style: double;
+    border-width: 2px 2px 2px 2px;
+}
+.elementor-button-link:hover {
+    font-family: "Actor", Sans-serif;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 9px rgb(0 0 0 / 30%);
+    background-color: #fff;
+    border-style: double;
+    border-width: 2px 2px 2px 2px;
+    border-color: #fff;
+    color: #880A1F;
+}
+.elementor-button.elementor-size-md {
+    font-size: 16px;
+    padding: 15px 30px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.elementor-align-left .elementor-button {
+    width: auto;
+}
+.qodef-icon-holder.qodef-layout--circle, 
+.qodef-icon-holder.qodef-layout--square {
+    width: 80px;
+    height: 80px;
+    line-height: 100px;
+    text-align: center;
+    color: #fff;
+    background-color: #d83c27;
+    -webkit-transition: color .2s ease-out,background-color .2s ease-out,border-color .2s ease-out;
+    -o-transition: color .2s ease-out,background-color .2s ease-out,border-color .2s ease-out;
+    transition: color .2s ease-out,background-color .2s ease-out,border-color .2s ease-out;
+}
+.qodef-icon-with-text .qodef-icon-holder {
+    float: none;
+}
+.qodef-icon-font-awesome{
+    color: #FFFFFF;
+    font-size: 40px;
+    padding-top: 10px;
+}
+.qodef-icon-holder {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: auto;
+    line-height: 1;
+}
+.fa.fa-list-alt {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+}
+
+.bg-cian{
+    background: #e6e7e7;
+}
+.bg-primary{
+    background: #880A1F;
+}
+.card-pricing.popular {
+    z-index: 1;
+    border: 3px solid #880A1F;
+}
+.card-pricing .list-unstyled li {
+    padding: .3rem 0;
+    color: #6c757d;
+}
+
+.header_plan{
+    background: #555;
+    padding: 20px 0;
+}
+
+.header_plan h2{
+    color: #fff;
+    padding: 0;
+    font-size: 22px;
+    margin: 0;
+}
+.header_plan span{
+    color: #fff;
+    font-size: 12px;
+}
+
+.elementor-price-table__price {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    color: #555;
+    font-weight: 600;
+    font-size: 50px;
+    padding: 20px 0;
+}
+.elementor-price-table__original-price {
+    align-self: flex-end;
+}
+.elementor-price-table__currency {
+    align-self: flex-start;
+}
+.elementor-price-table__currency {
+    margin-right: 3px;
+}
+.elementor-price-table__currency, .elementor-price-table__fractional-part {
+    line-height: 1;
+    font-size: .3em;
+}
+.elementor-price-table__integer-part {
+    line-height: .8;
+}
+:not(.touchevents) .qodef-custom-cursor--enabled * {
+    cursor: none!important;
+}
+.elementor *, .elementor :after, .elementor :before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.elementor-price-table__after-price {
+    justify-content: flex-start;
+}
+.elementor-price-table__after-price {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    text-align: left;
+    -ms-flex-item-align: stretch;
+    align-self: stretch;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.elementor-price-table__period {
+    width: 100%;
+    font-size: 13px;
+    font-weight: 400;
+}
+.elementor-price-table__price .elementor-typo-excluded {
+    line-height: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    font-weight: 400;
+    font-size: 14px;
+    font-style: normal;
+}
+.elementor-button.elementor-size-md {
+    font-size: 16px;
+    padding: 15px 30px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.elementor-button {
+    display: inline-block;
+    line-height: 1;
+    background-color: #818a91;
+    font-size: 15px;
+    padding: 12px 24px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #fff;
+    fill: #fff;
+    text-align: center;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+}
+.elementor-price-table__original-price {
+    margin-right: 15px;
+    text-decoration: line-through;
+    font-size: .5em;
+    line-height: 1;
+    font-weight: 400;
+    -ms-flex-item-align: center;
+    align-self: center;
+}
+.card-pricing,
+.card-deck .card {
+   padding: 0 !important;
+}
+.gold{
+    background: #880A1F;
+}
+.elementor-button.gold{
+    border: 2px double #880A1F;
+}
+.elementor-button:hover,
+a.gold:hover{
+    border: 2px double #880A1F;
+    background: #fff;
+    color: #880A1F;
 }

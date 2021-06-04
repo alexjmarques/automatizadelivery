@@ -246,8 +246,8 @@ class PagesController extends Controller
 
     public function home($data)
     {
-        $empresas = $this->acoes->getFind('empresa');
-        $empresaEnderecos = $this->acoes->getFind('empresaEnderecos');
+        //$empresas = $this->acoes->getFind('empresa');
+        //$empresaEnderecos = $this->acoes->getFind('empresaEnderecos');
         // $empresaAtendimento = $this->acoes->getFind('empresaAtendimento');
         // $empresaCategorias = $this->acoes->getFind('empresaCategorias');
 
