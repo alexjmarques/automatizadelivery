@@ -10,6 +10,8 @@ use app\api\iFood\Authetication;
 use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\classes\Sessao;
+use app\Models\EmpresaCaixa;
+use app\Models\EmpresaFrete;
 use Twilio\Rest\Client;
 use Bcrypt\Bcrypt;
 
@@ -216,82 +218,92 @@ class AllController extends Controller
      }
 
 
-    // public function iniciarAtendimento($data)
-    // {
-    //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-    //     $resulifood = $this->marketplace->getById(1);
+    public function iniciarAtendimento($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+
+        dd($delivery);
+        //$resulifood = $this->marketplace->getById(1);
+        // if ($planoAtivo[':id'] == 4 || $planoAtivo[':id'] == 6 || $planoAtivo[':id'] == 7 || $planoAtivo[':id'] == 8) {
+        //     $conecao = $this->ifood->gerarToken();
+        // }
+
+        // $planoAtivo = $this->apdPlanosModel->getAtivo();
+        // if ($planoAtivo[':status'] == null) {
+        //     echo 'Cliente não contratou plano';
+        //     exit;
+        // }
+
+        // if ($planoAtivo[':status'] == 1) {
+        //     $qtdPedidos = $this->adminVendasModel->qtdVendasMes();
+        //     if ($planoAtivo[':limit'] != null) {
+        //         if ($planoAtivo[':limit'] < $qtdPedidos) {
+        //             echo 'Você ultrapassou o limite contratado para este mês';
+        //             exit;
+        //         }
+        //     }
+        // }
+
+        // $statusAssinatura = $this->assinaturaModel->getUll($empresaAct[':id']);
+        // if ($statusAssinatura[0]->status) {
+        //     $pagarme = new \PagarMe\Client(pagarme_api_key);
+        //     $subscription = $pagarme->subscriptions()->get([
+        //         'id' => $statusAssinatura[':subscription_id']
+        //     ]);
+
+        //     if ($subscription->current_transaction->status == $statusAssinatura[':status']) {
+
+        //         $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $statusAssinatura[':id']);
+        //     } else {
+        //         $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $statusAssinatura[':id']);
+        //         echo 'Não foi possível processar seu pagamento, atualize os dados de seu cartão!';
+        //         exit;
+        //     }
+        // }
+
+        $caixa = new EmpresaCaixa();
+        $caixa->data_inicio = date('Y-m-d');
+        $caixa->hora_inicio = date('H:m:s');
+        $caixa->id_empresa = $empresa->id;
+        $caixa->save();
+
+        $valor = (new EmpresaFrete())->findById($delivery->id);
+        $valor->status = 1;
+        $valor->save();
 
 
-    //     // if ($planoAtivo[':id'] == 4 || $planoAtivo[':id'] == 6 || $planoAtivo[':id'] == 7 || $planoAtivo[':id'] == 8) {
-    //     //     $conecao = $this->ifood->gerarToken();
-    //     // }
-
-    //     // $planoAtivo = $this->apdPlanosModel->getAtivo();
-    //     // if ($planoAtivo[':status'] == null) {
-    //     //     echo 'Cliente não contratou plano';
-    //     //     exit;
-    //     // }
-
-    //     // if ($planoAtivo[':status'] == 1) {
-    //     //     $qtdPedidos = $this->adminVendasModel->qtdVendasMes();
-    //     //     if ($planoAtivo[':limit'] != null) {
-    //     //         if ($planoAtivo[':limit'] < $qtdPedidos) {
-    //     //             echo 'Você ultrapassou o limite contratado para este mês';
-    //     //             exit;
-    //     //         }
-    //     //     }
-    //     // }
-
-    //     $statusAssinatura = $this->assinaturaModel->getUll($empresaAct[':id']);
-    //     if ($statusAssinatura[':status']) {
-    //         $pagarme = new \PagarMe\Client(pagarme_api_key);
-    //         $subscription = $pagarme->subscriptions()->get([
-    //             'id' => $statusAssinatura[':subscription_id']
-    //         ]);
-
-    //         if ($subscription->current_transaction->status == $statusAssinatura[':status']) {
-    //             $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $statusAssinatura[':id']);
-    //         } else {
-    //             $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $statusAssinatura[':id']);
-    //             echo 'Não foi possível processar seu pagamento, atualize os dados de seu cartão!';
-    //             exit;
-    //         }
-    //     }
-
-    //     $caixa = $this->getInputInicio();
+        if ($caixa->id <= 0) {
+            echo "Não foi possível iniciar o atendimento";
+        } else {
+            //$resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
+            echo "Atendimento iniciado com sucesso";
+        }
+    }
 
 
-    //     $idDelivery = $this->deliveryModel->getAllPorEmpresa($empresaAct[':id']);
-    //     $result = $this->adminCaixaModel->insert($caixa);
-    //     $result2 = $this->deliveryModel->updateAtendimento(1, $idDelivery[0][':id']);
-    //     if ($result <= 0) {
-    //         echo "Não foi possível iniciar o atendimento";
-    //         $_SESSION['caixaAtendimento'] = 0;
-    //     } else {
+    public function finalizarAtendimento($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
-    //         $resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
-    //         echo "Atendimento iniciado com sucesso";
-    //         $_SESSION['caixaAtendimento'] = 1;
-    //     }
-    // }
+        $caixa = (new EmpresaCaixa())->findById($estabelecimento->id);
+        $caixa->data_inicio = date('Y-m-d');
+        $caixa->hora_inicio = date('H:m:s');
+        $caixa->id_empresa = $empresa->id;
+        $caixa->save();
 
+        $valor = (new EmpresaFrete())->findById($delivery->id);
+        $valor->status = 0;
+        $valor->save();
 
-    // public function finalizarAtendimento($data)
-    // {
-    //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-    //     $idDelivery = $this->deliveryModel->getAllPorEmpresa($empresaAct[':id']);
-    //     $resulifood = $this->marketplace->getById(1);
-    //     //$caixa = $this->getInputFim();
-    //     $result = $this->adminCaixaModel->update($caixa);
-    //     $result2 = $this->deliveryModel->updateAtendimento(0, $idDelivery[0][':id']);
-    //     if ($result <= 0) {
-    //         echo "Não foi possível finalizar o atendimento";
-    //         $_SESSION['caixaAtendimento'] = 1;
-    //     } else {
-    //         $resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
-    //         echo "Atendimento finalizado com sucesso";
-    //         $_SESSION['caixaAtendimento'] = 0;
-    //         unset($_SESSION['caixaAtendimento']);
-    //     }
-    // }
+        echo "Atendimento finalizado com sucesso";
+        $_SESSION['caixaAtendimento'] = 0;
+        unset($_SESSION['caixaAtendimento']);
+
+        //$resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
+            
+        
+    }
 }

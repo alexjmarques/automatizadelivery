@@ -10,6 +10,121 @@ Version: 1.0
 // ===========Select2============
 $('select').select2();
 
+
+$("#form").submit(function (e) {
+  var formData = new FormData(this);
+  $.ajax({
+      url: $('#form').attr('action'),
+      type: 'POST',
+      data: formData,
+      beforeSend: function () {
+          $(".acaoBtn").prop("disabled", true);
+          $('.acaoBtn').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      },
+      complete: function () {
+          $(".acaoBtn").prop("disabled", false);
+          $('.acaoBtn').html('Cadastrar');
+      },
+      success: function (data) {
+          console.log(data);
+          if (data.id > 0) {
+              switch (data.mensagem) {
+                  case data.mensagem:
+                      $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+                      window.location = `${data.url}`;
+                      break;
+              }
+          } else {
+              $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
+          }
+
+      },
+      error: function (data) {
+          $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
+      },
+      cache: false,
+      contentType: false,
+      processData: false,
+      xhr: function () {
+          var myXhr = $.ajaxSettings.xhr();
+          if (myXhr.upload) {
+              myXhr.upload.addEventListener('progress', function () {}, false);
+          }
+          return myXhr;
+      }
+  });
+  return false;
+});
+
+const menuItems = document.querySelectorAll('.anchor[href^="#"]');
+
+menuItems.forEach(item => {
+  item.addEventListener('click', scrollToIdOnClick);
+})
+
+function getScrollTopByHref(element) {
+  const id = element.getAttribute('href');
+  return document.querySelector(id).offsetTop;
+}
+
+function scrollToIdOnClick(event) {
+  event.preventDefault();
+  const to = getScrollTopByHref(event.target) - 0;
+  scrollToPosition(to);
+}
+
+function scrollToPosition(to) {
+  // window.scroll({
+  //   top: to,
+  //   behavior: "smooth",
+  // });
+  smoothScrollTo(60, to);
+}
+
+/**
+ * Smooth scroll animation
+ * @param {int} endX: destination x coordinate
+ * @param {int} endY: destination y coordinate
+ * @param {int} duration: animation duration in ms
+ */
+function smoothScrollTo(endX, endY, duration) {
+  const startX = window.scrollX || window.pageXOffset;
+  const startY = window.scrollY || window.pageYOffset;
+  const distanceX = endX - startX;
+  const distanceY = endY - startY;
+  const startTime = new Date().getTime();
+
+  duration = typeof duration !== 'undefined' ? duration : 400;
+
+  // Easing function
+  const easeInOutQuart = (time, from, distance, duration) => {
+    if ((time /= duration / 2) < 1) return distance / 2 * time * time * time * time + from;
+    return -distance / 2 * ((time -= 2) * time * time * time - 2) + from;
+  };
+
+  const timer = setInterval(() => {
+    const time = new Date().getTime() - startTime;
+    const newX = easeInOutQuart(time, startX, distanceX, duration);
+    const newY = easeInOutQuart(time, startY, distanceY, duration);
+    if (time >= duration) {
+      clearInterval(timer);
+    }
+    window.scroll(newX, newY);
+  }, 1000 / 60); // 60 fps
+}; 
+
+document.getElementById('cnpj').addEventListener('input', function(e) {
+  var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
+  e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');
+});
+
+$("#nome_fantasia").blur(function () {
+  const str = $(this).val();
+  const parsed = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').toLowerCase();
+
+  $('#link_site').val(parsed);
+});
+
 // ===========My Account Tabs============
 $(window).on('hashchange', function() {
     var url = document.location.toString();
@@ -60,6 +175,9 @@ $('.nav-tabs a').on('shown', function (e) {
       navText:["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
     });
   }
+
+
+  
   
 // Homepage Owl Carousel  
 var fiveobjowlcarousel = $(".owl-carousel-four");

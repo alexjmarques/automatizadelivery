@@ -59,7 +59,7 @@
     gtag('js', new Date());
     gtag('config', 'G-P14WHHWPWF');
   </script>
-  {# {% if detect.isMobile() %} #}
+ {% if detect.isMobile() %}
   <style>
     #overlayer {
       width: 100%;
@@ -178,10 +178,7 @@
       }
     }
   </style>
-  {# {% endif %} #}
-
-
-
+{% endif %}
 </head>
 {% if detect.isMobile() %}
 <body class="fixed-bottom-bar" data-link_site="{{empresa.link_site}}">
@@ -198,8 +195,6 @@
   </div>
 {% else %}
   <body id="page-top" data-link_site="{{empresa.link_site}}">
-  <div class="homepage-header">
-      <div class="overlay"></div>
     {% endif %}
     {% block body %}{% endblock %}
 {% if detect.isMobile() %}
@@ -215,17 +210,14 @@
     <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
  {% else %}
-   
-    <!-- jQuery -->
+    <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
+    <script src="{{BASE}}js/jquery-ui.js" type="text/javascript"></script>
+    <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/vendor/jquery/jquery-3.3.1.slim.min.js"></script>
-      <!-- Bootstrap core JavaScript-->
-      <script src="{{BASE}}js/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-      <!-- Select2 JavaScript-->
-      <script src="{{BASE}}js/vendor/select2/js/select2.min.js"></script>
-      <!-- Owl Carousel -->
-      <script src="{{BASE}}js/vendor/owl-carousel/owl.carousel.js"></script>
-      <!-- Custom scripts for all pages-->
-      <script src="{{BASE}}js/custom.js"></script>
+    <script src="{{BASE}}js/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{BASE}}js/vendor/select2/js/select2.min.js"></script>
+    <script src="{{BASE}}js/vendor/owl-carousel/owl.carousel.js"></script>
+    <script src="{{BASE}}js/custom.js"></script>
     {% endif %}
   </body>
 

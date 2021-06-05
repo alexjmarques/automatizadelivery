@@ -3,16 +3,18 @@
 {% block body %}
 {% block head %}
 {% endblock %}
+<div class="homepage-header">
+      <div class="overlay"></div>
 {% include 'partials/desktop/menuTop.twig.php' %}
 <section class="pt-5 pb-5 homepage-search-block position-relative">
    <div class="banner-overlay"></div>
    <div class="container">
-      <div class="row d-flex align-items-center py-lg-4">
-         <div class="col-lg-6 mx-auto">
-            <div class="homepage-search-title text-center">
+      <div class="row d-flex align-items-center py-lg-4 pt-5">
+         <div class="navbar-nav col-lg-6 mx-auto">
+            <div class="homepage-search-title text-center pb-5">
                <h1 class="mb-2 display-4 text-shadow text-white font-weight-normal"><span class="font-weight-bold">Sistema de Gestão de Pedidos</span></h1>
                <h5 class="mb-5 text-shadow text-white-50 font-weight-normal">Organize a operação do seu estabelecimento flexibilizando seu tempo, a sua gestão e o seu negócio!</h5>
-               <a href="#" class="btn btn-success btn-lg">Saiba mais</a>
+               <a href="#inicio" class="btn btn-success btn-lg anchor">Saiba mais</a>
             </div>
          </div>
       </div>
@@ -22,38 +24,61 @@
 <section class="section pt-5 pb-5 bg-white homepage-add-section">
    <div class="container">
       <div class="row">
-         <div class="col-md-3 col-6">
-            <div class="products-box">
-               <a href="listing.html"><img alt="" src="{{BASE}}img/pro1.jpg" class="img-fluid rounded"></a>
-            </div>
+         {% for emp in empresas|slice(0,6) %}
+         <div class="col-md-4">
+            <a href="{{BASE}}{{ emp.link_site }}">
+               <div class="bg-white shadow-sm rounded align-items-center p-1 mb-4 flex-column">
+
+                  <div class="p-1 float-left">
+                     <img src="{{BASE}}uploads/{{ emp.logo }}" class="img-float">
+                  </div>
+                  <div class="py-2 float-left">
+                     <p class="mb-0 text-black font-weight-bold">{{ emp.nome_fantasia }}</p>
+                     {% for cat in categoria %}
+                     {% if cat.id == emp.id_categoria %}
+                     <p class="small mb-1 font-weight-bold text-dark">{{cat.nome }}</p>
+                     {% endif %}
+                     {% endfor %}
+
+                     <p class="small mb-1">
+                        {% for empDeli in empresaDelivery %}
+                        {% if empDeli.id_empresa == emp.id %}
+                        Raio de entrega: <span class="font-weight-bold text-dark">{{empDeli.km_entrega_excedente }} km</span>
+                        {% endif %}
+                        {% endfor %}
+                     </p>
+                     <p class="small mb-1">
+
+                        {% set cont = 0 %}
+                        {%  for ped in pedidos %}
+                        {% if ped.id_empresa == emp.id %}
+                        {% if ped.status == 4 %}
+                        {% set cont = cont + 1 %}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        Pedidos: <span class="font-weight-bold text-dark">({{cont}})</span>
+                     </p>
+
+                  </div>
+                  <div class="clearfix"></div>
+               </div>
+            </a>
          </div>
-         <div class="col-md-3 col-6">
-            <div class="products-box">
-               <a href="listing.html"><img alt="" src="{{BASE}}img/pro2.jpg" class="img-fluid rounded"></a>
-            </div>
-         </div>
-         <div class="col-md-3 col-6">
-            <div class="products-box">
-               <a href="listing.html"><img alt="" src="{{BASE}}img/pro3.jpg" class="img-fluid rounded"></a>
-            </div>
-         </div>
-         <div class="col-md-3 col-6">
-            <div class="products-box">
-               <a href="listing.html"><img alt="" src="{{BASE}}img/pro4.jpg" class="img-fluid rounded"></a>
-            </div>
-         </div>
+         {% endfor %}
+
       </div>
    </div>
 </section>
 
-<section class="section homepage-add-section bg_full">
+<section class="section homepage-add-section bg_full" id="inicio">
    <div class="container">
       <div class="row">
          <div class="col-md-7 col-6">
             <h2 class="pt-5 mt-4 text-white">Organize a operação do seu estabelecimento</h2>
             <p class="text-white size20 pt-3">A operação do seu restaurante esta desorganizada, pois você recebe pedidos via WhatsApp, Facebook, Instagram, Mesa, Balcão e Marketplaces (iFood, UberEats)?<br>Com a Automatiza.App, você centraliza seus pedidos em um só lugar e organiza toda a sua operação.</p>
 
-            <a href="https://automatizadelivery.com.br/teste" target="_blank" class="elementor-button-link elementor-button elementor-size-md" role="button">
+            <a href="https://automatizadelivery.com.br/teste" target="_blank" class="elementor-button-vaz" role="button">
                <span class="elementor-button-content-wrapper"><span class="elementor-button-text">Conheça o Sistema</span></span>
             </a>
          </div>
@@ -131,7 +156,7 @@
    </div>
 </section>
 
-<section class="section pt-5 pb-5 products-section bg-cian">
+<section class="section pt-5 pb-5 products-section bg-cian" id="planos">
    <div class="container">
       <div class="section-header text-center">
          <h2>Solução completa</h2>
@@ -140,7 +165,7 @@
       </div>
       <div class="row">
 
-            <div class="pricing col-md-12 mb-3">
+         <div class="pricing col-md-12 mb-3">
 
             <div class="col-md-3 float-left">
                <div class="card card-pricing text-center px-3 mb-4 ">
@@ -163,7 +188,7 @@
                         <li>200 Pedidos por mês</li>
                         <li>Hospedagem e SSL</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}plano/inicial" rel="nofollow">Tenho Interesse</a>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
                   </div>
                </div>
             </div>
@@ -192,11 +217,11 @@
                         <li>Hospedagem e SSL</li>
                         <li>Suporte Profissional</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md gold" href="{{BASE}}plano/intermediario" rel="nofollow">Tenho Interesse</a>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md gold" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
                   </div>
                </div>
             </div>
-               <div class="col-md-3 float-left">
+            <div class="col-md-3 float-left">
 
                <div class="card card-pricing text-center px-3 mb-4">
                   <div class="header_plan">
@@ -220,7 +245,7 @@
                         <li>Chat e Avaliação</li>
                         <li>Suporte Profissional</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}plano/essencial" rel="nofollow">Tenho Interesse</a>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
                   </div>
                </div>
             </div>
@@ -233,9 +258,9 @@
                   </div>
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
-                        
+
                         <span class="elementor-price-table__integer-part mb-2" style="font-size: 36px;">Consulte!</span>
-                        
+
                         <span class="elementor-price-table__period elementor-typo-excluded">Entre em contato e saiba mais</span>
                      </div>
                   </div>
@@ -246,19 +271,16 @@
                         <li>Chat e Avaliação</li>
                         <li>Suporte Profissional</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}solucao-completa" rel="nofollow">Tenho Interesse</a>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
                   </div>
                </div>
-
             </div>
          </div>
       </div>
-
-
    </div>
 </section>
 
-<section class="section pt-5 pb-5 products-section">
+<section class="section pt-5 pb-5 products-section" id="recursos">
    <div class="container">
       <div class="section-header text-center">
          <h2>Lista de recursos</h2>
@@ -267,122 +289,189 @@
       </div>
       <div class="row">
          <div class="col-md-12">
-            <div class="owl-carousel owl-carousel-four owl-theme">
-               <div class="item">
-                  <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                     <div class="list-card-image">
-                        <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
-                        <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
-                        <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
-                        <a href="detail.html">
-                           <img src="{{BASE}}img/list/1.png" class="img-fluid item-img">
-                        </a>
+            <div class="big-table combo">
+               <div class="w-layout-grid grid-table combo">
+                  <div id="w-node-_2b3e4311-3a77-c335-17b0-00285d56406f-4c9858f6" class="table-header">
+                     <div class="box-plan border-left">
+                        <div class="text-label">Inicial</div>
                      </div>
-                     <div class="p-3 position-relative">
-                        <div class="list-card-body">
-                           <h6 class="mb-1"><a href="detail.html" class="text-black">World Famous</a></h6>
-                           <p class="text-gray mb-3">North Indian • American • Pure veg</p>
-                           <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 20–25 min</span> <span class="float-right text-black-50"> $250 FOR TWO</span></p>
-                        </div>
-                        <div class="list-card-badge">
-                           <span class="badge badge-success">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
-                        </div>
+                     <div class="box-plan table-ss">
+                        <div class="text-label essencial-combo">Intermediario</div>
+                     </div>
+                     <div class="box-plan border-right">
+                        <div class="text-label">Essencial</div>
+                     </div>
+                     <div class="box-plan border-right">
+                        <div class="text-label">Solução Completa</div>
                      </div>
                   </div>
-               </div>
-               <div class="item">
-                  <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                     <div class="list-card-image">
-                        <div class="star position-absolute"><span class="badge badge-warning"><i class="icofont-star"></i> 3.1 (300+)</span></div>
-                        <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
-                        <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
-                        <a href="detail.html">
-                           <img src="{{BASE}}img/list/3.png" class="img-fluid item-img">
-                        </a>
-                     </div>
-                     <div class="p-3 position-relative">
-                        <div class="list-card-body">
-                           <h6 class="mb-1"><a href="detail.html" class="text-black">Bite Me Sandwiches</a></h6>
-                           <p class="text-gray mb-3">North Indian • Indian • Pure veg</p>
-                           <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $100 FOR TWO</span></p>
-                        </div>
-                        <div class="list-card-badge">
-                           <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
-                        </div>
-                     </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Cardápio virtual<br></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
                   </div>
-               </div>
-               <div class="item">
-                  <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                     <div class="list-card-image">
-                        <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
-                        <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
-                        <div class="member-plan position-absolute"><span class="badge badge-danger">Promoted</span></div>
-                        <a href="detail.html">
-                           <img src="{{BASE}}img/list/6.png" class="img-fluid item-img">
-                        </a>
-                     </div>
-                     <div class="p-3 position-relative">
-                        <div class="list-card-body">
-                           <h6 class="mb-1"><a href="detail.html" class="text-black">The osahan Restaurant
-                              </a>
-                           </h6>
-                           <p class="text-gray mb-3">North • Hamburgers • Pure veg</p>
-                           <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $500 FOR TWO</span></p>
-                        </div>
-                        <div class="list-card-badge">
-                           <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
-                        </div>
-                     </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Gestão de Produtos e categorias</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
                   </div>
-               </div>
-               <div class="item">
-                  <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                     <div class="list-card-image">
-                        <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
-                        <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
-                        <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
-                        <a href="detail.html">
-                           <img src="{{BASE}}img/list/8.png" class="img-fluid item-img">
-                        </a>
-                     </div>
-                     <div class="p-3 position-relative">
-                        <div class="list-card-body">
-                           <h6 class="mb-1"><a href="detail.html" class="text-black">Polo Lounge
-                              </a>
-                           </h6>
-                           <p class="text-gray mb-3">North Indian • Indian • Pure veg</p>
-                           <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $250 FOR TWO</span></p>
-                        </div>
-                        <div class="list-card-badge">
-                           <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
-                        </div>
-                     </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Pedidos de delivery via peinel personalizado</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
                   </div>
-               </div>
-               <div class="item">
-                  <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-                     <div class="list-card-image">
-                        <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
-                        <div class="favourite-heart text-danger position-absolute"><a href="detail.html"><i class="icofont-heart"></i></a></div>
-                        <div class="member-plan position-absolute"><span class="badge badge-dark">Promoted</span></div>
-                        <a href="detail.html">
-                           <img src="{{BASE}}img/list/9.png" class="img-fluid item-img">
-                        </a>
-                     </div>
-                     <div class="p-3 position-relative">
-                        <div class="list-card-body">
-                           <h6 class="mb-1"><a href="detail.html" class="text-black">Jack Fry's
-                              </a>
-                           </h6>
-                           <p class="text-gray mb-3">North Indian • Indian • Pure veg</p>
-                           <p class="text-gray mb-3 time"><span class="bg-light text-dark rounded-sm pl-2 pb-1 pt-1 pr-2"><i class="icofont-wall-clock"></i> 15–25 min</span> <span class="float-right text-black-50"> $250 FOR TWO</span></p>
-                        </div>
-                        <div class="list-card-badge">
-                           <span class="badge badge-danger">OFFER</span> <small>65% off | Use Coupon OSAHAN50</small>
-                        </div>
-                     </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Pedidos via cardápio QR Code ou Link</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
                   </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Personalizado com a marca do seu negócio</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Gerenciamento dos Pedidos</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Acompanhamento de status do pedido pelo cliente</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Modos de operação: Delivery e Balcão</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Customização de opcionais nos Produtos</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Configuração de taxa de entrega por distância (km)</div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Gestão de Motoboys</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+
+                  <div class="table-line negative">
+                     <div class="label-line-table">Gestão de entrega para os Motoboys</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+
+                  <div class="table-line">
+                     <div class="label-line-table">Rota e dados do pedido para Motoboy</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Ação de Entrega ou cancelamento do pedido pelo Motoboy</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Relatórios de Vendas</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+
+                  <div class="table-line negative">
+                     <div class="label-line-table">Relatório de Entregas Feitas</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Relatório dos pedidos do Delivery</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Cupom de Desconto e CashBack*</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Gestão de Atendentes</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line negative">
+                     <div class="label-line-table">Impressão de pedidos</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+                  <div class="table-line">
+                     <div class="label-line-table">Integração Ifood*</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+
+                  <div class="table-line negative">
+                     <div class="label-line-table">Integração UberEats*</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+
+                  <div class="table-line">
+                     <div class="label-line-table">Integração meios de Pagamento*</div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"></div>
+                     <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
+                  </div>
+
                </div>
             </div>
          </div>
@@ -392,105 +481,20 @@
 <section class="section pt-5 pb-5 bg-white becomemember-section border-bottom">
    <div class="container">
       <div class="section-header text-center white-text">
-         <h2>Become a Member</h2>
-         <p>Lorem Ipsum is simply dummy text of</p>
+         <h2>Pensando em Mobilidade</h2>
+         <p>Nada melhor que aliar a mobilidade a seu sistema de pedidos</p>
          <span class="line"></span>
+
+        
       </div>
-      <div class="row">
+      <!-- <div class="row">
          <div class="col-sm-12 text-center">
             <a href="register.html" class="btn btn-success btn-lg">
                Create an Account <i class="fa fa-chevron-circle-right"></i>
             </a>
          </div>
-      </div>
+      </div> -->
    </div>
 </section>
-<section class="section pt-5 pb-5 text-center bg-white">
-   <div class="container">
-      <div class="row">
-         <div class="col-sm-12">
-            <h5 class="m-0">Operate food store or restaurants? <a href="login.html">Work With Us</a></h5>
-         </div>
-      </div>
-   </div>
-</section>
-<section class="footer pt-5 pb-5">
-   <div class="container">
-      <div class="row">
-         <div class="col-md-4 col-12 col-sm-12">
-            <h6 class="mb-3">Subscribe to our Newsletter</h6>
-            <form class="newsletter-form mb-1">
-               <div class="input-group">
-                  <input type="text" placeholder="Please enter your email" class="form-control">
-                  <div class="input-group-append">
-                     <button type="button" class="btn btn-primary">
-                        Subscribe
-                     </button>
-                  </div>
-               </div>
-            </form>
-            <p><a class="text-info" href="register.html">Register now</a> to get updates on <a href="offers.html">Offers and Coupons</a></p>
-            <div class="app">
-               <p class="mb-2">DOWNLOAD APP</p>
-               <a href="#">
-                  <img class="img-fluid" src="{{BASE}}img/google.png">
-               </a>
-               <a href="#">
-                  <img class="img-fluid" src="{{BASE}}img/apple.png">
-               </a>
-            </div>
-         </div>
-         <div class="col-md-1 col-sm-6 mobile-none">
-         </div>
-         <div class="col-md-2 col-6 col-sm-4">
-            <h6 class="mb-3">About OE</h6>
-            <ul>
-               <li><a href="#">About Us</a></li>
-               <li><a href="#">Culture</a></li>
-               <li><a href="#">Blog</a></li>
-               <li><a href="#">Careers</a></li>
-               <li><a href="#">Contact</a></li>
-            </ul>
-         </div>
-         <div class="col-md-2 col-6 col-sm-4">
-            <h6 class="mb-3">For Foodies</h6>
-            <ul>
-               <li><a href="#">Community</a></li>
-               <li><a href="#">Developers</a></li>
-               <li><a href="#">Blogger Help</a></li>
-               <li><a href="#">Verified Users</a></li>
-               <li><a href="#">Code of Conduct</a></li>
-            </ul>
-         </div>
-         <div class="col-md-2 m-none col-4 col-sm-4">
-            <h6 class="mb-3">For Restaurants</h6>
-            <ul>
-               <li><a href="#">Advertise</a></li>
-               <li><a href="#">Add a Restaurant</a></li>
-               <li><a href="#">Claim your Listing</a></li>
-               <li><a href="#">For Businesses</a></li>
-               <li><a href="#">Owner Guidelines</a></li>
-            </ul>
-         </div>
-      </div>
-   </div>
-</section>
-<section class="footer-bottom-search pt-5 pb-5 bg-white">
-   <div class="container">
-      <div class="row">
-         <div class="col-xl-12">
-            <p class="text-black">POPULAR COUNTRIES</p>
-            <div class="search-links">
-               <a href="#">Australia</a> | <a href="#">Brasil</a> | <a href="#">Canada</a> | <a href="#">Chile</a> | <a href="#">Czech Republic</a> | <a href="#">India</a> | <a href="#">Indonesia</a> | <a href="#">Ireland</a> | <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> | <a href="#">Turkey</a> | <a href="#">Philippines</a> | <a href="#">Sri Lanka</a> | <a href="#">Australia</a> | <a href="#">Brasil</a> | <a href="#">Canada</a> | <a href="#">Chile</a> | <a href="#">Czech Republic</a> | <a href="#">India</a> | <a href="#">Indonesia</a> | <a href="#">Ireland</a> | <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> | <a href="#">Turkey</a> | <a href="#">Philippines</a> | <a href="#">Sri Lanka</a><a href="#">Australia</a> | <a href="#">Brasil</a> | <a href="#">Canada</a> | <a href="#">Chile</a> | <a href="#">Czech Republic</a> | <a href="#">India</a> | <a href="#">Indonesia</a> | <a href="#">Ireland</a> | <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> | <a href="#">Turkey</a> | <a href="#">Philippines</a> | <a href="#">Sri Lanka</a> | <a href="#">Australia</a> | <a href="#">Brasil</a> | <a href="#">Canada</a> | <a href="#">Chile</a> | <a href="#">Czech Republic</a> | <a href="#">India</a> | <a href="#">Indonesia</a> | <a href="#">Ireland</a> | <a href="#">New Zealand</a> | <a href="#">United Kingdom</a> | <a href="#">Turkey</a> | <a href="#">Philippines</a> | <a href="#">Sri Lanka</a>
-            </div>
-            <p class="mt-4 text-black">POPULAR FOOD</p>
-            <div class="search-links">
-               <a href="#">Fast Food</a> | <a href="#">Chinese</a> | <a href="#">Street Food</a> | <a href="#">Continental</a> | <a href="#">Mithai</a> | <a href="#">Cafe</a> | <a href="#">South Indian</a> | <a href="#">Punjabi Food</a> | <a href="#">Fast Food</a> | <a href="#">Chinese</a> | <a href="#">Street Food</a> | <a href="#">Continental</a> | <a href="#">Mithai</a> | <a href="#">Cafe</a> | <a href="#">South Indian</a> | <a href="#">Punjabi Food</a><a href="#">Fast Food</a> | <a href="#">Chinese</a> | <a href="#">Street Food</a> | <a href="#">Continental</a> | <a href="#">Mithai</a> | <a href="#">Cafe</a> | <a href="#">South Indian</a> | <a href="#">Punjabi Food</a> | <a href="#">Fast Food</a> | <a href="#">Chinese</a> | <a href="#">Street Food</a> | <a href="#">Continental</a> | <a href="#">Mithai</a> | <a href="#">Cafe</a> | <a href="#">South Indian</a> | <a href="#">Punjabi Food</a>
-            </div>
-         </div>
-      </div>
-   </div>
-</section>
-
 {% include 'partials/desktop/footer.twig.php' %}
 {% endblock %}

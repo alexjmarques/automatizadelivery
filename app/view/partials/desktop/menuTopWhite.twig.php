@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark osahan-nav">
-         <div class="container">
-            <a class="navbar-brand" href="{{BASE}}"><img alt="logo" src="{{BASE}}img/logo-pb.png"></a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light osahan-nav shadow-sm">
+<div class="container">
+            <a class="navbar-brand" href="{{BASE}}"><img alt="logo" src="{{BASE}}img/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,10 +26,10 @@
                   <li class="nav-item">
                      <a class="nav-link landing-bt anchor" href="#recursos"> Lista de recursos</a>
                   </li>
+
                   <li class="nav-item">
                      <a class="nav-link landing-bt" href="{{BASE}}cadastro/empresa"> Cadastre-se</a>
                   </li>
-                  
                   
                   
                   {% if isLogin == 0 %}
@@ -55,3 +55,4 @@
             </div>
          </div>
       </nav>
+

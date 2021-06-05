@@ -33,9 +33,12 @@ require "../app/controller/AdminiFoodController.php";
 require "../app/controller/AdminUberEatsController.php";
 require "../app/controller/PerfilMotoboyController.php";
 require "../app/controller/AdminProdutosAdicionais.php";
+require "../app/controller/InstitucionalController.php";
 require "../app/controller/PedidosMotoboyController.php";
+require "../app/controller/EmpresaCadastroController.php";
 require "../app/controller/AdminPedidosBalcaoController.php";
 require "../app/controller/AdminClickEntregasController.php";
+
 
 
 $router = new Router(BASE);
@@ -45,17 +48,20 @@ $router->namespace("app\controller");
     Paginas do portal
 */
 $router->group(null);
-$router->get('/', 'PagesController:home');
-$router->get('/explore', 'PagesController:explore');
-$router->get('/messages', 'PagesController:messages');
-$router->get('/search', 'PagesController:search');
+$router->get('/', 'PagesController:index');
+$router->get('/', 'PagesController:index');
+
+$router->get('/sobre-nos', 'InstitucionalController:index');
+$router->get('/visao-valores', 'InstitucionalController:visaoValores');
+$router->get('/trabalhe-conosco', 'InstitucionalController:trabalheConosco');
+$router->get('/contato', 'InstitucionalController:contatoConosco');
+
+$router->get('/cadastro/empresa', 'EmpresaCadastroController:index');
+$router->post('/cadastro/empresa/i', 'EmpresaCadastroController:insert');
 
 
-$router->get('/{linkSite}', 'PagesController:index');
-$router->get('/{linkSite}/', 'PagesController:index');
-$router->get('/{linkSite}/TestAPI', 'TestAPIController:index');
-$router->get('/{linkSite}/index-pc', 'PagesController:indexPC');
-$router->get('/{linkSite}/acesso-computador', 'PagesController:pcIndex');
+$router->get('/{linkSite}', 'PagesController:home');
+$router->get('/{linkSite}/', 'PagesController:home');
 $router->get('/{linkSite}/intro', 'PagesController:bemVindo');
 $router->get('/{linkSite}/novo-por-aqui', 'PagesController:novoDelivery');
 $router->get('/{linkSite}/delivery', 'PagesController:quemSomos');
@@ -181,6 +187,10 @@ $router->post('/{linkSite}/motoboy/senha/u', 'PerfilMotoboyController:updateSenh
 /*
     Admin Aplicação
 */
+
+$router->get('/admin', 'AdminDashboard:index');
+
+
 $router->get('/{linkSite}/admin', 'AdminDashboard:index');
 $router->get('/{linkSite}/admin/', 'AdminDashboard:index');
 $router->get('/{linkSite}/admin/sair', 'AllController:sairAdmin');
@@ -205,13 +215,15 @@ $router->get('/admin/login', 'UsuarioController:loginAdmin');
 $router->get('/{linkSite}/admin/login', 'UsuarioController:loginEstabelecimento');
 $router->post('/admin/login/valida', 'UsuarioController:loginValida');
 
+$router->get('/admin/login', 'UsuarioController:loginGeral');
+
 $router->get('/{linkSite}/admin/login/validaFacebook', 'UsuarioController:loginFacebook');
 $router->get('/{linkSite}/admin/recuperar-senha', 'UsuarioController:senhaPerdida');
 $router->post('/{linkSite}/admin/recuperar-senha/recuperar', 'UsuarioController:senhaPerdidaRecupera');
 $router->get('/{linkSite}/admin/recuperar/98e4011142eeb9842091bf4812f81656a7d80eac/{id}', 'UsuarioController:novaSenhaPerdida');
 $router->post('/{linkSite}/admin/recuperar/senha/i', 'UsuarioController:insertRecuperacaoSenha');
-$router->post('/{linkSite}/admin/iniciar-atendimento', 'AdminDashboard:iniciarAtendimento');
-$router->post('/{linkSite}/admin/finalizar-atendimento', 'AdminDashboard:finalizarAtendimento');
+$router->post('/{linkSite}/admin/iniciar-atendimento', 'AllController:iniciarAtendimento');
+$router->post('/{linkSite}/admin/finalizar-atendimento', 'AllController:finalizarAtendimento');
 $router->get('/{linkSite}/admin/pedidos', 'AdminPedidos:index');
 $router->get('/{linkSite}/admin/pedidos-finalizados', 'AdminPedidos:pedidosFinalizados');
 $router->get('/{linkSite}/admin/pedidos-cancelados', 'AdminPedidos:pedidosCancelados');

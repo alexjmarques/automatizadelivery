@@ -37,37 +37,126 @@ class PagesController extends Controller
         $this->acoes = new Acoes();
     }
 
+    
+
     public function index($data)
     {
+        $empresas = $this->acoes->getFind('empresa');
+        $empresaDelivery = $this->acoes->getFind('empresaFrete');
+        $categoria = $this->acoes->getFind('categoriaSeguimentoSub');
+        $pedidos = $this->acoes->getFind('carrinhoPedidos');
+
+        $this->load('home/home', [
+            'empresas' => $empresas,
+            'empresaDelivery' => $empresaDelivery,
+            'categoria' => $categoria,
+            'pedidos' => $pedidos,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+
+        ]);
+    }
+
+    public function termosUso($data)
+    {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
-        $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
-        $dias = $this->acoes->getFind('dias');
-        $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
-
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $ultimaVenda = null;
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-
-            if ($verificaVendaAtiva > 0) {
-                $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
-            }
-            // $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresa->id);
         }
-        $hoje = date('w', strtotime(date('Y-m-d')));
-        if ($hoje == 0) {
-            $hoje = 7;
-        }
+        $this->load('_geral/termosUso/main', [
+            'empresa' => $empresa,
+            'enderecoAtivo' => $enderecoAtivo,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+        ]);
+    }
 
+    public function politicaPrivacidade($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() != 3) {
-                redirect(BASE . "{$empresa->link_site}/motoboy");
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        }
+        $this->load('_geral/politicaPrivacidade/main', [
+            'empresa' => $empresa,
+            'enderecoAtivo' => $enderecoAtivo,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+        ]);
+    }
+
+    public function sobre($data)
+    {
+        dd($data);
+        $this->load('_geral/quem-somos/sobre', [
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+
+        ]);
+    }
+
+    public function visaoValores($data)
+    {
+        $this->load('home/visaoValores', [
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+
+        ]);
+    }
+
+    public function trabalheConosco($data)
+    {
+        $this->load('home/trabalheConosco', [
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+
+        ]);
+    }
+
+    public function contatoConosco($data)
+    {
+        $this->load('home/contato', [
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+
+        ]);
+    }
+
+    public function home($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        if ($empresa) {
+            $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+            $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+            $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+            $dias = $this->acoes->getFind('dias');
+            $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
+
+            $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+            $ultimaVenda = null;
+            if ($this->sessao->getUser()) {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+
+                if ($verificaVendaAtiva > 0) {
+                    $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
+                }
+                // $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresa->id);
+            }
+            $hoje = date('w', strtotime(date('Y-m-d')));
+            if ($hoje == 0) {
+                $hoje = 7;
+            }
+
+            if ($this->sessao->getUser()) {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() != 3) {
+                    redirect(BASE . "{$empresa->link_site}/motoboy");
+                }
             }
         }
 
@@ -214,51 +303,5 @@ class PagesController extends Controller
         ]);
     }
 
-    public function termosUso($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-        }
-        $this->load('_geral/termosUso/main', [
-            'empresa' => $empresa,
-            'enderecoAtivo' => $enderecoAtivo,
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect()
-        ]);
-    }
-
-    public function politicaPrivacidade($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-        }
-        $this->load('_geral/politicaPrivacidade/main', [
-            'empresa' => $empresa,
-            'enderecoAtivo' => $enderecoAtivo,
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect()
-        ]);
-    }
-
-    public function home($data)
-    {
-        //$empresas = $this->acoes->getFind('empresa');
-        //$empresaEnderecos = $this->acoes->getFind('empresaEnderecos');
-        // $empresaAtendimento = $this->acoes->getFind('empresaAtendimento');
-        // $empresaCategorias = $this->acoes->getFind('empresaCategorias');
-
-        $this->load('home/home', [
-            'empresas' => $empresas,
-            'empresaEnderecos' => $empresaEnderecos,
-            'empresaAtendimento' => $empresaAtendimento,
-            'empresaCategorias' => $empresaCategorias,
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect()
-
-        ]);
-    }
+    
 }

@@ -82,13 +82,24 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $isLogin = $this->sessao->getUser() ? redirect(BASE . $empresa->link_site . '/admin') : null;
 
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-
         $this->load('_admin/login/main', [
             'empresa' => $empresa,
             'isLogin' => $isLogin,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+        ]);
+    }
+
+    /**
+     * Login Geral Estabelecimentos
+     *
+     * @param [type] $data
+     * @return void
+     */
+    public function loginGeral($data)
+    {
+
+        $this->load('_admin/login/main', [
             'trans' => $this->trans,
             'detect' => new Mobile_Detect()
         ]);
@@ -140,17 +151,18 @@ class UsuarioController extends Controller
         if ($usuario <= 0) {
             echo 'Email não encontrado em nossa plataforma! Cadastre-se.';
         } else {
-
             if ($this->bcrypt->verify($senha, $usuario->senha)) {
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
-                if ($data['linkSite'] == null) {
-                    header('Content-Type: application/json');
-                    $json = json_encode(['url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
-                    exit($json);
-                } else {
-                    $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+                $contagem = $this->acoes->counts('usuariosEmpresa', 'id', $usuario->id);
+                if($contagem > 0){
+                    $usuId = $this->acoes->getByField('usuariosEmpresa', 'id', $usuario->id);
+                    $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
                     header('Content-Type: application/json');
                     $json = json_encode(['url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    exit($json);
+                }else{
+                    header('Content-Type: application/json');
+                    $json = json_encode(['url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                     exit($json);
                 }
             } else {
