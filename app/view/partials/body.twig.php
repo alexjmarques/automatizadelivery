@@ -213,10 +213,10 @@
     <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery-ui.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/vendor/jquery/jquery-3.3.1.slim.min.js"></script>
-    <script src="{{BASE}}js/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="{{BASE}}js/vendor/select2/js/select2.min.js"></script>
-    <script src="{{BASE}}js/vendor/owl-carousel/owl.carousel.js"></script>
+    <script src="{{BASE}}js/jquery-3.3.1.slim.min.js"></script>
+    <script src="{{BASE}}js/bootstrap.bundle.min.js"></script>
+    <script src="{{BASE}}js/select2.min.js"></script>
+    <script src="{{BASE}}js/owl-carousel/owl.carousel.js"></script>
     <script src="{{BASE}}js/custom.js"></script>
     {% endif %}
   </body>

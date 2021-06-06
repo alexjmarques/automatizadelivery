@@ -1,14 +1,6 @@
-/*
-Template Name: Osahan Eat - Online Food Ordering Website HTML Template
-Author: Askbootstrap
-Author URI: https://themeforest.net/user/askbootstrap
-Version: 1.0
-*/
 (function($) {
-  "use strict"; // Start of use strict
-
-// ===========Select2============
-//$('select').select2();
+  "use strict"; 
+$('select').select2();
 
 const menuItems = document.querySelectorAll('.anchor[href^="#"]');
 
