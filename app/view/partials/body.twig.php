@@ -42,13 +42,13 @@
     <link href="{{BASE}}css/automatiza.css" rel="stylesheet" type="text/css">
   {% else %}
   <!-- Bootstrap core CSS-->
-  <link href="{{BASE}}css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{BASE}}css/bootstrap.min.css" rel="stylesheet">
       <!-- Font Awesome-->
-      <link href="{{BASE}}css/vendor/fontawesome/css/all.min.css" rel="stylesheet">
+      <link href="{{BASE}}css/fontawesome/css/all.min.css" rel="stylesheet">
       <!-- Font Awesome-->
-      <link href="{{BASE}}css/vendor/icofont/icofont.min.css" rel="stylesheet">
+      <link href="{{BASE}}css/icofont/icofont.min.css" rel="stylesheet">
       <!-- Select2 CSS-->
-      <link href="{{BASE}}css/vendor/select2/css/select2.min.css" rel="stylesheet">
+      <link href="{{BASE}}css/select2.min.css" rel="stylesheet">
       <!-- Custom styles for this template-->
       <link href="{{BASE}}css/osahan.css" rel="stylesheet">
   {% endif %}
