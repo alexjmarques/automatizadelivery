@@ -10,7 +10,7 @@
          <div class="col-md-10 mx-auto bg-white p-5 rounded">
             <h5 class="mb-0">Conte-nos sobre seu estabelecimento.</h4>
                <p class="mb-4">Para criar sua conta e utilizar o nosso sistema preciso de algumas informações.</p>
-               <form method="post" id="" action="{{BASE}}cadastro/empresa/i" enctype="multipart/form-data">
+               <form method="post" id="form" action="{{BASE}}cadastro/empresa/i" enctype="multipart/form-data">
                   <div class="form-row">
                      <div class="form-group col-md-4">
                         <label for="nomeFantasia">Nome Fantasia</label>
@@ -91,4 +91,11 @@
    </div>
 </section>
 {% include 'partials/desktop/footer.twig.php' %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+document.getElementById('cnpj').addEventListener('input', function(e) {
+  var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
+  e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');
+});
+</script>
 {% endblock %}

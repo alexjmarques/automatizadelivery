@@ -8,53 +8,7 @@ Version: 1.0
   "use strict"; // Start of use strict
 
 // ===========Select2============
-$('select').select2();
-
-
-$("#form").submit(function (e) {
-  var formData = new FormData(this);
-  $.ajax({
-      url: $('#form').attr('action'),
-      type: 'POST',
-      data: formData,
-      beforeSend: function () {
-          $(".acaoBtn").prop("disabled", true);
-          $('.acaoBtn').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-      },
-      complete: function () {
-          $(".acaoBtn").prop("disabled", false);
-          $('.acaoBtn').html('Cadastrar');
-      },
-      success: function (data) {
-          console.log(data);
-          if (data.id > 0) {
-              switch (data.mensagem) {
-                  case data.mensagem:
-                      $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
-                      window.location = `${data.url}`;
-                      break;
-              }
-          } else {
-              $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
-          }
-
-      },
-      error: function (data) {
-          $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
-      },
-      cache: false,
-      contentType: false,
-      processData: false,
-      xhr: function () {
-          var myXhr = $.ajaxSettings.xhr();
-          if (myXhr.upload) {
-              myXhr.upload.addEventListener('progress', function () {}, false);
-          }
-          return myXhr;
-      }
-  });
-  return false;
-});
+//$('select').select2();
 
 const menuItems = document.querySelectorAll('.anchor[href^="#"]');
 
@@ -113,9 +67,50 @@ function smoothScrollTo(endX, endY, duration) {
   }, 1000 / 60); // 60 fps
 }; 
 
-document.getElementById('cnpj').addEventListener('input', function(e) {
-  var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
-  e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');
+$("#form").submit(function (e) {
+  var formData = new FormData(this);
+  console.log(formData);
+  jQuery.ajax({
+      url: $('#form').attr('action'),
+      type: 'POST',
+      data: formData,
+      beforeSend: function () {
+          $(".acaoBtn").prop("disabled", true);
+          $('.acaoBtn').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      },
+      complete: function () {
+          $(".acaoBtn").prop("disabled", false);
+          $('.acaoBtn').html('Cadastrar');
+      },
+      success: function (data) {
+          console.log(data);
+          if (data.id > 0) {
+              switch (data.mensagem) {
+                  case data.mensagem:
+                      $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+                      window.location = `${data.url}`;
+                      break;
+              }
+          } else {
+              $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
+          }
+
+      },
+      error: function (data) {
+          $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
+      },
+      cache: false,
+      processData: false,
+        contentType: false,
+      xhr: function () {
+          var myXhr = $.ajaxSettings.xhr();
+          if (myXhr.upload) {
+              myXhr.upload.addEventListener('progress', function () {}, false);
+          }
+          return myXhr;
+      }
+  });
+  return false;
 });
 
 $("#nome_fantasia").blur(function () {
