@@ -130,6 +130,7 @@ class PagesController extends Controller
         if ($empresa) {
             $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
             $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+            $produtoQtd = $this->acoes->counts('produtos', 'id_empresa', $empresa->id);
             $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
             $dias = $this->acoes->getFind('dias');
             $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
@@ -157,6 +158,9 @@ class PagesController extends Controller
                 if ($this->sessao->getNivel() != 3) {
                     redirect(BASE . "{$empresa->link_site}/motoboy");
                 }
+            }
+            if ($produtoQtd == 0) {
+                redirect(BASE . "{$empresa->link_site}/novo-por-aqui");
             }
         }
 
