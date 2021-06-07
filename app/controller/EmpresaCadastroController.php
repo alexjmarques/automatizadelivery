@@ -177,7 +177,7 @@ class EmpresaCadastroController extends Controller
         $empresaFrete->id_empresa = $empresa->id;
         $empresaFrete->save();
 
-        dd($empresaFrete);
+        //dd($empresaFrete);
 
         
         $usuarios = new Usuarios();
@@ -193,10 +193,10 @@ class EmpresaCadastroController extends Controller
         $usuariosEmpresa->id_empresa = $empresa->id;
         $usuariosEmpresa->nivel = 0;
         $usuariosEmpresa->save();
-        redirect(BASE . "{$data['link_site']}/admin/login");
+        //redirect(BASE . "{$data['link_site']}/admin/login");
 
-        // header('Content-Type: application/json');
-        // $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso!', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/admin/login",]);
-        // exit($json);
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso!', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/admin/login",]);
+        exit($json);
     }
 }

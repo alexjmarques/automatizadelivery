@@ -210,12 +210,14 @@
     <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
  {% else %}
+ 
     <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery-ui.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/bootstrap.bundle.min.js"></script>
-    <script src="{{BASE}}js/select2.min.js"></script>
+    <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
+    <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/owl-carousel/owl.carousel.js"></script>
     <script src="{{BASE}}js/custom.js"></script>
     {% endif %}

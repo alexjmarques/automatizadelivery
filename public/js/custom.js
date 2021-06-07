@@ -8,6 +8,8 @@ menuItems.forEach(item => {
   item.addEventListener('click', scrollToIdOnClick);
 })
 
+
+
 function getScrollTopByHref(element) {
   const id = element.getAttribute('href');
   return document.querySelector(id).offsetTop;
@@ -58,21 +60,73 @@ function smoothScrollTo(endX, endY, duration) {
     window.scroll(newX, newY);
   }, 1000 / 60); // 60 fps
 }; 
+$('#telefone').mask('(00) 00000-0000');
+$('#cep').mask('00000-000');
+$("#rua").on('blur touchleave touchcancel', function () {
+  var estado = $('#estadoPrinc').val();
+  var cidade = $('#cidadePrinc').val();
+  var rua = $(this).val();
+  if (rua != "") {
+      $.getJSON(`https://maps.google.com/maps/api/geocode/json?address=${rua},${cidade}-${estado}/&key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc`, function (dados) {
+          console.log(dados);
+          if (dados.status === "OK") {
+              $("#endOK").show();
+              $('.btnValida').attr("disabled", true);
+              $("#endPrint").text(dados.results[0].formatted_address);
+
+              if (dados.results[0].address_components[0].types[0] === "street_number") {
+                  $("#rua").val(dados.results[0].address_components[1].long_name);
+                  $("#bairro").val(dados.results[0].address_components[2].long_name);
+                  $("#cidade").val(dados.results[0].address_components[3].long_name);
+                  $("#estado").val(dados.results[0].address_components[4].short_name);
+                  $("#cep").val(dados.results[0].address_components[6].long_name);
+              } else {
+                  $("#rua").val(dados.results[0].address_components[0].long_name);
+                  $("#bairro").val(dados.results[0].address_components[1].long_name);
+                  $("#cidade").val(dados.results[0].address_components[2].long_name);
+                  $("#estado").val(dados.results[0].address_components[3].short_name);
+                  $("#cep").val(dados.results[0].address_components[5].long_name);
+              }
+
+              $("#numero").on('blur touchleave touchcancel', function () {
+                  $("#numeroPrint").text($(this).val());
+              });
+
+              $("#complemento").on('blur touchleave touchcancel', function () {
+                  $("#complementoPrint").text($(this).val());
+                  $('.btnValida').attr("disabled", false);
+              });
+
+              if (dados.results[0].geometry.location_type === "APPROXIMATE") {
+                  $("#alertGeralSite").modal("show");
+                  $(".errorSup").show();
+                  $("#mensagem").text("O Endereço informado é APROXIMADO, verifique se confere com sua localização antes de prosseguir!");
+              }
+          } else {
+              $("#alertGeralSite").modal("show");
+              $(".errorSup").show();
+              $("#mensagem").text("O Endereço informado não foi encontrado, verifique se digitou corretamente e tente novamente!");
+          }
+      });
+
+  }
+});
 
 $("#form").submit(function (e) {
   var formData = new FormData(this);
-  console.log(formData);
-  jQuery.ajax({
+  $.ajax({
       url: $('#form').attr('action'),
       type: 'POST',
       data: formData,
       beforeSend: function () {
           $(".acaoBtn").prop("disabled", true);
           $('.acaoBtn').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+          //return false;
       },
       complete: function () {
           $(".acaoBtn").prop("disabled", false);
           $('.acaoBtn').html('Cadastrar');
+          //return false;
       },
       success: function (data) {
           console.log(data);
@@ -80,13 +134,13 @@ $("#form").submit(function (e) {
               switch (data.mensagem) {
                   case data.mensagem:
                       $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
-                      window.location = `${data.url}`;
+                      window.location = `/${data.url}`;
                       break;
               }
           } else {
               $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
           }
-
+          //return false;
       },
       error: function (data) {
           $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
