@@ -358,7 +358,7 @@ $router->post('/{linkSite}/admin/conf/delivery/u', 'AdminEmpresaFrete:update');
 
 $router->get('/{linkSite}/admin/conf/atendimento', 'AdminAtendimento:index');
 $router->get('/{linkSite}/admin/conf/atendimento/novo', 'AdminAtendimento:novo');
-$router->get('/{linkSite}/admin/conf/atendimento/editar', 'AdminAtendimento:editar');
+$router->get('/{linkSite}/admin/conf/atendimento/editar/{id}', 'AdminAtendimento:editar');
 $router->post('/{linkSite}/admin/conf/atendimento/i', 'AdminAtendimento:insert');
 $router->post('/{linkSite}/admin/conf/atendimento/u', 'AdminAtendimento:update');
 $router->delete('/{linkSite}/admin/conf/atendimento/delete', 'AdminAtendimento:delete');

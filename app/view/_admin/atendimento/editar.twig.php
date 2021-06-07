@@ -17,33 +17,32 @@
 <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/u"
     enctype="multipart/form-data">
     <div class="card mb-4">
-        <div class="card-body">
-            <h5 id="titleBy" data-id="{{retorno.id}}">Categoria dos produtos</h5>
-            <div class="form-row">
-                <div class="form-group col-md-8 catProds">
-                    <label>Nome da Categoria</label>
-                    <input type="text" class="form-control" id="nome" name="nome" value="{{retorno.nome}}" required>
-                </div>
-                <div class="form-group col-md-4 hidden">
-                    <label>Slug</label>
-                    <input type="hidden" class="form-control" id="slug" placeholder="Slug" name="slug"
-                        value="{{retorno.slug}}" required>
-                </div>
-                <div class="form-group col-md-4">
-                    <label>Posição no Site</label>
-                    <input type="text" class="form-control" id="posicao" placeholder="Posição" name="posicao"
-                        value="{{retorno.posicao}}" required>
-                </div>
-                <div class="form-group col-md-12">
-                    <label>Descrição</label>
-                    <textarea class="form-control" id="descricao" name="descricao">{{retorno.descricao}}</textarea>
-                </div>
-            </div>
-            <input type="hidden" id="produtos" name="produtos" value="{{retorno.produtos}}">
-            <input type="hidden" id="id" name="id" value="{{retorno.id}}">
-            <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
-            <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
-        </div>
+    <div class="card-body">
+                            <h5>Horário de Funcionamento</h5>
+                                <div class="form-row">
+                                  <div class="form-group col-md-4 catProds">
+                                       <label>Dia</label>
+                                       <select class="form-control select2-single" id="dia" name="dia">
+                                        {% for d in dias %}
+                                            <option value="{{ d.id }}"{% if retorno.id_dia == d.id %}selected{% endif %}>{{ d.nome }}</option>
+                                        {% endfor %}    
+                                        </select>
+                                  </div>
+                                
+                                  <div class="form-group col-md-4">
+                                      <label>Aberto das (Ex: 10:00)</label>
+                                      <input type="text" class="form-control timepicker" id="abertura" name="abertura" value="{{ retorno.abertura }}">
+                                  </div>
+
+                                  <div class="form-group col-md-4">
+                                      <label>Fecha às: (Ex: 22:30)</label>
+                                      <input type="text" class="form-control timepicker" id="fechamento" name="fechamento" value="{{ retorno.fechamento }}">
+                                  </div>
+                                 
+                                </div>
+                            <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+                            
+                        </div>
     </div>
 </form>
 {% endblock %}
