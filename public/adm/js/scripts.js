@@ -32,7 +32,19 @@ $('input.timepicker').timepicker({
   timeFormat: 'HH:mm'
 });
 $('#telefone').mask('(00) 00000-0000');
+var mask = "HH:MM",
+    pattern = {
+        'translation': {
+            'H': {
+                pattern: /[0-23]/
+            },
+            'M': {
+                pattern: /[0-59]/
+            }
+        }
+    };
 
+$(".timepicker").mask(mask, pattern);
 $('#valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_entrega_motoboy').mask('#.##0,00', {
   reverse: true
 });
@@ -122,16 +134,16 @@ $("#form, #formIfood, #formCliente").submit(function () {
     type: 'POST',
     data: formData,
     beforeSend: function () {
-      $(".acaoBtn").prop("disabled", true);
-      $('.acaoBtn, .acaoBtnLogin').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      $(".acaoBtn, .acaoPlano").prop("disabled", true);
+      $('.acaoBtn, .acaoBtnLogin, .acaoPlano').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
     },
     complete: function () {
-      $(".acaoBtn").prop("disabled", false);
+      $(".acaoBtn, .acaoPlano").prop("disabled", false);
       $('.acaoBtnCadastro').html('Cadastrar');
       $('.acaoBtnAtualizar').html('Atualizar');
+      $('.acaoPlano').html('<i class="fa fa-lock"></i> Pagar');
       $('.acaoBtnAutorizar').html('Autorizar');
       $('.acaoBtnLogin').html('Login');
-
     },
     success: function (data) {
       console.log(data)
@@ -1135,6 +1147,11 @@ switch (active_link) {
     $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
     $('#subDeli').addClass('active')
     break;
+    case `/${link_site}/admin/conf/atendimento`:
+      $('#collapseMenuConfiguracoes').addClass('show')
+      $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+      $('#subHor').addClass('active')
+      break;
   case `/${link_site}/admin/cupons`:
     $('#collapseMenuConfiguracoes').addClass('show')
     $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')

@@ -1,4 +1,3 @@
-
 {% extends 'partials/bodyAdmin.twig.php'  %}
 {% block title %}Admin Automatiza.App{% endblock %}
 {% block body %}
@@ -15,46 +14,46 @@
     </ol>
 </nav>
 <div class="separator mb-5"></div>
-<form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/u/{{retorno.id}}"  enctype="multipart/form-data">
+<form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/u/{{retorno.id}}" enctype="multipart/form-data">
     <div class="card mb-4">
         <div class="card-body">
             <h5 id="titleBy" data-id="{{retorno.id}}">Item ou sabor adicional</h5>
-            <p class="mb-4">Este item poderá será atrelado ao produto como item adicional. <br/>
-            o mesmo serve como item adicional, tal como sabor, ingredientes ou brindes que seu cliente escolha na hora do pedido.</p>
-                <div class="form-row">
+            <p class="mb-4">Este item poderá será atrelado ao produto como item adicional. <br />
+                o mesmo serve como item adicional, tal como sabor, ingredientes ou brindes que seu cliente escolha na hora do pedido.</p>
+            <div class="form-row">
 
-                  <div class="form-group col-md-4">
-                       <label>Nome</label>
-                      <input type="text" class="form-control" id="nome" name="nome" value="{{retorno.nome}}" required>
-                  </div>
-                  <div class="form-group col-md-2">
+                <div class="form-group col-md-4">
+                    <label>Nome</label>
+                    <input type="text" class="form-control" id="nome" name="nome" value="{{retorno.nome}}" required>
+                </div>
+                <div class="form-group col-md-2">
                     <label>Valor</label>
-                      <input type="text" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="{{retorno.valor}}" required>
-                    </div>
+                    <input type="text" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="{{retorno.valor}}" required>
+                </div>
 
-                    <div class="form-group col-md-4 mb-0">
+                <div class="form-group col-md-4 mb-0">
                     <div class="form-group position-relative">
                         <label for="tipoSabor">Categoria do Adicional</label>
                         <select class="form-control select2-single" id="tipoAdicional" name="tipoAdicional">
                             <option value="0" selected>Sem Tipo</option>
                             {% for ta in tipoAdicional %}
-                            <option value="{{ta[':id}}" {% if retorno.tipoAdicional == ta[':id  %}selected{% endif %} >{{ta[':tipo}}</option>
+                            <option value="{{ta.id}}" {% if retorno.tipoAdicional == ta.id  %}selected{% endif %}>{{ta.tipo}}</option>
                             {% endfor %}
                         </select>
-                        </div>
                     </div>
-                    
-
-                    <div class="form-group col-md-6">
-                    <strong class="pt-4 float">Obs.: Caso queira atrelar a algum produto. Após criação vá para a Página de Produto > Editar e adiciona ao produto selecionado.</strong>
-                    </div>
-                    <input type="hidden" class="form-control" id="id" name="id" value="{{retorno.id}}">
-                    
-                    <div class="clearfix"></div>
                 </div>
-                <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
-<button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
-                
+
+
+                <div class="form-group col-md-6">
+                    <strong class="pt-4 float">Obs.: Caso queira atrelar a algum produto. Após criação vá para a Página de Produto > Editar e adiciona ao produto selecionado.</strong>
+                </div>
+                <input type="hidden" class="form-control" id="id" name="id" value="{{retorno.id}}">
+
+                <div class="clearfix"></div>
+            </div>
+            <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
+            <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+
         </div>
     </div>
 </form>

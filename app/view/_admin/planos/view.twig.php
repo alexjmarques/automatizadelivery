@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h1 id="titleBy" data-id="{{plano[':id']}}">Plano - {{plano[':nome']}}</h1>
+            <h1 id="titleBy" data-id="{{plano.id}}">Plano - {{plano.nome}}</h1>
             <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
                 <ol class="breadcrumb pt-0">
                     <li class="breadcrumb-item">
@@ -14,7 +14,7 @@
                     <li class="breadcrumb-item">
                         <a href="{{BASE}}{{empresa.link_site}}/admin/planos">Planos</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{plano[':nome']}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{plano.nome}}</li>
                 </ol>
             </nav>
             <div class="separator mb-5"></div>
@@ -28,11 +28,11 @@
                         <tbody>
                         <tr>
                             <td style="vertical-align:middle; border-radius: 3px; padding:30px; background-color: #f9f9f9; border-right: 5px solid white;">
-                                <h3>Plano - {{plano[':nome']}}</h3>
-                                <p>{{plano[':descricao']}}.</p>
+                                <h3>Plano - {{plano.nome }}</h3>
+                                <p>{{plano.descricao }}.</p>
                             </td>
                             <td style="vertical-align:middle; border-radius: 3px; padding:30px; background-color: #f9f9f9; border-right: 5px solid white;">
-                                <strong>Valor:</strong> {{ moeda[':simbolo }} {{ plano[':valor']|number_format(2, ',', '.') }} (Mensal)</strong>
+                                <strong>Valor:</strong> {{ moeda.simbolo }} {{ plano.valor|number_format(2, ',', '.') }} (Mensal)</strong>
                             </td>
                         </tr>
                         </tbody>
@@ -94,16 +94,8 @@
 
                                   <div class="form-group col-md-2">
                                           <label for="estado">Estado</label>
-                                          <select id="estado" name="estado" class="form-control select2-single">
-                                          <option value="">Selecione</option>
-                                          {% for e in estadosSelecao %}
-                                            {% if e[':id'] == estado %}
-                                                <option selected value="{{ e[':id }}">{{ e[':uf }}</option>
-                                              {% else %}
-                                                <option value="{{ e[':id }}">{{ e[':uf }}</option>
-                                              {% endif %}
-                                            {% endfor %}
-                                          </select>
+                                          <input type="text" class="form-control" id="estado" name="estado">
+                                          
                                       </div>
                                 </div>
 
@@ -138,11 +130,11 @@
 
 
                     <div class="clearfix"></div>
-                    <input type="hidden" id="planNome" name="planNome" value="Plano {{plano[':nome']}}" />
-                    <input type="hidden" id="valor" name="valor" value="{{plano[':valor']}}" />
-                    <input type="hidden" id="planId" name="planId" value="{{plano[':planId']}}" />
+                    <input type="hidden" id="planNome" name="planNome" value="Plano {{plano.nome}}" />
+                    <input type="hidden" id="valor" name="valor" value="{{plano.valor}}" />
+                    <input type="hidden" id="planId" name="planId" value="{{plano.plano_id}}" />
                     
-<button class="btn"><i class="fa fa-lock"></i> Pagar</button>
+<button class="btn acaoPlano"><i class="fa fa-lock"></i> Pagar</button>
                 </div>
 
                     <div class="clearfix"></div>

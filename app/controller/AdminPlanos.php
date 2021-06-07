@@ -6,18 +6,16 @@ use app\classes\Input;
 use app\classes\Acoes;
 use app\classes\Cache;
 use app\core\Controller;
-use app\api\iFood\Authetication;
 use DElfimov\Translate\Loader\PhpFilesLoader;
 use DElfimov\Translate\Translate;
 use app\controller\AllController;
 use function JBZoo\Data\json;
-use app\classes\Preferencias;
 use app\classes\Sessao;
-
+use app\Models\Assinatura;
+use app\Models\CartaoCredito;
 
 class AdminPlanos extends Controller
 {
-    
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,10 +30,8 @@ class AdminPlanos extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
         $this->sessao = new Sessao();
         $this->geral = new AllController();
-        //$this->ifood = new iFood();
         $this->cache = new Cache();
         $this->acoes = new Acoes();
     }
@@ -43,244 +39,241 @@ class AdminPlanos extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
+        $planosAutomatiza = $this->acoes->getFind('planos');
 
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
-            if ($resulUsuario[':nivel'] == 3) {
-                redirect(BASE . $empresaAct[':link_site']);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
             }
         } else {
-            redirect(BASE . $empresaAct[':link_site'] . '/admin/login');
+            redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
-
-        $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);
-        $resultPlanos = $this->apdPlanosModel->getAll();
-        $resulCaixa = $this->adminCaixaModel->getUll($empresaAct[':id']);
-        $planoAtivo = $this->allController->verificaPlano($empresaAct[':id']);
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
-
         $this->load('_admin/planos/main', [
-            'empresa' => $empresaAct,
-            'trans' => $trans,
-            
-            'usuarioLogado' => $resulUsuario,
+            'planos' => $planosAutomatiza,
             'planoAtivo' => $planoAtivo,
             'estabelecimento' => $estabelecimento,
             'moeda' => $moeda,
-            'planos' => $resultPlanos,
-            'caixa' => $resulCaixa,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
 
     public function plano($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
+        $plano = $this->acoes->getByField('planos', 'id', $data['id']);
 
-        $SessionIdUsuario = $segment->get('id_usuario');
-        $SessionUsuarioEmail = $segment->get('usuario');
-        $SessionNivel = $segment->get('nivel');
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
-            if ($resulUsuario[':nivel'] == 3) {
-                redirect(BASE . $empresaAct[':link_site']);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() != 0) {
+                redirect(BASE . $empresa->link_site);
             }
         } else {
-            redirect(BASE . $empresaAct[':link_site'] . '/admin/login');
+            redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
-        $estabelecimento = $this->allController->verificaEstabelecimento($empresaAct[':id']);;;
-        $resultPlano = $this->apdPlanosModel->getById($data['id']);
-        $resultEstados = $this->adminEstadosModel->getAll();
-        $resulCaixa = $this->adminCaixaModel->getUll($empresaAct[':id']);
-        $resulifood = $this->marketplace->getById(1);
-        $planoAtivo = $this->allController->verificaPlano($empresaAct[':id']);
-
-
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
+        
 
         $this->load('_admin/planos/view', [
-            'empresa' => $empresaAct,
-            'usuarioLogado' => $resulUsuario,
+            'empresa' => $empresa,
+            'plano' => $plano,
             'estabelecimento' => $estabelecimento,
-            'estadosSelecao' => $resultEstados,
             'planoAtivo' => $planoAtivo,
+            'estabelecimento' => $estabelecimento,
             'moeda' => $moeda,
-            'plano' => $resultPlano,
             'empresa' => $empresa,
             'trans' => $this->trans,
-            'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
 
-    public function criarPlano($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $pagarme = new \PagarMe\Client(pagarme_api_key);
-        $plan = $pagarme->plans()->create([
-            'amount' => 74990,
-            'days' => 30,
-            'name' => 'Solução Completa - Atendimento Presencial, IFood, UberEats, Rappy',
-            'trial_days' => '7',
-            'charges' => '3',
-            'installments' => 1,
-            'invoice_reminder' => 10
-        ]);
-    }
-
-    public function updatePlano($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $pagarme = new \PagarMe\Client(pagarme_api_key);
-        $plan = $pagarme->plans()->update([
-            'id' => '574399',
-            'name' => 'Plano Inicial',
-            'trial_days' => '0'
-        ]);
-
-        dd($plan);
-    }
+    
 
     public function cobrancaPlano($data)
     {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $pagarme = new \PagarMe\Client(pagarme_api_key);
-        $statusAssinatura = $this->assinaturaModel->getUll($empresaAct[':id']);
-        if ($statusAssinatura[':subscription_id']) {
-            //$trocarPlano = $this->apdPlanosModel->updateDisable($planoAtivo[':id']);
-            $canceledSubscription = $pagarme->subscriptions()->cancel([
-                'id' => $statusAssinatura[':subscription_id']
-            ]);
-        }
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
+
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        if($planoAtivo > 0){
+            //dd($empresa->id);
+            $statusAssinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid','id_empresa', $empresa->id);
+            if ($statusAssinatura->subscription_id) {
+                $canceledSubscription = $pagarme->subscriptions()->cancel([
+                    'id' => $statusAssinatura->subscription_id
+                ]);
+                $valor = (new Assinatura())->findById($statusAssinatura->id);
+                $valor->status = 'canceled';
+                $valor->save();
+            }
+        }
         /**
          * Crio o cartão para verificar se o mesmo e válido!
          */
-        $card = $pagarme->cards()->create(['holder_name' => Input::post('name'), 'number' => Input::post('number'), 'expiration_date' => preg_replace("/[^0-9]/", "", Input::post('expiry')), 'cvv' => Input::post('cvc')]);
+        $card = $pagarme->cards()->create([
+                'holder_name' => $data['name'],
+                'number' => preg_replace("/[^0-9]/", "", $data['number']),
+                'expiration_date' => preg_replace("/[^0-9]/", "", $data['expiry']),
+                'cvv' => $data['cvc']
+        ]);
         if ($card->valid == 1) {
             /**
              * Executo o processo de assinatura do plano!
              */
-            $result = $this->adminCreditCardModel->insert($card->holder_name, $card->id, $card->brand, $card->last_digits, $empresaAct[':id']);
-            if ($result > 0) {
-                $result = $this->adminCreditCardModel->getByIdHash($card->id);
+            $valor = new CartaoCredito();
+            $valor->id_empresa = $empresa->id;
+            $valor->user_holder = $card->holder_name;
+            $valor->hash = $card->id;
+            $valor->brand = $card->brand;
+            $valor->last_digits = $card->last_digits;
+            $valor->save();
+            
+            
+            if ($valor->id > 0) {
+                $result = $this->acoes->getByField('cartaoCredito', 'hash', $card->id);
                 $orderId = substr(number_format(time() * Rand(), 0, '', ''), 0, 6);
+
                 $subscription = $pagarme->subscriptions()->create([
-                    'plan_id' => Input::post('planId'),
+                    'plan_id' => $data['planId'],
                     'payment_method' => 'credit_card',
-                    'card_number' => Input::post('number'),
-                    'card_holder_name' => Input::post('name'),
-                    'card_expiration_date' => preg_replace("/[^0-9]/", "", Input::post('expiry')),
-                    'card_cvv' => Input::post('cvc'),
-                    'postback_url' => $resultempresa->link_site . '/admin/planos/status',
+                    'card_number' => preg_replace("/[^0-9]/", "", $data['number']),
+                    'card_holder_name' => $data['name'],
+                    'card_expiration_date' => preg_replace("/[^0-9]/", "", $data['expiry']),
+                    'card_cvv' => $data['cvc'],
+                    'postback_url' => BASE."{$empresa->link_site}/admin/planos/status",
                     'customer' => [
-                        'email' => Input::post('email'),
-                        'name' => Input::post('nome'),
-                        'document_number' => preg_replace("/[^0-9]/", "", Input::post('cpf')),
+                        'email' => $data['email'],
+                        'name' => $data['nome'],
+                        'document_number' => preg_replace("/[^0-9]/", "", $data['cpf']),
                         'address' => [
-                            'street' => Input::post('rua'),
-                            'street_number' => Input::post('numero'),
-                            'complementary' => Input::post('complemento'),
-                            'neighborhood' => Input::post('bairro'),
-                            'zipcode' => Input::post('cep')
+                            'street' => $data['rua'],
+                            'street_number' => $data['numero'],
+                            'complementary' => $data['complemento'],
+                            'neighborhood' => $data['bairro'],
+                            'zipcode' => $data['cep']
                         ],
                         'phone' => [
-                            'ddd' => preg_replace("/[^0-9]/", "", Input::post('ddd')),
-                            'number' => preg_replace("/[^0-9]/", "", Input::post('celular'))
+                            'ddd' => preg_replace("/[^0-9]/", "", $data['ddd']),
+                            'number' => preg_replace("/[^0-9]/", "", $data['celular'])
                         ]
                     ],
                     'metadata' => [
-                        'idPedido' => $orderId . '-' . Input::post('planNome')
+                        'idPedido' => $orderId . '-' . $data['planNome']
                     ]
                 ]);
 
                 if ($subscription->status == 'paid' || $subscription->status == 'authorized' || $subscription->status == 'trialing') {
                     if ($subscription->status == 'trialing') {
-                        $result = $this->assinaturaModel->insert($subscription->id, 'paid', $subscription->plan->id, $empresaAct[':id']);
+                        $valor = new Assinatura();
+                        $valor->subscription_id = $subscription->id;
+                        $valor->status = 'paid';
+                        $valor->plano_id = $subscription->plan->id;
+                        $valor->id_empresa = $empresa->id;
+                        $valor->save();
 
                     } else {
-                        $result = $this->assinaturaModel->insert($subscription->current_transaction->subscription_id, $subscription->current_transaction->status, $subscription->plan->id, $empresaAct[':id']);
+                        $valor = new Assinatura();
+                        $valor->subscription_id = $subscription->current_transaction->subscription_id;
+                        $valor->status = $subscription->current_transaction->status;
+                        $valor->plano_id = $subscription->plan->id;
+                        $valor->id_empresa = $empresa->id;
+                        $valor->save();
                     }
-                    //$result = $this->apdPlanosModel->updateTransaction($subscription->plan->id, 1);
-
-                    echo "Plano contratado com sucesso!";
-                    exit;
+                    header('Content-Type: application/json');
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Plano contratado com sucesso!', 'error' => 'Não foi posível contratar o Plano!', 'url' => 'admin/planos']);
+                    exit($json);
                 }
                 if ($subscription->status == 'processing' || $subscription->status == 'waiting_payment') {
-                    $result = $this->assinaturaModel->insert($subscription->current_transaction->subscription_id, $subscription->current_transaction->status, $subscription->plan->id, $empresaAct[':id']);
-                    echo "Aguarde! Estamos aguardando o processamento do pagamento!";
-                    exit;
+                    $valor = new Assinatura();
+                    $valor->subscription_id = $subscription->current_transaction->subscription_id;
+                    $valor->status = $subscription->current_transaction->status;
+                    $valor->plano_id = $subscription->plan->id;
+                    $valor->id_empresa = $empresa->id;
+                    $valor->save();
+
+                    header('Content-Type: application/json');
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Aguarde! Estamos aguardando o processamento do pagamento!', 'url' => 'admin/planos']);
+                    exit($json);
                 } else {
-                    echo "Pagamento não foi aprovado! Verifique com sua credora de cartão";
-                    exit;
+                    header('Content-Type: application/json');
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'error' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'url' => 'admin/planos']);
+                    exit($json);
                 }
             }
         } else {
-            echo 'Cartão inválido';
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Cartão inválido', 'error' => 'Cartão inválido']);
+            exit($json);
         }
     }
 
 
     /**
      *
-     * Faz a atualização da pagina de proutos
+     * Faz a atualização do Status de pagamento do plano contratado
      *
      */
     public function atualizarPlano($data)
     {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $result = $this->adminCategoriaModel->delete($data['id']);
-        if ($result <= 0) {
-            redirect(BASE . $empresaAct[':link_site'] . '/admin/planos');
-            exit;
-        }
-        redirect(BASE . $empresaAct[':link_site'] . '/admin/planos');
+        // $statusAssinatura = $this->acoes->getByFieldTwo('assinatura', 'id_empresa', $empresa->id, 'status', 'paid');
+        //     if ($statusAssinatura->subscription_id) {
+        //         $canceledSubscription = $pagarme->subscriptions()->cancel([
+        //             'id' => $statusAssinatura->subscription_id
+        //         ]);
+        //         $valor = (new Assinatura())->findById($statusAssinatura->id);
+        //         $valor->status = 'canceled';
+        //         $valor->save();
+        //     }
+
+        // header('Content-Type: application/json');
+        // $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Plano Atualizado', 'error' => 'Não mudou nada no plano']);
+        // exit($json); 
     }
 
-    /**
-     * Retorna os dados do formulario em uma classe stdObject
-     * 
-     * @return object
-     */
-    private function getInput()
-    {
-        return (object)[
-            'name' => Input::post('name'),
-            'number' => Input::post('number'),
-            'expiry' => Input::post('expiry'),
-            'cvc' => Input::post('cvc'),
-            'plan' => Input::post('plan'),
-            'val' => Input::post('val'),
-            'period' => Input::post('period'),
-            'id_empresa' => Input::post('id_empresa')
-        ];
-    }
+
+
+    // public function criarPlano($data)
+    // {
+    //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+    //     $pagarme = new \PagarMe\Client(pagarme_api_key);
+    //     $plan = $pagarme->plans()->create([
+    //         'amount' => 74990,
+    //         'days' => 30,
+    //         'name' => 'Solução Completa - Atendimento Presencial, IFood, UberEats, Rappy',
+    //         'trial_days' => '7',
+    //         'charges' => '3',
+    //         'installments' => 1,
+    //         'invoice_reminder' => 10
+    //     ]);
+    // }
+
+    // public function updatePlano($data)
+    // {
+    //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+    //     $pagarme = new \PagarMe\Client(pagarme_api_key);
+    //     $plan = $pagarme->plans()->update([
+    //         'id' => '574399',
+    //         'name' => 'Plano Inicial',
+    //         'trial_days' => '0'
+    //     ]);
+
+    //     dd($plan);
+    // }
 }

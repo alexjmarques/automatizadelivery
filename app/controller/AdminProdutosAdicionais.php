@@ -127,8 +127,7 @@ class AdminProdutosAdicionais extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -136,11 +135,10 @@ class AdminProdutosAdicionais extends Controller
     public function insert($data)
     {
         $valor = new ProdutoAdicional();
-        $valor->id_usuario = Input::post('id_usuario');
-        $valor->diaria = Input::post('diaria');
-        $valor->taxa = Input::post('taxa');
-        $valor->placa = Input::post('placa');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->tipo_adicional = $data['tipo_adicional'];
+        $valor->valor = $this->geral->brl2decimal($data['valor']);
+        $valor->nome = $data['nome'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');
@@ -150,13 +148,11 @@ class AdminProdutosAdicionais extends Controller
 
     public function update($data)
     {
-        $valor = str_replace(",", ".", Input::post('valor'));
-
         $valor = (new ProdutoAdicional())->findById($data['id']);
-        $valor->tipo_adicional = Input::post('tipo_adicional');
-        $valor->nome = Input::post('nome');
-        $valor->valor = $valor;
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->tipo_adicional = $data['tipo_adicional'];
+        $valor->valor = $this->geral->brl2decimal($data['valor']);
+        $valor->nome = $data['nome'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');

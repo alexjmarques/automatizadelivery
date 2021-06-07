@@ -281,6 +281,11 @@ class Acoes
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$data} = CURDATE()")->count();
     }
 
+    public function countStatusMes(string $table, string $field, string $valor, string $data)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND MONTH({$data})=MONTH(now()) AND YEAR({$data})=YEAR(now())")->count();
+    }
+
     public function countCompany(string $table,string $field, string $valor)
     {
         return $this->{$table}->find("{$field} ={$valor}")->count();

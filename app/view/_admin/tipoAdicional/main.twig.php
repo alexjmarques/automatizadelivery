@@ -12,7 +12,7 @@
 </nav>
 
 <div class="top-right-button-container"><a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicional/nova" class="btn btn-info btn-sm">Nova
-Categoria Adicional</a></div>
+        Categoria Adicional</a></div>
 <div class="separator mb-5"></div>
 <div class="row mb-4">
     <div class="col-12 data-tables-hide-filter">
@@ -32,8 +32,7 @@ Categoria Adicional</a></div>
                         {% for p in tipoAdicional%}
                         <tr>
                             <td>
-                                <p class="list-item-heading"><a
-                                        href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicional/editar/{{ p.id }}">{{ p.tipo }}</a>
+                                <p class="list-item-heading"><a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicional/editar/{{ p.id }}">{{ p.tipo }}</a>
                                 </p>
                             </td>
                             <td>
@@ -48,21 +47,15 @@ Categoria Adicional</a></div>
                             </td>
                             <td>
                                 <p class="text-muted text-center">{% if p.status == 1 %}
-                                    <span class="text-success cartao text-center" data-toggle="tooltip"
-                                        data-placement="top" title="Tipo Adicional Ativo"><i
-                                            class="simple-icon-check"></i></span>
-                                    {% else %}<span class="text-danger cartao text-center" data-toggle="tooltip"
-                                        data-placement="top" title="Tipo Adicional Desativado"><i
-                                            class="simple-icon-close"></i></span>{% endif %}
+                                    <span class="text-success cartao text-center" data-toggle="tooltip" data-placement="top" title="Tipo Adicional Ativo"><i class="simple-icon-check"></i></span>
+                                    {% else %}<span class="text-danger cartao text-center" data-toggle="tooltip" data-placement="top" title="Tipo Adicional Desativado"><i class="simple-icon-close"></i></span>{% endif %}
                                 </p>
                             </td>
                             </td>
 
                             <td>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicional/editar/{{ p.id }}"
-                                    class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i> Editar</a>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicional/d/{{ p.id }}"
-                                    class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i> Deletar</a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicional/editar/{{ p.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i> Editar</a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicional/d/{{ p.id }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i> Deletar</a>
                             </td>
                         </tr>
                         {% endfor %}

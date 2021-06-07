@@ -15,6 +15,7 @@ require "../app/controller/AdminProdutos.php";
 require "../app/controller/AdminDashboard.php";
 require "../app/controller/PagesController.php";
 require "../app/controller/AdminCategorias.php";
+require "../app/controller/AdminAtendimento.php";
 require "../app/controller/PerfilController.php";
 require "../app/controller/RatingController.php";
 require "../app/controller/MessageController.php";
@@ -354,6 +355,13 @@ $router->post('/{linkSite}/admin/conf/u', 'AdminConfiguracoesController:update')
 
 $router->get('/{linkSite}/admin/conf/delivery/e', 'AdminEmpresaFrete:index');
 $router->post('/{linkSite}/admin/conf/delivery/u', 'AdminEmpresaFrete:update');
+
+$router->get('/{linkSite}/admin/conf/atendimento', 'AdminAtendimento:index');
+$router->get('/{linkSite}/admin/conf/atendimento/novo', 'AdminAtendimento:novo');
+$router->get('/{linkSite}/admin/conf/atendimento/editar', 'AdminAtendimento:editar');
+$router->post('/{linkSite}/admin/conf/atendimento/i', 'AdminAtendimento:insert');
+$router->post('/{linkSite}/admin/conf/atendimento/u', 'AdminAtendimento:update');
+$router->delete('/{linkSite}/admin/conf/atendimento/delete', 'AdminAtendimento:delete');
 
 $router->get('/{linkSite}/admin/formas-pagamento', 'AdminFormasPagamento:index');
 $router->get('/{linkSite}/admin/formas-pagamento/nova', 'AdminFormasPagamento:novo');

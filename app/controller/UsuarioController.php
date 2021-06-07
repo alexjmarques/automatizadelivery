@@ -152,17 +152,17 @@ class UsuarioController extends Controller
             echo 'Email não encontrado em nossa plataforma! Cadastre-se.';
         } else {
             if ($this->bcrypt->verify($senha, $usuario->senha)) {
+                $contagem = $this->acoes->counts('usuariosEmpresa', 'id_usuario', $usuario->id);
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
-                $contagem = $this->acoes->counts('usuariosEmpresa', 'id', $usuario->id);
                 if($contagem > 0){
-                    $usuId = $this->acoes->getByField('usuariosEmpresa', 'id', $usuario->id);
+                    $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
                     header('Content-Type: application/json');
-                    $json = json_encode(['url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    $json = json_encode(['id' => 1, 'url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                     exit($json);
                 }else{
                     header('Content-Type: application/json');
-                    $json = json_encode(['url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    $json = json_encode(['id' => 1, 'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                     exit($json);
                 }
             } else {
@@ -172,95 +172,6 @@ class UsuarioController extends Controller
             }
         }
     }
-
-    // public function login($data)
-    // {
-    //     // if (preg_match("/\(?\d{2}\)?\s?\d{5}\-?\d{4}/", Input::post('emailOurTel'))) {
-
-    //     // } else {
-    //     //     $getEmail = Input::post('emailOurTel');
-    //     //     $result = $this->usuarioModel->verifyEmailCadastrado($getEmail);
-    //     //     if ($result <= 0) {
-    //     //         echo 'Não foi encontrado uma conta associada aos dados informados! Cadastre-se.';
-    //     //         exit();
-    //     //     }
-    //     // }
-
-    //     $validacaoEmailPhone = Input::post('emailOurTel');
-    //     if (isset($validacaoEmailPhone)) {
-    //         $result = $this->usuarioModel->verifyTelefoneCadastrado($validacaoEmailPhone);
-    //         if ($result <= 0) {
-    //             echo 'Não foi encontrado uma conta associada aos dados informados! Cadastre-se.';
-    //             exit();
-    //         } else {
-    //             $result = $this->usuarioModel->getByTelefone($validacaoEmailPhone);
-    //             $getEmail = $result[':email'];
-    //         }
-    //     }
-
-    //     $empresaAct = $this->empresa->getByName($data['linkSite']);
-    //     $getTelefone = $this->usuarioModel->verifyTelefoneCadastrado(Input::post('emailOurTel'));
-    //     if ($getTelefone > 0) {
-    //         $session = $this->sessionFactory->newInstance($_COOKIE);
-    //         $segment = $session->getSegment('Vendor\Aura\Segment');
-    //         $segment->set('codeValida', substr(number_format(time() * Rand(), 0, '', ''), 0, 4));
-    //         $codeValida = $segment->get('codeValida');
-
-    //         $mensagem = $empresaAct[':nomeFantasia'] . ": seu codigo de autorizacao e " . $codeValida . ". Por seguranca, nao o compartilhe com mais ninguem";
-    //         $numeroTelefone = preg_replace('/[^0-9]/', '', Input::post('emailOurTel'));
-    //         $ddi = '+55';
-    //         $numerofinal = $ddi . $numeroTelefone;
-
-    //         //$resultado = $this->smsClass->envioSMS($numerofinal, $mensagem);
-    //$client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
-    // $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
-
-    //         $client = new Client($account_sid, $auth_token);
-    //         $client->messages->create(
-    //             $numerofinal,
-    //             array(
-    //                 'from' => '+19096555675',
-    //                 'body' => $mensagem
-    //             )
-    //         );
-    //         echo 'Enviado o Código agora e só validar';
-    //         //dd($client);
-
-    //         // if ($retorno->status == "success") {
-    //         // } else {
-    //         //     echo 'Não foi posível enviar validação de senha, tente novamente mais tarde!';
-    //         // }
-    //         exit;
-    //     } else {
-    //         echo '';
-    //     }
-
-    //     // $bcrypt = new Bcrypt();
-    //     // $getSenha = Input::post('senha');
-    //     // $bcrypt_version = '2a';
-    //     // $ciphertext = $bcrypt->encrypt($getSenha, $bcrypt_version);
-
-    //     // if ($bcrypt->verify($getSenha, $result[':senha'])) {
-    //     //     echo "Aguarde estamos redirecionando para a pagina inicial";
-    //     //     $session = $this->sessionFactory->newInstance($_COOKIE);
-    //     //     $segment = $session->getSegment('Vendor\Aura\Segment');
-
-    //     //     $session->setCookieParams(array('lifetime' => '2592000'));
-    //     //     $session->setCookieParams(array('path' => BASE . 'cache/session'));
-    //     //     $session->setCookieParams(array('domain' => 'automatiza.app'));
-
-    //     //     $_SESSION = array(
-    //     //         'Vendor\Aura\Segment' => array(
-    //     //             'id_usuario' => $result[':id'],
-    //     //             'usuario' => $result[':email'],
-    //     //             'nivel' => $result[':nivel'],
-    //     //         ),
-    //     //     );
-    //     // } else {
-    //     //     echo "Senha incorreta. Verifique se digitou sua senha corretamente!";
-    //     // }
-
-    // }
 
     public function usuarioValidaAcessoCode($data)
     {

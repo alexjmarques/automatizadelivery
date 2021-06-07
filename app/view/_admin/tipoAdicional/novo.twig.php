@@ -21,8 +21,7 @@
 
                 <div class="form-group col-md-5 catProds">
                     <label>Nome da Categoria Adicional</label>
-                    <input type="text" class="form-control" id="tipo" name="tipo"
-                        value="{{tipoAdicionalAtivo[':tipo']}}" required>
+                    <input type="text" class="form-control" id="tipo" name="tipo" value="{{tipoAdicionalAtivo[':tipo']}}" required>
                 </div>
 
                 <div class="form-group col-md-4 hidden">
@@ -43,10 +42,8 @@
                 <div class="form-group row mb-1 pl-3 col-md-4">
                     <div class="col-12">
                         <label class="col-12 col-form-label" style="padding-left: 0;">Status</label>
-                        <div class="custom-switch custom-switch-primary mb-2" data-toggle="tooltip"
-                            data-placement="left" title="Status da Categoria do Adicional">
-                            <input class="custom-switch-input" id="switch" name="switch" value="1" type="checkbox"
-                                checked>
+                        <div class="custom-switch custom-switch-primary mb-2" data-toggle="tooltip" data-placement="left" title="Status da Categoria do Adicional">
+                            <input class="custom-switch-input" id="switch" name="switch" value="1" type="checkbox" checked>
                             <label class="custom-switch-btn" for="switch"></label>
                         </div>
                     </div>
@@ -59,9 +56,8 @@
 
 
             </div>
-            <input type="hidden" id="produtos" name="produtos" value="0">
-            
-<button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+            <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
+            <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
 
         </div>
     </div>

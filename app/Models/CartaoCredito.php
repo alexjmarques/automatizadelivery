@@ -12,7 +12,7 @@ class CartaoCredito extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("apdCreditCard", ["userHolder","id_empresa"]);
+        parent::__construct("apdCreditCard", ["user_holder","id_empresa"]);
     }
 
     public function add(Empresa $empresa, string $user_holder, string $hash, string $brand, string $last_digits)

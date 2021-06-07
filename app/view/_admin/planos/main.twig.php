@@ -22,26 +22,32 @@
                     
                         <div class="mb-4 col-item-plans">
                             <div class="card">
-                            {% if p[':id'] == planoAtivo %}
+                            {% if p.id == planoAtivo %}
                                         <i class="ativoPlano simple-icon-check"></i>
                             {% endif %}
                                 <div class="card-body pt-4 pb-4 d-flex flex-lg-column flex-md-row flex-sm-row flex-column">
                                     <div class="price-top-part">
-                                        <h2 class="mb-0 font-weight-semibold color-theme-1 mb-4">{{p[':nome']}}</h2>
-                                        <p class="text-large mb-2 text-default">{{ moeda[':simbolo }} {{ p.valor']|number_format(2, ',', '.') }}</p>
+                                        <h2 class="mb-0 font-weight-semibold color-theme-1 mb-4">{{p.nome}}</h2>
+                                        {% if p.id < 4 %}
+                                        <p class="text-large mb-2 text-default">{{ moeda.simbolo }} {{ p.valor|number_format(2, ',', '.') }}</p>
                                         <p class="text-muted text-small">Mês</p>
+                                        {% else %}
+
+                                        <p class="text-large mb-2 text-default">Consulte-nos</p>
+                                        <p class="text-muted text-small"></p>
+                                        {% endif %}
                                     </div>
                                     <div class="pl-0 pr-0 pt-0 pb-0 d-flex price-feature-list flex-column flex-grow-1">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <p class="mb-0 ">{{p[':descricao']}}</p>
+                                                <p class="mb-0 ">{{p.descricao}}</p>
                                             </li>
                                             <li>
                                                 <p class="mb-0 "> - 
-                                                {% if p[':limit'] is null %}
+                                                {% if p.limite is null %}
                                                 <strong>Pedidos Ilimitados  </strong>
                                                 {% else %}  
-                                                <strong>{{p[':limit']}} pedidos mês</strong>
+                                                <strong>{{p.limite }} pedidos mês</strong>
                                                 {% endif %}
                                             </p>
                                             </li>
@@ -49,19 +55,19 @@
                                                 - <strong>7 dias grátis</strong>
                                             </li>
                                         </ul>
-                                        {% if p[':id'] < 4 %}
-                                        {% if p[':id'] == planoAtivo %}
+                                        {% if p.id < 4 %}
+                                        {% if p.id == planoAtivo %}
                                         <!-- 
 <button class="btn  btn-link btn-empty btn-lg">Cancelar este Plano</button> -->
                                         {% else %}
                                         <div class="text-center">
-                                            <a href="{{BASE}}{{empresa.link_site}}/admin/plano/{{p[':id']}}/{{p[':slug']}}" class="btn btn-primary btn-lg">Contratar plano</a>
+                                            <a href="{{BASE}}{{empresa.link_site}}/admin/plano/{{p.id}}/{{p.slug}}" class="btn btn-primary btn-lg">Contratar plano</a>
                                         </div>
                                         {% endif %}
                                         {% else %}
-                                        <div class="text-center">
+                                        <!-- <div class="text-center">
                                             <a href="#" class="btn btn-secundary btn-lg">EM BREVE</a>
-                                        </div>
+                                        </div> -->
                                         {% endif %}
                                     </div>
                                 </div>

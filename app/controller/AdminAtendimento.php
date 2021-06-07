@@ -13,8 +13,9 @@ use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\Models\Categorias;
 use app\classes\Sessao;
+use app\Models\EmpresaFuncionamento;
 
-class AdminCategorias extends Controller
+class AdminAtendimento extends Controller
 {
 
     private $acoes;
@@ -34,7 +35,6 @@ class AdminCategorias extends Controller
 
         $this->sessao = new Sessao();
         $this->geral = new AllController();
-        //$this->ifood = new iFood();
         $this->cache = new Cache();
         $this->acoes = new Acoes();
     }
@@ -43,7 +43,7 @@ class AdminCategorias extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $dias = $this->acoes->getFind('dias');
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
@@ -55,17 +55,17 @@ class AdminCategorias extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $count = $this->acoes->counts('categorias', 'id_empresa', $empresa->id);
+        $count = $this->acoes->counts('empresaFuncionamento', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $resultCategorias = $this->acoes->pagination('categorias', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $funcionamento = $this->acoes->pagination('empresaFuncionamento', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
-        $this->load('_admin/categorias/main', [
-            'categorias' => $resultCategorias,
+        $this->load('_admin/atendimento/main', [
+            'funcionamento' => $funcionamento,
             'paginacao' => $pager->render('mt-4 pagin'),
             'planoAtivo' => $planoAtivo,
-            'moeda' => $moeda,
+            'dias' => $dias,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
@@ -78,7 +78,7 @@ class AdminCategorias extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $dias = $this->acoes->getFind('dias');
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
@@ -90,9 +90,9 @@ class AdminCategorias extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $this->load('_admin/categorias/novo', [
+        $this->load('_admin/atendimento/novo', [
             'planoAtivo' => $planoAtivo,
-            'moeda' => $moeda,
+            'dias' => $dias,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
@@ -104,9 +104,9 @@ class AdminCategorias extends Controller
     public function editar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $retorno = $this->acoes->getById('categorias', $data['id']);
+        $retorno = $this->acoes->getById('empresaFuncionamento', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $dias = $this->acoes->getFind('dias');
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
@@ -118,10 +118,10 @@ class AdminCategorias extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $this->load('_admin/categorias/editar', [
+        $this->load('_admin/atendimento/editar', [
             'retorno' => $retorno,
             'planoAtivo' => $planoAtivo,
-            'moeda' => $moeda,
+            'dias' => $dias,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
@@ -132,41 +132,36 @@ class AdminCategorias extends Controller
 
     public function insert($data)
     {
-        $valor = new Categorias();
-        $valor->nome = $data['nome'];
-        $valor->descricao = $data['descricao'];
-        $valor->slug = $data['slug'];
-        $valor->produtos = $data['produtos'];
-        $valor->posicao = $data['posicao'];
+        $valor = new EmpresaFuncionamento();
+        $valor->id_dia = $data['dia'];
+        $valor->abertura = date('H:i:s', strtotime($data['abertura']));
+        $valor->fechamento = date('H:i:s', strtotime($data['fechamento']));
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria', 'url' => 'admin/categorias',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Horário de Funcionamento cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Horário de Funcionamento', 'url' => 'admin/conf/atendimento',]);
         exit($json);
     }
 
     public function update($data)
     {
-        $valor = (new Categorias())->findById($data['id']);
-        $valor->nome = $data['nome'];
-        $valor->descricao = $data['descricao'];
-        $valor->slug = $data['slug'];
-        $valor->produtos = $data['produtos'];
-        $valor->posicao = $data['posicao'];
-        $valor->id_empresa = $data['id_empresa'];
+        $valor = (new EmpresaFuncionamento())->findById($data['id']);
+        $valor->id_dia = $data['dia'];
+        $valor->abertura = date('H:i:s', strtotime($data['abertura']));
+        $valor->fechamento = date('H:i:s', strtotime($data['fechamento']));
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria', 'url' => 'admin/categorias',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Horário de Funcionamento atualizado com sucesso', 'error' => 'Não foi posível atualizar o Horário de Funcionamento', 'url' => 'admin/conf/atendimento',]);
         exit($json);
     }
 
     public function deletar($data)
     {
-        $valor = (new Categorias())->findById($data['id']);
+        $valor = (new EmpresaFuncionamento())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE . "{$data['linkSite']}/admin/categorias");
+        redirect(BASE . "{$data['linkSite']}/admin/atendimento");
     }
 }

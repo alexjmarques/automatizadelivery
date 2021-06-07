@@ -194,18 +194,18 @@
                             </li>
                             <li id="subEmp">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/e" >
-                                    <span class="d-inline-block"><strong>Sobre Empresa</strong></span>
+                                    <span class="d-inline-block"><strong>Empresa</strong></span>
                                 </a>
                             </li>
                             <li id="subDeli">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/delivery/e">
-                                    <span class="d-inline-block"><strong>Dados Delivery</strong></span>
+                                    <span class="d-inline-block"><strong>Delivery</strong></span>
                                 </a>
                             </li>
 
-                            <li id="subDeli">
+                            <li id="subHor">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento">
-                                    <span class="d-inline-block"><strong>Horário de Atendimento</strong></span>
+                                    <span class="d-inline-block"><strong>Horários</strong></span>
                                 </a>
                             </li>
                            

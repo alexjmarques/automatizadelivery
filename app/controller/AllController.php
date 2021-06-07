@@ -42,7 +42,7 @@ class AllController extends Controller
 
     public function verificaPlano($data)
     {
-        $assinatura = $this->acoes->getByField('assinatura', 'id_empresa', $data);
+        $assinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid','id_empresa', $data);
         $plano = 0;
         if ($assinatura->plano_id != null) {
             $getPlanId = $this->acoes->getByField('planos', 'plano_id', $assinatura->plano_id);
@@ -63,6 +63,12 @@ class AllController extends Controller
     }
 
     public function sair($data)
+    {
+        $empresa = $data['linkSite'] ? $data['linkSite'] : "";
+        $this->sessao->sair($empresa);
+    }
+
+    public function sairAdmin($data)
     {
         $empresa = $data['linkSite'] ? $data['linkSite'] : "";
         $this->sessao->sair($empresa);
@@ -222,41 +228,42 @@ class AllController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $planoAtivo = $this->verificaPlano($empresa->id);
+        
+        if ($planoAtivo->id == 4) {
+            $resulifood = $this->marketplace->getById(1);
+            $conecao = $this->ifood->gerarToken();
+        }
 
-        dd($delivery);
-        //$resulifood = $this->marketplace->getById(1);
-        // if ($planoAtivo[':id'] == 4 || $planoAtivo[':id'] == 6 || $planoAtivo[':id'] == 7 || $planoAtivo[':id'] == 8) {
-        //     $conecao = $this->ifood->gerarToken();
-        // }
+        if ($planoAtivo->status == null) {
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você não possuí um plano contratado', 'error' => 'Você não possuí um plano contratado', 'url' => 'admin/planos']);
+            exit($json);
+        }
 
-        // $planoAtivo = $this->apdPlanosModel->getAtivo();
-        // if ($planoAtivo[':status'] == null) {
-        //     echo 'Cliente não contratou plano';
-        //     exit;
-        // }
+        $plano = $this->acoes->getByField('planos', 'plano_id', $planoAtivo->plano_id);
 
-        // if ($planoAtivo[':status'] == 1) {
-        //     $qtdPedidos = $this->adminVendasModel->qtdVendasMes();
-        //     if ($planoAtivo[':limit'] != null) {
-        //         if ($planoAtivo[':limit'] < $qtdPedidos) {
-        //             echo 'Você ultrapassou o limite contratado para este mês';
-        //             exit;
-        //         }
-        //     }
-        // }
+        if ($plano->id <= 2) {
+            $qtdPedidos = $this->acoes->countStatusMes('carrinhoPedidos', 'id_empresa', $empresa->id, 'data_pedido');
+            if ($plano->limite < $qtdPedidos) {
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você ultrapassou o limite contratado para este mês', 'error' => 'Você ultrapassou o limite contratado para este mês', 'url' => 'admin/planos']);
+                exit($json);
+                exit;
+            }
+        }
 
-        // $statusAssinatura = $this->assinaturaModel->getUll($empresaAct[':id']);
-        // if ($statusAssinatura[0]->status) {
+        // if ($planoAtivo->status) {
         //     $pagarme = new \PagarMe\Client(pagarme_api_key);
         //     $subscription = $pagarme->subscriptions()->get([
-        //         'id' => $statusAssinatura[':subscription_id']
+        //         'id' => $planoAtivo->subscription_id
         //     ]);
 
-        //     if ($subscription->current_transaction->status == $statusAssinatura[':status']) {
+        //     if ($subscription->current_transaction->status == $planoAtivo->status) {
 
-        //         $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $statusAssinatura[':id']);
+        //         $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $planoAtivo->id);
         //     } else {
-        //         $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $statusAssinatura[':id']);
+        //         $statusDiario = $this->assinaturaModel->update($subscription->current_transaction->status, $planoAtivo->id);
         //         echo 'Não foi possível processar seu pagamento, atualize os dados de seu cartão!';
         //         exit;
         //     }
@@ -273,12 +280,9 @@ class AllController extends Controller
         $valor->save();
 
 
-        if ($caixa->id <= 0) {
-            echo "Não foi possível iniciar o atendimento";
-        } else {
-            //$resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
-            echo "Atendimento iniciado com sucesso";
-        }
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $caixa->id, 'resp' => 'insert', 'mensagem' => 'Atendimento iniciado com sucesso', 'error' => 'Não foi possível iniciar o atendimento']);
+        exit($json);
     }
 
 

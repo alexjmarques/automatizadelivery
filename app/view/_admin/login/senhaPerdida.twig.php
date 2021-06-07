@@ -3,7 +3,7 @@
 {% block body %}
 <div class="container">
             <div class="row h-100">
-                <div class="col-12 col-md-6 mx-auto my-auto">
+                <div class="col-12 col-md-8 mx-auto my-auto">
                     <div class="card auth-card">
                         <div class="form-side full">
                             <a href="https://www.automatiza.app" target="_blank">
