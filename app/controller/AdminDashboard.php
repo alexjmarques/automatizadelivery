@@ -118,6 +118,7 @@ class AdminDashboard extends Controller
             'categorias' => $resultCategorias,
             'maisVendidos' => $resultMaisVendidos,
             'caixa' => $estabelecimento[0]->data_inicio,
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'domingo' => $domingo,
             'segunda' => $segunda,
             'terca' => $terca,
@@ -145,6 +146,7 @@ class AdminDashboard extends Controller
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -174,6 +176,7 @@ class AdminDashboard extends Controller
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -231,6 +234,7 @@ class AdminDashboard extends Controller
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -277,6 +281,7 @@ class AdminDashboard extends Controller
             'totalRecusado' => $totalRecusado,
             'vendasCanceladas' => $resultVendasCanceladas,
             'vendasRecusadas' => $resultVendasRecusadas,
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'vendas' => $resultVendas,
             'entregas' => $entregas,
             'moeda' => $moeda,

@@ -1,8 +1,10 @@
 <?php
+
 use CoffeeCode\Router\Router;
 /*
     Inclusão das Controllers
 */
+
 require "../app/controller/AdminGeral.php";
 require "../app/controller/AdminCupom.php";
 require "../app/controller/AdminStatus.php";
@@ -110,9 +112,6 @@ $router->post('/{linkSite}/produto/addCarrinho/adicionais', 'CarrinhoController:
 $router->post('/{linkSite}/carrinho/finaliza', 'CarrinhoController:carrinhoCheckoutFinal');
 $router->get('/{linkSite}/carrinho/pedido/acao/{id_produto}/{id_carrinho}', 'CarrinhoController:carrinhoProdutoAcao');
 $router->get('/{linkSite}/carrinho/{id_produto}/d/{id_carrinho}', 'CarrinhoController:deletarProdutoCarrinho');
-
-// $router->get('/{linkSite}/produto/adicional/atualiza/{chave}/{id}', 'CarrinhoController:carrinhoCheckoutAdicionalUpdate');
-// $router->get('/{linkSite}/produto/removeCarrinho/adicionalis/{chave}', 'CarrinhoController:removeCarrinhoCheckoutAdicional');
 
 $router->get('/{linkSite}/carrinho', 'CarrinhoController:carrinho');
 

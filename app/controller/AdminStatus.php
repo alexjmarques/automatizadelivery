@@ -57,6 +57,7 @@ class AdminStatus extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -87,6 +88,7 @@ class AdminStatus extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }

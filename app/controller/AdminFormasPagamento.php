@@ -17,7 +17,7 @@ use app\Models\FormasPagamento;
 
 class AdminFormasPagamento extends Controller
 {
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -26,7 +26,7 @@ class AdminFormasPagamento extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -41,7 +41,7 @@ class AdminFormasPagamento extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -53,8 +53,8 @@ class AdminFormasPagamento extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $resultProdutos = $this->acoes->pagination('formasPagamento','id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
-        
+        $resultProdutos = $this->acoes->pagination('formasPagamento', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+
 
         $this->load('_admin/formaspagamento/main', [
             'formasPagamento' => $resultProdutos,
@@ -64,8 +64,8 @@ class AdminFormasPagamento extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -78,22 +78,22 @@ class AdminFormasPagamento extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/formaspagamento/novo', [
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -107,14 +107,14 @@ class AdminFormasPagamento extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/formaspagamento/editar', [
             'retorno' => $retorno,
             'planoAtivo' => $planoAtivo,
@@ -122,8 +122,8 @@ class AdminFormasPagamento extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -138,7 +138,7 @@ class AdminFormasPagamento extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Forma de Pagamento cadastrado com sucesso','error' => 'Não foi possível cadastrar a Forma de Pagamento','url' => 'admin/formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Forma de Pagamento cadastrado com sucesso', 'error' => 'Não foi possível cadastrar a Forma de Pagamento', 'url' => 'admin/formas-pagamento',]);
         exit($json);
     }
 
@@ -152,7 +152,7 @@ class AdminFormasPagamento extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Forma de Pagamento atualizada com sucesso','error' => 'Não foi possível atualizar a Forma de Pagamento','url' => 'admin/formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Forma de Pagamento atualizada com sucesso', 'error' => 'Não foi possível atualizar a Forma de Pagamento', 'url' => 'admin/formas-pagamento',]);
         exit($json);
     }
 

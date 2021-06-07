@@ -73,6 +73,7 @@ class AdminPedidos extends Controller
             'isLogin' => $this->sessao->getUser(),
             'caixaId' => $estabelecimento[0]->id,
             'caixa' => $estabelecimento[0]->data_inicio,
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'pedidos' => $resultPedidos,
             'clientes' => $resultClientes,
             'motoboy' => $resultMotoboy,
@@ -99,7 +100,7 @@ class AdminPedidos extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,
@@ -129,7 +130,7 @@ class AdminPedidos extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,
@@ -160,7 +161,7 @@ class AdminPedidos extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,
@@ -228,7 +229,7 @@ class AdminPedidos extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
             'estabelecimento' => $estabelecimento[0]->id,
             'pedido' => $pedido,
@@ -286,6 +287,7 @@ class AdminPedidos extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
             'caixaId' => $estabelecimento[0]->id,
             'pedidos' => $resultPedidos,

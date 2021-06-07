@@ -17,7 +17,7 @@ use app\Models\CupomDesconto;
 
 class AdminCupom extends Controller
 {
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -31,7 +31,7 @@ class AdminCupom extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -47,7 +47,7 @@ class AdminCupom extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -59,7 +59,7 @@ class AdminCupom extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $retorno = $this->acoes->pagination('cupomDesconto','id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $retorno = $this->acoes->pagination('cupomDesconto', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
         $this->load('_admin/cupom/main', [
             'cupom' => $retorno,
@@ -69,8 +69,8 @@ class AdminCupom extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -83,22 +83,22 @@ class AdminCupom extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/cupom/novo', [
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -118,14 +118,14 @@ class AdminCupom extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/cupom/editar', [
             'retorno' => $retorno,
             'planoAtivo' => $planoAtivo,
@@ -133,11 +133,11 @@ class AdminCupom extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'isLogin' => $this->sessao->getUser(),
+
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
-
     }
 
 
@@ -145,7 +145,7 @@ class AdminCupom extends Controller
     {
         $valorC = str_replace(",", ".", Input::post('valor_cupom'));
         $dataC = Input::post('expira');
-        $dataC = implode("-",array_reverse(explode("/",$dataC)));
+        $dataC = implode("-", array_reverse(explode("/", $dataC)));
         $valor_cupom = number_format((float)$valorC, 2, '.', ',');
         $expira = date('Y-m-d H:i:s', strtotime($dataC));
 
@@ -160,7 +160,7 @@ class AdminCupom extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert','mensagem' => 'Cupom Desconto cadastrado com sucesso','error' => 'Não foi posível cadastrar o Cupom de Desconto','url' => 'cupons',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cupom Desconto cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Cupom de Desconto', 'url' => 'cupons',]);
         exit($json);
     }
 
@@ -169,7 +169,7 @@ class AdminCupom extends Controller
 
         $valorC = str_replace(",", ".", Input::post('valor_cupom'));
         $dataC = Input::post('expira');
-        $dataC = implode("-",array_reverse(explode("/",$dataC)));
+        $dataC = implode("-", array_reverse(explode("/", $dataC)));
         $valor_cupom = number_format((float)$valorC, 2, '.', ',');
         $expira = date('Y-m-d H:i:s', strtotime($dataC));
 
@@ -184,7 +184,7 @@ class AdminCupom extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Cupom Desconto atualizado com sucesso','error' => 'Não foi posível atualizar o Cupom de desconto','url' => 'cupons',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Cupom Desconto atualizado com sucesso', 'error' => 'Não foi posível atualizar o Cupom de desconto', 'url' => 'cupons',]);
         exit($json);
     }
 
@@ -193,6 +193,6 @@ class AdminCupom extends Controller
         $valor = (new CupomDesconto())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE. "{$data['linkSite']}/admin/cupons");
+        redirect(BASE . "{$data['linkSite']}/admin/cupons");
     }
 }

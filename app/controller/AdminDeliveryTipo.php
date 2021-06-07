@@ -18,7 +18,7 @@ use app\Models\TipoDelivery;
 class AdminDeliveryTipo extends Controller
 {
     //Instancia da Classe AdminDeliveryTipoModel
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -33,7 +33,7 @@ class AdminDeliveryTipo extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -48,7 +48,7 @@ class AdminDeliveryTipo extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -71,8 +71,8 @@ class AdminDeliveryTipo extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -87,7 +87,7 @@ class AdminDeliveryTipo extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -102,8 +102,9 @@ class AdminDeliveryTipo extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
+
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -119,7 +120,7 @@ class AdminDeliveryTipo extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Tipo de Delivery cadastrado com sucesso','error' => 'Não foi posível cadastrar o Tipo de Delivery','url' => 'admin/delivery',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Tipo de Delivery cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Tipo de Delivery', 'url' => 'admin/delivery',]);
         exit($json);
     }
 
@@ -133,7 +134,7 @@ class AdminDeliveryTipo extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Tipo de Delivery atualizado com sucesso','error' => 'Não foi posível atualizar o Tipo de Delivery','url' => 'admin/delivery',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Tipo de Delivery atualizado com sucesso', 'error' => 'Não foi posível atualizar o Tipo de Delivery', 'url' => 'admin/delivery',]);
         exit($json);
     }
 

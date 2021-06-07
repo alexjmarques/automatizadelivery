@@ -17,7 +17,7 @@ use app\classes\Sessao;
 
 class AdminGeral extends Controller
 {
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -32,7 +32,7 @@ class AdminGeral extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -48,7 +48,7 @@ class AdminGeral extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -62,8 +62,8 @@ class AdminGeral extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }

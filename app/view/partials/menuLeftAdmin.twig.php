@@ -56,8 +56,12 @@
                             <span class="triangulo-top"></span>
                             <ul class="list-unstyled inner-level-menu">
                                 <li id="subPn">
+                                {% if planoAtivo == 0 %}
+                                    <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                                    {% else %}
                                     <a href="{{BASE}}{{empresa.link_site}}/admin/pedido/novo">
-                                        <span class="d-inline-block"><strong>Adicionar Pedido</strong></span>
+                                    {% endif %}
+                                        <span class="d-inline-block"><strong>Novo Pedido</strong></span>
                                     </a>
                                 </li>
                                 <li id="subPd">

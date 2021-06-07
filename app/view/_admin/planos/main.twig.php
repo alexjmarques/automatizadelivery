@@ -17,9 +17,12 @@
                         </nav>
                         <div class="separator mb-5"></div>
                     </div>
+                    {% if planoAtivo == 0 %}
+                    <div class="alert alert-danger rounded" role="alert">Contrate um plano e comece a usar o sistema!</div>
+                    {% endif %}
                     <div class="row equal-height-container">
-                    {% for p in planos %}
                     
+                    {% for p in planos %}
                         <div class="mb-4 col-item-plans">
                             <div class="card">
                             {% if p.id == planoAtivo %}
@@ -57,8 +60,7 @@
                                         </ul>
                                         {% if p.id < 4 %}
                                         {% if p.id == planoAtivo %}
-                                        <!-- 
-<button class="btn  btn-link btn-empty btn-lg">Cancelar este Plano</button> -->
+                                        <!-- <button class="btn  btn-link btn-empty btn-lg">Cancelar este Plano</button> -->
                                         {% else %}
                                         <div class="text-center">
                                             <a href="{{BASE}}{{empresa.link_site}}/admin/plano/{{p.id}}/{{p.slug}}" class="btn btn-primary btn-lg">Contratar plano</a>

@@ -96,7 +96,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'usuarioLogado' => $resulUsuario,
             'estabelecimento' => $estabelecimento,
             'trans' => $trans,
-            
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $resulCaixa,
 
         ]);

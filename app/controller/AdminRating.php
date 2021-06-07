@@ -73,6 +73,7 @@ class AdminRating extends Controller
             'rating' => $rating,
             'votacaoEntrega' => $ratingEntrega[0]->avaliacao_motoboy,
             'votacaoPedidos' => $ratingPedidos[0]->avaliacao_pedido,
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),

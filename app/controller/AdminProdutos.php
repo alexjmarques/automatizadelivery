@@ -19,7 +19,7 @@ use app\Models\Produtos;
 class AdminProdutos extends Controller
 {
     //Instancia da Classe AdminProdutoModel
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -34,7 +34,7 @@ class AdminProdutos extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         //$this->ifood = new iFood();
@@ -50,7 +50,7 @@ class AdminProdutos extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -63,7 +63,7 @@ class AdminProdutos extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $resultProdutos = $this->acoes->pagination('produtos','id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $resultProdutos = $this->acoes->pagination('produtos', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
         $resultCategorias = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
 
 
@@ -77,8 +77,8 @@ class AdminProdutos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -104,14 +104,14 @@ class AdminProdutos extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/produtos/novo', [
             'planoAtivo' => $planoAtivo,
             'categoriaLista' => $categoriaLista,
@@ -125,8 +125,8 @@ class AdminProdutos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -155,14 +155,14 @@ class AdminProdutos extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/produtos/editar', [
             'retorno' => $retorno,
             'planoAtivo' => $planoAtivo,
@@ -177,8 +177,8 @@ class AdminProdutos extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -238,20 +238,20 @@ class AdminProdutos extends Controller
 
         $catNe = $this->acoes->getByField('categorias', 'id', Input::post('categoria'));
         $novaQtdN = $catNe->produtos + 1;
-            
+
         $valorNCat = (new Categorias())->findById(Input::post('categoria'));
         $valorNCat->produtos = $novaQtdN;
         $valorNCat->id_empresa = Input::post('id_empresa');
         $valorNCat->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert','mensagem' => 'Produto cadastrado com sucesso','error' => 'Não foi possível cadastrar o Produto','url' => 'admin/produtos',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Produto', 'url' => 'admin/produtos',]);
         exit($json);
     }
 
     public function update($data)
     {
-        
+
         $adicionalSt = $_POST['adicional'];
         if ($adicionalSt != null) {
             $adicionalSelecionados = implode(',', $adicionalSt);
@@ -289,12 +289,12 @@ class AdminProdutos extends Controller
         $valor->id_empresa = Input::post('id_empresa');
         $valor->save();
 
-        
 
-        if(Input::post('categoriaCad') != Input::post('categoria')){
+
+        if (Input::post('categoriaCad') != Input::post('categoria')) {
             $cat = $this->acoes->getByField('categorias', 'id', Input::post('categoriaCad'));
             $novaQtd = $cat->produtos - 1;
-            
+
             $valorCat = (new Categorias())->findById(Input::post('categoriaCad'));
             $valorCat->produtos = $novaQtd;
             $valorCat->id_empresa = Input::post('id_empresa');
@@ -303,7 +303,7 @@ class AdminProdutos extends Controller
 
             $catNe = $this->acoes->getByField('categorias', 'id', Input::post('categoria'));
             $novaQtdN = $catNe->produtos + 1;
-            
+
             $valorNCat = (new Categorias())->findById(Input::post('categoria'));
             $valorNCat->produtos = $novaQtdN;
             $valorNCat->id_empresa = Input::post('id_empresa');
@@ -311,7 +311,7 @@ class AdminProdutos extends Controller
         }
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Produto atualizado com sucesso','error' => 'Não foi possível atualizar o produto','url' => 'admin/produtos',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto', 'url' => 'admin/produtos',]);
         exit($json);
     }
 
@@ -322,13 +322,12 @@ class AdminProdutos extends Controller
 
         $cat = $this->acoes->getByField('categorias', 'id', Input::post('categoria'));
         $novaQtd = $cat->produtos - 1;
-            
+
         $valorCat = (new Categorias())->findById(Input::post('categoria'));
         $valorCat->produtos = $novaQtd;
         $valorCat->id_empresa = Input::post('id_empresa');
         $valorCat->save();
 
-        redirect(BASE. "{$data['linkSite']}/admin/categorias");
+        redirect(BASE . "{$data['linkSite']}/admin/categorias");
     }
-
 }

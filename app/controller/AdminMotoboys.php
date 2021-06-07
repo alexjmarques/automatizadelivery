@@ -75,7 +75,7 @@ class AdminMotoboys extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -109,6 +109,7 @@ class AdminMotoboys extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -140,6 +141,7 @@ class AdminMotoboys extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -214,6 +216,7 @@ class AdminMotoboys extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -251,6 +254,7 @@ class AdminMotoboys extends Controller
             'motoboy' => $resultMotoboy,
             'usuario' => $usuario,
             'data_inicio' => $data_inicio,
+            'nivelUsuario'=> $this->sessao->getNivel(),
             'dataTermino' => $dataTermino
         ]);
     }
