@@ -162,12 +162,12 @@ class UsuarioController extends Controller
                     header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
 
-                    exit($json);
+                    return $json;
                     dd('aqui');
                 }else{
                     header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
-                    exit($json);
+                    return $json;
                 }
             } else {
                 header('Content-Type: application/json');
