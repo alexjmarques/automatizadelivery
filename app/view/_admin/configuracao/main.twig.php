@@ -141,8 +141,7 @@
             </div>
             <div class="form-group col-md-3">
               <label>Complemento</label>
-              <input type="text" class="form-control" id="complemento" name="complemento" value="{{endereco.complemento}}"
-                required>
+              <input type="text" class="form-control" id="complemento" name="complemento" value="{{endereco.complemento}}">
             </div>
           </div>
   
@@ -158,16 +157,7 @@
   
             <div class="form-group col-md-2">
               <label for="estado">Estado</label>
-              <select id="estado" name="estado" class="form-control select2-single">
-                <option value="">Selecione</option>
-                {% for e in estadosSelecao %}
-                {% if e.id == endereco.estado %}
-                <option selected value="{{ e.id }}">{{ e.uf }}</option>
-                {% else %}
-                <option value="{{ e.id }}">{{ e.uf }}</option>
-                {% endif %}
-                {% endfor %}
-              </select>
+              <input type="text" class="form-control" id="estado" name="estado" value="{{endereco.estado}}">
             </div>
           </div>
 

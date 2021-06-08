@@ -141,7 +141,7 @@ class AdminConfiguracoesController extends Controller
         $valorEnd->estado = Input::post('estado');
         $valorEnd->id_empresa = Input::post('id_empresa');
         $valorEnd->save();
-        dd($valorEnd);
+        //dd($valorEnd);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'url' => 'conf/e',]);
