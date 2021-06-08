@@ -43,12 +43,14 @@ class PagesController extends Controller
     {
         $empresas = $this->acoes->getFind('empresa');
         $empresaDelivery = $this->acoes->getFind('empresaFrete');
+        $empresaEndereco = $this->acoes->getFind('empresaEnderecos');
         $categoria = $this->acoes->getFind('categoriaSeguimentoSub');
         $pedidos = $this->acoes->getFind('carrinhoPedidos');
 
         $this->load('home/home', [
             'empresas' => $empresas,
             'empresaDelivery' => $empresaDelivery,
+            'empresaEndereco' => $empresaEndereco,
             'categoria' => $categoria,
             'pedidos' => $pedidos,
             'trans' => $this->trans,

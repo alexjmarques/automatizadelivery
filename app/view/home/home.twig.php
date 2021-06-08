@@ -24,7 +24,7 @@
 <section class="section pt-5 pb-5 bg-white homepage-add-section">
    <div class="container">
       <div class="row">
-         {% for emp in empresas|slice(0,6) %}
+         {% for emp in empresas|slice(1,7) %}
          <div class="col-md-4">
             <a href="{{BASE}}{{ emp.link_site }}">
                <div class="bg-white shadow-sm rounded align-items-center p-1 mb-4 flex-column">
@@ -48,7 +48,6 @@
                         {% endfor %}
                      </p>
                      <p class="small mb-1">
-
                         {% set cont = 0 %}
                         {%  for ped in pedidos %}
                         {% if ped.id_empresa == emp.id %}
@@ -57,7 +56,15 @@
                         {% endif %}
                         {% endif %}
                         {% endfor %}
-                        Pedidos: <span class="font-weight-bold text-dark">({{cont}})</span>
+
+                        {% for end in empresaEndereco %}
+                        {% if end.id_empresa == emp.id %}
+                        {{ end.rua }} {{ end.numero }}, {% if end.complemento != "" %} {{ end.complemento }} , {% endif %}  {{ end.bairro }} - {{ end.cidade }}/{{ end.estado }}
+                        {% endif %}
+                        {% endfor %}
+
+                        
+                        <!-- Pedidos: <span class="font-weight-bold text-dark">({# {{cont}} #})</span> -->
                      </p>
 
                   </div>
@@ -78,7 +85,7 @@
             <h2 class="pt-5 mt-4 text-white">Organize a operação do seu estabelecimento</h2>
             <p class="text-white size20 pt-3">A operação do seu restaurante esta desorganizada, pois você recebe pedidos via WhatsApp, Facebook, Instagram, Mesa, Balcão e Marketplaces (iFood, UberEats)?<br>Com a Automatiza.App, você centraliza seus pedidos em um só lugar e organiza toda a sua operação.</p>
 
-            <a href="https://automatizadelivery.com.br/teste" target="_blank" class="elementor-button-vaz" role="button">
+            <a href="https://automatizadelivery.com.br/automatiza-delivery" target="_blank" class="elementor-button-vaz" role="button">
                <span class="elementor-button-content-wrapper"><span class="elementor-button-text">Conheça o Sistema</span></span>
             </a>
          </div>

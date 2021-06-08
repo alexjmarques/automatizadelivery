@@ -341,6 +341,7 @@ class UsuarioController extends Controller
 
         $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
         $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
+
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
@@ -509,9 +510,6 @@ class UsuarioController extends Controller
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
-
-
-
 
 
     public function insert($data)
