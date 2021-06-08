@@ -2549,7 +2549,10 @@ a.gold:hover {
     -ms-flex-align: center;
     align-items: center
 }
-
+#restaurant-info{
+    min-height: 425px;
+    height: 100%;
+}
 .img-float {
     height: 95px;
     float: left;

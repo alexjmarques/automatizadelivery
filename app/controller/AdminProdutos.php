@@ -93,10 +93,10 @@ class AdminProdutos extends Controller
         $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
         $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
 
-        $categoriaLista = $this->acoes->getFind('categorias');
-        $tipoAdicional = $this->acoes->getFind('categoriaTipoAdicional');
-        $produtosAdicionais = $this->acoes->getFind('produtoAdicional');
-        $produtosSabores = $this->acoes->getFind('produtoSabor');
+        $categoriaLista = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
+        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $diaSelecao = $this->acoes->getFind('dias');
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
@@ -131,7 +131,6 @@ class AdminProdutos extends Controller
         ]);
     }
 
-
     /**
      *
      * Recupera a pagina de produto selecionada
@@ -143,11 +142,10 @@ class AdminProdutos extends Controller
         $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
         $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
         $retorno = $this->acoes->getByField('produtos', 'id', $data['id']);
-
-        $categoriaLista = $this->acoes->getFind('categorias');
-        $tipoAdicional = $this->acoes->getFind('categoriaTipoAdicional');
-        $produtosAdicionais = $this->acoes->getFind('produtoAdicional');
-        $produtosSabores = $this->acoes->getFind('produtoSabor');
+        $categoriaLista = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
+        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $diaSelecao = $this->acoes->getFind('dias');
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
@@ -214,34 +212,42 @@ class AdminProdutos extends Controller
             $dias_disponiveis = implode(',', $diasDD);
         }
 
-        $valor_promocional = $this->geral->brl2decimal(Input::post('valor_promocional'));
+        $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
 
         if (empty($valor_promocional)) {
             $valor_promocional = 0.00;
         }
 
+        if($data['switch']){
+            $status = $data['switch'];
+        }else{
+            $status = 0;
+        }
+
         $valor = new Produtos();
-        $valor->nome = Input::post('nome');
-        $valor->descricao = Input::post('descricao');
-        $valor->observacao = Input::post('observacao');
-        $valor->valor = $this->geral->brl2decimal(Input::post('valor'));
+        $valor->nome = $data['nome'];
+        $valor->descricao = $data['descricao'];
+        $valor->observacao = $data['observacao'];
+        $valor->valor = $this->geral->brl2decimal($data['valor']);
         $valor->valor_promocional = $valor_promocional;
-        $valor->id_categoria = Input::post('categoria');
-        $valor->imagem = Input::post('imagemNome');
+        $valor->id_categoria = $data['categoria'];
+        $valor->imagem = $data['imagemNome'];
         $valor->adicional = $adicionalSelecionados;
         $valor->sabores = $saborSelecionados;
-        $valor->status = Input::post('switch');
+        $valor->status = $status;
         $valor->dias_disponiveis = $dias_disponiveis;
-        $valor->vendas = Input::post('vendas');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->vendas = $data['vendas'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
-        $catNe = $this->acoes->getByField('categorias', 'id', Input::post('categoria'));
+        
+
+        $catNe = $this->acoes->getByField('categorias', 'id', $data['categoria']);
         $novaQtdN = $catNe->produtos + 1;
 
-        $valorNCat = (new Categorias())->findById(Input::post('categoria'));
+        $valorNCat = (new Categorias())->findById($data['categoria']);
         $valorNCat->produtos = $novaQtdN;
-        $valorNCat->id_empresa = Input::post('id_empresa');
+        $valorNCat->id_empresa = $data['id_empresa'];
         $valorNCat->save();
 
         header('Content-Type: application/json');
@@ -267,46 +273,50 @@ class AdminProdutos extends Controller
             $dias_disponiveis = implode(',', $diasDD);
         }
 
-        $valor_promocional = $this->geral->brl2decimal(Input::post('valor_promocional'));
+        $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
 
         if (empty($valor_promocional)) {
             $valor_promocional = 0.00;
         }
 
+        if($data['switch']){
+            $status = $data['switch'];
+        }else{
+            $status = 0;
+        }
+
         $valor = (new Produtos())->findById($data['id']);
-        $valor->nome = Input::post('nome');
-        $valor->descricao = Input::post('descricao');
-        $valor->observacao = Input::post('observacao');
-        $valor->valor = $this->geral->brl2decimal(Input::post('valor'));
+        $valor->nome = $data['nome'];
+        $valor->descricao = $data['descricao'];
+        $valor->observacao = $data['observacao'];
+        $valor->valor = $this->geral->brl2decimal($data['valor']);
         $valor->valor_promocional = $valor_promocional;
-        $valor->categoria = Input::post('categoria');
-        $valor->imagem = Input::post('imagemNome');
+        $valor->id_categoria = $data['categoria'];
+        $valor->imagem = $data['imagemNome'];
         $valor->adicional = $adicionalSelecionados;
         $valor->sabores = $saborSelecionados;
-        $valor->status = Input::post('switch');
+        $valor->status = $status;
         $valor->dias_disponiveis = $dias_disponiveis;
-        $valor->vendas = Input::post('vendas');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->vendas = $data['vendas'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
-
-
-        if (Input::post('categoriaCad') != Input::post('categoria')) {
-            $cat = $this->acoes->getByField('categorias', 'id', Input::post('categoriaCad'));
+        if ($data['categoriaCad'] != $data['categoria']) {
+            $cat = $this->acoes->getByField('categorias', 'id', $data['categoriaCad']);
             $novaQtd = $cat->produtos - 1;
 
-            $valorCat = (new Categorias())->findById(Input::post('categoriaCad'));
+            $valorCat = (new Categorias())->findById($data['categoriaCad']);
             $valorCat->produtos = $novaQtd;
-            $valorCat->id_empresa = Input::post('id_empresa');
+            $valorCat->id_empresa = $data['id_empresa'];
             $valorCat->save();
 
 
-            $catNe = $this->acoes->getByField('categorias', 'id', Input::post('categoria'));
+            $catNe = $this->acoes->getByField('categorias', 'id', $data['categoria']);
             $novaQtdN = $catNe->produtos + 1;
 
-            $valorNCat = (new Categorias())->findById(Input::post('categoria'));
+            $valorNCat = (new Categorias())->findById($data['categoria']);
             $valorNCat->produtos = $novaQtdN;
-            $valorNCat->id_empresa = Input::post('id_empresa');
+            $valorNCat->id_empresa = $data['id_empresa'];
             $valorNCat->save();
         }
 
@@ -320,12 +330,12 @@ class AdminProdutos extends Controller
         $valor = (new Produtos())->findById($data['id']);
         $valor->destroy();
 
-        $cat = $this->acoes->getByField('categorias', 'id', Input::post('categoria'));
+        $cat = $this->acoes->getByField('categorias', 'id', $data['categoria']);
         $novaQtd = $cat->produtos - 1;
 
-        $valorCat = (new Categorias())->findById(Input::post('categoria'));
+        $valorCat = (new Categorias())->findById($data['categoria']);
         $valorCat->produtos = $novaQtd;
-        $valorCat->id_empresa = Input::post('id_empresa');
+        $valorCat->id_empresa = $data['id_empresa'];
         $valorCat->save();
 
         redirect(BASE . "{$data['linkSite']}/admin/categorias");

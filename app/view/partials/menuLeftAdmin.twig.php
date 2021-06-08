@@ -122,21 +122,19 @@
                                     <span class="d-inline-block"><strong>Todos os Produtos</strong></span>
                                 </a>
                             </li>
-                            
-                            <li id="subProdA">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-adicionais">
-                                    <span class="d-inline-block"><strong>Adicionais</strong></span>
+                            <li id="subCat">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/categorias">
+                                    <span class="d-inline-block"><strong>Categorias</strong></span>
                                 </a>
                             </li>
-                            
                             <li id="subSabores">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-sabores">
                                     <span class="d-inline-block"><strong>Sabores</strong></span>
                                 </a>
                             </li>
-                            <li id="subCat">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/categorias">
-                                    <span class="d-inline-block"><strong>Categorias dos Produtos</strong></span>
+                            <li id="subProdA">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-adicionais">
+                                    <span class="d-inline-block"><strong>Adicionais</strong></span>
                                 </a>
                             </li>
                             <li id="subTipoA">

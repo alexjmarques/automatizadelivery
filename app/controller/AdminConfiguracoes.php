@@ -46,6 +46,7 @@ class AdminConfiguracoesController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');

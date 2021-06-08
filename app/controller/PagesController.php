@@ -128,6 +128,8 @@ class PagesController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($empresa) {
+            $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+            $atendimento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
             $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
             $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
             $produtoQtd = $this->acoes->counts('produtos', 'id_empresa', $empresa->id);
@@ -170,6 +172,8 @@ class PagesController extends Controller
 
         $this->load('home/main', [
             'empresa' => $empresa,
+            'endereco' => $empresaEndereco,
+            'atendimento' => $atendimento,
             'moeda' => $moeda,
             'delivery' => $delivery,
             'categoria' => $categoria,
