@@ -144,6 +144,7 @@ class UsuarioController extends Controller
      */
     public function loginValida($data)
     {
+        dd($data);
         $email = $data['email'];
         $senha = $data['senha'];
 
