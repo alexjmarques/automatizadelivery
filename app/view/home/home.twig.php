@@ -40,30 +40,13 @@
                      {% endif %}
                      {% endfor %}
 
+                     
                      <p class="small mb-1">
-                        {% for empDeli in empresaDelivery %}
-                        {% if empDeli.id_empresa == emp.id %}
-                        Raio de entrega: <span class="font-weight-bold text-dark">{{empDeli.km_entrega_excedente }} km</span>
-                        {% endif %}
-                        {% endfor %}
-                     </p>
-                     <p class="small mb-1">
-                        {% set cont = 0 %}
-                        {%  for ped in pedidos %}
-                        {% if ped.id_empresa == emp.id %}
-                        {% if ped.status == 4 %}
-                        {% set cont = cont + 1 %}
-                        {% endif %}
-                        {% endif %}
-                        {% endfor %}
-
                         {% for end in empresaEndereco %}
                         {% if end.id_empresa == emp.id %}
-                        {{ end.rua }} {{ end.numero }}, {% if end.complemento != "" %} {{ end.complemento }} , {% endif %}  {{ end.bairro }} - {{ end.cidade }}/{{ end.estado }}
+                        {{ end.rua }} {{ end.numero }}, {% if end.complemento != "" %} {{ end.complemento }}<br/>{% endif %}  {{ end.bairro }} - {{ end.cidade }}/{{ end.estado }}
                         {% endif %}
                         {% endfor %}
-
-                        
                         <!-- Pedidos: <span class="font-weight-bold text-dark">({# {{cont}} #})</span> -->
                      </p>
 
