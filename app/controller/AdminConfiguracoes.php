@@ -82,19 +82,17 @@ class AdminConfiguracoesController extends Controller
 
     public function update($data)
     {
-
-        if ($_FILES['capa']['name'] != "") {
-            $extensao = pathinfo($_FILES['logo']['name']);
-            $extensao = "." . $extensao['extension'];
-            $logo = time() . uniqid(md5('automatizaApp')) . $extensao;
-
-            $caminhoLogo = UPLOADS_BASE . $logo;
-            $logoTemp = $_FILES['logo']['tmp_name'];
-            move_uploaded_file($logoTemp, $caminhoLogo);
-        } else {
-            $caminhoLogo = Input::post('logoUpdate');
+        if($data['imagemNome'] != null){
+            $caminhoLogo = $data['imagemNome'];
+        }else{
+            $caminhoLogo = $data['logoUpdate'];
         }
 
+        if($data['switch']){
+            $nf_paulista = $data['switch'];
+        }else{
+            $nf_paulista = 0;
+        }
 
         if ($_FILES['capa']['name'] != "") {
             $extensao = pathinfo($_FILES['capa']['name']);
@@ -106,7 +104,7 @@ class AdminConfiguracoesController extends Controller
             $capaTemp = $_FILES['capa']['tmp_name'];
             move_uploaded_file($capaTemp, $caminhoCapaSalv);
         } else {
-            $caminhoCapa = Input::post('capaUpdate');
+            $caminhoCapa = $data['capaUpdate'];
         }
 
         $diasSt = $_POST['dias'];
@@ -118,27 +116,28 @@ class AdminConfiguracoesController extends Controller
         $retorno = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
 
         $valor = (new Empresa())->findById($empresa->id);
-        $valor->nome_fantasia = Input::post('nomeFantasia');
-        $valor->id_moeda = Input::post('moeda');
-        $valor->telefone = Input::post('telefone');
-        $valor->sobre = Input::post('sobre');
+        $valor->nome_fantasia = $data['nomeFantasia'];
+        $valor->id_moeda = $data['moeda'];
+        $valor->telefone = $data['telefone'];
+        $valor->sobre = $data['sobre'];
         $valor->logo = $caminhoLogo;
         $valor->capa = $caminhoCapa;
         $valor->dias_atendimento = $diasSelecionados;
-        $valor->email_contato = Input::post('email_contato');
-        $valor->nf_paulista = Input::post('switch');
+        $valor->email_contato = $data['email_contato'];
+        $valor->nf_paulista = $nf_paulista;
         $valor->save();
+        //dd($valor);
 
 
         $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
-        $valorEnd->cep = Input::post('cep');
-        $valorEnd->rua = Input::post('rua');
-        $valorEnd->numero = Input::post('numero');
-        $valorEnd->complemento = Input::post('complemento');
-        $valorEnd->bairro = Input::post('bairro');
-        $valorEnd->cidade = Input::post('cidade');
-        $valorEnd->estado = Input::post('estado');
-        $valorEnd->id_empresa = Input::post('id_empresa');
+        $valorEnd->cep = $data['cep'];
+        $valorEnd->rua = $data['rua'];
+        $valorEnd->numero = $data['numero'];
+        $valorEnd->complemento = $data['complemento'];
+        $valorEnd->bairro = $data['bairro'];
+        $valorEnd->cidade = $data['cidade'];
+        $valorEnd->estado = $data['estado'];
+        $valorEnd->id_empresa = $data['id_empresa'];
         $valorEnd->save();
         //dd($valorEnd);
 

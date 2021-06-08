@@ -94,7 +94,7 @@
                 {% if(empresa.logo is empty ) %}
                 <img src="{{BASE}}uploads/no-image.png" id="uploaded_image" class="img-responsive img-circle" />
                 {% else %}
-                <img src="{{BASE}}uploads/{{logo}}" id="uploaded_image" class="img-responsive img-circle" />
+                <img src="{{BASE}}uploads/{{empresa.logo}}" id="uploaded_image" class="img-responsive img-circle" />
                 {% endif %}
                 <div class="overlay">
                   <div class="text">Selecione uma imagem</div>
