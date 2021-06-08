@@ -43,7 +43,9 @@ class AdminPedidos extends Controller
 
         $resultClientes = $this->acoes->getFind('usuarios');
         $resultMotoboy = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
-        $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        if ($estabelecimento) {
+            $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        }
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -92,7 +94,9 @@ class AdminPedidos extends Controller
 
         $resultClientes = $this->acoes->getFind('usuarios');
         $resultMotoboy = $this->acoes->getByField('motoboy', 'id_empresa', $empresa->id);
-        $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        if ($estabelecimento) {
+            $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        }
 
         $this->load('_admin/pedidos/pedidoListaRecebido', [
             'planoAtivo' => $planoAtivo,
@@ -119,7 +123,9 @@ class AdminPedidos extends Controller
 
         $resultClientes = $this->acoes->getFind('usuarios');
         $resultMotoboy = $this->acoes->getByField('motoboy', 'id_empresa', $empresa->id);
-        $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        if ($estabelecimento) {
+            $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        }
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         }
@@ -146,10 +152,12 @@ class AdminPedidos extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        if($estabelecimento){
+            $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        }
 
         $resultClientes = $this->acoes->getFind('usuarios');
         $resultMotoboy = $this->acoes->getByField('motoboy', 'id_empresa', $empresa->id);
-        $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());

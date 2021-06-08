@@ -163,7 +163,10 @@ class AdminPedidosBalcaoController extends Controller
     public function carrinhoQtd($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        echo $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+        if($this->sessao->getSessao('id_cliente')){    
+            $contagem = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+            echo $contagem;
+        }
     }
     public function carrinhoAddProduto($data)
     {
