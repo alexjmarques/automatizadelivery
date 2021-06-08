@@ -44,7 +44,7 @@
                      <p class="small mb-1">
                         {% for end in empresaEndereco %}
                         {% if end.id_empresa == emp.id %}
-                        {{ end.rua }} {{ end.numero }}, {% if end.complemento != "" %} {{ end.complemento }}<br/>{% endif %}  {{ end.bairro }} - {{ end.cidade }}/{{ end.estado }}
+                        {{ end.rua }} {{ end.numero }}, {% if end.complemento != "" %} {{ end.complemento }}{% endif %}<br/>  {{ end.bairro }} - {{ end.cidade }}/{{ end.estado }}
                         {% endif %}
                         {% endfor %}
                         <!-- Pedidos: <span class="font-weight-bold text-dark">({# {{cont}} #})</span> -->
