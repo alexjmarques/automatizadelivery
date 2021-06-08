@@ -147,12 +147,13 @@ class UsuarioController extends Controller
         $email = Input::post('email');
         $senha = Input::post('senha');
 
-        $usuario = $this->acoes->getByField('usuarios', 'email', $email);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $usuario = $this->acoes->getByField('empresa', '', $email);
         if ($usuario <= 0) {
             echo 'Email não encontrado em nossa plataforma! Cadastre-se.';
         } else {
             if ($this->bcrypt->verify($senha, $usuario->senha)) {
-                $contagem = $this->acoes->counts('usuariosEmpresa', 'id_usuario', $usuario->id);
+                $contagem = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
                 if($contagem > 0){
                     $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
