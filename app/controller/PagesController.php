@@ -155,8 +155,12 @@ class PagesController extends Controller
 
             if ($this->sessao->getUser()) {
                 $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-                if ($this->sessao->getNivel() != 3) {
+                if ($this->sessao->getNivel() == 1) {
                     redirect(BASE . "{$empresa->link_site}/motoboy");
+                }
+
+                if ($this->sessao->getNivel() == 0) {
+                    redirect(BASE . "{$empresa->link_site}/admin");
                 }
             }
             if ($produtoQtd == 0) {

@@ -62,8 +62,12 @@ class CarrinhoController extends Controller
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            if ($this->sessao->getNivel() != 3) {
+            if ($this->sessao->getNivel() == 1) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
+            }
+
+            if ($this->sessao->getNivel() == 0) {
+                redirect(BASE . "{$empresa->link_site}/admin");
             }
         }
 
@@ -130,8 +134,12 @@ class CarrinhoController extends Controller
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-            if ($this->sessao->getNivel() != 3) {
+            if ($this->sessao->getNivel() == 1) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
+            }
+
+            if ($this->sessao->getNivel() == 0) {
+                redirect(BASE . "{$empresa->link_site}/admin");
             }
         }
         $this->load('produto/adicional', [
@@ -204,8 +212,12 @@ class CarrinhoController extends Controller
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            if ($this->sessao->getNivel() != 3) {
+            if ($this->sessao->getNivel() == 1) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
+            }
+
+            if ($this->sessao->getNivel() == 0) {
+                redirect(BASE . "{$empresa->link_site}/admin");
             }
         }
 
@@ -239,8 +251,12 @@ class CarrinhoController extends Controller
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            if ($this->sessao->getNivel() != 3) {
+            if ($this->sessao->getNivel() == 1) {
                 redirect(BASE . "{$empresa->link_site}/motoboy");
+            }
+
+            if ($this->sessao->getNivel() == 0) {
+                redirect(BASE . "{$empresa->link_site}/admin");
             }
 
             $carrinho = $this->acoes->getByFieldTreeNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null');

@@ -2555,3 +2555,13 @@ a.gold:hover {
     float: left;
     margin-right: 10px;
 }
+.landing-page-skip,
+.location-page {
+    background-color: #fff !important
+}
+
+.location-page .d-flex.flex-column,
+.osahan-slider .d-flex.flex-column {
+    margin: 0 auto;
+    float: none
+}
