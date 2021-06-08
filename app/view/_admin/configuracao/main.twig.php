@@ -71,7 +71,7 @@
           </div>
           <div class="form-group col-md-6">
             <label>Email de Contato</label>
-            <input type="text" class="form-control" id="emailContato" name="emailContato"
+            <input type="text" class="form-control" id="email_contato" name="email_contato"
               value="{{empresa.email_contato}}">
           </div>
         </div>
