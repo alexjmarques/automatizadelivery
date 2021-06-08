@@ -161,18 +161,15 @@ class UsuarioController extends Controller
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
                     header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
-                    echo $json;
-                    dd('aqui');
                 }else{
                     header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
-                    echo $json;
                 }
             } else {
                 header('Content-Type: application/json');
                 $json = json_encode(['link' => "", 'resp' => 'login', 'error' => "Senha incorreta. Verifique se digitou sua senha corretamente!"]);
-                exit($json);
             }
+            exit($json);
         }
     }
 
