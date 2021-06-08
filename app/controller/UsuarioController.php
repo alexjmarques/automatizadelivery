@@ -155,6 +155,7 @@ class UsuarioController extends Controller
             if ($this->bcrypt->verify($senha, $usuario->senha)) {
                 $contagem = $this->acoes->counts('usuariosEmpresa', 'id_usuario', $usuario->id);
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
+                dd($contagem);
                 if($contagem > 0){
                     $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
