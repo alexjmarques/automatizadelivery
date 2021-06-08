@@ -158,15 +158,13 @@ class UsuarioController extends Controller
                 if($contagem > 0){
                     $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
-
-                    dd('aqui');
                     header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                 }else{
                     $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => 1, 'url' => "{$empresa->link_site}/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    $json = json_encode(['id' => 1, 'url' => "admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                 }
             } else {
                 header('Content-Type: application/json');
