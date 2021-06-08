@@ -144,10 +144,8 @@ class UsuarioController extends Controller
      */
     public function loginValida($data)
     {
-        dd($data);
         $email = $data['email'];
         $senha = $data['senha'];
-
         //$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $usuario = $this->acoes->getByField('usuarios', 'email', $email);
         if ($usuario <= 0) {
@@ -160,6 +158,8 @@ class UsuarioController extends Controller
                 if($contagem > 0){
                     $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
+
+                    dd('aqui');
                     header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                 }else{
