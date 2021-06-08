@@ -154,7 +154,7 @@ $("#form, #formIfood, #formCliente").submit(function () {
             break;
           case 'Aguarde estamos redirecionando para a pagina inicial':
             $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
-            window.location = data.url;
+            //window.location = data.url;
             break;
           case 'Primeiro endereço cadastrado com Sucesso!':
             $('#mensagem').html('Pronto! Agora que tenho suas informações de entrega revise os itens de seu carrinho, adicione ou remova itens para finalizar seu pedido');
