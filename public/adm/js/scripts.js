@@ -292,17 +292,16 @@ $("#formAtendimento").submit(function () {
     type: 'POST',
     data: formData,
     beforeSend: function () {
-      $(".acaoBtn").prop("disabled", true);
-      $('.acaoBtn').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      $(".btn-continuar").prop("disabled", true);
+      $('.btn-continuar').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
     },
     complete: function () {
-      $(".acaoBtn").prop("disabled", false);
-      $('.acaoBtnCadastro').html('Cadastrar');
-      $('.acaoBtnAtualizar').html('Atualizar');
+      $(".btn-continuar").prop("disabled", false);
+      $('.btn-continuar').html('Iniciar Atendimento');
     },
     success: function (data) {
       console.log(data)
-      switch (data) {
+      switch (data.mensagem) {
         case 'Atendimento iniciado com sucesso':
           $('.modal, .modal-backdrop, .atendimento').hide();
           //$('<button type="button" class="atendimento on" data-toggle="modal" data-target="#caixa"><p>Seu restaurante encontra-se ativo para receber pedidos. <span class="botao">Deseja finalizar o atendimento de hoje?</span></p></button>').insertBefore("nav");
@@ -313,20 +312,18 @@ $("#formAtendimento").submit(function () {
           //$('<button type="button" class="atendimento" data-toggle="modal" data-target="#caixa"><p>Seu restaurante encontra-se desativado para receber pedidos. <span class="botao">Deseja iniciar o atendimento do restaurante?</span></p></button>').insertBefore("nav");
           window.location.reload();
           break;
-        case 'Cliente não contratou plano':
+        case 'Você não possuí um plano contratado':
           $('.mensagem').html(`<div class="alert alert-danger" role="alert">Contrate um plano para iniciar o atendimento!</div>`);
-          window.location = `/${link_site}/admin/planos`;
+          window.location = `/${link_site}/${data.url}`;
           break;
         case 'Não foi possível processar seu pagamento, atualize os dados de seu cartão!':
-          $('.mensagem').html(`<div class="alert alert-danger" role="alert">${data}</div>`);
-          window.location = `/${link_site}/admin/planos`;
+          $('.mensagem').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
+          window.location = `/${link_site}/${data.url}`;
           break;
-
         default:
-          $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data}</div>`);
+          $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
           break;
       }
-
 
     },
     error: function (data) {

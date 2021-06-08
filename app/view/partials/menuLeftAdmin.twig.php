@@ -191,7 +191,7 @@
                             <ul class="list-unstyled inner-level-menu">
                             <li id="subMp">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/planos" >
-                                    <span class="d-inline-block"><strong>Planos e Valores</strong></span>
+                                    <span class="d-inline-block"><strong>Detalhes do plano</strong></span>
                                 </a>
                             </li>
                             <li id="subEmp">
