@@ -41,11 +41,7 @@
             <select id="moeda" name="moeda" class="form-control select2-single">
               <option value="">Selecione</option>
               {% for mod in moedas %}
-              {% if mod.id == empresa.id_moeda %}
-              <option selected value="{{ mod.id }}">{{ mod.nome }} - {{ mod.simbolo }}</option>
-              {% else %}
-              <option value="{{ mod.id }}">{{ mod.nome }} - {{ mod.simbolo }}</option>
-              {% endif %}
+              <option {% if mod.id == empresa.id_moeda %} selected {% endif %} value="{{ mod.id }}">{{ mod.nome }} - {{ mod.simbolo }}</option>
               {% endfor %}
             </select>
           </div>

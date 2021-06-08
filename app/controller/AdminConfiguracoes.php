@@ -46,9 +46,7 @@ class AdminConfiguracoesController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
-        
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $moedas = $this->acoes->getFind('moeda');
@@ -70,7 +68,6 @@ class AdminConfiguracoesController extends Controller
             'estadosSelecao' => $estadosSelecao,
             'dias' => $diaSelecao,
             'planoAtivo' => $planoAtivo,
-            'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
@@ -127,7 +124,6 @@ class AdminConfiguracoesController extends Controller
         $valor->email_contato = $data['email_contato'];
         $valor->nf_paulista = $nf_paulista;
         $valor->save();
-        dd($valor);
 
 
         $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
