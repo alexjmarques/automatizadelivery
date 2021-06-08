@@ -126,7 +126,6 @@ class AdminConfiguracoesController extends Controller
         $valor->capa = $caminhoCapa;
         $valor->dias_atendimento = $diasSelecionados;
         $valor->email_contato = Input::post('email_contato');
-        $valor->link_site = Input::post('link_site');
         $valor->nf_paulista = Input::post('switch');
         $valor->save();
 

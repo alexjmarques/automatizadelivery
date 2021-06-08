@@ -71,7 +71,7 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="moeda">Link do Site</label>
-            <input type="text" class="form-control" id="link_site" name="link_site" value="{{empresa.link_site}}" disabled>
+            <input type="text" class="form-control" id="link_site" name="link_site" value="https://automatizadelivery.com.br/{{empresa.link_site}}" disabled>
           </div>
           <div class="form-group col-md-6">
             <label>Email de Contato</label>
