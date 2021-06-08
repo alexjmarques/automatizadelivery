@@ -127,7 +127,7 @@ class AdminConfiguracoesController extends Controller
         $valor->email_contato = $data['email_contato'];
         $valor->nf_paulista = $nf_paulista;
         $valor->save();
-        //dd($valor);
+        dd($valor);
 
 
         $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
