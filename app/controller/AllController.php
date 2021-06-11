@@ -230,20 +230,18 @@ class AllController extends Controller
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $planoAtivo = $this->verificaPlano($empresa->id);
         
-        dd($planoAtivo);
-        
-        if ($planoAtivo->id == 4) {
+        if ($planoAtivo == 4) {
             $resulifood = $this->marketplace->getById(1);
             $conecao = $this->ifood->gerarToken();
         }
 
-        if ($planoAtivo == null) {
+        if ($planoAtivo == 0) {
             header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você não possuí um plano contratado', 'error' => 'Você não possuí um plano contratado', 'url' => 'admin/planos']);
             exit($json);
         }
 
-        $plano = $this->acoes->getByField('planos', 'plano_id', $planoAtivo->plano_id);
+        $plano = $this->acoes->getByField('planos', 'plano_id', $planoAtivo);
 
         if ($plano->id <= 2) {
             $qtdPedidos = $this->acoes->countStatusMes('carrinhoPedidos', 'id_empresa', $empresa->id, 'data_pedido');
