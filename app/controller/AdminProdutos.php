@@ -193,7 +193,20 @@ class AdminProdutos extends Controller
             $data = base64_decode($imageArray2[1]);
             $imageNome = time() . '.jpg';
             $imageCaminho = UPLOADS_BASE . $imageNome;
-            file_put_contents($imageCaminho, $data);
+
+            $image = new CoffeeCode\Uploader\Image(UPLOADS_BASE, "images", 600);
+
+            $upload = $image->upload($data, $imageCaminho);
+            // if ($_FILES) {
+            //     try {
+            //         echo "<img src='{$upload}' width='100%'>";
+            //     } catch (Exception $e) {
+            //         echo "<p>(!) {$e->getMessage()}</p>";
+            //     }
+            // }
+
+
+            //file_put_contents($imageCaminho, $data);
             echo $imageNome;
         }
     }
