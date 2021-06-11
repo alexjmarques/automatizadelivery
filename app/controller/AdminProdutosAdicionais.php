@@ -81,6 +81,8 @@ class AdminProdutosAdicionais extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
+
+        //dd($tipoAdicional);
         
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());

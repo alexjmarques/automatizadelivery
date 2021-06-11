@@ -37,9 +37,9 @@
                     <div class="form-group position-relative">
                         <label for="tipoSabor">Categoria do Adicional</label>
                         <select class="form-control select2-single" id="tipoAdicional" name="tipoAdicional">
-                            <option value="sem-tipo" selected>Sem Categoria</option>
+                            <option value="sem-tipo" selected>Selecione</option>
                             {% for ta in tipoAdicional %}
-                                <option value="{{ta[':id']}}">{{ta[':tipo']}}</option>
+                                <option value="{{ta.id}}">{{ ta.tipo }}</option>
                             {% endfor %}
                         </select>
                     </div>

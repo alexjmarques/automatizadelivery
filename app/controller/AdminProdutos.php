@@ -141,7 +141,6 @@ class AdminProdutos extends Controller
     public function editar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
         $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
         $retorno = $this->acoes->getByField('produtos', 'id', $data['id']);
@@ -150,12 +149,13 @@ class AdminProdutos extends Controller
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $diaSelecao = $this->acoes->getFind('dias');
-
+        
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-
+        
         if ($this->sessao->getUser()) {
+            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
