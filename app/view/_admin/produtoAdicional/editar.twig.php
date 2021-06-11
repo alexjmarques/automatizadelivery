@@ -34,7 +34,7 @@
                 <div class="form-group col-md-4 mb-0">
                     <div class="form-group position-relative">
                         <label for="tipoSabor">Categoria do Adicional</label>
-                        <select class="form-control select2-single" id="tipoAdicional" name="tipoAdicional">
+                        <select class="form-control select2-single" id="tipo_adicional" name="tipo_adicional">
                             
                             {% for ta in tipoAdicional %}
                             <option value="{{ta.id}}" {% if retorno.tipo_adicional == ta.id  %}selected{% endif %}>{{ta.tipo}}</option>

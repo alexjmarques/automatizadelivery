@@ -134,7 +134,7 @@
                         <ul class="list-unstyled inner-level-menu">
                             <li id="subProd">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produtos">
-                                    <span class="d-inline-block"><strong>Todos os Produtos</strong></span>
+                                    <span class="d-inline-block"><strong>Produtos</strong></span>
                                 </a>
                             </li>
                             <li id="subCat">
