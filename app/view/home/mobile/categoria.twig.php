@@ -34,7 +34,7 @@
                 {% if p.imagem is not empty %}
                 <a href="{{BASE}}{{empresa.link_site}}/produto/{{p.id}}">
 
-                    <img src="{{ crop.make("#{BASE}uploads/#{p.imagem}", 250, 250) }}" class="img-fluid item-img w-100">
+                    <img src="{{BASE}}uploads/{{ p.imagem }}" class="img-fluid item-img w-100">
                 
                 </a>
                 {% endif %}
@@ -74,7 +74,7 @@
                 </div>
                 {% if p.imagem is not empty %}
                 <a href="{{BASE}}{{empresa.link_site}}/produto/{{p.id}}">
-                    <img src="/uploads/{{p.imagem}}" class="img-fluid item-img w-100">
+                    <img src="{{BASE}}uploads/{{ p.imagem }}" class="img-fluid item-img w-100">
                 </a>
                 {% endif %}
             </div>
