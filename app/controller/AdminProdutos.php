@@ -194,19 +194,19 @@ class AdminProdutos extends Controller
             $imageNome = time() . '.jpg';
             $imageCaminho = UPLOADS_BASE . $imageNome;
 
-            $image = new CoffeeCode\Uploader\Image(UPLOADS_BASE, "images", 600);
+            // $image = new CoffeeCode\Uploader\Image(UPLOADS_BASE, "images", 600);
 
-            $upload = $image->upload($data, $imageCaminho);
-            // if ($_FILES) {
-            //     try {
-            //         echo "<img src='{$upload}' width='100%'>";
-            //     } catch (Exception $e) {
-            //         echo "<p>(!) {$e->getMessage()}</p>";
-            //     }
-            // }
+            // $upload = $image->upload($data, $imageCaminho);
+            // // if ($_FILES) {
+            // //     try {
+            // //         echo "<img src='{$upload}' width='100%'>";
+            // //     } catch (Exception $e) {
+            // //         echo "<p>(!) {$e->getMessage()}</p>";
+            // //     }
+            // // }
 
 
-            //file_put_contents($imageCaminho, $data);
+            file_put_contents($imageCaminho, $data);
             echo $imageNome;
         }
     }
