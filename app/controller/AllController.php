@@ -48,7 +48,7 @@ class AllController extends Controller
             $getPlanId = $this->acoes->getByField('planos', 'plano_id', $assinatura->plano_id);
             $plano = $getPlanId->id;
         }
-        echo $plano;
+        return $plano;
     }
 
     public function verificaPlanoLimit($data)
@@ -59,7 +59,7 @@ class AllController extends Controller
             $getPlanId = $this->acoes->getByField('planos', 'plano_id', $assinatura->plano_id);
             $limitPlano = $getPlanId->limit;
         }
-        echo $limitPlano;
+        return $limitPlano;
     }
 
     public function sair($data)
@@ -230,12 +230,14 @@ class AllController extends Controller
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $planoAtivo = $this->verificaPlano($empresa->id);
         
+        dd($planoAtivo);
+        
         if ($planoAtivo->id == 4) {
             $resulifood = $this->marketplace->getById(1);
             $conecao = $this->ifood->gerarToken();
         }
 
-        if ($planoAtivo->status == null) {
+        if ($planoAtivo == null) {
             header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você não possuí um plano contratado', 'error' => 'Você não possuí um plano contratado', 'url' => 'admin/planos']);
             exit($json);
