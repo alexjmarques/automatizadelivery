@@ -48,7 +48,7 @@ class AllController extends Controller
             $getPlanId = $this->acoes->getByField('planos', 'plano_id', $assinatura->plano_id);
             $plano = $getPlanId->id;
         }
-        return $plano;
+        echo $plano;
     }
 
     public function verificaPlanoLimit($data)
@@ -59,7 +59,7 @@ class AllController extends Controller
             $getPlanId = $this->acoes->getByField('planos', 'plano_id', $assinatura->plano_id);
             $limitPlano = $getPlanId->limit;
         }
-        return $limitPlano;
+        echo $limitPlano;
     }
 
     public function sair($data)
