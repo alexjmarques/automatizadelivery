@@ -106,7 +106,9 @@ class CarrinhoController extends Controller
         $valor->valor = $data['valor'];
         $valor->save();
 
-        $this->sessao->sessaoNew('carrinho', $valor->id);
+        //dd($valor);
+
+       $nova_sessao = $this->sessao->sessaoNew('carrinho', $valor->id);
 
         header('Content-Type: application/json');
         if ($valor->id_adicional != null) {
@@ -439,9 +441,19 @@ class CarrinhoController extends Controller
     public function carrinhoCadastroValida($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $getTelefone = $this->acoes->counts('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
+        $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
-        if ($getTelefone > 0) {
+        if ($getTelefone) {
+
+            $getUsuario = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
+            if(!$getUsuario){
+                $valorEmp = new UsuariosEmpresa();
+                $valorEmp->id_usuario = $getTelefone->id;
+                $valorEmp->id_empresa = $empresa->id;
+                $valorEmp->nivel = $getTelefone->nivel;
+                $valorEmp->save();
+            }
+
             $this->sessao->sessaoNew('codeValida', substr(number_format(time() * Rand(), 0, '', ''), 0, 4));
             $codeValida = $this->sessao->getSessao('codeValida');
             $mensagem = $empresa->nome_fantasia . ": seu codigo de autorizacao e " . $codeValida . ". Por seguranca, nao o compartilhe com mais ninguem";
@@ -468,12 +480,14 @@ class CarrinhoController extends Controller
             $valor->senha = $senha;
             $valor->nivel = 3;
             $valor->save();
-
-            $valorEmp = new UsuariosEmpresa();
-            $valorEmp->id_usuario = $valor->id;
-            $valorEmp->id_empresa = $empresa->id;
-            $valorEmp->nivel = 3;
-            $valorEmp->save();
+            
+            $valoEmp = new UsuariosEmpresa();
+            $valoEmp->id_usuario = $valor->id;
+            $valoEmp->id_empresa = $empresa->id;
+            $valoEmp->nivel = 3;
+            $valoEmp->save();
+            
+            //dd($valoEmp);
 
             $usuario = $this->acoes->getByField('usuarios', 'id', $valor->id);
             $carrinhoSessao = $this->sessao->getSessao('carrinho');
