@@ -309,10 +309,9 @@ class AllController extends Controller
         //$resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
     }
 
-    public function verificaEmpresaUser($idEmpresa)
+    public function verificaEmpresaUser(int $idEmpresa, int $idUsuario)
     {
-        //dd($this->sessao->getUser());
-        $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $this->sessao->getUser());
+        $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $idUsuario);
         if($usuario){
             $empresa = $this->acoes->getByField('empresa', 'id', $usuario->id_empresa);
             if($idEmpresa != $usuario->id_empresa){
