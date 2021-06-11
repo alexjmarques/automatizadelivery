@@ -13,7 +13,7 @@ class CategoriaSeguimentoSub extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("auxCategoriaSub", ["nome"]);
+        parent::__construct("aux_categoria_sub", ["nome"]);
     }
 
     public function add(CategoriaSeguimento $categoria, string $nome, string $slug)

@@ -307,7 +307,17 @@ class AllController extends Controller
         unset($_SESSION['caixaAtendimento']);
 
         //$resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
-            
-        
+    }
+
+    public function verificaEmpresaUser($idEmpresa)
+    {
+        //dd($this->sessao->getUser());
+        $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $this->sessao->getUser());
+        if($usuario){
+            $empresa = $this->acoes->getByField('empresa', 'id', $usuario->id_empresa);
+            if($idEmpresa != $usuario->id_empresa){
+                redirect(BASE."{$empresa->link_site}/admin");
+            }
+        }
     }
 }

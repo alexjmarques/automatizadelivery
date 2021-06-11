@@ -12,7 +12,7 @@ class FormasPagamento extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("auxPagamento", []);
+        parent::__construct("aux_pagamento", []);
     }
 
     public function add(Empresa $empresa, $tipo, $status)

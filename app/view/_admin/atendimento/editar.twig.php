@@ -14,7 +14,7 @@
     </ol>
 </nav>
 <div class="separator mb-5"></div>
-<form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/u"
+<form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/u"
     enctype="multipart/form-data">
     <div class="card mb-4">
     <div class="card-body">
@@ -40,6 +40,7 @@
                                   </div>
                                  
                                 </div>
+                                <input type="hidden" id="id" name="id" value="{{ retorno.id }}">
                             <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
                             
                         </div>

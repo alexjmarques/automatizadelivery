@@ -12,7 +12,7 @@ class CupomDesconto extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("cupomDesconto", []);
+        parent::__construct("cupom_desconto", []);
     }
 
     public function add(Empresa $empresa, $tipo_cupom, $nome_cupom, $valor_cupom, $expira, $qtd_utilizacoes, $status)

@@ -16,7 +16,7 @@ class CarrinhoEntregas extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("carrinhoEntregas", ["id_caixa", "id_cliente","id_empresa", "id_motoboy"]);
+        parent::__construct("carrinho_entregas", ["id_caixa", "id_cliente","id_empresa", "id_motoboy"]);
     }
 
     public function add(Empresa $empresa,Motoboy $motoboy,Usuarios $usuario,EmpresaCaixa $caixa, string $pago, string $observacao, string $numero_pedido, string $status)

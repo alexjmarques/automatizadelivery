@@ -12,7 +12,7 @@
 </nav>
 <div class="separator mb-5"></div>
 <div class="col-12 p-0">
-  <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/conf/delivery/u" enctype="multipart/form-data">
+  <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/conf/delivery/u" enctype="multipart/form-data" >
     <div class="card mb-4">
       <div class="card-body">
         <h5 class="mb-4">Sobre o Delivery</h5>
@@ -79,7 +79,7 @@
 
           <div class="form-group col-md-8" id="freteQuantos">
             <label class="text-dark">A partir de quanto seu cliente terá a Taxa de Entrega (Grátis)?</label>
-            <input type="text" class="form-control form-control-sm col-md-4" id="valor" name="valor" value="{{valor}}">
+            <input type="text" class="form-control form-control-sm col-md-4" id="valor" name="valor" value="{{retorno.valor}}">
           </div>
 
           <div class="form-group col-md-12">

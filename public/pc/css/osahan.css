@@ -33,10 +33,7 @@ button, a {
     color: #dd646e;
     text-decoration: none !important;
 }
-p {
-    font-size: 13px;
-    color: #7a7e8a;
-}
+
 img{
     image-rendering: auto;
 }
@@ -463,13 +460,13 @@ img{
 .btn {
     font-size: 13px;
     border-radius: 6px;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+   
 }
 .form-control {
     font-size: 13px;
     border-radius: 6px;
-    box-shadow: 0 1px 6px rgba(0,0,0, 0.1)!important;
-    min-height: 38px;
+    
+    min-height: 50px !important;
 }
 .card {
     border-radius: 6px;

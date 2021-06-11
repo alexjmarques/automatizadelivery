@@ -9,7 +9,7 @@
         <a class="text-white font-weight-bold ml-auto" href="{{BASE}}{{empresa.link_site}}/"> Voltar</a>
     </div>
     <div class="p-3 osahan-cart-item osahan-home-page">
-        <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/produto/addCarrinho/{{produto.id}}">
+        <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/produto/addCarrinho/{{produto.id}}">
             <div class="d-flex mb-3 osahan-cart-item-profile bg-white shadow rounded p-3 mt-n5">
                 {% if produto.imagem is not empty %}
                 <img alt="{{ produto.nome }}" src="{{BASE}}uploads/{{ produto.imagem }}"
@@ -27,7 +27,6 @@
             </div>
             {% endif %}
             {% if delivery.status == 1 %}
-
             <div class="d-flex mb-3 osahan-cart-item-profile bg-white shadow rounded p-3">
                 <p class="mb-1 mt-2 font-weight-bold line-e">Informe a quantidade?</p>
                 <div class="col-lg-3 quantidade">
@@ -158,7 +157,7 @@
 
                         <div class="card-body p-0">
                             <div class="modal-content-page osahan-item-detail-pop">
-                            <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/produto/addCarrinho/{{produto.id}}">
+                            <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/produto/addCarrinho/{{produto.id}}">
                                 <div class="modal-body px-3 pt-0 pb-3">
                                     <div class="pb-3 position-relative">
                                         <div class="position-absolute heart-fav">

@@ -5,6 +5,7 @@ namespace app\classes;
 use Aura\Session\SessionFactory;
 use app\Models\Assinatura;
 use app\Models\Empresa;
+use app\Models\Paginas;
 use app\Models\EmpresaFuncionamento;
 use app\Models\Usuarios;
 use app\Models\Dias;
@@ -84,6 +85,7 @@ class Acoes
     private $categoriaSeguimento;
     private $categoriaTipoAdicional;
     private $sessao;
+    private $paginas;
 
     /**
      *
@@ -98,6 +100,7 @@ class Acoes
         $this->empresaFuncionamento = new EmpresaFuncionamento();
         $this->assinatura = new Assinatura();
         $this->dias = new Dias();
+        $this->paginas = new Paginas();
         $this->estados = new Estados();
         $this->empresaCaixa = new EmpresaCaixa();
         $this->empresaFrete = new EmpresaFrete();
@@ -209,6 +212,11 @@ class Acoes
         return $this->{$table}->find("{$field} ={$valor}")->limit($limit)->offset($offset)->order($order)->fetch(true);
     }
 
+    public function paginationAdd(string $table,int $limit, string $offset, string $order)
+    {
+        return $this->{$table}->find()->limit($limit)->offset($offset)->order($order)->fetch(true);
+    }
+
     /**
      * Funções de Soma
      *
@@ -256,6 +264,11 @@ class Acoes
      * @param string $valor
      * @return void
      */
+    public function countAdd(string $table)
+    {
+        return $this->{$table}->find()->count();
+    }
+
     public function counts(string $table, string $field, string $valor)
     {
         return $this->{$table}->find("{$field} = {$valor}")->count();
@@ -278,7 +291,7 @@ class Acoes
 
     public function countStatusDay(string $table, string $field, string $valor, string $field2, string $valor2, string $data)
     {
-        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$data} = CURDATE()")->count();
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$data} = CURRENT_DATE")->count();
     }
 
     public function countStatusMes(string $table, string $field, string $valor, string $data)
@@ -298,7 +311,7 @@ class Acoes
 
     public function countCompanyDay(string $table,string $field, string $valor , string $data)
     {
-        return $this->{$table}->find("{$field} ={$valor} AND {$data} = CURDATE()")->count();
+        return $this->{$table}->find("{$field} ={$valor} AND {$data} = CURRENT_DATE")->count();
     }
 
     public function countStatusCompany(string $table,string $field, string $valor, int $statuss)
@@ -308,6 +321,6 @@ class Acoes
 
     public function countStatusCompanyDay(string $table,string $field, string $valor, int $statuss, string $data)
     {
-        return $this->{$table}->find("{$field} = {$valor} AND status = {$statuss} AND {$data} = CURDATE()")->count();
+        return $this->{$table}->find("{$field} = {$valor} AND status = {$statuss} AND {$data} = CURRENT_DATE")->count();
     }
 }

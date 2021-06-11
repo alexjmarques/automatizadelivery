@@ -57,6 +57,7 @@ class AdminPedidosBalcaoController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -115,6 +116,7 @@ class AdminPedidosBalcaoController extends Controller
     public function produtos($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -258,6 +260,7 @@ class AdminPedidosBalcaoController extends Controller
     {
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -367,6 +370,7 @@ class AdminPedidosBalcaoController extends Controller
     public function carrinhoFinalizar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);

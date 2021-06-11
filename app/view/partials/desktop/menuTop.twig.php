@@ -21,13 +21,13 @@
                      </div>
                   </li> -->
                   <li class="nav-item">
-                     <a class="nav-link landing-bt anchor" href="#planos"> Nossos Planos</a>
+                     <a class="nav-link landing-bt anchor" href="#planos"> Planos</a>
                   </li>
                   <li class="nav-item">
                      <a class="nav-link landing-bt anchor" href="#recursos"> Lista de recursos</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link landing-bt" href="{{BASE}}cadastro/empresa"> Cadastre-se</a>
+                     <a class="nav-link landing-bt" href="{{BASE}}institucional/contato"> Fale Consoco</a>
                   </li>
                   
                   

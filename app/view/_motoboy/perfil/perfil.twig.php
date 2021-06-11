@@ -53,7 +53,7 @@
 
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
             <div class="osahan-card-body border-top p-3">
-            <form method="post" action="{{BASE}}{{empresa.link_site}}/motoboy/placa/editar" id="form" enctype="multipart/form-data">
+            <form method="post" autocomplete="off" action="{{BASE}}{{empresa.link_site}}/motoboy/placa/editar" id="form" enctype="multipart/form-data">
                     <div class="custom-control mb-2 px-0">
                         <p class="mt-3 mb-2"><strong class="mediumNome">Atualizar Placa do veículo</strong></p>
                         <div class="mt-0 input-group full-width">

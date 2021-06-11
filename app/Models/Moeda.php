@@ -12,7 +12,7 @@ class Moeda extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("auxMoeda", []);
+        parent::__construct("aux_moeda", []);
     }
 
     public function add($nome, $simbolo)

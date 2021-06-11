@@ -5,6 +5,7 @@ use CoffeeCode\Router\Router;
     Inclusão das Controllers
 */
 
+require "../app/controller/Admin.php";
 require "../app/controller/AdminGeral.php";
 require "../app/controller/AdminCupom.php";
 require "../app/controller/AdminStatus.php";
@@ -36,13 +37,10 @@ require "../app/controller/AdminiFoodController.php";
 require "../app/controller/AdminUberEatsController.php";
 require "../app/controller/PerfilMotoboyController.php";
 require "../app/controller/AdminProdutosAdicionais.php";
-require "../app/controller/InstitucionalController.php";
 require "../app/controller/PedidosMotoboyController.php";
 require "../app/controller/EmpresaCadastroController.php";
 require "../app/controller/AdminPedidosBalcaoController.php";
 require "../app/controller/AdminClickEntregasController.php";
-
-
 
 $router = new Router(BASE);
 $router->namespace("app\controller");
@@ -51,16 +49,18 @@ $router->namespace("app\controller");
     Paginas do portal
 */
 $router->group(null);
-$router->get('/', 'PagesController:index');
+$router->get('', 'PagesController:index');
 $router->get('/', 'PagesController:index');
 
-$router->get('/sobre-nos', 'InstitucionalController:index');
-$router->get('/visao-valores', 'InstitucionalController:visaoValores');
-$router->get('/trabalhe-conosco', 'InstitucionalController:trabalheConosco');
-$router->get('/contato', 'InstitucionalController:contatoConosco');
+$router->get('/institucional/{slug}', 'PagesController:paginas');
+$router->get('/institucional/contato', 'PagesController:contatoPage');
+$router->get('/institucional/contato/i', 'PagesController:contatoSend');
 
 $router->get('/cadastro/empresa', 'EmpresaCadastroController:index');
+$router->get('/cadastro/empresa/{plano}', 'EmpresaCadastroController:index');
 $router->post('/cadastro/empresa/i', 'EmpresaCadastroController:insert');
+$router->get('/cadastro/empresa/{plano}/pagamento', 'EmpresaCadastroController:pagamento');
+$router->post('/cadastro/empresa/pagamento/i', 'EmpresaCadastroController:pagamentoInsert');
 
 
 $router->get('/{linkSite}', 'PagesController:home');
@@ -71,7 +71,7 @@ $router->get('/{linkSite}/delivery', 'PagesController:quemSomos');
 $router->get('/{linkSite}/fale-conosco', 'PagesController:contato');
 $router->post('/{linkSite}/contato/i', 'PagesController:contatoSend');
 $router->get('/{linkSite}/termos-de-uso', 'PagesController:termosUso');
-$router->get('/{linkSite}/politica-de-privacidade', 'PagesController:politicaPrivacidade');
+// $router->get('/{linkSite}/politica-de-privacidade', 'PagesController:politicaPrivacidade');
 
 /**
  * Listagem para tempo de execução
@@ -188,7 +188,16 @@ $router->post('/{linkSite}/motoboy/senha/u', 'PerfilMotoboyController:updateSenh
     Admin Aplicação
 */
 
-$router->get('/admin', 'AdminDashboard:index');
+$router->get('/admin', 'Admin:index');
+$router->get('/admin/clientes', 'Admin:clientes');
+$router->get('/admin/pagamentos', 'Admin:pagamentos');
+$router->get('/admin/usuarios', 'Admin:usuarios');
+$router->get('/admin/paginas', 'Admin:paginas');
+$router->get('/admin/pagina/nova', 'Admin:nova');
+$router->get('/admin/pagina/editar/{id}', 'Admin:editar');
+$router->post('/admin/pagina/i', 'Admin:insert');
+$router->post('/admin/pagina/u', 'Admin:update');
+$router->delete('/admin/pagina/d', 'Admin:delete');
 
 
 $router->get('/{linkSite}/admin', 'AdminDashboard:index');
@@ -395,6 +404,6 @@ $router->get('/{linkSite}/admin/click-entregas', 'AdminClickEntregasController:i
  * Group Error
  * This monitors all Router errors. Are they: 400 Bad Request, 404 Not Found, 405 Method Not Allowed and 501 Not Implemented
  */
-//$router->get("/{errcode}", "PagesController:notfound");
+$router->get("/erro/{errcode}", "PagesController:notfound");
 
 $router->__debugInfo();

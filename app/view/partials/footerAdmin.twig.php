@@ -38,7 +38,7 @@
                 </div>
                 <p class="mb-3 text-center size16">Para finalizar o atendimento, clique no botão abaixo</p>
                 <div class="mt-3">
-                    <form method="post" id="formAtendimento" action="{{BASE}}{{empresa.link_site}}/admin/finalizar-atendimento" novalidate>
+                    <form method="post" autocomplete="off" id="formAtendimento" action="{{BASE}}{{empresa.link_site}}/admin/finalizar-atendimento" novalidate>
                         <input type="hidden" value="{{caixa.id}}" name="id_caixa" id="id_caixa">
                         <button class="mt-3 btn btn-lg btn-block btn-continuar btn-finalizar">Finalizar
                             Atendimento</button>
@@ -67,7 +67,7 @@
                     Para iniciar o atendimento e liberar para seus clientes fazerem pedidos, clique no botão abaixo
 
                     <div class="mt-3">
-                        <form method="post" id="formAtendimento" action="{{BASE}}{{empresa.link_site}}/admin/iniciar-atendimento" novalidate>
+                        <form method="post" autocomplete="off" id="formAtendimento" action="{{BASE}}{{empresa.link_site}}/admin/iniciar-atendimento" novalidate>
                             <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
                             <button class="mt-3 btn btn-lg btn-block btn-continuar">Iniciar Atendimento</button>
                         </form>
@@ -100,7 +100,7 @@
                     </div>
 
                     <h3 class="swal2-title text-center" id="mensagem"></h3>
-                        <div class="swal2-actions">
+                        <div class="swal2-actions text-center">
                             <button type="button" class="buttonAlert" data-dismiss="modal" aria-label="Close">OK</button>
                         </div>
                 </div>
@@ -120,7 +120,7 @@
                                 2º - Após autorizar copie o código gerado pelo iFood e cole no campo abaixo e clique em <strong>Validar</strong>
                             </p>
                             <div class="bWqRVn text-center mb-2" id="codeOpen"></div>
-                            <form method="post" action="{{BASE}}{{empresa.link_site}}/admin/conectar/ifood/final" enctype="multipart/form-data" class="full-width">
+                            <form method="post" autocomplete="off" action="{{BASE}}{{empresa.link_site}}/admin/conectar/ifood/final" enctype="multipart/form-data" class="full-width">
                                 <div class="dados-usuario full-width">
                                     <div class="col-md-12 pr-0 pl-0">
                                         <div class="form-group">

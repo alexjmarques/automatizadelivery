@@ -14,7 +14,7 @@ class CarrinhoCPFNota extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("carrinhoCPFNota", ["numero_pedido", "id_cliente","id_empresa", "cpf"]);
+        parent::__construct("carrinho_cpf_nota", ["numero_pedido", "id_cliente","id_empresa", "cpf"]);
     }
 
     public function add(Empresa $empresa, Usuarios $usuario, string $data, string $cpf, string $numero_pedido)

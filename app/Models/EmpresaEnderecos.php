@@ -13,7 +13,7 @@ class EmpresaEnderecos extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("empEnderecos", ["id_empresa","rua", "numero"]);
+        parent::__construct("empresa_enderecos", ["id_empresa","rua", "numero"]);
     }
 
     public function add(Empresa $empresa, string $nome_endereco, string $rua, string $numero, string $complemento, string $bairro, string $cidade, string $estado, string $cep, string $principal)

@@ -63,7 +63,7 @@
                                         <!-- <button class="btn  btn-link btn-empty btn-lg">Cancelar este Plano</button> -->
                                         {% else %}
                                         <div class="text-center">
-                                            <a href="{{BASE}}{{empresa.link_site}}/admin/plano/{{p.id}}/{{p.slug}}" class="btn btn-primary btn-lg">Contratar plano</a>
+                                            <a href="{{BASE}}{{empresa.link_site}}/admin/plano/{{p.id}}/{{p.slug}}" class="btn btn-primary btn-lg">Contratar este plano</a>
                                         </div>
                                         {% endif %}
                                         {% else %}

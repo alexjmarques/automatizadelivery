@@ -12,7 +12,7 @@ class Planos extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("apdPlanos", ["nome"]);
+        parent::__construct("apd_planos", ["nome"]);
     }
 
     public function add(string $nome, string $slug, string $descricao, int $limite, string $valor, int $plano_id)

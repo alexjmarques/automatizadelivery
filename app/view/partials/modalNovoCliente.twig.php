@@ -3,7 +3,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <form method="post" id="formCliente" action="{{BASE}}{{empresa.link_site}}/admin/novo/cliente"
+        <form method="post" autocomplete="off" id="formCliente" action="{{BASE}}{{empresa.link_site}}/admin/novo/cliente"
           enctype="multipart/form-data">
           <div class="bg-white mb-3">
             <h2>Novo Cliente</h2>

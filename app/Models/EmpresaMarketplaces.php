@@ -13,7 +13,7 @@ class EmpresaMarketplaces extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("empMarketplaces", ["id_marketplaces","idLoja"]);
+        parent::__construct("empresa_marketplaces", ["id_marketplaces","idLoja"]);
     }
 
     public function add(Empresa $empresa, string $id_marketplaces, string $idLoja, string $authorization_code, string $user_code, string $data_atualizacao)

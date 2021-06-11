@@ -12,7 +12,7 @@ class ProdutoAdicional extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("produtoAdicional", ["nome","id_empresa"]);
+        parent::__construct("produto_adicional", ["nome","id_empresa"]);
     }
 
     public function add(Empresa $empresa, $nome, $valor, $tipo_adicional)

@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="osahan-credits d-flex  p-3">
-                    <form method="post" action="{{BASE}}{{empresa.link_site}}/perfil/telefone/u" id="form" class="full_page" enctype="multipart/form-data">
+                    <form method="post" autocomplete="off" action="{{BASE}}{{empresa.link_site}}/perfil/telefone/u" id="form" class="full_page" enctype="multipart/form-data">
                         <p class="text-muted m-0 small">(Campos Obrigatório <span style="color:red;">*</span>)</p>
                         <div class="dados-usuario full_page">
                         <div class="col-md-6 pl-0 pr-0">

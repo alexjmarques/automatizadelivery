@@ -14,7 +14,7 @@ class CupomDescontoUtilizadores extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("cupomDescontoUtilizacoes", []);
+        parent::__construct("cupom_desconto_utilizacoes", []);
     }
 
     public function add(Empresa $empresa, Usuarios $usuario, CupomDesconto $cupom, int $numero_pedido)

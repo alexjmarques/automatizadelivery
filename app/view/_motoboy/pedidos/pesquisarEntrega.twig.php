@@ -15,7 +15,7 @@
                     <span class="text-muted text-small d-block">Digite o número do pedido para efetuar uma busca</span>
                 </div>
                 <div class="pt-3 pb-3 text-center osahan-verification">
-                    <form method="post" id="formBusca"
+                    <form method="post" autocomplete="off" id="formBusca"
                         action="{{BASE}}{{empresa.link_site}}/motoboy/pegar/entrega/busca">
                         <div class="row mx-0 mb-4 mt-3">
                             <div class="col pr-1 pl-0 ">

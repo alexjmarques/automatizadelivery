@@ -13,7 +13,7 @@ class Assinatura extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("apdAssinatura", ["subscription_id", "plano_id", "status", "id_empresa"]);
+        parent::__construct("apd_assinatura", ["subscription_id", "plano_id", "status", "id_empresa"]);
     }
 
     public function add(Empresa $empresa, string $subscription_id, string $plano_id, string $status)

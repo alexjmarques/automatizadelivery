@@ -1,5 +1,5 @@
 {% extends 'partials/body.twig.php'  %}
-{% block title %}{{ trans.t('Automatiza Delivery - Automatiza.App') }}{% endblock %}
+{% block title %}{{ trans.t('Automatiza Delivery - Sistema de Gestão de Pedidos') }}{% endblock %}
 {% block body %}
 {% block head %}
 {% endblock %}
@@ -56,7 +56,6 @@
             </a>
          </div>
          {% endfor %}
-
       </div>
    </div>
 </section>
@@ -156,6 +155,28 @@
       <div class="row">
 
          <div class="pricing col-md-12 mb-3">
+         <div class="col-md-3 float-left">
+               <div class="card card-pricing text-center px-3 mb-4 ">
+                  <div class="header_plan">
+                     <h2>Grátis</h2>
+                     <span>Conheça e profissionalize.</span>
+                  </div>
+                  <div class="bg-transparent card-header pt-4 border-0">
+                     <div class="elementor-price-table__price">
+                         <span class="elementor-price-table__integer-part text-success">Grátis</span>
+                        
+                     </div>
+                  </div>
+                  <div class="card-body pt-0">
+                     <ul class="list-unstyled mb-4">
+                        <li>50 Pedidos por mês</li>
+                        <li>Hospedagem e SSL</li>
+                     </ul>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/gratis" rel="nofollow">Cadastrar</a>
+                  </div>
+               </div>
+            </div>
+
 
             <div class="col-md-3 float-left">
                <div class="card card-pricing text-center px-3 mb-4 ">
@@ -178,7 +199,7 @@
                         <li>200 Pedidos por mês</li>
                         <li>Hospedagem e SSL</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/inicial" rel="nofollow">Tenho Interesse</a>
                   </div>
                </div>
             </div>
@@ -207,7 +228,7 @@
                         <li>Hospedagem e SSL</li>
                         <li>Suporte Profissional</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md gold" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md gold" href="{{BASE}}cadastro/empresa/intermediario" rel="nofollow">Tenho Interesse</a>
                   </div>
                </div>
             </div>
@@ -235,40 +256,24 @@
                         <li>Chat e Avaliação</li>
                         <li>Suporte Profissional</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
+                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/essencial" rel="nofollow">Tenho Interesse</a>
                   </div>
                </div>
             </div>
 
-            <div class="col-md-3 float-left">
-               <div class="card card-pricing text-center px-3 mb-4">
-                  <div class="header_plan">
-                     <h2>Solução Completa</h2>
-                     <span>Integre e receba todos os pedidos.</span>
-                  </div>
-                  <div class="bg-transparent card-header pt-4 border-0">
-                     <div class="elementor-price-table__price">
-
-                        <span class="elementor-price-table__integer-part mb-2" style="font-size: 36px;">Consulte!</span>
-
-                        <span class="elementor-price-table__period elementor-typo-excluded">Entre em contato e saiba mais</span>
-                     </div>
-                  </div>
-                  <div class="card-body pt-0">
-                     <ul class="list-unstyled mb-4">
-                        <li>Pedidos Ilimitados</li>
-                        <li>Hospedagem e SSL</li>
-                        <li>Chat e Avaliação</li>
-                        <li>Suporte Profissional</li>
-                     </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa" rel="nofollow">Tenho Interesse</a>
-                  </div>
-               </div>
-            </div>
          </div>
+         
       </div>
+      <div class="container">
+         <div class="col-sm-12 block-center bg-white text-center p-5 rounded">
+                  <h5 class="m-0 mb-2">Procurando por uma solução completa?</h5>
+                  <p class="mb-4">Pedidos Ilimitados, Hospedagem e SSL, Chat e Avaliação, Suporte Profissional, <br/>Integração com Marketplaces e muito mais</p>
+                  <a href="https://api.whatsapp.com/send?phone=11980309212&text=Ol%C3%A1!%20Tenho%20Interesse%20na%20Solu%C3%A7%C3%A3o%20Completa" class="elementor-price-table__button elementor-button elementor-size-md gold" target="_blank">Consulte <i class="fa fa-chevron-circle-right"></i></a>
+               </div>
+</div>
    </div>
 </section>
+
 
 <section class="section pt-5 pb-5 products-section" id="recursos">
    <div class="container">
@@ -468,14 +473,29 @@
       </div>
    </div>
 </section>
-<section class="section pt-5 pb-5 bg-white becomemember-section border-bottom">
+<section class="section pt-0 pb-0 bg-white becomemember-section border-bottom">
+   <div class="row ml-0 mr-0 overflow-hidden">
    <div class="container">
-      <div class="section-header text-center white-text">
+   
+      <div class="col-sm-6 float-left pt-5 pb-5">
+      <div class="section-header text-left white-text">
          <h2>Pensando em Mobilidade</h2>
-         <p>Nada melhor que aliar a mobilidade a seu sistema de pedidos</p>
+         <p>Automatiza Delivery e E-Moving Mobilidade Urbana</p>
          <span class="line"></span>
+      </div>
+         <p>Em parceria com a E-Moving lançamos o plano Delivery mobilidade, com ele seu estabelecimento além de contar com nosso sitema de gestão conta também com Bicicletas elétricas para fazer as entregas! </p>
 
-        
+         <p>Conheça mas da <a href="https://e-moving.com.br/" target="_blank">E-Moving Mobilidade Urbana</a></p>
+         <img src="{{BASE}}img/logo-e-moving-escuro.svg" class="float-left mt-4 mb-4" alt="E-Moving Mobilidade Urbana" width="200px">
+<div class="clearfix"></div>
+         <!-- <a href="{{BASE}}cadastro/plano/mobilidade" class="btn btn-success btn-lg mt-3 float-left"> -->
+         <a href="https://api.whatsapp.com/send?phone=11980309212&text=Ol%C3%A1!%20Tenho%20Interesse%20no%20plano%20de%20mobilidade" class="btn btn-success btn-lg mt-3 float-left">
+         
+               Quero Mobilidade <i class="fa fa-chevron-circle-right"></i>
+            </a>
+      </div>
+      <div class="col-sm-6 float-left parallax-content">
+         <img src="{{BASE}}img/delivery2.jpg" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
       </div>
       <!-- <div class="row">
          <div class="col-sm-12 text-center">
@@ -484,6 +504,8 @@
             </a>
          </div>
       </div> -->
+
+   </div>
    </div>
 </section>
 {% include 'partials/desktop/footer.twig.php' %}

@@ -16,7 +16,7 @@
             </div>
 
             <h3 class="swal2-title text-center mensagemID" id="mensagem"><h3>
-            <div class="swal2-actions">
+            <div class="swal2-actions text-center">
                 <button type="button" class="buttonAlert" data-dismiss="modal" aria-label="Close">OK</button>
             </div>
       </div>

@@ -471,6 +471,9 @@ function atualizaCart() {
 
 function atualizar() {
   $.get(`/${link_site}/admin/pedidos/recebido`, function (dd) {
+    if(parseInt(dd) === 0){
+      $('#recebido').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
+    }else{
     let orderDay = localStorage.getItem("sttInit")
     let newOrder = new Audio('/audio/newOrder.mp3');
 
@@ -496,21 +499,33 @@ function atualizar() {
         //console.log('Não subiu pedido')
       }
     }
+  }
   })
 
   $.get(`/${link_site}/admin/pedidos/producao`, function (dd) {
-    let cancelOrder = new Audio('/audio/cancelOrder.mp3');
-    if (parseInt($(dd).attr('data-status')) === 6) {
-      console.log('Cancelado')
-      cancelOrder.play();
-    }
+    if(parseInt(dd) === 0){
+      $('#producao').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
+    }else{
+      let cancelOrder = new Audio('/audio/cancelOrder.mp3');
+      if (parseInt($(dd).attr('data-status')) === 6) {
+        console.log('Cancelado')
+        cancelOrder.play();
+      }
     $('#producao').html(dd);
+    }
   })
   $.get(`/${link_site}/admin/pedidos/geral`, function (dd) {
+    if(parseInt(dd) === 0){
+      $('#geral').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
+    }else{
     $('#geral').html(dd);
+    }
   })
 
   $.get(`/${link_site}/admin/pedidos/ifood`, function (dd) {
+    if(parseInt(dd) === 0){
+      //$('#producao').html('Sem Pedidos no momento');
+    }else{
     if (parseInt($('#atendimentoOn').length) === 1) {
       if (204 === parseInt(dd)) {
         console.log('Sem novos pedidos no iFood');
@@ -519,6 +534,8 @@ function atualizar() {
         //$('#geral').html(dd);
       }
     }
+  }
+
   })
 }
 setInterval(atualizar, 30000);
@@ -897,7 +914,7 @@ $("#rua").on('blur touchleave touchcancel', function () {
   }
 });
 
-$(".catProds #nome, .catProds #tipo").blur(function () {
+$(".catProds #nome, .catProds #tipo, #titulo").blur(function () {
   const str = $(this).val();
   const parsed = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').toLowerCase();
 
@@ -1145,6 +1162,11 @@ switch (active_link) {
     $('#subDeli').addClass('active')
     break;
     case `/${link_site}/admin/conf/atendimento`:
+      $('#collapseMenuConfiguracoes').addClass('show')
+      $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+      $('#subHor').addClass('active')
+      break;
+      case `/${link_site}/admin/conf/atendimento/novo`:
       $('#collapseMenuConfiguracoes').addClass('show')
       $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
       $('#subHor').addClass('active')

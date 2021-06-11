@@ -25,12 +25,6 @@ a {
     text-decoration: none !important;
 }
 
-p {
-    font-size: 16px;
-    color: #7a7e8a;
-    font-weight: 100;
-}
-
 img {
     image-rendering: auto;
 }
@@ -431,8 +425,8 @@ h6 {
 /* Customize Bootstrap */
 .small,
 small {
-    font-size: 85%;
-    font-weight: 600;
+    font-size: 100%;
+    font-weight: 200;
 }
 
 .select2,
@@ -555,14 +549,12 @@ small {
 .btn {
     font-size: 13px;
     border-radius: 6px;
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
 }
 
 .form-control {
     font-size: 13px;
     border-radius: 6px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1) !important;
-    min-height: 38px;
+    min-height: 50px;
 }
 
 .card {
@@ -2264,7 +2256,22 @@ a.gold:hover {
     align-items: center;
     background-color: #f3f7f8;
 }
-
+.table-header-plan {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    width: 100%;
+    background-color: #f3f7f8;
+}
+.table-header-plan h4{
+    float: left !important;
+    width: 100% !important;
+}
+.table-header-plan p{
+    float: left !important;
+    width: 100% !important;
+}
 .table-ss {
     background-color: #f3f7f8;
 }
@@ -2568,3 +2575,502 @@ a.gold:hover {
     margin: 0 auto;
     float: none
 }
+.bg-red{
+    background: #880A1F;
+    color: white;
+}
+.modal-dialog {
+    margin: 15% auto 0 auto;
+}
+.bg-plans{
+    background: #fabe63;
+}
+
+
+.w4rAnimated_checkmark svg {
+    width: 100px;
+    display: block;
+    margin: 40px auto 0;
+  }
+  
+  .w4rAnimated_checkmark .path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+  
+  .w4rAnimated_checkmark .path.circle {
+    -webkit-animation: dash 0.9s ease-in-out;
+    animation: dash 0.9s ease-in-out;
+  }
+  
+  .w4rAnimated_checkmark .path.line {
+    stroke-dashoffset: 1000;
+    -webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
+    animation: dash 0.9s 0.35s ease-in-out forwards;
+  }
+  
+  .w4rAnimated_checkmark .path.check {
+    stroke-dashoffset: -100;
+    -webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
+    animation: dash-check 0.9s 0.35s ease-in-out forwards;
+  }
+  
+  @-webkit-keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+  
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+  
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @-webkit-keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+  
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+  
+  @keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+  
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+  
+  
+  
+  
+  .animation-ctn {
+    text-align: center;
+    margin-top: 5em;
+  }
+  
+  @-webkit-keyframes checkmark {
+    0% {
+      stroke-dashoffset: 100px
+    }
+  
+    100% {
+      stroke-dashoffset: 200px
+    }
+  }
+  
+  @-ms-keyframes checkmark {
+    0% {
+      stroke-dashoffset: 100px
+    }
+  
+    100% {
+      stroke-dashoffset: 200px
+    }
+  }
+  
+  @keyframes checkmark {
+    0% {
+      stroke-dashoffset: 100px
+    }
+  
+    100% {
+      stroke-dashoffset: 0px
+    }
+  }
+  
+  @-webkit-keyframes checkmark-circle {
+    0% {
+      stroke-dashoffset: 480px
+    }
+  
+    100% {
+      stroke-dashoffset: 960px;
+  
+    }
+  }
+  
+  @-ms-keyframes checkmark-circle {
+    0% {
+      stroke-dashoffset: 240px
+    }
+  
+    100% {
+      stroke-dashoffset: 480px
+    }
+  }
+  
+  @keyframes checkmark-circle {
+    0% {
+      stroke-dashoffset: 480px
+    }
+  
+    100% {
+      stroke-dashoffset: 960px
+    }
+  }
+  
+  @keyframes colored-circle {
+    0% {
+      opacity: 0
+    }
+  
+    100% {
+      opacity: 100
+    }
+  }
+
+/* other styles */
+/* .svg svg {
+    display: none
+}
+ */
+ .inlinesvg .svg svg {
+    display: inline
+  }
+  
+  /* .svg img {
+      display: none
+  } */
+  
+  .icon--order-success svg polyline {
+    -webkit-animation: checkmark 0.25s ease-in-out 0.7s backwards;
+    animation: checkmark 0.25s ease-in-out 0.7s backwards
+  }
+  
+  .icon--order-success svg circle {
+    -webkit-animation: checkmark-circle 0.6s ease-in-out backwards;
+    animation: checkmark-circle 0.6s ease-in-out backwards;
+  }
+  
+  .icon--order-success svg circle#colored {
+    -webkit-animation: colored-circle 0.6s ease-in-out 0.7s backwards;
+    animation: colored-circle 0.6s ease-in-out 0.7s backwards;
+  }
+  
+  #alerta .modal-content {
+    border-radius: 20px;
+    text-align: center;
+  }
+  
+  .swal2-title {
+    float: left;
+    width: 100%;
+    padding: 15px 0;
+    color: #595959;
+    font-size: 1.2em;
+    font-weight: 400;
+    text-align: center;
+    text-transform: none;
+    word-wrap: break-word;
+  }
+  
+  .buttonAlert {
+    display: inline-block;
+    border-left-color: rgb(189, 5, 5);
+    border-right-color: rgb(189, 5, 5);
+    font-size: 17px;
+    line-height: 21px;
+    font-weight: 600;
+    text-align: center;
+    color: #fff;
+    border: 0 solid transparent;
+    cursor: pointer;
+    padding: 16px 25px 16px 25px;
+    vertical-align: top;
+    border-radius: 10px;
+    background-color: #880a1f;
+    transition: all 0.2s ease-in-out;
+    outline: 0px solid transparent;
+    background-image: none;
+    box-shadow: none;
+    transition-property: all;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    transition-delay: 0s;
+    align-items: center;
+    text-decoration: none;
+  }
+  
+  .jp-card-valid {
+    text-transform: uppercase;
+  }
+  
+  .list .form-control {
+    background: #fff;
+    padding: 5px;
+    font-size: 16px;
+  }
+/*-------------------- Checkout --------------------*/
+.checkout {
+    margin: 0px;
+    position: relative;
+    width: 100%;
+    background: white;
+    border-radius: 15px;
+    padding: 0px;
+  }
+  
+  .col-item-plans {
+    width: 350px;
+    float: left;
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .col-item-plans .card {
+    height: 100%;
+  }
+  
+  .btn-empty i {
+    margin-top: 4px;
+    float: right;
+    padding-left: 5px;
+  }
+  
+  /*-------------------- Credit Card --------------------*/
+  .credit-card-box {
+    perspective: 1000;
+    width: 430px;
+    height: 280px;
+    float: left;
+  }
+  
+  .credit-card-box:hover .flip,
+  .credit-card-box.hover .flip {
+    transform: rotateY(180deg);
+  }
+  
+  .credit-card-box .front,
+  .credit-card-box .back {
+    width: 400px;
+    height: 250px;
+    border-radius: 15px;
+    backface-visibility: hidden;
+    background: linear-gradient(135deg, #bd6772, #53223f);
+    position: absolute;
+    color: #fff;
+    font-family: Inconsolata;
+    top: 0;
+    left: 0;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  .credit-card-box .front::before,
+  .credit-card-box .back::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: url('http://cdn.flaticon.com/svg/44/44386.svg') no-repeat center;
+    background-size: cover;
+    opacity: 0.05;
+  }
+  
+  .credit-card-box .flip {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+  
+  .credit-card-box .logoCard {
+    position: absolute;
+    top: 9px;
+    right: 20px;
+    width: 60px;
+  }
+  
+  .credit-card-box .logoCard svg {
+    width: 100%;
+    height: auto;
+    fill: #fff;
+  }
+  
+  .credit-card-box .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+  
+  .credit-card-box .back {
+    transform: rotateY(180deg);
+  }
+  
+  .credit-card-box .back .logoCard {
+    top: 185px;
+  }
+  
+  .credit-card-box .chip {
+    position: absolute;
+    width: 60px;
+    height: 45px;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #ddccf0 0%, #d1e9f5 44%, #f8ece7 100%);
+    border-radius: 8px;
+  }
+  
+  .credit-card-box .chip::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: 4px solid rgba(128, 128, 128, .1);
+    width: 80%;
+    height: 70%;
+    border-radius: 5px;
+  }
+  
+  .credit-card-box .strip {
+    background: linear-gradient(135deg, #404040, #1a1a1a);
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    top: 30px;
+    left: 0;
+  }
+  
+  .credit-card-box .number {
+    position: absolute;
+    margin: 0 auto;
+    top: 103px;
+    left: 19px;
+    font-size: 30px;
+  }
+  
+  .credit-card-box label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-shadow: none;
+    text-transform: uppercase;
+    font-weight: normal;
+    opacity: 0.5;
+    display: block;
+    margin-bottom: 3px;
+  }
+  
+  .credit-card-box .card-holder,
+  .credit-card-box .card-expiration-date {
+    position: absolute;
+    margin: 0 auto;
+    top: 180px;
+    left: 19px;
+    font-size: 22px;
+    text-transform: capitalize;
+  }
+  
+  .credit-card-box .card-expiration-date {
+    text-align: right;
+    left: auto;
+    right: 20px;
+  }
+  
+  .credit-card-box .ccv {
+    height: 36px;
+    background: #fff;
+    width: 91%;
+    border-radius: 5px;
+    top: 110px;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin: 0 auto;
+    color: #000;
+    text-align: right;
+    padding: 10px;
+  }
+  
+  .credit-card-box .ccv label {
+    margin: -25px 0 14px;
+    color: #fff;
+  }
+  
+  
+  .w4rAnimated_checkmark svg {
+    width: 100px;
+    display: block;
+    margin: 40px auto 0;
+  }
+  
+  .w4rAnimated_checkmark .path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+  
+  .w4rAnimated_checkmark .path.circle {
+    -webkit-animation: dash 0.9s ease-in-out;
+    animation: dash 0.9s ease-in-out;
+  }
+  
+  .w4rAnimated_checkmark .path.line {
+    stroke-dashoffset: 1000;
+    -webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
+    animation: dash 0.9s 0.35s ease-in-out forwards;
+  }
+  
+  .w4rAnimated_checkmark .path.check {
+    stroke-dashoffset: -100;
+    -webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
+    animation: dash-check 0.9s 0.35s ease-in-out forwards;
+  }
+  .jp-card-container{
+    margin: 0 !important;
+  }
+  @-webkit-keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+  
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+  
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @-webkit-keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+  
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+  
+  @keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+  
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }

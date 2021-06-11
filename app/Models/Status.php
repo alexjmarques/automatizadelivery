@@ -12,7 +12,7 @@ class Status extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("auxStatus", []);
+        parent::__construct("aux_status", []);
     }
 
     public function add(string $delivery, string $retirada)

@@ -23,7 +23,7 @@
                         <div class="card-body">
                             <div class="reviews-performance-detail-section">
                                 <div class="reviews-performance-detail-section__title">Integração com Click Entregas</div>
-                                <form method="post" action="{{BASE}}{{empresa.link_site}}/admin/conectar/clickentregas" id="" enctype="multipart/form-data" class="full-width">
+                                <form method="post" autocomplete="off" action="{{BASE}}{{empresa.link_site}}/admin/conectar/clickentregas" id="" enctype="multipart/form-data" class="full-width">
                                     <div class="dados-usuario full-width">
                                         <div class="col-md-12 pr-0 pl-0">
                                             <div class="form-group">

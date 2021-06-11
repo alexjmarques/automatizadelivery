@@ -12,7 +12,7 @@
     </div>
 
     <div class="p-3 osahan-cart-item osahan-home-page">
-        <form method="post" id="formFinish" action="{{BASE}}{{empresa.link_site}}/carrinho/finaliza" novalidate>
+        <form method="post" autocomplete="off" id="formFinish" action="{{BASE}}{{empresa.link_site}}/carrinho/finaliza" novalidate>
             <div class="bg-white rounded shadow mb-3 pb-0 mt-n5">
             <h5 class="itCart">Itens</h5>
                 {% for c in carrinho %}
@@ -82,14 +82,14 @@
                     <select id="tipo_frete" name="tipo_frete" class="form-control" required>
                         {% if km > deliveryEntregaExcedente %}
                             {% for t in tipo %}
-                            {% if t.status == 1 and t.id == 1 %}
+                            {% if t.status == 1 and t.code == 1 %}
                             <option value="1" selected>Retirada</option>
                             {% endif %}
                             {% endfor %}
                         {% else %}
                         {% for t in tipo %}
                         {% if t.status != 0 %}
-                        <option value="{{t.id}}" {% if endereco is not null %}{% if t.id == 2 %}selected{% endif %}{% endif %}>{{t.tipo}}</option>
+                        <option value="{{t.code}}" {% if endereco is not null %}{% if t.code == 2 %}selected{% endif %}{% endif %}>{{t.tipo}}</option>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -102,7 +102,7 @@
                 {% endif %}
                     <h5 class="pt-4 pl-3 pr-3">Endereço para Retirada <span class="statusCart">Pronto <i class="feather-check"></i></span></h5>
                     {% for t in tipo %}
-                        {% if t.status == 1 and t.id == 1 %}
+                        {% if t.status == 1 and t.code == 1 %}
                         <div class="card">
                                 <p><strong>{{ empresaEndereco.rua }}, {{ empresaEndereco.numero }} </strong>  <br />
                                     {% if empresaEndereco.complemento != "" %}
@@ -137,7 +137,7 @@
                     <select id="tipo_pagamento" name="tipo_pagamento" class="form-control" required>
                         <option value="" selected>Forma de Pagamento</option>
                         {% for pag in pagamento %}
-                        <option value="{{pag.id}}">{{pag.tipo}}</option>
+                        <option value="{{pag.code}}">{{pag.tipo}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -269,7 +269,7 @@
 
                     {% if km > deliveryEntregaExcedente %}
                         {% for t in tipo %}
-                        {% if t.status == 1 and t.id == 1 %}
+                        {% if t.status == 1 and t.code == 1 %}
                         <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span id="valorProdutoMostra">{{
                                     moeda.simbolo }} {{ (valorPedido)|number_format(2, ',', '.') }}</span></span></h6>
                         {% endif %}
@@ -288,7 +288,7 @@
             </div>
             {% if km > deliveryEntregaExcedente %}
             {% for t in tipo %}
-            {% if t.status == 1 and t.id == 1 %}
+            {% if t.status == 1 and t.code == 1 %}
             
 <button class="btn btn-success btn-block btn-lg acaoBtn btnValida">FINALIZAR PEDIDO<i class="icofont-long-arrow-right"></i></button>
             {% endif %}
@@ -303,7 +303,7 @@
 </div>
 {% if km > deliveryEntregaExcedente %}
     {% for t in tipo %}
-        {% if t.status == 0 and t.id == 1 %}
+        {% if t.status == 0 and t.code == 1 %}
             <div id="foraDaAreaEntrega"></div>
             {% include 'partials/modalAlertSite.twig.php' %}
         {% endif %}

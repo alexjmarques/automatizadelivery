@@ -16,7 +16,7 @@
 </nav>
 <div class="separator mb-5"></div>
                 <div class="col-12">
-                <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/usuario/i"  enctype="multipart/form-data">
+                <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/usuario/i"  enctype="multipart/form-data">
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5>Usuário</h5>

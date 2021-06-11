@@ -23,7 +23,7 @@
                 
                 <div class="osahan-credits d-flex  p-3">
 
-                <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/endereco/i" >
+                <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/endereco/i" >
                 <p class="text-muted m-0 small">(Campos Obrigatório <span style="color:red;">*</span>)</p>
                             <div class="form-row p-0 pb-0 m-0 pb-3">
                                 <div class="form-group col-md-8 pb-0 mb-0 cepL pl-0">

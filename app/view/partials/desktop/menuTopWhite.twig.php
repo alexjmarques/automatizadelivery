@@ -6,7 +6,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                <ul class="navbar-nav ml-auto">
-                  <li class="nav-item active">
+                  <li class="nav-item">
                      <a class="nav-link" href="{{BASE}}">Home </a>
                   </li>
                   <!-- <li class="nav-item dropdown">
@@ -21,14 +21,14 @@
                      </div>
                   </li> -->
                   <li class="nav-item">
-                     <a class="nav-link landing-bt anchor" href="#planos"> Nossos Planos</a>
+                     <a class="nav-link landing-bt anchor" href="http://automatizadelivery.com.br/#planos"> Planos</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link landing-bt anchor" href="#recursos"> Lista de recursos</a>
+                     <a class="nav-link landing-bt anchor" href="http://automatizadelivery.com.br/#recursos"> Lista de recursos</a>
                   </li>
-
+                  
                   <li class="nav-item">
-                     <a class="nav-link landing-bt" href="{{BASE}}cadastro/empresa"> Cadastre-se</a>
+                     <a class="nav-link landing-bt" href="{{BASE}}institucional/contato"> Fale Consoco</a>
                   </li>
                   
                   

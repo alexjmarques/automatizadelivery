@@ -14,7 +14,7 @@
     </ol>
 </nav>
 <div class="separator mb-5"></div>
-<form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/u/{{retorno.id}}" enctype="multipart/form-data">
+<form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/u/{{retorno.id}}" enctype="multipart/form-data">
     <div class="card mb-4">
         <div class="card-body">
             <h5 id="titleBy" data-id="{{retorno.id}}">Item ou sabor adicional</h5>

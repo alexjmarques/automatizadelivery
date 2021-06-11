@@ -13,7 +13,7 @@ class CategoriaTipoAdicional extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("categoriaTipoAdicional", []);
+        parent::__construct("categoria_tipo_adicional", []);
     }
 
     public function add(Empresa $empresa, string $tipo, string $slug, string $tipo_escolha, string $qtd, string $status)

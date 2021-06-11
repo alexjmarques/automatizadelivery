@@ -44,6 +44,7 @@ class AdminMotoboys extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -83,6 +84,7 @@ class AdminMotoboys extends Controller
     public function novo($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -118,6 +120,7 @@ class AdminMotoboys extends Controller
     {
         $usuario = $this->acoes->getFind('usuarios');
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $retorno = $this->acoes->getByField('motoboy', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -190,6 +193,7 @@ class AdminMotoboys extends Controller
     {
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -224,7 +228,7 @@ class AdminMotoboys extends Controller
     public function entregasBuscar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         if ($data['id_motoboy'] != null){
             $resultMotoboy = $this->acoes->getByField('motoboy', 'id_usuario', $data['id_motoboy']);
             $usuario = $this->acoes->getByField('usuarios', 'id', $data['id_motoboy']);

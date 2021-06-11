@@ -12,7 +12,7 @@ class IfoodPedidos extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("ifoodPedidos", ["id_empresa","id_ifood"]);
+        parent::__construct("ifood_pedidos", ["id_empresa","id_ifood"]);
     }
 
     public function add(Empresa $empresa, $id_ifood, $status, $numero_pedido)

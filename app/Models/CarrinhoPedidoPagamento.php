@@ -14,7 +14,7 @@ class CarrinhoPedidoPagamento extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("carrinhoPedidoPagamento", []);
+        parent::__construct("carrinho_pedido_pagamento", []);
     }
 
     public function add(Empresa $empresa,FormasPagamento $formasPagamento,string $pag_cartao, string $pag_dinheiro, int $numero_pedido, int $id_cliente)

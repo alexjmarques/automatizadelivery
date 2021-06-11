@@ -42,6 +42,7 @@ class AdminRating extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $rating = $this->acoes->counts('avaliacao', 'id_empresa', $empresa->id);
         $ratingAll = $this->acoes->getByFieldAll('avaliacao', 'id_empresa', $empresa->id);

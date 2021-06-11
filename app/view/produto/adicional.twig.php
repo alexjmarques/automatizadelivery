@@ -9,7 +9,7 @@
     </div>
 
     <div class="p-3 osahan-cart-item osahan-home-page">
-        <form method="post" id="form"
+        <form method="post" autocomplete="off" id="form"
             action="{{BASE}}{{empresa.link_site}}/produto/addCarrinho/adicionais" novalidate>
             <div class="d-flex mb-3 osahan-cart-item-profile bg-white shadow rounded p-3 mt-n5">
                 {% if produto.imagem is not empty %}

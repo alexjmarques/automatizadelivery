@@ -12,7 +12,7 @@ class Dias extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("auxDias", ["nome"]);
+        parent::__construct("aux_dias", ["nome"]);
     }
 
     public function add($nome)

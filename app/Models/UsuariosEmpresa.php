@@ -13,7 +13,7 @@ class UsuariosEmpresa extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("usuariosEmpresa", ["id_usuario", "id_empresa"]);
+        parent::__construct("usuarios_empresa", ["id_usuario", "id_empresa"]);
     }
 
     public function add(Usuarios $usuario, Empresa $empresa)

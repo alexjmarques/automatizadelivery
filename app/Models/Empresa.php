@@ -3,8 +3,9 @@
 namespace app\Models;
 
 use CoffeeCode\DataLayer\DataLayer;
-use app\Models\SubCategoriaSeguimento;
+use app\Models\CategoriaSeguimentoSub;
 use app\Models\Moeda;
+
 /**
  * Class User
  * @package app\Models
@@ -13,10 +14,10 @@ class Empresa extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("empDados", ["nome_fantasia", "telefone", "id_moeda", "nf_paulista", "id_categoria"]);
+        parent::__construct("empresa_dados", ["nome_fantasia", "telefone", "id_moeda", "nf_paulista", "id_categoria"]);
     }
 
-    public function add(SubCategoriaSeguimento $categoria,Moeda $moeda, string $razao_social, string $cnpj, string $nome_fantasia, string $telefone, string $sobre, string $nf_paulista, string $logo, string $capa, string $dias_atendimento, string $email_contato, string $link_site)
+    public function add(CategoriaSeguimentoSub $categoria, Moeda $moeda, string $razao_social, string $cnpj, string $nome_fantasia, string $telefone, string $sobre, string $nf_paulista, string $logo, string $capa, string $dias_atendimento, string $email_contato, string $link_site)
     {
         $this->id_categoria = $categoria->id;
         $this->id_moeda = $moeda->id;

@@ -13,7 +13,7 @@ class TipoDelivery extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("auxTipo", []);
+        parent::__construct("aux_tipo_delivery", []);
     }
 
     public function add(Empresa $empresa, string $tipo, string $cod, string $status)

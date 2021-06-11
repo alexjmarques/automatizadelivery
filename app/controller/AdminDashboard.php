@@ -45,6 +45,7 @@ class AdminDashboard extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
@@ -132,6 +133,7 @@ class AdminDashboard extends Controller
     public function relatorioSemanal($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -185,6 +187,7 @@ class AdminDashboard extends Controller
     {
         $empresaCaixa = $this->acoes->getByField('empresaCaixa', 'id', $data['id']);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
@@ -243,6 +246,7 @@ class AdminDashboard extends Controller
     public function relatorioGeral($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());

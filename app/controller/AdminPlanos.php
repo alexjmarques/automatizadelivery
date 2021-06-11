@@ -39,6 +39,7 @@ class AdminPlanos extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planosAutomatiza = $this->acoes->getFind('planos');
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
@@ -71,6 +72,7 @@ class AdminPlanos extends Controller
     public function plano($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $plano = $this->acoes->getByField('planos', 'id', $data['id']);
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
@@ -85,9 +87,6 @@ class AdminPlanos extends Controller
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-
-
-        
 
         $this->load('_admin/planos/view', [
             'empresa' => $empresa,

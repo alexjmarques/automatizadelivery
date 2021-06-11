@@ -45,6 +45,7 @@ class AdminConfiguracoesController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');

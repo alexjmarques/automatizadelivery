@@ -146,7 +146,7 @@ class UsuarioController extends Controller
     {
         $email = $data['email'];
         $senha = $data['senha'];
-        //$empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        header('Content-Type: application/json');
         $usuario = $this->acoes->getByField('usuarios', 'email', $email);
         if ($usuario <= 0) {
             echo 'Email não encontrado em nossa plataforma! Cadastre-se.';
@@ -154,20 +154,16 @@ class UsuarioController extends Controller
             if ($this->bcrypt->verify($senha, $usuario->senha)) {
                 $contagem = $this->acoes->counts('usuariosEmpresa', 'id_usuario', $usuario->id);
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
-                //dd($contagem);
-                if($contagem > 0){
+                if ($contagem > 0) {
                     $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
-                    header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
-                }else{
+                } else {
                     $usuId = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $usuario->id);
                     $empresa = $this->acoes->getByField('empresa', 'id', $usuId->id_empresa);
-                    header('Content-Type: application/json');
                     $json = json_encode(['id' => 1, 'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                 }
             } else {
-                header('Content-Type: application/json');
                 $json = json_encode(['link' => "", 'resp' => 'login', 'error' => "Senha incorreta. Verifique se digitou sua senha corretamente!"]);
             }
             exit($json);
@@ -516,16 +512,16 @@ class UsuarioController extends Controller
     public function insert($data)
     {
         $email = $data['email'];
-        if($data['email'] == null){
+        if ($data['email'] == null) {
             $hash =  md5(uniqid(rand(), true));
             $email = $hash . '@automatizadelivery.com.br';
         }
 
         $senha = $data['senha'];
-        if($data['senha'] == null){
+        if ($data['senha'] == null) {
             $getSenha = preg_replace('/[^0-9]/', '', $data['telefone']);
             $senha = $this->bcrypt->encrypt($getSenha, '2a');
-        }else{
+        } else {
             $senha = $this->bcrypt->encrypt($data['senha'], '2a');
         }
 
@@ -583,7 +579,7 @@ class UsuarioController extends Controller
             case 3:
                 $url_dell = 'admin/clientes';
                 break;
-            default :
+            default:
                 $url_dell = 'admin/clientes';
                 break;
         }

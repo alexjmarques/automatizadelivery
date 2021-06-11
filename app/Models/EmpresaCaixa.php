@@ -12,7 +12,7 @@ class EmpresaCaixa extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("empCaixa", ["data_inicio", "hora_inicio"]);
+        parent::__construct("empresa_caixa", ["data_inicio", "hora_inicio"]);
     }
 
     public function add(Empresa $empresa, string $data_inicio, string $hora_inicio, string $hora_final, string $data_final)

@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="bg-white rounded shadow mt-3 profile-details p-3">
-    <form method="post" action="{{BASE}}{{empresa.link_site}}/dados-cadastrais/u" id="form" enctype="multipart/form-data">
+    <form method="post" autocomplete="off" action="{{BASE}}{{empresa.link_site}}/dados-cadastrais/u" id="form" enctype="multipart/form-data">
                         
                         <div class="dados-usuario row">
                         <div class="col-md-12">

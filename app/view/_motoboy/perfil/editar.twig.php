@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="osahan-credits d-flex  p-3">
-                    <form method="post" action="{{BASE}}{{empresa.link_site}}/endereco/u" id="form" enctype="multipart/form-data">
+                    <form method="post" autocomplete="off" action="{{BASE}}{{empresa.link_site}}/endereco/u" id="form" enctype="multipart/form-data">
                         <p class="text-muted m-0 small">(Campos Obrigatório <span style="color:red;">*</span>)</p>
                         <div class="dados-usuario row">
                         <div class="col-md-12">

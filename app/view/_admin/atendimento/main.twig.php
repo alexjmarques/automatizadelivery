@@ -45,7 +45,7 @@
                                 <p class="text-muted">{{ p.abertura|date('H:i') }}</p>
                             </td>
                             <td>
-                                <p class="text-center">{{ p.fechamento|date('H:i') }}</p>
+                                <p class="text-muted">{{ p.fechamento|date('H:i') }}</p>
                             </td>
                             <td>
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/editar/{{ p.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i> Editar</a>

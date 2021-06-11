@@ -43,6 +43,7 @@ class AdminEmpresaFrete extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $retorno = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -73,6 +74,7 @@ class AdminEmpresaFrete extends Controller
     public function update($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $retorno = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
         $valor = (new EmpresaFrete())->findById($retorno->id);

@@ -14,7 +14,7 @@ class EmpresaFuncionamento extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("empFuncionamento", ["abertura","fechamento", "id_dia","id_empresa"]);
+        parent::__construct("empresa_funcionamento", ["abertura","fechamento", "id_dia","id_empresa"]);
     }
 
     public function add(Empresa $empresa, Dias $dia, string $abertura, string $fechamento)

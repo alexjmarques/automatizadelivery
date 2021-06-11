@@ -24,7 +24,7 @@
 
                             <div class="card-body">
                                 <div id="step-0">
-                                <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/pedido/novo/start" class="tooltip-label-right" enctype="multipart/form-data">
+                                <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/pedido/novo/start" class="tooltip-label-right" enctype="multipart/form-data">
                                         <div class="form-row">
                                             <div class="form-group col-md-5 mb-5">
                                             <label class="col-12 col-form-label" style="padding-left: 0;">Nome do Cliente</label>

@@ -1,7 +1,7 @@
 <section class="footer pt-5 pb-5">
    <div class="container">
       <div class="row">
-         <div class="col-md-4 col-12 col-sm-12">
+         <div class="col-md-3 col-12 col-sm-12">
             <form class="newsletter-form mb-1">
                <div class="input-group">
                   <img src="{{BASE}}img/logo.png" alt="Automatiza Delivery" class="full-img">
@@ -20,24 +20,24 @@
          </div>
          <div class="col-md-2 col-sm-6 mobile-none">
          </div>
-         <div class="col-md-3 col-6 col-sm-4">
+         <div class="col-md-2 col-6 col-sm-4">
             <h6 class="mb-3">Institucional</h6>
             <ul>
-               <li><a href="{{BASE}}sobre">Automatiza App</a></li>
-               <li><a href="{{BASE}}visao-valores">Nossos Pilares</a></li>
-               <li><a href="{{BASE}}trabalhe-conosco">Trabalhe Conosco</a></li>
-               <li><a href="{{BASE}}contato">Contato</a></li>
-            </ul>
-         </div>
-         <div class="col-md-3 col-6 col-sm-4">
-            <h6 class="mb-3">Segurança</h6>
-            <ul>
-               <li><a href="#">Política de Privacidade</a></li>
-               <li><a href="#">Código de Conduta</a></li>
+               <!-- <li><a href="{{BASE}}institucional/sobre-nos">Automatiza App</a></li>
+               <li><a href="{{BASE}}institucional/visao-valores">Nossos Pilares</a></li> -->
+               <!-- <li><a href="{{BASE}}institucional/trabalhe-conosco">Trabalhe Conosco</a></li> -->
+               <li><a href="{{BASE}}institucional/contato">Fale Conosco</a></li>
                <li><a href="{{BASE}}admin/login">Login</a></li>
             </ul>
          </div>
-         
+         <div class="col-md-5 col-6 col-sm-4">
+            <h6 class="mb-3">Termos da Plataforma</h6>
+            <ul>
+               {% for link in links %}
+               <li><a href="{{BASE}}institucional/{{link.slug}}">{{link.titulo}}</a></li>
+               {% endfor %}
+            </ul>
+         </div>
       </div>
    </div>
 </section>

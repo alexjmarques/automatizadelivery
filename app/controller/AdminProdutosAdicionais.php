@@ -17,7 +17,7 @@ use app\Models\ProdutoAdicional;
 
 class AdminProdutosAdicionais extends Controller
 {
-    
+
     private $acoes;
     private $sessao;
     private $geral;
@@ -26,7 +26,7 @@ class AdminProdutosAdicionais extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-        
+
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->cache = new Cache();
@@ -35,14 +35,15 @@ class AdminProdutosAdicionais extends Controller
 
     public function index($data)
     {
-        
+
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
@@ -55,9 +56,9 @@ class AdminProdutosAdicionais extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $resultCategorias = $this->acoes->pagination('produtoAdicional','id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $resultCategorias = $this->acoes->pagination('produtoAdicional', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
         $categoriaTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
-        
+
         $this->load('_admin/produtoAdicional/main', [
             'produtoAdicional' => $resultCategorias,
             'categoriaTipoAdicional' => $categoriaTipoAdicional,
@@ -67,8 +68,8 @@ class AdminProdutosAdicionais extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -76,27 +77,28 @@ class AdminProdutosAdicionais extends Controller
     public function novo($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/produtoAdicional/novo', [
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }
@@ -105,20 +107,21 @@ class AdminProdutosAdicionais extends Controller
     {
         $usuario = $this->acoes->getFind('usuarios');
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $retorno = $this->acoes->getByField('produtoAdicional', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-        
+
         $this->load('_admin/produtoAdicional/editar', [
             'retorno' => $retorno,
             'usuario' => $usuario,
@@ -142,7 +145,7 @@ class AdminProdutosAdicionais extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'insert', 'mensagem' => 'Produto Adicional cadastrado com sucesso','error' => 'Não foi possível cadastrar o produto adicional','url' => 'admin/produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicional cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o produto adicional', 'url' => 'admin/produtos-adicionais']);
         exit($json);
     }
 
@@ -156,7 +159,7 @@ class AdminProdutosAdicionais extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id,'resp' => 'update','mensagem' => 'Produto Adicional atualizado com sucesso' ,'error' => 'Não foi possível atualizar o produto adicional','url' => 'admin/produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto Adicional atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto adicional', 'url' => 'admin/produtos-adicionais']);
         exit($json);
     }
 
@@ -167,5 +170,4 @@ class AdminProdutosAdicionais extends Controller
 
         redirect(BASE . "{$data['linkSite']}/admin/motoboys");
     }
-
 }

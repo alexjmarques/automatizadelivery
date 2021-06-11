@@ -210,7 +210,6 @@
     <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
     <script src="{{BASE}}js/function.js" type="text/javascript"></script>
  {% else %}
- 
     <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery-ui.js" type="text/javascript"></script>
     <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>

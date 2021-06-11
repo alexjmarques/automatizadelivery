@@ -12,7 +12,7 @@ class Estados extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("auxEstados", []);
+        parent::__construct("aux_estados", []);
     }
 
     public function add($nome, $uf)

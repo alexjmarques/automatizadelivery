@@ -45,6 +45,8 @@
     <link rel="stylesheet" href="{{BASE}}adm/css/vendor/perfect-scrollbar.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/jquery.timepicker.min.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/main.css" />
+
+    <script src="https://cdn.tiny.cloud/1/1gynmt6biui7yo713cxe0avaiicbqc9quif500b40zeyiush/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
 <body id="app-container" class="menu-main-hidden show-spinner" data-link_site="{{empresa.link_site}}">
@@ -85,7 +87,6 @@
     <script src="{{BASE}}adm/js/vendor/typeahead.bundle.js"></script>
     <script src="{{BASE}}adm/js/dore-plugins/select.from.library.js"></script>
     <script src="{{BASE}}adm/js/jquery.timepicker.min.js"></script>
-    <script src="{{BASE}}adm/js/card.js"></script>
     <script src="{{BASE}}adm/js/card.js"></script>
 	<script src="https://unpkg.com/dropzone"></script>
 	<script src="https://unpkg.com/cropperjs"></script>

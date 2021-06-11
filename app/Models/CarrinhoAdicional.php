@@ -17,7 +17,7 @@ class CarrinhoAdicional extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("carrinhoAdicional", []);
+        parent::__construct("carrinho_adicional", []);
     }
 
     public function add(Carrinho $carrinho,Produtos $produto, Usuarios $usuario, ProdutoAdicional $adicional,Empresa $empresa,string $quantidade, string $valor, string $numero_pedido)

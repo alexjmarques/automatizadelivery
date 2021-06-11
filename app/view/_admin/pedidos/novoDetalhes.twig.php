@@ -27,7 +27,7 @@
 
 
                     <div class="p-0 osahan-cart-item osahan-home-page flex">
-                        <form method="post" id="formFinish"
+                        <form method="post" autocomplete="off" id="formFinish"
                             action="{{BASE}}{{empresa.link_site}}/admin/carrinho/finaliza" novalidate>
                             <div class="bg-white mb-3 pb-0 col-md-6 float-left">
                             <table class="data-table data-table-simple responsive nowrap">

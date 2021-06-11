@@ -42,6 +42,9 @@ class AdminAtendimento extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
+        
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $dias = $this->acoes->getFind('dias');
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -59,7 +62,7 @@ class AdminAtendimento extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $funcionamento = $this->acoes->pagination('empresaFuncionamento', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $funcionamento = $this->acoes->pagination('empresaFuncionamento', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id_dia DESC');
 
         $this->load('_admin/atendimento/main', [
             'funcionamento' => $funcionamento,
@@ -77,6 +80,7 @@ class AdminAtendimento extends Controller
     public function novo($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $dias = $this->acoes->getFind('dias');
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -105,6 +109,7 @@ class AdminAtendimento extends Controller
     public function editar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $retorno = $this->acoes->getByField('empresaFuncionamento','id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $dias = $this->acoes->getFind('dias');

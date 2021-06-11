@@ -5185,3 +5185,29 @@ table.dataTable td {
 main {
   margin-top: 140px !important;
 }
+.block{
+  border-radius: 8px;
+  padding: 10px 0;
+  width: 70%;
+  margin: 0 auto;
+}
+.indisponivel a{
+  color: #ccc;
+}
+.indisponivel .iconsminds-digital-drawing:before{
+  color: #ccc;
+}
+.menu .sub-menu ul li.indisponivel a span,
+.indisponivel a{
+  color: #ccc;
+}
+.menu .sub-menu ul li.indisponivel a span.badge{
+  position: absolute;
+    right: 7px;
+    color: #fff;
+  float: right;
+  height: 20px;
+  width: 20px;
+  font-size: 15px;
+    padding: 3px;
+}

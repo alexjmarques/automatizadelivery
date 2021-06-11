@@ -15,7 +15,7 @@
     </ol>
 </nav>
 <div class="separator mb-5"></div>
-                <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/categoria/i" enctype="multipart/form-data">
+                <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/categoria/i" enctype="multipart/form-data">
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5>Categia dos produtos</h5>
