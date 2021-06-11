@@ -296,7 +296,7 @@ class Acoes
 
     public function countStatusMes(string $table, string $field, string $valor, string $data)
     {
-        return $this->{$table}->find("{$field} = {$valor} AND MONTH({$data})=MONTH(now()) AND YEAR({$data})=YEAR(now())")->count();
+        return $this->{$table}->find("{$field} = {$valor} AND EXTRACT(MONTH FROM TIMESTAMP {$data}) = date_part('month', CURRENT_DATE) AND EXTRACT(YEAR FROM TIMESTAMP {$data})= date_part('year', CURRENT_DATE)")->count();
     }
 
     public function countCompany(string $table,string $field, string $valor)
