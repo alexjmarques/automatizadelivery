@@ -42,20 +42,20 @@ class AdminRating extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $verificaUser = $this->geral->verificaEmpresaUser($empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $rating = $this->acoes->counts('avaliacao', 'id_empresa', $empresa->id);
         $ratingAll = $this->acoes->getByFieldAll('avaliacao', 'id_empresa', $empresa->id);
         $ratingPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id);
         $ratingEntrega = $this->acoes->getByFieldAll('carrinhoEntregas', 'id_empresa', $empresa->id);
-
+        
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-
-         $day = date('w');
+        
+        $day = date('w');
         $domingo = date('Y-m-d', strtotime('-' . $day . ' days'));
         $noventa = date('Y-m-d', strtotime('-' . (90 - $day) . ' days'));
-
+        
         if ($this->sessao->getUser()) {
+            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
