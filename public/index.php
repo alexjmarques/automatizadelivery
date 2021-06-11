@@ -1,5 +1,5 @@
 <?php
-
+phpinfo();
 require_once('../vendor/autoload.php');
 require_once('../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php');
 require_once('../app/functions/functions.php');
