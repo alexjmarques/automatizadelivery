@@ -6,6 +6,14 @@ require_once('../app/functions/functions.php');
 require_once('../app/config/config.php');
 require_once('../app/config/Router.php');
 
+use CoffeeCode\DataLayer\Connect;
+
+$conn = Connect::getInstance();
+$error = Connect::getError();
+
+if($error){
+    dd($error->getMessage());
+}
 $detect = new Mobile_Detect;
 
 $session_factory = new \Aura\Session\SessionFactory;
@@ -25,6 +33,9 @@ $SessionNivel = $segment->get('nivel');
 
 
 $router->dispatch();
+
+
+
 
 // if ($router->error()) {
 //     $router->redirect("/{$router->error()}");
