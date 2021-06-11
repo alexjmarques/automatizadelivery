@@ -11,7 +11,7 @@ if($live){
     define('UPLOADS_BASE', '/var/www/automatizadelivery.com.br/public_html/public/uploads/');
     define("DATA_LAYER_CONFIG", [
         "driver" => "pgsql",
-        "host" => "159.65.220.187",
+        "host" => "localhost",
         "port" => "5432",
         "dbname" => "automatiza_delivery",
         "username" => "postgres",
