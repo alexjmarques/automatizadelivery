@@ -62,10 +62,10 @@ class AdminTipoAdicional extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $resultCategorias = $this->acoes->pagination('categoriaTipoAdicional', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $tipoAdicional = $this->acoes->pagination('categoriaTipoAdicional', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
         $this->load('_admin/tipoAdicional/main', [
-            'tipoAdicional' => $resultCategorias,
+            'tipoAdicional' => $tipoAdicional,
             'paginacao' => $pager->render('mt-4 pagin'),
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,

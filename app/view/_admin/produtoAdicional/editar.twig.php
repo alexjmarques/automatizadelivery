@@ -37,7 +37,7 @@
                         <select class="form-control select2-single" id="tipoAdicional" name="tipoAdicional">
                             <option value="0" selected>Sem Tipo</option>
                             {% for ta in tipoAdicional %}
-                            <option value="{{ta.id}}" {% if retorno.tipoAdicional == ta.id  %}selected{% endif %}>{{ta.tipo}}</option>
+                            <option value="{{ta.id}}" {% if retorno.tipo_adicional == ta.id  %}selected{% endif %}>{{ta.tipo}}</option>
                             {% endfor %}
                         </select>
                     </div>
