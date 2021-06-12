@@ -314,8 +314,8 @@ class AllController extends Controller
         $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $idUsuario);
         if($usuario){
             $empresa = $this->acoes->getByField('empresa', 'id', $usuario->id_empresa);
-
             if($idEmpresa != $empresa->id_empresa){
+                dd($empresa->id_empresa);
                 redirect(BASE."{$empresa->link_site}/admin");
             }
         }
