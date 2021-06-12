@@ -126,13 +126,15 @@ class EmpresaCadastroController extends Controller
         }else{
             //dd('Entrou');
             $senha = $this->bcrypt->encrypt($data['senha'], '2a');
+            $telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
             //dd($data);
+
             $empresa = new Empresa();
             $empresa->id_categoria = 7;
             $empresa->nome_fantasia = $data['nome_fantasia'];
             $empresa->razao_social = $data['razao_social'];
             $empresa->cnpj = $data['cnpj'];
-            $empresa->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
+            $empresa->telefone = $telefone;
             $empresa->id_moeda = 4;
             $empresa->nf_paulista = 0;
             $empresa->dias_atendimento = '1,2,3,4,5,6,7';
@@ -251,7 +253,7 @@ class EmpresaCadastroController extends Controller
             $usuarios = new Usuarios();
             $usuarios->nome = $data['nome'];
             $usuarios->email = $data['email'];
-            $usuarios->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
+            $usuarios->telefone = $telefone;
             $usuarios->senha = $senha;
             $usuarios->nivel = 0;
             $usuarios->save();
