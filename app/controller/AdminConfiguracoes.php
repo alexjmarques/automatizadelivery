@@ -117,7 +117,7 @@ class AdminConfiguracoesController extends Controller
         $valor = (new Empresa())->findById($empresa->id);
         $valor->nome_fantasia = $data['nomeFantasia'];
         $valor->id_moeda = $data['moeda'];
-        $valor->telefone = $data['telefone'];
+        $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
         $valor->sobre = $data['sobre'];
         $valor->logo = $caminhoLogo;
         $valor->capa = $caminhoCapa;
