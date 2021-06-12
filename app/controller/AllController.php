@@ -315,6 +315,7 @@ class AllController extends Controller
         print_r($idUsuario);
         $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $idUsuario);
         if($usuario){
+            print_r($usuario);
             $empresa = $this->acoes->getByField('empresa', 'id', $usuario->id_empresa);
             if($idEmpresa != $empresa->id_empresa){
                 dd($empresa->id_empresa);
