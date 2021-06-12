@@ -311,14 +311,10 @@ class AllController extends Controller
 
     public function verificaEmpresaUser(int $idEmpresa, int $idUsuario)
     {
-        print_r($idEmpresa);
-        print_r($idUsuario);
         $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $idUsuario);
         if($usuario){
-            print_r($usuario);
             $empresa = $this->acoes->getByField('empresa', 'id', $usuario->id_empresa);
-            if($idEmpresa != $empresa->id_empresa){
-                dd($empresa->id_empresa);
+            if($idEmpresa != $usuario->id_empresa){
                 redirect(BASE."{$empresa->link_site}/admin");
             }
         }
