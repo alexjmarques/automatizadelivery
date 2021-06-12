@@ -126,7 +126,7 @@ class EmpresaCadastroController extends Controller
         }else{
             //dd('Entrou');
             $senha = $this->bcrypt->encrypt($data['senha'], '2a');
-
+            //dd($data);
             $empresa = new Empresa();
             $empresa->id_categoria = 7;
             $empresa->nome_fantasia = $data['nome_fantasia'];
