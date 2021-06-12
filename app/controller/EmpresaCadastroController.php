@@ -139,7 +139,7 @@ class EmpresaCadastroController extends Controller
             $empresa->email_contato = $data['email'];
             $empresa->link_site = $data['link_site'];
             $empresa->save();
-            //print_r($empresa);
+            print_r($empresa);
             
             $empresaEnderecos = new EmpresaEnderecos();
             $empresaEnderecos->id_empresa = $empresa->id;
@@ -151,7 +151,7 @@ class EmpresaCadastroController extends Controller
             $empresaEnderecos->estado = $data['estado'];
             $empresaEnderecos->cep = $data['cep'];
             $empresaEnderecos->save();
-            //print_r($empresaEnderecos);
+            print_r($empresaEnderecos);
 
             $formasPagamento = new FormasPagamento();
             $formasPagamento->tipo = 'Dinheiro';
@@ -159,7 +159,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento->status = 1;
             $formasPagamento->id_empresa = $empresa->id;
             $formasPagamento->save();
-            //print_r($formasPagamento);
+            print_r($formasPagamento);
 
             $formasPagamento2 = new FormasPagamento();
             $formasPagamento2->tipo = 'Cartão de Débito';
@@ -167,7 +167,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento2->status = 1;
             $formasPagamento2->id_empresa = $empresa->id;
             $formasPagamento2->save();
-            //print_r($formasPagamento2);
+            print_r($formasPagamento2);
 
             $formasPagamento3 = new FormasPagamento();
             $formasPagamento3->tipo = 'Cartão Crédito';
@@ -175,7 +175,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento3->status = 1;
             $formasPagamento3->id_empresa = $empresa->id;
             $formasPagamento3->save();
-            //print_r($formasPagamento3);
+            print_r($formasPagamento3);
 
             $formasPagamento4 = new FormasPagamento();
             $formasPagamento4->tipo = 'QR Code';
@@ -183,7 +183,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento4->status = 1;
             $formasPagamento4->id_empresa = $empresa->id;
             $formasPagamento4->save();
-            //print_r($formasPagamento4);
+            print_r($formasPagamento4);
 
             $formasPagamento5 = new FormasPagamento();
             $formasPagamento5->tipo = 'Vale Refeição';
@@ -191,7 +191,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento5->status = 1;
             $formasPagamento5->id_empresa = $empresa->id;
             $formasPagamento5->save();
-            //print_r($formasPagamento5);
+            print_r($formasPagamento5);
 
             $formasPagamento6 = new FormasPagamento();
             $formasPagamento6->tipo = 'Vale Alimentação';
@@ -199,7 +199,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento6->status = 1;
             $formasPagamento6->id_empresa = $empresa->id;
             $formasPagamento6->save();
-            //print_r($formasPagamento6);
+            print_r($formasPagamento6);
 
             $formasPagamento7 = new FormasPagamento();
             $formasPagamento7->tipo = 'Dinheiro + Cartão';
@@ -207,7 +207,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento7->status = 1;
             $formasPagamento7->id_empresa = $empresa->id;
             $formasPagamento7->save();
-            //print_r($formasPagamento7);
+            print_r($formasPagamento7);
 
             $formasPagamento8 = new FormasPagamento();
             $formasPagamento8->tipo = 'PIX - CODE PIX';
@@ -215,7 +215,7 @@ class EmpresaCadastroController extends Controller
             $formasPagamento8->status = 1;
             $formasPagamento8->id_empresa = $empresa->id;
             $formasPagamento8->save();
-            //print_r($formasPagamento8);
+            print_r($formasPagamento8);
 
             $tipoDelivery = new TipoDelivery();
             $tipoDelivery->tipo = 'Entrega';
@@ -223,7 +223,7 @@ class EmpresaCadastroController extends Controller
             $tipoDelivery->status = 1;
             $tipoDelivery->id_empresa = $empresa->id;
             $tipoDelivery->save();
-            //print_r($tipoDelivery);
+            print_r($tipoDelivery);
 
             $tipoDelivery2 = new TipoDelivery();
             $tipoDelivery2->tipo = 'Retirada';
@@ -231,7 +231,7 @@ class EmpresaCadastroController extends Controller
             $tipoDelivery2->status = 1;
             $tipoDelivery2->id_empresa = $empresa->id;
             $tipoDelivery2->save();
-            //print_r($tipoDelivery2);
+            print_r($tipoDelivery2);
             
             $empresaFrete = new EmpresaFrete();
             $empresaFrete->status = 0;
@@ -246,7 +246,7 @@ class EmpresaCadastroController extends Controller
             $empresaFrete->primeira_compra = 0;
             $empresaFrete->id_empresa = $empresa->id;
             $empresaFrete->save();
-            //print_r($empresaFrete);
+            print_r($empresaFrete);
             
             $usuarios = new Usuarios();
             $usuarios->nome = $data['nome'];
@@ -255,14 +255,14 @@ class EmpresaCadastroController extends Controller
             $usuarios->senha = $senha;
             $usuarios->nivel = 0;
             $usuarios->save();
-            //print_r($usuarios);
+            print_r($usuarios);
             
             $usuariosEmpresa = new UsuariosEmpresa();
             $usuariosEmpresa->id_usuario = $usuarios->id;
             $usuariosEmpresa->id_empresa = $empresa->id;
             $usuariosEmpresa->nivel = 0;
             $usuariosEmpresa->save();
-            //print_r($usuariosEmpresa);
+            print_r($usuariosEmpresa);
 
             $this->sessao->sessaoNew('id_usuario', $usuarios->id);
             $this->sessao->sessaoNew('usuario', $usuarios->email);
