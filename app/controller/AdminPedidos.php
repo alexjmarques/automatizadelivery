@@ -15,11 +15,12 @@ use app\classes\Sessao;
 use app\Models\CarrinhoEntregas;
 use app\Models\CarrinhoPedidos;
 use Mike42\Escpos\Printer;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\LinuxPrintConnector;
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
+use Exception;
+// use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+// use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
 use Browser;
 
 
@@ -372,33 +373,34 @@ class AdminPedidos extends Controller
 
     public function pedidoTestImprimir($data)
     {
-        try {
-            $connector = new FilePrintConnector("/dev/usb/lp0");
-            //$connector = new NetworkPrintConnector("159.65.220.187", 9100);
-            //$connector = new WindowsPrintConnector("smb://computername/Receipt Printer");
-
-            /* Print a "Hello world" receipt" */
-            $printer = new Printer($connector);
-            $printer->text("Hello World!\n");
-            $printer->cut();
-
-            /* Close printer */
-            $printer->close();
-        } finally {
-            $printer->close();
-        }
-
         // try {
-        //     $connector = new NetworkPrintConnector("localhost", 9100);
+        //     //$connector = new FilePrintConnector("/dev/usb/lp0");
+        //     $connector = new NetworkPrintConnector("159.65.220.187", 9100);
+        //     //$connector = new WindowsPrintConnector("smb://computername/STMicroelectronics POS58 Printer USB");
+
+        //     /* Print a "Hello world" receipt" */
         //     $printer = new Printer($connector);
         //     $printer -> text("Hello World!\n");
         //     $printer -> cut();
 
         //     /* Close printer */
         //     $printer -> close();
-        // } catch (Exception $e) {
-        //     echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
+        // } finally {
+        //     $printer -> close();
         // }
+
+        try {
+            //$connector = new FilePrintConnector("/dev/usb/lp0");
+            $connector = new NetworkPrintConnector("159.65.220.187", 9100);
+            $printer = new Printer($connector);
+            $printer -> text("Hello World!\n");
+            $printer -> cut();
+
+            /* Close printer */
+            $printer -> close();
+        } catch (Exception $e) {
+            echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
+        }
     }
 
     // public function pedidoImprimir($data)
