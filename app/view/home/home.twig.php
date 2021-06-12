@@ -39,15 +39,8 @@
                      <p class="small mb-1 font-weight-bold text-dark">{{cat.nome }}</p>
                      {% endif %}
                      {% endfor %}
-
-                     
                      <p class="small mb-1">
-                        {% for end in empresaEndereco %}
-                        {% if end.id_empresa == emp.id %}
-                        {{ end.rua }} {{ end.numero }}, {% if end.complemento != "" %} {{ end.complemento }}{% endif %}<br/>  {{ end.bairro }} - {{ end.cidade }}/{{ end.estado }}
-                        {% endif %}
-                        {% endfor %}
-                        <!-- Pedidos: <span class="font-weight-bold text-dark">({# {{cont}} #})</span> -->
+                     Telefone: ({{ emp.telefone[:2] }}) {{ emp.telefone|slice(2, 5) }}-{{ emp.telefone|slice(7, 9) }}
                      </p>
 
                   </div>
