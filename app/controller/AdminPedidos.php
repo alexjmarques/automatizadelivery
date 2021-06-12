@@ -16,6 +16,8 @@ use app\Models\CarrinhoEntregas;
 use app\Models\CarrinhoPedidos;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\LinuxPrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
 use Mike42\Escpos\Printer;
 use Browser;
@@ -371,7 +373,9 @@ class AdminPedidos extends Controller
     public function pedidoTestImprimir($data)
     {
         try {
-            $connector = new CupsPrintConnector("Epson EU-T332C");
+            //$connector = new FilePrintConnector("/dev/usb/lp0");
+            $connector = new NetworkPrintConnector("159.65.220.187", 9100);
+            //$connector = new WindowsPrintConnector("smb://computername/Receipt Printer");
             
             /* Print a "Hello world" receipt" */
             $printer = new Printer($connector);
