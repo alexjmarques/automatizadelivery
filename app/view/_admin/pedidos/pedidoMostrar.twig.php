@@ -117,9 +117,6 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
         <div class="env subtotal">Cliente Pediu Nota Fiscal Paulista no CPF <strong>{{nf_paulista.cpf}}</strong></div>
     {% endif %}
 	<hr/>
-
-
-    planoAtivo
     
     {% if pedido.status == 2 %}
     {% if pedido.tipo_frete == 1 %}
@@ -131,7 +128,7 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
     <div class="env motoboy_select">
         <h6>Qual Motoboy vai entregar?</h6>
                 <select class="form-control select2-single" id="motoboy-{{pedido.id}}" name="motoboy-{{pedido.id}}">
-                    <option value="0" selected>Selecione Motoboy</option>
+                    <option value="Selecione" selected>Selecione Motoboy</option>
                     {% for m in motoboys %}
                     {% for u in usuarios %}
                     {% if m.id_usuario == u.id %}

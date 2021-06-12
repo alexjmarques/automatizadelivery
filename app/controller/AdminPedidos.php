@@ -14,6 +14,10 @@ use app\classes\Preferencias;
 use app\classes\Sessao;
 use app\Models\CarrinhoEntregas;
 use app\Models\CarrinhoPedidos;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
+use Mike42\Escpos\Printer;
 use Browser;
 
 
@@ -85,9 +89,6 @@ class AdminPedidos extends Controller
 
     public function pedidosRecebido($data)
     {
-        if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-        }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -103,7 +104,6 @@ class AdminPedidos extends Controller
                 'planoAtivo' => $planoAtivo,
                 'empresa' => $empresa,
                 'trans' => $this->trans,
-                'usuarioLogado' => $usuarioLogado,
                 'isLogin' => $this->sessao->getUser(),
                 'nivelUsuario' => $this->sessao->getNivel(),
                 'caixa' => $estabelecimento[0]->data_inicio,
@@ -315,18 +315,42 @@ class AdminPedidos extends Controller
 
     public function mudarStatus($data)
     {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $pedidos = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
 
         $valor = (new CarrinhoPedidos())->findById($data['id']);
         $valor->status = $data['status'];
-        $valor->id_motoboy = $data['motoboy'];
+        if ($planoAtivo > 2) {
+            $valor->id_motoboy = $data['motoboy'];
+        } else {
+            $valor->id_motoboy = 0;
+        }
         $valor->save();
 
-        if ($data['motoboy'] > 0) {
-            $count = $this->acoes->countsTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
-            if ($count == 0) {
+        $count = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
+        $pedido = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
+        if ($planoAtivo > 2) {
+            if ($data['motoboy'] > 0) {
+                if (!$count) {
+                    $entregas = new CarrinhoEntregas();
+                    $entregas->id_motoboy = $data['motoboy'];
+                    $entregas->id_caixa = $data['id_caixa'];
+                    $entregas->id_cliente = $data['id_cliente'];
+                    $entregas->id_empresa = $data['id_empresa'];
+                    $entregas->numero_pedido = $data['numero_pedido'];
+                    $entregas->status = $data['status'];
+                    $entregas->save();
+                } else {
+                    $entregas = (new CarrinhoEntregas())->findById($pedido->id);
+                    $entregas->status = $data['status'];
+                    $entregas->save();
+                }
+            }
+        } else {
+            if (!$count) {
                 $entregas = new CarrinhoEntregas();
-                $entregas->id_motoboy = $data['motoboy'];
+                $entregas->id_motoboy = 0;
                 $entregas->id_caixa = $data['id_caixa'];
                 $entregas->id_cliente = $data['id_cliente'];
                 $entregas->id_empresa = $data['id_empresa'];
@@ -334,13 +358,43 @@ class AdminPedidos extends Controller
                 $entregas->status = $data['status'];
                 $entregas->save();
             } else {
-                $pedido = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
                 $entregas = (new CarrinhoEntregas())->findById($pedido->id);
                 $entregas->status = $data['status'];
+                $entregas->id_motoboy = 0;
                 $entregas->save();
             }
         }
         echo "Status alterado com sucesso";
+    }
+
+
+    public function pedidoTestImprimir($data)
+    {
+        try {
+            $connector = new CupsPrintConnector("Epson EU-T332C");
+            
+            /* Print a "Hello world" receipt" */
+            $printer = new Printer($connector);
+            $printer -> text("Hello World!\n");
+            $printer -> cut();
+            
+            /* Close printer */
+            $printer -> close();
+        } catch (Exception $e) {
+            echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+        }
+
+        // try {
+        //     $connector = new NetworkPrintConnector("localhost", 9100);
+        //     $printer = new Printer($connector);
+        //     $printer -> text("Hello World!\n");
+        //     $printer -> cut();
+            
+        //     /* Close printer */
+        //     $printer -> close();
+        // } catch (Exception $e) {
+        //     echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
+        // }
     }
 
     // public function pedidoImprimir($data)
