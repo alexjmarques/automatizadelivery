@@ -33,7 +33,7 @@
                      <img src="{{BASE}}uploads/{{ emp.logo }}" class="img-float">
                   </div>
                   <div class="py-2 float-left">
-                     <p class="mb-0 text-black font-weight-bold">{{ emp.nome_fantasia }}</p>
+                     <p class="mb-0 text-black font-weight-bold size18">{{ emp.nome_fantasia }}</p>
                      {% for cat in categoria %}
                      {% if cat.id == emp.id_categoria %}
                      <p class="small mb-1 text-dark">{{cat.nome }}</p>
