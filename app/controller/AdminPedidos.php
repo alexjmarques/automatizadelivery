@@ -373,8 +373,8 @@ class AdminPedidos extends Controller
     public function pedidoTestImprimir($data)
     {
         try {
-            //$connector = new FilePrintConnector("/dev/usb/lp0");
-            $connector = new NetworkPrintConnector("159.65.220.187", 9100);
+            $connector = new FilePrintConnector("/dev/usb/lp0");
+            //$connector = new NetworkPrintConnector("159.65.220.187", 9100);
             //$connector = new WindowsPrintConnector("smb://computername/Receipt Printer");
 
             /* Print a "Hello world" receipt" */
