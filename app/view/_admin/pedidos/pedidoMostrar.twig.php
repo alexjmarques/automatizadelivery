@@ -117,15 +117,19 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
         <div class="env subtotal">Cliente Pediu Nota Fiscal Paulista no CPF <strong>{{nf_paulista.cpf}}</strong></div>
     {% endif %}
 	<hr/>
+
+
+    planoAtivo
     
     {% if pedido.status == 2 %}
     {% if pedido.tipo_frete == 1 %}
     {% else %}
-    <div class="env motoboy_select">
-        <h6>Qual Motoboy vai entregar?</h6>
             <input type="hidden" name="id_cliente" id="id_cliente" value="{{cliente.id}}">
             <input type="hidden" name="chave" id="chave" value="{{pedido.chave}}">
             <input type="hidden" name="numero_pedido" id="numero_pedido" value="{{pedido.numero_pedido}}">
+    {% if planoAtivo > 2 %}
+    <div class="env motoboy_select">
+        <h6>Qual Motoboy vai entregar?</h6>
                 <select class="form-control select2-single" id="motoboy-{{pedido.id}}" name="motoboy-{{pedido.id}}">
                     <option value="0" selected>Selecione Motoboy</option>
                     {% for m in motoboys %}
@@ -137,7 +141,14 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
                     {% endfor %}
 	            </select>
         </div>
+        {% else %}
+
+        <select class="form-control select2-single hidden" id="motoboy-{{pedido.id}}" name="motoboy-{{pedido.id}}">
+                    <option value="0" selected>Motoboy Sistema</option>
+	            </select>
+
         {% endif %}
+    {% endif %}
     {% endif %}
 </div>
 
@@ -149,6 +160,7 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
     {% set count = count + 1 %}
         <a class="col-meio btn-processo bg-danger" onclick="mudarStatus({{pedido.id}}, {{count}}, {{estabelecimento}})" id="btn-carrinho">Colocar em produção<i class="simple-icon-arrow-right"></i></a>
 {% endif %}
+
 {% if pedido.status == 2 %}
     {% set count = pedido.status %}
     {% set count = count + 1 %}
@@ -159,15 +171,17 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
     Entregar ao motoboy{% endif %}<i class="simple-icon-arrow-right"></i></a>
 {% endif %}
 
+
 {% if pedido.status == 3 %}
     {% set count = pedido.status %}
     {% set count = count + 1 %}
     <select class="form-control select2-single hidden" id="motoboy-{{pedido.id}}" name="motoboy-{{pedido.id}}">
     <option value="{{pedido.id_motoboy}}" selected>{{pedido.id_motoboy}}</option>
     </select>
-                    
-        <a class="col-meio btn-processo bg-secondary" onclick="mudarStatusEntrega({{pedido.id}}, {{count}}, {{estabelecimento}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></a>
+    <a class="col-meio btn-processo bg-secondary" onclick="mudarStatusEntrega({{pedido.id}}, {{count}}, {{estabelecimento}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></a>
 {% endif %}
+
+
 
 
 {% if pedido.status >= 3 %}

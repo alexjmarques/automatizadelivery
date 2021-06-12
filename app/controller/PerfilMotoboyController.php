@@ -36,7 +36,7 @@ class PerfilMotoboyController extends Controller
     private $categoriaModel;
     private $produtoModel;
     private $diasModel;
-    
+
     private $usuarioModel;
     private $enderecoModel;
     private $estadosModel;
@@ -54,7 +54,7 @@ class PerfilMotoboyController extends Controller
      */
     public function __construct()
     {
-        
+
         $this->configEmpresaModel = new AdminConfigEmpresaModel();
         $this->moedaModel = new MoedaModel();
         $this->deliveryModel = new AdminConfigFreteModel();
@@ -85,7 +85,7 @@ class PerfilMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
             //if($resulUsuario[':nivel'] != 3){redirect(BASE . $empresaAct[':link_site']);}
         } else {
@@ -94,9 +94,9 @@ class PerfilMotoboyController extends Controller
 
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
         $verificaLogin = $this->allController->verificaLogin($empresaAct[':id']);
-        $resultCarrinhoQtd = $this->vendasModel->carrinhoQtdListMoto($SessionIdUsuario,$empresaAct[':id']);
+        $resultCarrinhoQtd = $this->vendasModel->carrinhoQtdListMoto($SessionIdUsuario, $empresaAct[':id']);
 
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
+        $trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
@@ -108,7 +108,7 @@ class PerfilMotoboyController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -130,17 +130,17 @@ class PerfilMotoboyController extends Controller
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
-            $resultCarrinhoQtd = $this->vendasModel->carrinhoQtdListMoto($SessionIdUsuario,$empresaAct[':id']);
+            $resultCarrinhoQtd = $this->vendasModel->carrinhoQtdListMoto($SessionIdUsuario, $empresaAct[':id']);
             //if($resulUsuario[':nivel'] != 3){redirect(BASE. 'motoboy');}
-            $resulMotoboy = $this->motoboyModel->getByid_motoboy($SessionIdUsuario,$empresaAct[':id']);
+            $resulMotoboy = $this->motoboyModel->getByid_motoboy($SessionIdUsuario, $empresaAct[':id']);
         } else {
             redirect(BASE . $empresaAct[':link_site'] . 'login');
         }
         $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
 
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
+        $trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
@@ -155,7 +155,7 @@ class PerfilMotoboyController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
     /**
@@ -180,7 +180,7 @@ class PerfilMotoboyController extends Controller
         $verificaLogin = $this->allController->verificaLogin($empresaAct[':id']);
         $resultCarrinhoQtd = $this->adminCarrinhoModel->carrinhoQtdList($SessionIdUsuario);
 
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
+        $trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
@@ -192,8 +192,8 @@ class PerfilMotoboyController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
-            
+            'isLogin' => $this->sessao->getUser(),
+
         ]);
     }
 
@@ -208,10 +208,10 @@ class PerfilMotoboyController extends Controller
         $result = $this->enderecoModel->delete($data['id']);
 
         if ($result <= 0) {
-            redirect(BASE.$empresaAct[':link_site'].'/enderecos');
+            redirect(BASE . $empresaAct[':link_site'] . '/enderecos');
             exit;
         }
-        redirect(BASE.$empresaAct[':link_site'].'/enderecos');
+        redirect(BASE . $empresaAct[':link_site'] . '/enderecos');
     }
 
     /**

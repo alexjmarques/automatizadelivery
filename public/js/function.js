@@ -807,43 +807,46 @@ $("#form").submit(function (e) {
         type: 'POST',
         data: formData,
         beforeSend: function () {
-            $(".acaoBtn").prop("disabled", true);
-            $('.acaoBtn').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+            $(".acaoBtn, .btnFinalizaCadastro").prop("disabled", true);
+            $('.acaoBtn, .btnFinalizaCadastro').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         },
         complete: function () {
-            $(".acaoBtn").prop("disabled", false);
+            $(".acaoBtn, .btnFinalizaCadastro").prop("disabled", false);
             $('.acaoBtn').html('LOGIN');
             $('.acaoBtnCadastro').html('CADASTRAR');
             $('.acaoBtnEnviar').html('ENVIAR');
             $('.acaoBtnAtualizar').html('ATUALIZAR');
+            $('.btnFinalizaCadastro').html('Finaliza Cadastro');
+            
         },
-        success: function (data) {
-            console.log(data);
-            if (data.id > 0) {
-                switch (data.mensagem) {
+        success: function (dd) {
+            console.log(dd);
+            if (dd.id > 0) {
+                console.log(dd.mensagem);
+                switch (dd.mensagem) {
                     case 'Enviado o Código agora e só validar':
                         $('#ValidaCode').modal("show");
                         break;
                     case 'Aguarde estamos redirecionando para a pagina inicial':
                         $('#ValidaCode').modal("hide");
-                        $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+                        $('#mensagem').html(`<div class="alert alert-success" role="alert">${dd.mensagem}</div>`);
                         localStorage.setItem('username', $('#emailOurTel').val());
-                        window.location = `/${link_site}/${data.url}`;
+                        window.location = `/${link_site}/${dd.url}`;
                         break;
                     case 'Pedido finalizado com sucesso':
                         $('#FinalizarPedidoOK').modal("show");
                         break;
                     case 'Seu produto foi adicionado a sacola aguarde que tem mais!':
-                        window.location = `/${link_site}/${data.url}/${data.id}`;
+                        window.location = `/${link_site}/${dd.url}/${dd.id}`;
                         break;
                     case 'Primeiro endereço cadastrado com Sucesso!':
                         $('#mensagem').html('Pronto! Agora que tenho suas informações de entrega revise os itens de seu carrinho, adicione ou remova itens para finalizar seu pedido');
                         $('.successSup').show();
                         $('.errorSup').hide();
                         $('#alertGeralSite').modal("show");
-                        if (data.url) {
+                        if (dd.url) {
                             $(".buttonAlert").on('click', function () {
-                                window.location = `/${link_site}/${data.url}`;
+                                window.location = `/${link_site}/${dd.url}`;
                             });
                         }
                         break;
@@ -851,13 +854,13 @@ $("#form").submit(function (e) {
                         $('#cancelarPedido').modal("show");
                         break;
                     default:
-                        $('#mensagem').html(data.mensagem);
+                        $('#mensagem').html(dd.mensagem);
                         $('.successSup').show();
                         $('.errorSup').hide();
                         $('#alertGeralSite').modal("show");
-                        if (data.url) {
+                        if (dd.url) {
                             $(".buttonAlert").on('click', function () {
-                                window.location = `/${link_site}/${data.url}`;
+                                window.location = `/${link_site}/${dd.url}`;
                             });
                         }
                         break;
@@ -866,11 +869,11 @@ $("#form").submit(function (e) {
                 $('.errorSup').show();
                 $('.successSup').hide();
                 $('#alertGeralSite').modal("show");
-                $('#mensagem').html(data.error);
+                $('#mensagem').html(dd.error);
             }
 
         },
-        error: function (data) {
+        error: function (dd) {
             $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
         },
         cache: false,

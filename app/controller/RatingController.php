@@ -21,7 +21,7 @@ class RatingController extends Controller
     private $sessao;
     private $geral;
     private $trans;
-    
+
 
     /**
      * 
@@ -54,7 +54,7 @@ class RatingController extends Controller
         $resulCaixa = $this->adminCaixaModel->getUll($empresaAct[':id']);
         $resulifood = $this->marketplace->getById(1);
 
-        $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
+        $trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
@@ -72,7 +72,7 @@ class RatingController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
             'caixa' => $estabelecimento[0]->data_inicio,
         ]);
     }

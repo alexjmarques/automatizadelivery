@@ -2025,7 +2025,7 @@ footer {
 }
 
 .bg-primary {
-    background: #880A1F;
+    background: #ea1d2c !important;
 }
 
 .card-pricing.popular {
@@ -3073,4 +3073,7 @@ a.gold:hover {
     100% {
       stroke-dashoffset: 900;
     }
+  }
+  .cinza{
+      background-color: #dddddf;
   }

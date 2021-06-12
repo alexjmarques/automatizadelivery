@@ -44,9 +44,9 @@ class PerfilController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        
+
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -58,16 +58,16 @@ class PerfilController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
     public function perfil($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        
+
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -76,9 +76,10 @@ class PerfilController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
+            'detect' => new Mobile_Detect(),
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -87,9 +88,9 @@ class PerfilController extends Controller
     {
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        
+
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -98,9 +99,10 @@ class PerfilController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
+            'detect' => new Mobile_Detect(),
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -109,10 +111,10 @@ class PerfilController extends Controller
     public function enderecos($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        
-        
+
+
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulEnderecos = $this->acoes->getByFieldAll('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
             $resulEstados = $this->acoes->getFind('estados');
@@ -123,11 +125,12 @@ class PerfilController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
+            'detect' => new Mobile_Detect(),
             'enderecos' => $resulEnderecos,
             'estados' => $resulEstados,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -137,11 +140,11 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-        $resulEstados = $this->acoes->getFind('estados');
+            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+            $resulEstados = $this->acoes->getFind('estados');
 
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -150,11 +153,12 @@ class PerfilController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
+            'detect' => new Mobile_Detect(),
             'enderecos' => $resulEnderecos,
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -163,11 +167,12 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-        $resulEstados = $this->acoes->getFind('estados');
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+            $resulEstados = $this->acoes->getFind('estados');
 
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -177,10 +182,11 @@ class PerfilController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'resulEnderecos' => $resulEnderecos,
+            'detect' => new Mobile_Detect(),
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -190,11 +196,11 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-        $resulEstados = $this->acoes->getFind('estados');
+            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+            $resulEstados = $this->acoes->getFind('estados');
 
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -203,11 +209,12 @@ class PerfilController extends Controller
             'empresa' => $empresa,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
+            'detect' => new Mobile_Detect(),
             'enderecoAtivo' => $resulEnderecos,
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -217,11 +224,11 @@ class PerfilController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-        $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-        $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-        $resulEstados = $this->acoes->getFind('estados');
+            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+            $resulEstados = $this->acoes->getFind('estados');
 
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
@@ -231,10 +238,11 @@ class PerfilController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'resulEnderecos' => $resulEnderecos,
+            'detect' => new Mobile_Detect(),
             'estadosSelecao' => $resulEstados,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
 
         ]);
     }
@@ -258,7 +266,7 @@ class PerfilController extends Controller
         }
 
         $novo = new UsuariosEnderecos();
-        $novo->id_usuario = $data['id_usuario'];
+        $novo->id_usuario = $this->sessao->getUser();
         $novo->nome_endereco = $nome_endereco;
         $novo->rua = $data['rua'];
         $novo->numero = $data['numero'];
@@ -269,6 +277,8 @@ class PerfilController extends Controller
         $novo->cep = $data['cep'];
         $novo->principal = $principal;
         $novo->save();
+
+        //dd($novo);
 
         header('Content-Type: application/json');
         if ($enderecos > 0) {

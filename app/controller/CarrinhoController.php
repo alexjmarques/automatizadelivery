@@ -106,9 +106,12 @@ class CarrinhoController extends Controller
         $valor->valor = $data['valor'];
         $valor->save();
 
-        //dd($valor);
-
-       $nova_sessao = $this->sessao->sessaoNew('carrinho', $valor->id);
+        if($this->sessao->getUser() == 0){
+            $this->sessao->sessaoNew('carrinho', $valor->id);
+        }else{
+            unset($_SESSION['Vendor\Aura\Segment']['carrinho']);
+        }
+        
 
         header('Content-Type: application/json');
         if ($valor->id_adicional != null) {
