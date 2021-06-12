@@ -129,6 +129,7 @@ class EmpresaCadastroController extends Controller
             $telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
             //dd($data);
 
+            dd($data);
             $empresa = new Empresa();
             $empresa->id_categoria = 7;
             $empresa->nome_fantasia = $data['nome_fantasia'];
