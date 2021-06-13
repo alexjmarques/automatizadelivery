@@ -145,20 +145,20 @@ class AdminCupom extends Controller
 
     public function insert($data)
     {
-        $valorC = str_replace(",", ".", Input::post('valor_cupom'));
-        $dataC = Input::post('expira');
+        $valorC = str_replace(",", ".", $data['valor_cupom']);
+        $dataC = $data['expira'];
         $dataC = implode("-", array_reverse(explode("/", $dataC)));
         $valor_cupom = number_format((float)$valorC, 2, '.', ',');
         $expira = date('Y-m-d H:i:s', strtotime($dataC));
 
         $valor = new CupomDesconto();
-        $valor->tipo_cupom = Input::post('tipo_cupom');
-        $valor->nome_cupom = Input::post('nome_cupom');
+        $valor->tipo_cupom = $data['tipo_cupom'];
+        $valor->nome_cupom = $data['nome_cupom'];
         $valor->valor_cupom = $valor_cupom;
         $valor->expira = $expira;
-        $valor->qtd_utilizacoes = Input::post('qtd_utilizacoes');
-        $valor->status = Input::post('switch');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->qtd_utilizacoes = $data['qtd_utilizacoes'];
+        $valor->status = $data['switch'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');
@@ -169,20 +169,20 @@ class AdminCupom extends Controller
     public function update($data)
     {
 
-        $valorC = str_replace(",", ".", Input::post('valor_cupom'));
-        $dataC = Input::post('expira');
+        $valorC = str_replace(",", ".", $data['valor_cupom']);
+        $dataC = $data['expira'];
         $dataC = implode("-", array_reverse(explode("/", $dataC)));
         $valor_cupom = number_format((float)$valorC, 2, '.', ',');
         $expira = date('Y-m-d H:i:s', strtotime($dataC));
 
         $valor = (new CupomDesconto())->findById($data['id']);
-        $valor->tipo_cupom = Input::post('tipo_cupom');
-        $valor->nome_cupom = Input::post('nome_cupom');
+        $valor->tipo_cupom = $data['tipo_cupom'];
+        $valor->nome_cupom = $data['nome_cupom'];
         $valor->valor_cupom = $valor_cupom;
         $valor->expira = $expira;
-        $valor->qtd_utilizacoes = Input::post('qtd_utilizacoes');
-        $valor->status = Input::post('switch');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->qtd_utilizacoes = $data['qtd_utilizacoes'];
+        $valor->status = $data['switch'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');

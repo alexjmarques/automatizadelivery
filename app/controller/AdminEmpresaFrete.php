@@ -77,17 +77,17 @@ class AdminEmpresaFrete extends Controller
         $retorno = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
         $valor = (new EmpresaFrete())->findById($retorno->id);
-        $valor->previsao_minutos = Input::post('previsao_minutos');
-        $valor->taxa_entrega = $this->geral->brl2decimal(Input::post('taxa_entrega'));
-        $valor->km_entrega = Input::post('km_entrega');
-        $valor->km_entrega_excedente = Input::post('km_entrega_excedente');
-        $valor->valor_excedente = $this->geral->brl2decimal(Input::post('valor_excedente'));
-        $valor->taxa_entrega_motoboy = $this->geral->brl2decimal(Input::post('taxa_entrega_motoboy'));
-        $valor->valor = $this->geral->brl2decimal(Input::post('valor'));
-        $valor->frete_status = Input::post('frete_status');
-        $valor->primeira_compra = Input::post('switch');
+        $valor->previsao_minutos = $data['previsao_minutos'];
+        $valor->taxa_entrega = $this->geral->brl2decimal($data['taxa_entrega']);
+        $valor->km_entrega = $data('km_entrega');
+        $valor->km_entrega_excedente = $data['km_entrega_excedente'];
+        $valor->valor_excedente = $this->geral->brl2decimal($data['valor_excedente']);
+        $valor->taxa_entrega_motoboy = $this->geral->brl2decimal($data['taxa_entrega_motoboy']);
+        $valor->valor = $this->geral->brl2decimal($data['valor']);
+        $valor->frete_status = $data['frete_status'];
+        $valor->primeira_compra = $data['switch'];
 
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');

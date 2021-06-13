@@ -116,9 +116,9 @@ class AdminDeliveryTipo extends Controller
     public function insert($data)
     {
         $valor = new TipoDelivery();
-        $valor->tipo = Input::post('tipo');
-        $valor->status = Input::post('switch');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->tipo = $data['tipo'];
+        $valor->status = $data['switch'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');
@@ -130,9 +130,9 @@ class AdminDeliveryTipo extends Controller
     {
 
         $valor = (new TipoDelivery())->findById($data['id']);
-        $valor->tipo = Input::post('tipo');
-        $valor->status = Input::post('switch');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->tipo = $data['tipo'];
+        $valor->status = $data['switch'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');

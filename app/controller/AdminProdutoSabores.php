@@ -132,8 +132,8 @@ class AdminProdutosSabores extends Controller
     public function insert($data)
     {
         $valor = new ProdutoSabor();
-        $valor->nome = Input::post('nome');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->nome = $data['nome'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');
@@ -144,8 +144,8 @@ class AdminProdutosSabores extends Controller
     public function update($data)
     {
         $valor = (new ProdutoSabor())->findById($data['id']);
-        $valor->nome = Input::post('nome');
-        $valor->id_empresa = Input::post('id_empresa');
+        $valor->nome = $data['nome'];
+        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
         header('Content-Type: application/json');
