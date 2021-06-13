@@ -588,7 +588,7 @@ function mudarStatus(id, status, id_caixa) {
 
 function mudarStatusEntrega(id, status, id_caixa) {
   var id_motoboy = $(`#motoboy-${id} option:selected`).val();
-  if (parseFloat(id_motoboy) === 0) {
+  if (id_motoboy === "Selecione") {
     $('.select2-single').shake().addClass('bc-danger');
 
     $(`#mensagem${id}`).html(`<div class="alert alert-danger" role="alert">Selecione um Motoboy antes de mudar de Status!</div>`);
@@ -871,7 +871,7 @@ $(document).ready(function () {
 });
 
 
-$('#cep').mask('00000-000');
+$('#cep, #cep_end').mask('00000-000');
 $("#rua").on('blur touchleave touchcancel', function () {
   var estado = $('#estadoPrinc').val();
   var cidade = $('#cidadePrinc').val();
@@ -919,6 +919,41 @@ $("#rua").on('blur touchleave touchcancel', function () {
       }
     });
 
+  }
+});
+
+
+$("#cep_end").on('blur touchleave touchcancel', function () {
+  var cep = $(this).val().replace(/\D/g, '');
+  if (cep != "") {
+      var validacep = /^[0-9]{8}$/;
+      if(validacep.test(cep)) {
+          //Preenche os campos com "..." enquanto consulta webservice.
+          $("#rua_end").val("...");
+          $("#bairro_end").val("...");
+          $("#cidade_end").val("...");
+          $("#estado_end").val("...");
+          $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+              if (!("erro" in dados)) {
+                  $("#rua_end").val(dados.logradouro);
+                  $("#bairro_end").val(dados.bairro);
+                  $("#cidade_end").val(dados.localidade);
+                  $("#estado_end").val(dados.uf);
+              } //end if.
+              else {
+                  //CEP pesquisado não foi encontrado.
+                  $("#alertGeralSite").modal("show");
+                  $(".errorSup").show();
+                  $("#mensagem").text("O Endereço informado não foi encontrado, verifique se digitou corretamente e tente novamente!");
+              }
+          });
+      } //end if.
+      else {
+          $("#alertGeralSite").modal("show");
+          $(".errorSup").show();
+          $("#mensagem").text("Formato de CEP inválido.");
+      }
   }
 });
 
