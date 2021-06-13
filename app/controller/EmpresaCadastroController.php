@@ -115,21 +115,15 @@ class EmpresaCadastroController extends Controller
         $plano = $this->acoes->getByField('planos', 'id', $data['plano_id']);
         $verificacao = $this->acoes->getByField('usuarios', 'email', $data['email']);
         
-        //dd($plano);
         if($verificacao_link && $verificacao_razao){
-            //dd('1');
             //header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Empresa já cadastrada em nosso sistema', 'code' => 9]);
         }else if($verificacao){
-            //dd('2');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Email já cadastrada em nosso sistema, tente outro email', 'code' => 9]);
         }else{
-            //dd('Entrou');
             $senha = $this->bcrypt->encrypt($data['senha'], '2a');
             $telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
-            //dd($data);
 
-            //dd($data);
             $empresa = new Empresa();
             $empresa->id_categoria = 7;
             $empresa->nome_fantasia = $data['nome_fantasia'];
@@ -154,7 +148,7 @@ class EmpresaCadastroController extends Controller
             $empresaEnderecos->estado = $data['estado_end'];
             $empresaEnderecos->cep = $data['cep_end'];
             $empresaEnderecos->save();
-            print_r($empresaEnderecos);
+            //print_r($empresaEnderecos);
 
             $formasPagamento = new FormasPagamento();
             $formasPagamento->tipo = 'Dinheiro';

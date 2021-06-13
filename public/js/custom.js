@@ -121,14 +121,14 @@
             $("#rua_end").val("...");
             $("#bairro_end").val("...");
             $("#cidade_end").val("...");
-            $("#uf_end").val("...");
+            $("#estado_end").val("...");
             $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
 
                 if (!("erro" in dados)) {
                     $("#rua_end").val(dados.logradouro);
                     $("#bairro_end").val(dados.bairro);
                     $("#cidade_end").val(dados.localidade);
-                    $("#uf_end").val(dados.uf);
+                    $("#estado_end").val(dados.uf);
                 } //end if.
                 else {
                     //CEP pesquisado não foi encontrado.
