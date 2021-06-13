@@ -81,7 +81,6 @@ class AdminConfiguracoesController extends Controller
 
     public function update($data)
     {
-        dd($data);
         if($data['imagemNome'] != null){
             $caminhoLogo = $data['imagemNome'];
         }else{
@@ -136,7 +135,6 @@ class AdminConfiguracoesController extends Controller
         $valorEnd->bairro = $data['bairro_end'];
         $valorEnd->cidade = $data['cidade_end'];
         $valorEnd->estado = $data['estado_end'];
-        $valorEnd->id_empresa = $data['id_empresa'];
         $valorEnd->save();
         //dd($valorEnd);
 
