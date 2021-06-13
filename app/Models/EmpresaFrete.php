@@ -13,7 +13,7 @@ class EmpresaFrete extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("empresa_frete", ["previsao_minutos","taxa_entrega"]);
+        parent::__construct("empresa_frete", []);
     }
 
     public function add(Empresa $empresa, $status, $previsao_minutos, $taxa_entrega, $km_entrega, $km_entrega_excedente, $valor_excedente, $taxa_entrega_motoboy, $valor, $frete_status, $primeira_compra)
