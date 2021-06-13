@@ -73,7 +73,6 @@ class AdminEmpresaFrete extends Controller
 
     public function update($data)
     {
-        dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $retorno = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
@@ -87,9 +86,8 @@ class AdminEmpresaFrete extends Controller
         $valor->valor = $this->geral->brl2decimal($data['valor']);
         $valor->frete_status = $data['frete_status'];
         $valor->primeira_compra = $data['switch'];
-
-        $valor->id_empresa = $data['id_empresa'];
         $valor->save();
+        dd($valor);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados de Entrega atualizado com sucesso', 'error' => 'Não foi possível atualizar os dados de entrega', 'url' => 'admin/conf/delivery/e',]);
