@@ -136,7 +136,7 @@ class AdminConfiguracoesController extends Controller
         $valorEnd->cidade = $data['cidade_end'];
         $valorEnd->estado = $data['estado_end'];
         $valorEnd->save();
-        //dd($valorEnd);
+        dd($valorEnd);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'url' => 'admin/conf/e',]);
