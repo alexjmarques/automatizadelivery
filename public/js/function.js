@@ -120,6 +120,41 @@ $("#rua").on('blur touchleave touchcancel', function () {
     }
 });
 
+//Quando o campo cep perde o foco.
+$("#cep_end").on('blur touchleave touchcancel', function () {
+        var cep = $(this).val().replace(/\D/g, '');
+        if (cep != "") {
+            var validacep = /^[0-9]{8}$/;
+            if(validacep.test(cep)) {
+                //Preenche os campos com "..." enquanto consulta webservice.
+                $("#rua_end").val("...");
+                $("#bairro_end").val("...");
+                $("#cidade_end").val("...");
+                $("#uf_end").val("...");
+                $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                    if (!("erro" in dados)) {
+                        $("#rua_end").val(dados.logradouro);
+                        $("#bairro_end").val(dados.bairro);
+                        $("#cidade_end").val(dados.localidade);
+                        $("#uf_end").val(dados.uf);
+                    } //end if.
+                    else {
+                        //CEP pesquisado não foi encontrado.
+                        $("#alertGeralSite").modal("show");
+                        $(".errorSup").show();
+                        $("#mensagem").text("O Endereço informado não foi encontrado, verifique se digitou corretamente e tente novamente!");
+                    }
+                });
+            } //end if.
+            else {
+                $("#alertGeralSite").modal("show");
+                $(".errorSup").show();
+                $("#mensagem").text("Formato de CEP inválido.");
+            }
+        }
+    });
+
 $(".avaliacao_motoboy, .avaliacao_pedido").starRating({
     totalStars: 5,
     starShape: 'rounded',

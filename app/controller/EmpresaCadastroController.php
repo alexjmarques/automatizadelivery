@@ -146,13 +146,13 @@ class EmpresaCadastroController extends Controller
             
             $empresaEnderecos = new EmpresaEnderecos();
             $empresaEnderecos->id_empresa = $empresa->id;
-            $empresaEnderecos->rua = $data['rua'];
-            $empresaEnderecos->numero = $data['numero'];
-            $empresaEnderecos->complemento = $data['complemento'];
-            $empresaEnderecos->bairro = $data['bairro'];
-            $empresaEnderecos->cidade = $data['cidade'];
-            $empresaEnderecos->estado = $data['estado'];
-            $empresaEnderecos->cep = $data['cep'];
+            $empresaEnderecos->rua = $data['rua_end'];
+            $empresaEnderecos->numero = $data['numero_end'];
+            $empresaEnderecos->complemento = $data['complemento_end'];
+            $empresaEnderecos->bairro = $data['bairro_end'];
+            $empresaEnderecos->cidade = $data['cidade_end'];
+            $empresaEnderecos->estado = $data['estado_end'];
+            $empresaEnderecos->cep = $data['cep_end'];
             $empresaEnderecos->save();
             print_r($empresaEnderecos);
 

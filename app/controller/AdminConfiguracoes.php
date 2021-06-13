@@ -128,13 +128,13 @@ class AdminConfiguracoesController extends Controller
 
 
         $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
-        $valorEnd->cep = $data['cep'];
-        $valorEnd->rua = $data['rua'];
-        $valorEnd->numero = $data['numero'];
-        $valorEnd->complemento = $data['complemento'];
-        $valorEnd->bairro = $data['bairro'];
-        $valorEnd->cidade = $data['cidade'];
-        $valorEnd->estado = $data['estado'];
+        $valorEnd->cep = $data['cep_end'];
+        $valorEnd->rua = $data['rua_end'];
+        $valorEnd->numero = $data['numero_end'];
+        $valorEnd->complemento = $data['complemento_end'];
+        $valorEnd->bairro = $data['bairro_end'];
+        $valorEnd->cidade = $data['cidade_end'];
+        $valorEnd->estado = $data['estado_end'];
         $valorEnd->id_empresa = $data['id_empresa'];
         $valorEnd->save();
         //dd($valorEnd);

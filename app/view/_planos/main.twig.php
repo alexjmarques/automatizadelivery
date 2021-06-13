@@ -31,34 +31,34 @@
                      <div class="form-row">
                         <div class="form-group col-md-3">
                            <label>CEP <span style="color:red;">*</span></label>
-                           <input type="text" class="form-control" id="cep" name="cep" value="" required>
+                           <input type="text" class="form-control" id="cep_end" name="cep_end" value="" required>
                         </div>
                         <div class="form-group col-md-5">
                            <label>Endereço <span style="color:red;">*</span></label>
-                           <input type="text" class="form-control" id="rua" name="rua" value="" required>
+                           <input type="text" class="form-control" id="rua_end" name="rua_end" value="" required>
                         </div>
                         <div class="form-group col-md-1">
                            <label>Nº <span style="color:red;">*</span></label>
-                           <input type="text" class="form-control" id="numero" name="numero" value="" required>
+                           <input type="text" class="form-control" id="numero_end" name="numero_end" value="" required>
                         </div>
                         <div class="form-group col-md-3">
                            <label>Complemento</label>
-                           <input type="text" class="form-control" id="complemento" name="complemento" value="">
+                           <input type="text" class="form-control" id="complemento_end" name="complemento_end" value="">
                         </div>
                      </div>
                      <div class="form-row">
                         <div class="form-group col-md-3">
                            <label>Bairro <span style="color:red;">*</span></label>
-                           <input type="text" class="form-control" id="bairro" name="bairro" value="" required>
+                           <input type="text" class="form-control" id="bairro_end" name="bairro_end" value="" required>
                         </div>
                         <div class="form-group col-md-4">
                            <label>Cidade <span style="color:red;">*</span></label>
-                           <input type="text" class="form-control" id="cidade" name="cidade" value="" required>
+                           <input type="text" class="form-control" id="cidade_end" name="cidade_end" value="" required>
                         </div>
 
                         <div class="form-group col-md-2">
                            <label>Estado <span style="color:red;">*</span></label>
-                           <input type="text" class="form-control" id="estado" name="estado" limit="2" value="" required>
+                           <input type="text" class="form-control" id="estado_end" name="estado_end" limit="2" value="" required>
                         </div>
                      </div>
 
