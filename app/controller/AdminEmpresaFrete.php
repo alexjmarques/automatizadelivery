@@ -87,7 +87,7 @@ class AdminEmpresaFrete extends Controller
         $valor->frete_status = $data['frete_status'];
         $valor->primeira_compra = $data['switch'];
         $valor->save();
-        //dd($valor);
+        dd($valor);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados de Entrega atualizado com sucesso', 'error' => 'Não foi possível atualizar os dados de entrega', 'url' => 'admin/conf/delivery/e',]);
