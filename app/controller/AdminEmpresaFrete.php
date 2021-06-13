@@ -73,6 +73,7 @@ class AdminEmpresaFrete extends Controller
 
     public function update($data)
     {
+        dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $retorno = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
