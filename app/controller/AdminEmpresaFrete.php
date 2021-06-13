@@ -79,7 +79,7 @@ class AdminEmpresaFrete extends Controller
         $valor = (new EmpresaFrete())->findById($retorno->id);
         $valor->previsao_minutos = $data['previsao_minutos'];
         $valor->taxa_entrega = $this->geral->brl2decimal($data['taxa_entrega']);
-        $valor->km_entrega = $data('km_entrega');
+        $valor->km_entrega = $data['km_entrega'];
         $valor->km_entrega_excedente = $data['km_entrega_excedente'];
         $valor->valor_excedente = $this->geral->brl2decimal($data['valor_excedente']);
         $valor->taxa_entrega_motoboy = $this->geral->brl2decimal($data['taxa_entrega_motoboy']);
@@ -87,7 +87,7 @@ class AdminEmpresaFrete extends Controller
         $valor->frete_status = $data['frete_status'];
         $valor->primeira_compra = $data['switch'];
         $valor->save();
-        dd($valor);
+        //dd($valor);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados de Entrega atualizado com sucesso', 'error' => 'Não foi possível atualizar os dados de entrega', 'url' => 'admin/conf/delivery/e',]);
