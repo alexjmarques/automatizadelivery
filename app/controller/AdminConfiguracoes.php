@@ -81,6 +81,7 @@ class AdminConfiguracoesController extends Controller
 
     public function update($data)
     {
+        dd($data);
         if($data['imagemNome'] != null){
             $caminhoLogo = $data['imagemNome'];
         }else{
