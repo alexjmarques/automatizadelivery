@@ -76,6 +76,18 @@ class AdminEmpresaFrete extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $retorno = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
+        if($data['frete_status']){
+            $frete_status = $data['frete_status'];
+        }else{
+            $frete_status = 0;
+        }
+
+        if($data['switch']){
+            $primeira_compra = $data['switch'];
+        }else{
+            $primeira_compra = 0;
+        }
+
         $valor = (new EmpresaFrete())->findById($retorno->id);
         $valor->previsao_minutos = $data['previsao_minutos'];
         $valor->taxa_entrega = $this->geral->brl2decimal($data['taxa_entrega']);
@@ -84,10 +96,10 @@ class AdminEmpresaFrete extends Controller
         $valor->valor_excedente = $this->geral->brl2decimal($data['valor_excedente']);
         $valor->taxa_entrega_motoboy = $this->geral->brl2decimal($data['taxa_entrega_motoboy']);
         $valor->valor = $this->geral->brl2decimal($data['valor']);
-        $valor->frete_status = $data['frete_status'];
-        $valor->primeira_compra = $data['switch'];
+        $valor->frete_status = $frete_status;
+        $valor->primeira_compra = $primeira_compra;
         $valor->save();
-        dd($valor);
+        //dd($valor);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados de Entrega atualizado com sucesso', 'error' => 'Não foi possível atualizar os dados de entrega', 'url' => 'admin/conf/delivery/e',]);

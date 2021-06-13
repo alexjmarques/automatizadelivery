@@ -23,7 +23,6 @@
             <input type="text" class="form-control form-control-sm" id="previsao_minutos" name="previsao_minutos"
               value="{{retorno.previsao_minutos}}">
           </div>
-
         </div>
         <div class="form-row">
           <div class="form-group col-md-4">
