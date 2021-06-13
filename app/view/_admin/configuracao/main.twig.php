@@ -124,36 +124,36 @@
           <div class="form-row">
             <div class="form-group col-md-3">
               <label>CEP</label>
-              <input type="text" class="form-control" id="cep_emp" name="cep_emp" value="{{endereco.cep}}">
+              <input type="text" class="form-control" id="cep_end" name="cep_end" value="{{endereco.cep}}">
             </div>
           
             <div class="form-group col-md-5">
               <label>Endereço</label>
-              <input type="text" class="form-control" id="rua_emp" name="rua_emp" value="{{endereco.rua}}" required>
+              <input type="text" class="form-control" id="rua_end" name="rua_end" value="{{endereco.rua}}" required>
             </div>
             <div class="form-group col-md-1">
               <label>Número</label>
-              <input type="text" class="form-control" id="numero_emp" name="numero_emp" value="{{endereco.numero}}" required>
+              <input type="text" class="form-control" id="numero_end" name="numero_end" value="{{endereco.numero}}" required>
             </div>
             <div class="form-group col-md-3">
               <label>Complemento</label>
-              <input type="text" class="form-control" id="complemento_emp" name="complemento_emp" value="{{endereco.complemento}}">
+              <input type="text" class="form-control" id="complemento_end" name="complemento_end" value="{{endereco.complemento}}">
             </div>
           </div>
   
           <div class="form-row">
             <div class="form-group col-md-3">
               <label>Bairro</label>
-              <input type="text" class="form-control" id="bairro_emp" name="bairro_emp" value="{{endereco.bairro}}">
+              <input type="text" class="form-control" id="bairro_end" name="bairro_end" value="{{endereco.bairro}}">
             </div>
             <div class="form-group col-md-4">
               <label>Cidade</label>
-              <input type="text" class="form-control" id="cidade_emp" name="cidade_emp" value="{{endereco.cidade}}">
+              <input type="text" class="form-control" id="cidade_end" name="cidade_end" value="{{endereco.cidade}}">
             </div>
   
             <div class="form-group col-md-2">
               <label for="estado">Estado</label>
-              <input type="text" class="form-control" id="estado_emp" name="estado_emp" value="{{endereco.estado}}">
+              <input type="text" class="form-control" id="estado_end" name="estado_end" value="{{endereco.estado}}">
             </div>
           </div>
 
@@ -184,7 +184,7 @@
           {% endif %}
           {% endfor %}
         </div>
-        <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
+        <input type="hidden" id="id_endresa" name="id_endresa" value="{{empresa.id}}">
         <input type="hidden" name="logoUpdate" id="logoUpdate" value="{{empresa.logo}}">
         <input type="hidden" name="capaUpdate" id="capaUpdate" value="{{empresa.capa}}">
         <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
