@@ -124,27 +124,27 @@
           <div class="form-row">
             <div class="form-group col-md-3">
               <label>CEP</label>
-              <input type="text" class="form-control" id="cep" name="cep" value="{{endereco.cep}}">
+              <input type="text" class="form-control" id="cep_emp" name="cep_emp" value="{{endereco.cep}}">
             </div>
           
             <div class="form-group col-md-5">
               <label>Endereço</label>
-              <input type="text" class="form-control" id="rua" name="rua" value="{{endereco.rua}}" required>
+              <input type="text" class="form-control" id="rua_emp" name="rua_emp" value="{{endereco.rua}}" required>
             </div>
             <div class="form-group col-md-1">
               <label>Número</label>
-              <input type="text" class="form-control" id="numero" name="numero" value="{{endereco.numero}}" required>
+              <input type="text" class="form-control" id="numero_emp" name="numero_emp" value="{{endereco.numero}}" required>
             </div>
             <div class="form-group col-md-3">
               <label>Complemento</label>
-              <input type="text" class="form-control" id="complemento" name="complemento" value="{{endereco.complemento}}">
+              <input type="text" class="form-control" id="complemento_emp" name="complemento_emp" value="{{endereco.complemento}}">
             </div>
           </div>
   
           <div class="form-row">
             <div class="form-group col-md-3">
               <label>Bairro</label>
-              <input type="text" class="form-control" id="bairro" name="bairro" value="{{endereco.bairro}}">
+              <input type="text" class="form-control" id="bairro_emp" name="bairro_emp" value="{{endereco.bairro}}">
             </div>
             <div class="form-group col-md-4">
               <label>Cidade</label>
@@ -153,7 +153,7 @@
   
             <div class="form-group col-md-2">
               <label for="estado">Estado</label>
-              <input type="text" class="form-control" id="estado" name="estado" value="{{endereco.estado}}">
+              <input type="text" class="form-control" id="estado_emp" name="estado_emp" value="{{endereco.estado}}">
             </div>
           </div>
 

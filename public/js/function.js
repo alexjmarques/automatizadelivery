@@ -58,7 +58,7 @@ $('#telefone').mask('(00) 00000-0000');
 $('#cpf').mask('000.000.000-00', {
     reverse: true
 });
-$('#cep').mask('00000-000');
+$('#cep, #cep_end').mask('00000-000');
 $('#trocoCli, #dinheiro').mask('#.##0,00', {
     reverse: true
 });

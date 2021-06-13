@@ -61,7 +61,7 @@
     }, 1000 / 60); // 60 fps
   };
   $('#telefone').mask('(00) 00000-0000');
-  $('#cep').mask('00000-000');
+  $('#cep, #cep_end').mask('00000-000');
   $("#rua").on('blur touchleave touchcancel', function () {
     var estado = $('#estadoPrinc').val();
     var cidade = $('#cidadePrinc').val();
