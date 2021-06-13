@@ -148,7 +148,7 @@
             </div>
             <div class="form-group col-md-4">
               <label>Cidade</label>
-              <input type="text" class="form-control" id="cidade" name="cidade" value="{{endereco.cidade}}">
+              <input type="text" class="form-control" id="cidade_emp" name="cidade_emp" value="{{endereco.cidade}}">
             </div>
   
             <div class="form-group col-md-2">
