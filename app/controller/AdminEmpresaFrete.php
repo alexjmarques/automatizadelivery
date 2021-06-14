@@ -73,6 +73,7 @@ class AdminEmpresaFrete extends Controller
 
     public function update($data)
     {
+        //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $retorno = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
@@ -92,6 +93,10 @@ class AdminEmpresaFrete extends Controller
         $valor->previsao_minutos = $data['previsao_minutos'];
         $valor->taxa_entrega = $this->geral->brl2decimal($data['taxa_entrega']);
         $valor->km_entrega = $data['km_entrega'];
+        $valor->taxa_entrega2 = $this->geral->brl2decimal($data['taxa_entrega2']);
+        $valor->km_entrega2 = $data['km_entrega2'];
+        $valor->taxa_entrega3 = $this->geral->brl2decimal($data['taxa_entrega3']);
+        $valor->km_entrega3 = $data['km_entrega3'];
         $valor->km_entrega_excedente = $data['km_entrega_excedente'];
         $valor->valor_excedente = $this->geral->brl2decimal($data['valor_excedente']);
         $valor->taxa_entrega_motoboy = $this->geral->brl2decimal($data['taxa_entrega_motoboy']);

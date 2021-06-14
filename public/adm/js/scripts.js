@@ -45,7 +45,7 @@ var mask = "HH:MM",
     };
 
 $(".timepicker").mask(mask, pattern);
-$('#valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_entrega_motoboy').mask('#.##0,00', {
+$('#valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_entrega_motoboy, #taxa_entrega2, #taxa_entrega3').mask('#.##0,00', {
   reverse: true
 });
 $('#valor_cupom').mask('##00%', {

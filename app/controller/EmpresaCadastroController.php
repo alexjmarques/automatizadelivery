@@ -235,6 +235,10 @@ class EmpresaCadastroController extends Controller
             $empresaFrete->previsao_minutos = 0;
             $empresaFrete->taxa_entrega = 0;
             $empresaFrete->km_entrega = 0;
+            $empresaFrete->taxa_entrega2 = 0;
+            $empresaFrete->km_entrega2 = 0;
+            $empresaFrete->taxa_entrega3 = 0;
+            $empresaFrete->km_entrega3 = 0;
             $empresaFrete->km_entrega_excedente = 0;
             $empresaFrete->valor_excedente = 0;
             $empresaFrete->taxa_entrega_motoboy = 0;
