@@ -317,8 +317,6 @@ class AdminProdutos extends Controller
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
-        dd($valor);
-
         if ($data['categoriaCad'] != $data['categoria']) {
             $cat = $this->acoes->getByField('categorias', 'id', $data['categoriaCad']);
             $novaQtd = $cat->produtos - 1;
