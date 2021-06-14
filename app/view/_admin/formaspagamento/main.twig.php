@@ -12,7 +12,7 @@
     </ol>
 </nav>
 
-<div class="top-right-button-container"><a href="{{BASE}}{{empresa.link_site}}/admin/formas-pagamento/nova" class="btn btn-info btn-sm">Nova forma de pagamento</a></div>
+
 <div class="separator mb-5"></div>
 <div class="row mb-4">
 <div class="col-12 data-tables-hide-filter">

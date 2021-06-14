@@ -212,6 +212,14 @@ class EmpresaCadastroController extends Controller
             $formasPagamento8->status = 1;
             $formasPagamento8->id_empresa = $empresa->id;
             $formasPagamento8->save();
+
+
+            $formasPagamento9 = new FormasPagamento();
+            $formasPagamento9->tipo = 'Transferência Bancária';
+            $formasPagamento9->code = 9;
+            $formasPagamento9->status = 1;
+            $formasPagamento9->id_empresa = $empresa->id;
+            $formasPagamento9->save();
             //print_r($formasPagamento8);
 
             $tipoDelivery = new TipoDelivery();
