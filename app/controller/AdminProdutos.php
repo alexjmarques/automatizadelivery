@@ -279,7 +279,7 @@ class AdminProdutos extends Controller
             $adicionalSelecionados = implode(',', $adicionalSt);
         }
 
-        $saborSt = $_POST['sabores'];
+        $saborSt = $_POST['sabor'];
         if ($saborSt != null) {
             $saborSelecionados = implode(',', $saborSt);
         }
@@ -289,10 +289,10 @@ class AdminProdutos extends Controller
             $dias_disponiveis = implode(',', $diasDD);
         }
 
-        $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
-
-        if (empty($valor_promocional)) {
-            $valor_promocional = 0.00;
+        if ($data['valor_promocional']) {
+            $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
+        }else{
+            $valor_promocional = 0;
         }
 
         if ($data['switch']) {
