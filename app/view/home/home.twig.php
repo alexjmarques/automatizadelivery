@@ -29,10 +29,10 @@
             <a href="{{BASE}}{{ emp.link_site }}">
                <div class="bg-white shadow-sm rounded align-items-center p-1 mb-4 flex-column">
 
-                  <div class="p-1 float-left">
+                  <div class="col-md-4 p-1 float-left">
                      <img src="{{BASE}}uploads/{{ emp.logo }}" class="img-float">
                   </div>
-                  <div class="py-2 float-left">
+                  <div class="col-md-8 py-2 float-left pl-0">
                      <p class="mb-0 text-black font-weight-bold size18">{{ emp.nome_fantasia }}</p>
                      {% for cat in categoria %}
                      {% if cat.code == emp.id_categoria %}
