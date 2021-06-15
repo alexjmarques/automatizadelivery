@@ -36,5 +36,4 @@
 </li>
 {% endif %}
 {% endif %}
-
 {% endfor %}

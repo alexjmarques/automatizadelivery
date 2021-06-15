@@ -3080,3 +3080,10 @@ a.gold:hover {
   .size18{
       font-size: 18px;
   }
+  .align-center{
+      left: 50%;
+      margin-left: -570px;
+  }
+  .bg-green{
+      background-color: #880A1F;
+  }

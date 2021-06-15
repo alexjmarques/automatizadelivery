@@ -4,7 +4,6 @@ namespace app\controller;
 
 use app\classes\Input;
 use app\classes\Acoes;
-use app\classes\Email;
 use app\classes\Cache;
 use app\core\Controller;
 use DElfimov\Translate\Loader\PhpFilesLoader;
@@ -27,10 +26,9 @@ use Bcrypt\Bcrypt;
 use Browser;
 use Mobile_Detect;
 
-class EmpresaCadastroController extends Controller
+class MobilidadeCadastroController extends Controller
 {
     private $acoes;
-    private $email;
     private $sessao;
     private $geral;
     private $trans;
@@ -48,21 +46,20 @@ class EmpresaCadastroController extends Controller
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->bcrypt = new Bcrypt();
-        $this->email = new Email();
         $this->cache = new Cache();
         $this->acoes = new Acoes();
     }
     public function index($data)
     {
+        $plano = $this->acoes->getFind('planos');
+        $links = $this->acoes->getFind('paginas');
         $empresas = $this->acoes->getFind('empresa');
+        $pedidos = $this->acoes->getFind('carrinhoPedidos');
         $moeda = $this->acoes->getByField('moeda', 'id', 4);
-        $plano = $this->acoes->getByField('planos', 'slug', $data['plano']);
         $empresaDelivery = $this->acoes->getFind('empresaFrete');
         $categoria = $this->acoes->getFind('categoriaSeguimentoSub');
-        $pedidos = $this->acoes->getFind('carrinhoPedidos');
-        $links = $this->acoes->getFind('paginas');
 
-        $this->load('_planos/main', [
+        $this->load('_mobilidade/main', [
             'empresas' => $empresas,
             'links' => $links,
             'plano' => $plano,
@@ -94,7 +91,7 @@ class EmpresaCadastroController extends Controller
         $pedidos = $this->acoes->getFind('carrinhoPedidos');
         $links = $this->acoes->getFind('paginas');
 
-        $this->load('_planos/pagamento', [
+        $this->load('_mobilidade/pagamento', [
             'empresas' => $empresas,
             'links' => $links,
             'endereco' => $endereco,
@@ -286,14 +283,11 @@ class EmpresaCadastroController extends Controller
                 $usuarios->save();
 
                 $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
-                $this->email->bemVindo($data['nome'], $usuarios->email, $data['senha'], $data['link_site']);
 
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => $usuarios->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Clique em OK para efetuar o login e começar a utilizar nossos serviços', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/admin/login", 'code' => 10 ]);
             }else{
                 $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
-                $this->email->bemVindo($data['nome'], $usuarios->email, $data['senha'], $data['link_site']);
-
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/{$plano->slug}/pagamento", 'code' => 11 ]);
             }
@@ -415,8 +409,6 @@ class EmpresaCadastroController extends Controller
                 }
             }
         } else {
-            $this->email->plano($data['nome'], $data['email'], $data['planNome']);
-
             header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Cartão inválido', 'error' => 'Cartão inválido', 'code' => 9]);
             exit($json);

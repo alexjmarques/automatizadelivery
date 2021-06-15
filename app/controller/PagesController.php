@@ -5,10 +5,9 @@ namespace app\controller;
 use app\classes\Input;
 use app\classes\Acoes;
 use app\classes\Cache;
+use app\classes\Email;
 use app\core\Controller;
 use DElfimov\Translate\Loader\PhpFilesLoader;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 use DElfimov\Translate\Translate;
 use app\controller\AllController;
 use function JBZoo\Data\json;
@@ -22,6 +21,7 @@ class PagesController extends Controller
     private $acoes;
     private $sessao;
     private $geral;
+    private $email;
     private $trans;
 
     /**
@@ -37,6 +37,7 @@ class PagesController extends Controller
         $this->geral = new AllController();
         $this->cache = new Cache();
         $this->acoes = new Acoes();
+        $this->email = new Email();
     }
 
     
@@ -347,47 +348,11 @@ class PagesController extends Controller
 
     public function contatoSend($data)
     {
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'oi@automatiza.app';
-            $mail->Password = '1@ut98l1znapp0xl';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-            $mail->setFrom('alex@automatiza.app', utf8_decode('Automatiza Delivery'));
-            $mail->addAddress($data['email'], $data['nome']);
+        $this->email->contato($data['nome'], $data['email'], $data['telefone'], $data['msn']);
 
-            $mail->isHTML(true);
-            $mail->Subject = utf8_decode('Contato Site Delivery');
-            $mail->Body = utf8_decode('<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" style="max-width:600px; background-color:#ffffff;border:1px solid #e4e2e2;border-collapse:separate !important; border-radius:4px;border-spacing:0;color:#242128; margin:0;padding:40px;" heigth="auto">
-                <tbody>
-                    <tr>
-                        <td align="left" valign="center" style="padding-bottom:20px;border-top:0;height:100% !important;width:100% !important;">
-                            <span style="color: #8f8f8f; font-weight: normal; line-height: 2; font-size: 14px;">Automatiza Delivery</span>
-                        </td>
-                        <td align="right" valign="center" style="padding-bottom:20px;border-top:0;height:100% !important;width:100% !important;">
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="padding-top:20px;border-top:1px solid #e4e2e2">
-                            <h3 style="color:#303030; font-size:18px; line-height: 1.6; font-weight:500;">Temos um novo Contato!!</h3>
-                            <p style="color:#8f8f8f; font-size: 14px; padding-bottom: 20px; line-height: 1.4;"><br>
-                            Nome: ' . $data['nome'] . '<br>Nome: ' . $data['email'] . '<br>Telefone: ' . $data['telefone'] . '<br>Mensagem: ' . $data['msn'] . '
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>');
-            $mail->send();
-            header('Content-Type: application/json');
-            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde', 'url' => 'institucional/contato',]);
-            exit($json);
-        } catch (Exception $e) {
-            echo "Não foi possível enviar tente novamente mais tarde.";
-        }
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde', 'url' => 'institucional/contato', 'code' => 12]);
+        exit($json);
     }
     
 }

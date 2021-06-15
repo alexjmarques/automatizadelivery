@@ -488,7 +488,6 @@ class CarrinhoController extends Controller
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
         if ($getTelefone) {
-
             $getUsuario = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
             if(!$getUsuario){
                 $valorEmp = new UsuariosEmpresa();

@@ -35,11 +35,14 @@ require "../app/controller/FavoritosController.php";
 require "../app/controller/AdminProdutoSabores.php";
 require "../app/controller/AdminFormasPagamento.php";
 require "../app/controller/AdminiFoodController.php";
+require "../app/controller/AdminUsuarioController.php";
 require "../app/controller/AdminUberEatsController.php";
 require "../app/controller/AdminProdutosAdicionais.php";
 require "../app/controller/EmpresaCadastroController.php";
+require "../app/controller/MobilidadeCadastroController.php";
 require "../app/controller/AdminPedidosBalcaoController.php";
 require "../app/controller/AdminClickEntregasController.php";
+
 
 $router = new Router(BASE);
 $router->namespace("app\controller");
@@ -60,6 +63,13 @@ $router->get('/cadastro/empresa/{plano}', 'EmpresaCadastroController:index');
 $router->post('/cadastro/empresa/i', 'EmpresaCadastroController:insert');
 $router->get('/{linkSite}/{plano}/pagamento', 'EmpresaCadastroController:pagamento');
 $router->post('/cadastro/empresa/pagamento/i', 'EmpresaCadastroController:pagamentoInsert');
+
+
+$router->get('/mobilidade/planos', 'MobilidadeCadastroController:index');
+$router->get('/cadastro/empresa/{plano}', 'MobilidadeCadastroController:index');
+$router->post('/cadastro/empresa/i', 'MobilidadeCadastroController:insert');
+$router->get('/{linkSite}/{plano}/pagamento', 'MobilidadeCadastroController:pagamento');
+$router->post('/cadastro/empresa/pagamento/i', 'MobilidadeCadastroController:pagamentoInsert');
 
 
 $router->get('/{linkSite}', 'PagesController:home');
@@ -363,6 +373,9 @@ $router->get('/{linkSite}/admin/cliente/novo', 'UsuarioController:clienteNovo');
 
 $router->get('/{linkSite}/admin/conf/e', 'AdminConfiguracoesController:index');
 $router->post('/{linkSite}/admin/conf/u', 'AdminConfiguracoesController:update');
+
+$router->get('/{linkSite}/admin/meu-perfil', 'AdminUsuarioController:index');
+$router->post('/{linkSite}/admin/meu-perfil/u', 'AdminUsuarioController:update');
 
 $router->get('/{linkSite}/admin/conf/delivery/e', 'AdminEmpresaFrete:index');
 $router->post('/{linkSite}/admin/conf/delivery/u', 'AdminEmpresaFrete:update');

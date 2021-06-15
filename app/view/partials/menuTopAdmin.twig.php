@@ -128,7 +128,7 @@
             </button>
 
             <div class="dropdown-menu dropdown-menu-right mt-3">
-                <!-- <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/minha-conta">Minha conta</a> -->
+                <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/meu-perfil">Minha conta</a>
                 <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/conf/e">Configuração da Empresa</a>
                     <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/pedidos">Pedidos Delivery</a>
                     {% if planoAtivo != 1 %}

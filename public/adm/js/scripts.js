@@ -1146,6 +1146,11 @@ switch (active_link) {
     $('#menuUsuarios .primaryMenu').removeClass('collapsed')
     $('#subUn').addClass('active')
     break;
+  case `/${link_site}/admin/meu-perfil`:
+      $('#collapseMenuUsuarios').addClass('show')
+      $('#menuUsuarios .primaryMenu').removeClass('collapsed')
+      $('#subPer').addClass('active')
+      break;
   case `/${link_site}/admin/administrador/novo`:
     $('#collapseMenuUsuarios').addClass('show')
     $('#menuUsuarios .primaryMenu').removeClass('collapsed')

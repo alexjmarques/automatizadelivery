@@ -13,20 +13,20 @@
                <p class="mb-4">Para entrar em contato com a Automatiza Delivery, preencha o formulário abaixo.</p>
                <form class="mt-3" method="post" action="{{BASE}}institucional/contato/i" id="form" enctype="multipart/form-data">
                   <div class="form-group">
-                     <label for="exampleFormControlInput1" class="small font-weight-bold">Seu Nome</label>
+                     <label for="exampleFormControlInput1" class="small font-weight-bold">Seu Nome <span style="color:red;">*</span></label>
                      <input type="text" class="form-control" id="nome" name="nome" required>
                   </div>
                   <div class="form-group">
-                     <label for="exampleFormControlInput2" class="small font-weight-bold">Email</label>
+                     <label for="exampleFormControlInput2" class="small font-weight-bold">Email <span style="color:red;">*</span></label>
                      <input type="email" class="form-control" id="email" name="email" required>
                   </div>
                   <div class="form-group">
-                     <label for="exampleFormControlInput3" class="small font-weight-bold">Telefone</label>
+                     <label for="exampleFormControlInput3" class="small font-weight-bold">Telefone <span style="color:red;">*</span></label>
                      <input type="tel" class="form-control" id="telefone" name="telefone" required>
                   </div>
                   <div class="form-group">
-                     <label for="exampleFormControlTextarea1" class="small font-weight-bold">COMO PODEMOS TE AJUDAR?</label>
-                     <textarea class="form-control" id="msn" name="msn" rows="4"></textarea>
+                     <label for="exampleFormControlTextarea1" class="small font-weight-bold">COMO PODEMOS TE AJUDAR? <span style="color:red;">*</span></label>
+                     <textarea class="form-control" id="msn" name="msn" rows="4" required></textarea>
                   </div>
                   <div id="mensagem"></div>
                   <button id="btn-atualizar-end" class="elementor-price-table__button elementor-button elementor-size-md gold"><span>Enviar</span></button>

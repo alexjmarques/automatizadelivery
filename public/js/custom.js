@@ -182,8 +182,13 @@
                 });
               }
               break;
+              
             case 11:
               window.location = `/${data.url}`;
+              break;
+              case 12:
+              $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+              
               break;
           }
         } else {
