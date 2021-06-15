@@ -56,8 +56,10 @@ class MotoboyController extends Controller
      */
     public function index($data)
     {
+        //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        //dd($resultDelivery);
 
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -65,10 +67,18 @@ class MotoboyController extends Controller
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
             $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
-            $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
-
+            
+            
             $entregasFeitas = $this->acoes->sumFielsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'status', 4, 'valor_frete');
+            
+            $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
             $totalMotoboyDia = $this->acoes->sumFielsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4, 'valor_frete');
+            
+            //dd($resultEntregasDiaCont);
+
+            $entregasFeitasDia = $totalMotoboyDia->total - ($resultEntregasDiaCont * $resultDelivery->taxa_entrega_motoboy);
+
+            //dd($entregasFeitasDia);
 
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             if ($this->sessao->getNivel() == 0) {
@@ -85,7 +95,7 @@ class MotoboyController extends Controller
             'empresa' => $empresa,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'entregasFeitas' => $entregasFeitas,
-            'entregasFeitasDia' => $totalMotoboyDia,
+            'entregasFeitasDia' => $entregasFeitasDia,
             'entregasDia' => $resultEntregasDiaCont,
             'frete' => $resultDelivery,
             'moeda' => $moeda,
@@ -361,6 +371,7 @@ class MotoboyController extends Controller
 
         $valor = (new CarrinhoPedidos())->findById($data['pedido']);
         $valor->status = 3;
+        $valor->id_motoboy = $this->sessao->getUser();
         $valor->save();
 
         $entregas = new CarrinhoEntregas();

@@ -15,16 +15,17 @@
     <div class="bg-white rounded shadow mt-n5">
         <div class="border-bottom p-3">
             <div class="left mr-0 p-0">
-                <h5 class="d-inline">Ganhos até agora</h5>
-                <span class="text-muted text-small d-block">Ganhos deste Mês com entregas</span>
+                <h5 class="d-inline">Ganhos de hoje</h5>
+                <span class="text-muted text-small d-block">Você fez {{ entregasDia }} entregas hoje</span>
             </div>
             <div class="pt-3 pb-3 text-center">
-                <h5 class="d-inline valorFullSize">{{ moeda.simbolo }} {{ entregasFeitas.total|number_format(2, ',', '.') }}</h5>
+                <h5 class="d-inline valorFullSize">{{ moeda.simbolo }} {{ entregasFeitasDia|number_format(2, ',', '.') }}</h5>
+                
             </div>
         </div>
     </div>
 
-    <div class="mt-3 clearfix">
+    <!-- <div class="mt-3 clearfix">
         
         <div class="metade pr-2">
             <div class="bg-white rounded shadows ml1">
@@ -46,12 +47,12 @@
                         <h6 class="d-inline">Ganhos do Dia</h6>
                     </div>
                     <div class="pt-1 pb-1 text-center">
-                        <h5 class="d-inline valorFullSizeMini">{{ moeda.simbolo }} {{ entregasFeitasDia.total|number_format(2, ',', '.') }}</h5>
+                        <h5 class="d-inline valorFullSizeMini">{{ moeda.simbolo }} {{ entregasFeitasDia|number_format(2, ',', '.') }}</h5>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="bg-white rounded shadow mt-3">
         <div class=" dashboard-filled-line-chart">
