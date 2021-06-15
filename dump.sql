@@ -216,7 +216,7 @@ CREATE TABLE carrinho (
   id_adicional CHAR(20) DEFAULT NULL,
   observacao TEXT,
   valor DECIMAL(8,2) DEFAULT NULL,
-  numero_pedido VARCHAR(255) DEFAULT NULL,
+  numero_pedido INT NOT NULL,
   created_at TIMESTAMP NULL DEFAULT NULL,
   updated_at TIMESTAMP NULL DEFAULT NULL
 );
@@ -255,7 +255,7 @@ CREATE TABLE carrinho_entregas (
   id_empresa INT NOT NULL REFERENCES empresa_dados(id),
   status INT DEFAULT NULL,
   observacao TEXT,
-  numero_pedido VARCHAR(200) DEFAULT NULL,
+  numero_pedido INT NOT NULL,
   pago INT DEFAULT NULL,
   created_at TIMESTAMP NULL DEFAULT NULL,
   updated_at TIMESTAMP NULL DEFAULT NULL
@@ -263,7 +263,7 @@ CREATE TABLE carrinho_entregas (
 
 
 
-CREATE TABLE carrinho_Pedido_Pagamento (
+CREATE TABLE carrinho_pedido_pagamento (
   id SERIAL PRIMARY KEY,
   id_cliente INT NOT NULL REFERENCES usuarios(id),
   id_empresa INT NOT NULL REFERENCES empresa_dados(id),
@@ -292,7 +292,7 @@ CREATE TABLE carrinho_pedidos (
   status INT NOT NULL,
   pago INT DEFAULT NULL,
   observacao VARCHAR(350) DEFAULT NULL,
-  numero_pedido SERIAL NOT NULL,
+  numero_pedido INT DEFAULT NULL,
   valor_frete DECIMAL(8,2) DEFAULT NULL,
   km CHAR(20) DEFAULT NULL,
   chave VARCHAR(255) DEFAULT NULL,

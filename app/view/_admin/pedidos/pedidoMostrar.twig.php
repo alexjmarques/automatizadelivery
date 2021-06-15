@@ -20,7 +20,7 @@
 		<content>
 		<div class="env">
                 <h5>Cliente: {{cliente.nome}}</h5>
-                <strong>Telefone: </strong><a href="https://api.whatsapp.com/send?phone=55{{cliente.telefone|replace({' ':"", '(': "", ')': "", '-': ""})}}" target="_Blank">{{cliente.telefone}}</a>
+                <strong>Telefone: </strong><a href="https://api.whatsapp.com/send?phone=55{{cliente.telefone}}" target="_Blank">({{ cliente.telefone[:2] }}) {{ cliente.telefone|slice(2, 5) }}-{{ cliente.telefone|slice(7, 9) }}</a>
 
                 <div class="env cli_dados">
 				{% if pedido.tipo_frete == 1 %}

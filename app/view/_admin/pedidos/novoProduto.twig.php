@@ -84,8 +84,8 @@
 </div>
 
 <button class="btn shadow cartFlut {% if carrinhoqtd == 0 %}hide{% endif %}" data-toggle="modal"
-    data-target="#modProduto" id="modProdutoCarrinho"><i class="iconsminds-shopping-basket"></i> <span class="qtd">{{
-        carrinhoqtd }}</span> iten(s)
+    data-target="#modProduto" id="modProdutoCarrinho">
+    <!-- <i class="iconsminds-shopping-basket"></i> <span class="qtd">{{carrinhoqtd }}</span> iten(s) -->
     <strong>Carrinho</strong></button>
 <div class="modal fade" id="modProduto" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

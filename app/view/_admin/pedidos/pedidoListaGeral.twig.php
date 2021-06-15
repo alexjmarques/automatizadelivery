@@ -24,7 +24,7 @@
         {% for c in clientes %}
             {% if p.id_cliente == c.id %}
                 <strong>Cliente: {{c.nome}}</strong><br>
-                <strong>Telefone: </strong><a href="https://api.whatsapp.com/send?phone=55{{c.telefone|replace({' ':"", '(': "", ')': "", '-': ""})}}" target="_Blank">{{c.telefone}}</a>
+                <strong>Telefone: </strong><a href="https://api.whatsapp.com/send?phone=55{{c.telefone}}" target="_Blank">({{ c.telefone[:2] }}) {{ c.telefone|slice(2, 5) }}-{{ c.telefone|slice(7, 9) }}</a>
             {% endif %}
         {% endfor %}
         </div>

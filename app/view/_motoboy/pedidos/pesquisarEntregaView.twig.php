@@ -18,7 +18,7 @@
                     <p class=" m-0 __cf_email__">
 
                             <strong class="mediumNome">{{ cliente.nome }} </strong><br/>
-                        Telefone: <a href="tel:{{ cliente.telefone }}">{{ numero }}</a> <br/>
+                        Telefone: <a href="tel:{{ cliente.telefone }}">({{ cliente.telefone[:2] }}) {{ cliente.telefone|slice(2, 5) }}-{{ cliente.telefone|slice(7, 9) }}</a> <br/>
 
                     </p>
                 </div>

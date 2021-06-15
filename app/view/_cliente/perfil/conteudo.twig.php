@@ -36,7 +36,9 @@
         <div class="col-md-8">
             <h6 class="mb-1 font-weight-bold">{{usuarioAtivo.nome}}</h6>
 
-            <p class="text-muted m-0 small __cf_email__">Telefone: {{usuarioAtivo.telefone}}</p>
+            <p class="text-muted m-0 small __cf_email__">Telefone: ({{ usuarioAtivo.telefone[:2] }}) {{ usuarioAtivo.telefone|slice(2, 5) }}-{{ usuarioAtivo.telefone|slice(7, 9) }}</p>
+
+            
         </div>
     </div>
 </div>

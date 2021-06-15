@@ -5,7 +5,7 @@
                 <h5 class="mb-4">Dados Motoboy </h5>
                 <strong>Nome:</strong>   {{ usuario.nome }}</br>
                 <strong>Email:</strong> {{ usuario.email }}</br>
-                <strong>Telefone:</strong> {{ usuario.telefone }}</br>
+                <strong>Telefone:</strong> ({{ usuario.telefone[:2] }}) {{ usuario.telefone|slice(2, 5) }}-{{ usuario.telefone|slice(7, 9) }}</br> 
             </div>
         </div>
     </div>

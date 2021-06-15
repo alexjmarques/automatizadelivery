@@ -94,7 +94,7 @@
                     <div class="pr-3"><i class="mdi mdi-account-circle-outline text-white h3 mb-0"></i></div>
                     <div>
                         <p class="mb-0 text-white">{{usuario.nome}}</p>
-                        <p class="mb-0 text-white-50 small">Telefone: {{usuario.telefone}}</p>
+                        <p class="mb-0 text-white-50 small">Telefone: ({{ usuario.telefone[:2] }}) {{ usuario.telefone|slice(2, 5) }}-{{ usuario.telefone|slice(7, 9) }}</p>
                     </div>
                 </div>
             </div>

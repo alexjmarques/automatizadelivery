@@ -12,6 +12,7 @@ use app\controller\AllController;
 use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\classes\Sessao;
+use app\Models\Carrinho;
 use app\Models\CarrinhoEntregas;
 use app\Models\CarrinhoPedidos;
 use Mike42\Escpos\Printer;
@@ -193,6 +194,7 @@ class AdminPedidos extends Controller
 
     public function pedidoMostrar($data)
     {
+        //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -217,9 +219,8 @@ class AdminPedidos extends Controller
         if ($empresa->nf_paulista == 1) {
             $nfPaulista = $this->acoes->getByFieldAll('carrinhoCPFNota', 'numero_pedido', $pedido->numero_pedido);
         }
-
         $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
-        $carrinho = $this->acoes->getByFieldAllTwo('carrinho', 'id_empresa', $empresa->id, 'numero_pedido', $pedido->numero_pedido);
+        $carrinho = $this->acoes->getByFieldAllTwoInt('carrinho', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $empresa->id);
 
         $cupomVerifica = $this->acoes->counts('cupomDesconto', 'id_empresa', $empresa->id);
         $cupomVerificaUtilizadores = $this->acoes->counts('cupomDescontoUtilizadores', 'id_empresa', $empresa->id);
