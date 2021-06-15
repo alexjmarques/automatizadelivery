@@ -67,7 +67,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label class="text-dark" for="complemento">Complemento ou referência <span style="color:red;">*</span></label>
-                            <input type="text" class="form-control" id="complemento" name="complemento" placeholder="ex.: casa, conj, portão azul..." value="" required>
+                            <input type="text" class="form-control" id="complemento" name="complemento" placeholder="ex.: casa, conj, portão azul..." value="">
                         </div>
                     </div>
 

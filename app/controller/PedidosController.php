@@ -32,7 +32,7 @@ class PedidosController extends Controller
      */
     public function __construct()
     {
-        
+
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
         $this->sessao = new Sessao();
         $this->geral = new AllController();
@@ -53,16 +53,16 @@ class PedidosController extends Controller
         $status = $this->acoes->getFind('status');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
         $count = $this->acoes->counts('carrinhoPedidos', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $pedidos = $this->acoes->pagination('carrinhoPedidos','id_cliente', $this->sessao->getUser(), $pager->limit(), $pager->offset(), 'id ASC');
-     
+        $pedidos = $this->acoes->pagination('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), $pager->limit(), $pager->offset(), 'id ASC');
+
         $this->load('_cliente/pedidos/main', [
             'moeda' => $moeda,
             'paginacao' => $pager->render('mt-4 pagin'),
@@ -75,7 +75,7 @@ class PedidosController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser(),
+            'isLogin' => $this->sessao->getUser(),
         ]);
     }
     public function view($data)
@@ -91,9 +91,8 @@ class PedidosController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser()
+            'isLogin' => $this->sessao->getUser()
         ]);
-
     }
 
     /**
@@ -112,8 +111,8 @@ class PedidosController extends Controller
         $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
 
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
@@ -128,19 +127,6 @@ class PedidosController extends Controller
         $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
         $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
         $avaliacao = $this->acoes->countsTwo('avaliacao', 'id_cliente', $this->sessao->getUser(), 'id_motoboy', $venda->id, 'id_motoboy', $empresa->id);
-
-        if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 1) {
-                redirect(BASE . "{$empresa->link_site}/motoboy");
-            }
-
-            if ($this->sessao->getNivel() == 0) {
-                redirect(BASE . "{$empresa->link_site}/admin");
-            }
-        } else {
-            redirect(BASE . "{$empresa->link_site}");
-        }
 
         $this->load('_cliente/pedidos/pedidoAcompanharTotal', [
             'moeda' => $moeda,
@@ -167,7 +153,7 @@ class PedidosController extends Controller
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuarioLogado,
-'isLogin' => $this->sessao->getUser()
+            'isLogin' => $this->sessao->getUser()
         ]);
     }
     public function cancelarPedido($data)

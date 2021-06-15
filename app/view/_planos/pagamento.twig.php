@@ -6,7 +6,7 @@
 {% include 'partials/desktop/menuTopWhite.twig.php' %}
 <section class="section pt-5 pb-5">
    <div class="container big-table combo">
-      <form method="post" autocomplete="off" id="form" action="{{BASE}}cadastro/empresa/i" enctype="multipart/form-data">
+      <form method="post" autocomplete="off" id="form" action="{{BASE}}cadastro/empresa/pagamento/i" enctype="multipart/form-data">
          <div class="row">
             <div class="col-md-9 mx-auto bg-white p-4 rounded">
                <h5 class="mb-0">Dados de Cobrança</h4>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group col-md-3">
                            <label>Complemento</label>
-                           <input type="text" class="form-control" id="complemento" name="complemento" value="{{endereco.complemento}}" required>
+                           <input type="text" class="form-control" id="complemento" name="complemento" value="{{endereco.complemento}}">
                         </div>
 
                         <div class="form-group col-md-4">
@@ -99,6 +99,7 @@
                               <input type="hidden" id="planNome" name="planNome" value="Plano {{plano.nome}}" />
                               <input type="hidden" id="valor" name="valor" value="{{plano.valor}}" />
                               <input type="hidden" id="planId" name="planId" value="{{plano.plano_id}}" />
+                              <input type="hidden" id="linkSite" name="linkSite" value="{{empresa.link_site}}" />
                            </div>
 
                            <div class="clearfix"></div>
@@ -114,7 +115,7 @@
                   {% else %}
                   Valor: <strong class="mt-3 size20">{{ moeda.simbolo }} {{ plano.valor }}</strong> (Mensal)
                   {% endif %}
-
+                  
                   <button class="btn btn-info d-block mt-3 p-3 pl-4 pr-4 acaoBtn">Finalizar Pedido <i class="fa fa-chevron-circle-right"></i></button>
                </div>
             </div>

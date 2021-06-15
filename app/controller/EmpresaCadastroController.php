@@ -273,10 +273,6 @@ class EmpresaCadastroController extends Controller
             $usuariosEmpresa->save();
             //print_r($usuariosEmpresa);
 
-            $this->sessao->sessaoNew('id_usuario', $usuarios->id);
-            $this->sessao->sessaoNew('usuario', $usuarios->email);
-            $this->sessao->sessaoNew('nivel', $usuarios->nivel);
-
             if($data['plano_id'] == 1){
                 $code = substr(number_format(time() * Rand(), 0, '', ''), 0, 10);
                 $usuarios = new Assinatura();
@@ -286,18 +282,21 @@ class EmpresaCadastroController extends Controller
                 $usuarios->id_empresa = $empresa->id;
                 $usuarios->save();
 
+                $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
+
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => $usuarios->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Clique em OK para efetuar o login e começar a utilizar nossos serviços', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/admin/login", 'code' => 10 ]);
             }else{
+                $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "cadastro/empresa/{$plano->slug}/pagamento", 'code' => 11 ]);
+                $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/{$plano->slug}/pagamento", 'code' => 11 ]);
             }
 
         }
         exit($json);
     }
 
-    public function cobrancaPlano($data)
+    public function pagamentoInsert($data)
     {
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);

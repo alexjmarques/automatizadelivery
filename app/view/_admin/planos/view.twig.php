@@ -80,7 +80,7 @@
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Complemento</label>
-                                <input type="text" class="form-control" id="complemento" name="complemento" required>
+                                <input type="text" class="form-control" id="complemento" name="complemento">
                             </div>
 
                             <div class="form-group col-md-4">

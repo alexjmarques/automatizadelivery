@@ -58,7 +58,7 @@
                         <div class="col-md-12">
                         <div class="form-group">
                             <label class="text-dark" for="complemento">Complemento ou referência <span style="color:red;">*</span></label>
-                            <input type="text" class="form-control" id="complemento" name="complemento" placeholder="ex.: casa, conj, portão azul..." value="{{enderecoAtivo.complemento}}" required>
+                            <input type="text" class="form-control" id="complemento" name="complemento" placeholder="ex.: casa, conj, portão azul..." value="{{enderecoAtivo.complemento}}">
                         </div>
                         </div>
 

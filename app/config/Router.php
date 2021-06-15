@@ -58,7 +58,7 @@ $router->get('/institucional/contato/i', 'PagesController:contatoSend');
 $router->get('/cadastro/empresa', 'EmpresaCadastroController:index');
 $router->get('/cadastro/empresa/{plano}', 'EmpresaCadastroController:index');
 $router->post('/cadastro/empresa/i', 'EmpresaCadastroController:insert');
-$router->get('/cadastro/empresa/{plano}/pagamento', 'EmpresaCadastroController:pagamento');
+$router->get('/{linkSite}/{plano}/pagamento', 'EmpresaCadastroController:pagamento');
 $router->post('/cadastro/empresa/pagamento/i', 'EmpresaCadastroController:pagamentoInsert');
 
 

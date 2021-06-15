@@ -50,7 +50,7 @@
             <div class="form-row p-0 pb-3 pt-3 m-0 pt-0 pl-0">
               <div class="form-group col-md-12 pb-0 pl-0 pr-0 mb-0">
                 <label class="text-center">Complemento ou Referência <span style="color:red;">*</span></label>
-                <input type="text" class="form-control" id="complemento" name="complemento" required>
+                <input type="text" class="form-control" id="complemento" name="complemento">
               </div>
             </div>
 
