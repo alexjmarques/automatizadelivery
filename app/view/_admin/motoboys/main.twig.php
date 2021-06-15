@@ -20,11 +20,10 @@
                     <thead class="linhaTop">
                         <tr>
                             <th>Nome</th>
-                            <th>Email</th>
+                            <th>Telefone</th>
                             <th style="width: 50px !important;">Diaria</th>
                             <th style="width: 50px !important;">Taxa</th>
                             <th style="width: 50px !important;">Placa</th>
-                            
                             <th style="width: 100px !important;">Ações</th>
                         </tr>
                     </thead>
@@ -38,7 +37,7 @@
                                     </td>
 
                                     <td>
-                                    <p>{% if u.id == p.id_usuario %}{{ u.email }}{% endif %}</p>
+                                    <p>{% if u.id == p.id_usuario %}({{ u.telefone[:2] }}) {{ u.telefone|slice(2, 5) }}-{{ u.telefone|slice(7, 9) }}{% endif %}</p>
                                     </td>
                                     <td>
                                         <p class="text-center">{{ moedaAtivo.simbolo }} {{ p.diaria|number_format(2, ',', '.') }}</p>

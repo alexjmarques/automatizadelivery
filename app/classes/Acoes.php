@@ -251,6 +251,12 @@ class Acoes
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} < {$valor3}", null, "SUM($linha) AS total")->fetch();
     }
 
+    public function sumFielsFour(string $table, string $field,string $valor, string $field2,string $valor2,string $field3,string $valor3,string $field4,string $valor4, string $linha)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} = {$valor3} AND {$field4} = {$valor4}", null, "SUM($linha) AS total")->fetch();
+    }
+
+
     public function sum(string $table, string $valor, string $linha)
     {
         return $this->{$table}->find("id_empresa = {$valor}", null, "SUM($linha) AS total")->fetch();
@@ -287,6 +293,10 @@ class Acoes
     public function countsTree(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
     {
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} = {$valor3}")->count();
+    }
+    public function countsFour(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3, string $field4, string $valor4)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} = {$valor3} AND {$field4} = {$valor4}")->count();
     }
 
     public function countStatusDay(string $table, string $field, string $valor, string $field2, string $valor2, string $data)

@@ -785,8 +785,8 @@ S2.define('select2/utils',[
     var select2Id = element.getAttribute('data-select2-id');
     if (select2Id == null) {
       // If element has id, use it.
-      if (element.id) {
-        select2Id = element.id;
+      if (element.code) {
+        select2Id = element.code;
         element.setAttribute('data-select2-id', select2Id);
       } else {
         element.setAttribute('data-select2-id', ++id);

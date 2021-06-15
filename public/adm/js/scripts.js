@@ -45,7 +45,7 @@ var mask = "HH:MM",
     };
 
 $(".timepicker").mask(mask, pattern);
-$('#valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_entrega_motoboy, #taxa_entrega2, #taxa_entrega3').mask('#.##0,00', {
+$('#valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_entrega_motoboy, #taxa_entrega2, #taxa_entrega3, #diaria, #taxa').mask('#.##0,00', {
   reverse: true
 });
 $('#valor_cupom').mask('##00%', {
@@ -629,7 +629,7 @@ function mudarStatusEntrega(id, status, id_caixa) {
           atualizar();
           $('#close-modal').trigger('click');
         } else {
-          console.log(dd);
+          console.log('aqui');
         }
       },
     })
@@ -1437,6 +1437,7 @@ $("#formFinish").submit(function () {
         $('.btnValida').html('FINALIZAR PEDIDO');
       },
       success: function (dd) {
+        console.log(dd);
         switch (dd.mensagem) {
           case 'Pedido finalizado com sucesso':
             $('#mensagem').html(`Pedido Finalizado! Número do pedido: ${dd.pedido}`);

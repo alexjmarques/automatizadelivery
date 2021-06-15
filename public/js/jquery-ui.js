@@ -7679,9 +7679,9 @@ $.extend(Datepicker.prototype, {
 		var nodeName, inline, inst;
 		nodeName = target.nodeName.toLowerCase();
 		inline = (nodeName === "div" || nodeName === "span");
-		if (!target.id) {
+		if (!target.code) {
 			this.uuid += 1;
-			target.id = "dp" + this.uuid;
+			target.code = "dp" + this.uuid;
 		}
 		inst = this._newInst($(target), inline);
 		inst.settings = $.extend({}, settings || {});

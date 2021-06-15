@@ -10,6 +10,7 @@
         <a class="text-white font-weight-bold ml-auto" href="{{BASE}}{{empresa.link_site}}/"> Voltar</a>
     </div>
     {% for p in pedidos %}
+    
         <div class="p-3 osahan-profile">
             <div class="bg-white rounded shadow mt-n5">
                 <div class="d-flex  border-bottom p-3">

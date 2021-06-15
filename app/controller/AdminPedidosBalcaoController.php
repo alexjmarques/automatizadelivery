@@ -525,7 +525,6 @@ class AdminPedidosBalcaoController extends Controller
     //Finaliza e fecha o pedido do cliente
     public function carrinhoFinalizarPedido($data)
     {
-        
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');

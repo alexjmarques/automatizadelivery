@@ -27,6 +27,7 @@ require "../app/controller/PedidosController.php";
 require "../app/controller/UsuarioController.php";
 require "../app/controller/AdminEmpresaFrete.php";
 require "../app/controller/TestAPIController.php";
+require "../app/controller/MotoboyController.php";
 require "../app/controller/CarrinhoController.php";
 require "../app/controller/AdminConfiguracoes.php";
 require "../app/controller/AdminTipoAdicional.php";
@@ -35,9 +36,7 @@ require "../app/controller/AdminProdutoSabores.php";
 require "../app/controller/AdminFormasPagamento.php";
 require "../app/controller/AdminiFoodController.php";
 require "../app/controller/AdminUberEatsController.php";
-require "../app/controller/PerfilMotoboyController.php";
 require "../app/controller/AdminProdutosAdicionais.php";
-require "../app/controller/PedidosMotoboyController.php";
 require "../app/controller/EmpresaCadastroController.php";
 require "../app/controller/AdminPedidosBalcaoController.php";
 require "../app/controller/AdminClickEntregasController.php";
@@ -160,29 +159,33 @@ $router->get('/{linkSite}/endereco/d/{id}', 'PerfilController:deletarEndereco');
 /*
     Admin Aplicação Motoboy
 */
-$router->get('/{linkSite}/motoboy', 'PedidosMotoboyController:relatorio');
-$router->get('/{linkSite}/motoboy/', 'PedidosMotoboyController:relatorio');
-$router->get('/{linkSite}/motoboy/entregas', 'PedidosMotoboyController:index');
-$router->get('/{linkSite}/motoboy/entrega/{numero_pedido}', 'PedidosMotoboyController:view');
-$router->get('/{linkSite}/motoboy/pegar/entrega', 'PedidosMotoboyController:pesquisarEntrega');
-$router->get('/{linkSite}/motoboy/pegar/entrega/busca', 'PedidosMotoboyController:getEntrega');
-$router->post('/{linkSite}/motoboy/pegar/entrega/mudarStatus', 'PedidosMotoboyController:mudarStatusMotoboy');
-$router->post('/{linkSite}/motoboy/entrega/mudarStatus', 'PedidosMotoboyController:mudarStatus');
-$router->get('/{linkSite}/motoboy/buscar/entregas/mes', 'PedidosMotoboyController:relatorioMes');
+$router->get('/{linkSite}/motoboy', 'MotoboyController:index');
+$router->get('/{linkSite}/motoboy/login', 'MotoboyController:login');
+$router->get('/{linkSite}/motoboy/cadastro', 'MotoboyController:cadastro');
+$router->post('/{linkSite}/motoboy/cadastro/insert', 'MotoboyController:insert');
+$router->post('/{linkSite}/motoboy/login/valida', 'MotoboyController:loginValida');
+$router->get('/{linkSite}/motoboy/', 'MotoboyController:relatorio');
+$router->get('/{linkSite}/motoboy/entregas', 'MotoboyController:entregas');
+$router->get('/{linkSite}/motoboy/entrega/{numero_pedido}', 'MotoboyController:view');
+$router->get('/{linkSite}/motoboy/pegar/entrega', 'MotoboyController:pesquisarEntrega');
+$router->post('/{linkSite}/motoboy/pegar/entrega/busca', 'MotoboyController:getEntrega');
+$router->post('/{linkSite}/motoboy/pegar/entrega/mudarStatus', 'MotoboyController:pegarEntrega');
+$router->post('/{linkSite}/motoboy/entrega/mudarStatus', 'MotoboyController:mudarStatus');
+$router->post('/{linkSite}/motoboy/buscar/entregas/mes', 'MotoboyController:relatorioMes');
 
 /**
  * Listagem para tempo de execução
  */
-$router->get('/{linkSite}/motoboy/pedido/listar', 'PedidosMotoboyController:entregaListar');
-$router->get('/{linkSite}/motoboy/pedido/listar/qtd', 'PedidosMotoboyController:numeroEntregaListar');
-$router->get('/{linkSite}/motoboy/perfil', 'PerfilMotoboyController:index');
-$router->get('/{linkSite}/motoboy/dados-veiculo', 'PerfilMotoboyController:editar');
-$router->get('/{linkSite}/motoboy/alterar-senha', 'PerfilMotoboyController:senha');
-$router->get('/{linkSite}/motoboy/alterar-telefone', 'PerfilMotoboyController:telefone');
-$router->post('/{linkSite}/motoboy/perfil/senha/u', 'PerfilMotoboyController:updateSenha');
-$router->post('/{linkSite}/motoboy/perfil/telefone/u', 'PerfilMotoboyController:updateTelefone');
-$router->post('/{linkSite}/motoboy/placa/editar', 'PerfilMotoboyController:updatePlaca');
-$router->post('/{linkSite}/motoboy/senha/u', 'PerfilMotoboyController:updateSenha');
+$router->get('/{linkSite}/motoboy/pedido/listar', 'MotoboyController:entregaListar');
+$router->get('/{linkSite}/motoboy/pedido/listar/qtd', 'MotoboyController:numeroEntregaListar');
+$router->get('/{linkSite}/motoboy/perfil', 'MotoboyController:index');
+$router->get('/{linkSite}/motoboy/dados-veiculo', 'MotoboyController:editar');
+$router->get('/{linkSite}/motoboy/alterar-senha', 'MotoboyController:senha');
+$router->get('/{linkSite}/motoboy/alterar-telefone', 'MotoboyController:telefone');
+$router->post('/{linkSite}/motoboy/perfil/senha/u', 'MotoboyController:updateSenha');
+$router->post('/{linkSite}/motoboy/perfil/telefone/u', 'MotoboyController:updateTelefone');
+$router->post('/{linkSite}/motoboy/placa/editar', 'MotoboyController:updatePlaca');
+$router->post('/{linkSite}/motoboy/senha/u', 'MotoboyController:updateSenha');
 
 /*
     Admin Aplicação

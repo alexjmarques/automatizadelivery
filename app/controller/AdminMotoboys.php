@@ -58,12 +58,13 @@ class AdminMotoboys extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $usuario = $this->acoes->getFind('usuarios');
+        $usuario = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
         $count = $this->acoes->counts('motoboy', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
         $retorno = $this->acoes->pagination('motoboy', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+
 
 
         $this->load('_admin/motoboys/main', [
@@ -153,11 +154,12 @@ class AdminMotoboys extends Controller
     {
         $valor = new Motoboy();
         $valor->id_usuario = $data['id_usuario'];
-        $valor->diaria = $data['diaria'];
-        $valor->taxa = $data['taxa'];
+        $valor->diaria = $this->geral->brl2decimal($data['diaria']);
+        $valor->taxa = $this->geral->brl2decimal($data['taxa']);
         $valor->placa = $data['placa'];
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
+        //print_r($valor);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Motoboy cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Motoboy', 'url' => 'admin/motoboys']);
@@ -168,8 +170,8 @@ class AdminMotoboys extends Controller
     {
 
         $valor = (new Motoboy())->findById($data['id']);
-        $valor->diaria = $data['diaria'];
-        $valor->taxa = $data['taxa'];
+        $valor->diaria = $this->geral->brl2decimal($data['diaria']);
+        $valor->taxa = $this->geral->brl2decimal($data['taxa']);
         $valor->placa = $data['placa'];
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();

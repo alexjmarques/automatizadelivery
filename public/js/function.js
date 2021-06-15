@@ -979,7 +979,7 @@ $("#formBusca").submit(function () {
         } else {
             $.ajax({
                 url: `/${link_site}/motoboy/pegar/entrega/busca`,
-                type: 'get',
+                type: 'post',
                 data: formData,
                 beforeSend: function () {
                     $('.carregar').html(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><p class="small mb-0">Estamos processando a sua busca aguarde um momento.</p></div></div></div>`);
@@ -990,7 +990,6 @@ $("#formBusca").submit(function () {
                 success: function (data) {
                     console.log(data);
                     $('#pesquisaEntregasMotoboy').html(data);
-
                 },
                 error: function (data) {
                     $('.carregar').html(`<div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><h4 class="text-primary">Nenhum pedido foi encontrado.</h4><p class="small mb-0">Verifique o número digitado ou tente novamente.</p></div></div></div>`);
@@ -1192,12 +1191,11 @@ $('.smoothScroll').click(function () {
 
 $("#mes").change(function () {
     var mes = $(this).val();
-    var formData = {
-        'mes': mes
-    }
+    console.log(mes)
+    var formData = {mes}
     $.ajax({
         url: `/${link_site}/motoboy/buscar/entregas/mes`,
-        type: 'get',
+        type: 'post',
         data: formData,
         beforeSend: function () {
             $('.carregar').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
@@ -1206,6 +1204,7 @@ $("#mes").change(function () {
             $('.carregar').html('');
         },
         success: function (dd) {
+            console.log(dd)
             $('#dadosMes').html(dd);
         }
     });

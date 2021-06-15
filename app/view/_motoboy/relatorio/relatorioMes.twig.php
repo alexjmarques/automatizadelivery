@@ -3,18 +3,17 @@
     <thead>
         <tr>
             <th scope="col">Data</th>
-            
             <th scope="col">Valor</th>
             <th scope="col">Pago</th>
         </tr>
     </thead>
     <tbody>
     {% for en in busca %}
-        {% if en.data|date("m") == dataEscolhida %}
+        {% if en.data_pedido|date("m") == dataEscolhida %}
         {% if en.id_motoboy == usuarioAtivo.id %}
             <tr>
                 <td>
-                {{en.data|date('d/m/Y')}}
+                {{en.data_pedido|date('d/m/Y')}}
                 </td>
                 <td>
                 {% for p in pedidos %}

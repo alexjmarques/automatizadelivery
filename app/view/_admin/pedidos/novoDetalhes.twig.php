@@ -108,7 +108,7 @@
                                     <select id="tipo_frete" name="tipo_frete" class="form-control" required>
                                         {% if km > km_entrega_excedente %}
                                         {% for t in tipo %}
-                                        {% if t.status == 1 and t.id == 1 %}
+                                        {% if t.status == 1 and t.code == 1 %}
                                         <option value="1" selected>Retirada</option>
                                         {% endif %}
                                         {% endfor %}
@@ -116,7 +116,7 @@
                                         <option value="" {% if endereco is null %}selected{% endif %}>Tipo de Entrega
                                         </option>
                                         {% for t in tipo %}
-                                        <option value="{{t.id}}" {% if endereco is not null %}{% if t.id==2 %}selected{%
+                                        <option value="{{t.code}}" {% if endereco is not null %}{% if t.code==2 %}selected{%
                                             endif %}{% endif %}>{{t.tipo}}</option>
                                         {% endfor %}
                                         {% endif %}
@@ -124,7 +124,7 @@
                                 </div>
                                 {% if km > km_entrega_excedente %}
                                 {% for t in tipo %}
-                                {% if t.status == 1 and t.id == 1 %}
+                                {% if t.status == 1 and t.code == 1 %}
                                 <div class="clearfix"></div>
                                 <div class="dados-usuario row pt-3 m-0 full-width">
                                     {% endif %}
@@ -236,7 +236,7 @@
                                         <input type="hidden" name="km" id="km" value="{{km}}">
                                         {% if km > km_entrega_excedente %}
                                         {% for t in tipo %}
-                                        {% if t.status == 1 and t.id == 1 %}
+                                        {% if t.status == 1 and t.code == 1 %}
                                         <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span
                                                     id="valorProdutoMostra">{{ moeda.simbolo }} {{
                                                     (valorPedido)|number_format(2, ',', '.') }}</span></span></h6>
@@ -251,7 +251,7 @@
                                 </div>
                                 {% if km > km_entrega_excedente %}
                                 {% for t in tipo %}
-                                {% if t.status == 1 and t.id == 1 %}
+                                {% if t.status == 1 and t.code == 1 %}
                                 <button class="btn btn-success btn-block btn-lg acaoBtn btnValida" type="submit">FINALIZAR PEDIDO<i class="icofont-long-arrow-right"></i></button>
                                 {% endif %}
                                 {% endfor %}

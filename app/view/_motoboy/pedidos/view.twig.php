@@ -17,32 +17,15 @@
                 <div class="d-flex  border-bottom p-3">
                     <div class="left col-md-8 p-0">
                     <h6 class="mb-1 font-weight-bold">Pedido #{{ venda.numero_pedido }}
-                    {% if venda.status == 1 %}
-                    <span class="badge badge-info">Recebido</span>
-                    {% endif %}
-
-                    {% if venda.status == 2 %}
-                    <span class="badge badge-warning">Produção</span>
-                    {% endif %}
-
-                    {% if venda.status == 3 %}
-                        {% if venda.tipo_frete == 1 %}
-                            <span class="badge badge-secondary">Pronto para retirar</span>
-                        {% else %}
-                            <span class="badge badge-secondary">Saiu para entregar</span>
-                        {% endif %}
-                    {% endif %}
-                    {% if venda.status == 4 %}
-                    <span class="badge badge-success">Entregue</span>
-                    {% endif %}
-
-                    {% if venda.status == 5 %}
-                    <span class="badge badge-danger">Recusado</span>
-                    {% endif %}
-
-                    {% if venda.status == 6 %}
-                    <span class="badge badge-secondary">Cancelado</span>
-                    {% endif %}</h6>
+                    {% for st in status %}
+                            {% if venda.status == st.id %}
+                            {% if venda.tipo_frete == 1 %}
+                            <span class="badge badge-{{st.class}}">{{st.retirada}}</span>
+                            {% else %}
+                            <span class="badge badge-{{st.class}}">{{st.delivery}}</span>
+                            {% endif %}
+                            {% endif %}
+                        {% endfor %}</h6>
                     
                     </div>
                     
@@ -53,19 +36,11 @@
             <div class="bg-white shadow mb-3 ">
                 <div class="gold-members d-flex justify-content-between px-3 py-2 pt-0">
                     <p class=" mt-2 __cf_email__">
-                    {% for user in usuarios %}
-                        {% if user.id == venda.id_cliente %}
-                            <strong class="mediumNome">{{ user.nome }} </strong><br/>
-                        Telefone: <a href="tel:{{ user.telefone }}">{{ user.telefone }}</a> <br/>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% for end in enderecos %}
-                        {% if end.id_usuario == venda.id_cliente %}
-                            {{ end.rua }}, {{ end.numero }} {{ end.complemento }} - {{ end.bairro }} <br/>
-                            CEP: {{ end.cep }}
-                        {% endif %}
-                    {% endfor %}
+       
+                            <strong class="mediumNome">{{ usuario.nome }} </strong><br/>
+                        Telefone: <a href="tel:{{ usuario.telefone }}">({{ usuario.telefone[:2] }}) {{ usuario.telefone|slice(2, 5) }}-{{ usuario.telefone|slice(7, 9) }}</a> <br/>
+                            {{ endereco.rua }}, {{ endereco.numero }} {{ endereco.complemento }} - {{ endereco.bairro }} <br/>
+                            CEP: {{ endereco.cep }}
                     </p>
                 </div>
             </div>
@@ -73,7 +48,7 @@
 
 
             <div class="osahan-cart-item-profile  bg-white shadow mb-3 ">
-            <form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/motoboy/entrega/mudarStatus" novalidate>
+            <form  method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/motoboy/entrega/mudarStatus">
             <div class="d-flex  border-bottom p-3">
                 <div class="left col-md-8 p-0">
                     <h6 class="mb-1 font-weight-bold">Status do Pedido</h6>
@@ -83,14 +58,14 @@
                 <div class="border-bottom p-3 radioMoto">
                     <div class="custom-control custom-radio mb-2 px-0">
                         <input type="radio" id="status4" name="status" class="custom-control-input" value="4">
-                        <label class="custom-control-label border osahan-check p-3 w-100 rounded bg-light status4" for="status4">
+                        <label class="custom-control-label border osahan-check p-3 w-100 rounded bg-light status4" for="status4" required>
                             <b> Pedido Entregue ao cliente</b> <br>
                             <p class="small mb-0"></p>
                         </label>
                     </div>
 
                     <div class="custom-control custom-radio mb-2 px-0">
-                        <input type="radio" id="status5" name="status" class="custom-control-input" value="5">
+                        <input type="radio" id="status5" name="status" class="custom-control-input" value="5" required>
                         <label class="custom-control-label border osahan-check p-3 w-100 rounded bg-light status5" for="status5">
                             <b> Cliente Recusou pedido</b> <br>
                             <p class="small mb-0">Informe abaixo o motivo</p>
@@ -101,7 +76,7 @@
                         <p class="mt-3 mb-2"><strong class="mediumNome">Qual motivo da recusa?</strong></p>
                         <div class="mt-0 input-group full-width">
                             <div class="input-group-prepend"><span class="input-group-text"><i class="feather-message-square"></i></span></div>
-                                <textarea name="observacao" id="observacao" placeholder="Alguma observação no pedido?" aria-label="With textarea" class="form-control"></textarea>
+                                <textarea name="observacao" id="observacao" placeholder="Alguma observação no pedido?" class="form-control">...</textarea>
                             </div>
                         </div>
                         {% for user in usuarios %}
@@ -111,10 +86,8 @@
                             {% endif %}
                         {% endfor %}
 
-                        <input type="hidden" value="{{ venda.id }}" name="id" id="id">
-                        <input type="hidden" value="{{ venda.numero_pedido }}" name="numero_pedido" id="numero_pedido">
-                        <input type="hidden" value="{{ venda.chave }}" name="chave" id="chave">
-                        <input type="hidden" value="{{ venda.motoboy }}" name="id_motoboy" id="id_motoboy">
+                        <input type="hidden" value="{{ venda.id }}" name="id_pedido" id="id_pedido">
+                        <input type="hidden" value="{{ entrega.id }}" name="id_entrega" id="id_entrega">
                         <div class="pt-1">
                         <button id="fullBtnNac" class="btn btn-success mb-2 mt-3 full-btn  p-3"> INFORMAR AO RESTAURANTE</button>
                         </div>

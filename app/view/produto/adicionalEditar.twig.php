@@ -67,7 +67,7 @@
                                 <input class="custom-control-input" type="checkbox" data-tipoSlug="{{ ta.slug}}"
                                     id="id_adicional{{padici.id}}" name="adicional[]" value="{{padici.id}}"
                                     valor="{% if padici.valor is null %}0.00{% else %}{{padici.valor}}{% endif %}" {%
-                                    for padiciCart in produtoAdicionalCart %} {% if padici.id==padiciCart.id_adicional
+                                    for padiciCart in produtoAdicionalCart %} {% if padici.id==padiciCart.code_adicional
                                     %}checked{% endif %}{% endfor%}>
                                 <label class="custom-control-label" for="id_adicional{{padici.id}}">{{padici.nome}}
                                     {% if padici.valor == 0.00 %}
@@ -81,7 +81,7 @@
                                 </label>
 
 
-                                <div class="input-group plus-minus-input id_adicional{{padici.id}} {% for padiciCart in produtoAdicionalCart %} {% if padici.id == padiciCart.id_adicional %}abreelemento{% endif %}{% endfor%}"
+                                <div class="input-group plus-minus-input id_adicional{{padici.id}} {% for padiciCart in produtoAdicionalCart %} {% if padici.id == padiciCart.code_adicional %}abreelemento{% endif %}{% endfor%}"
                                     style="display:none;">
                                     <div class="input-group-button">
                                         <button type="button" class="btn btn-danger btn-number minuss"
@@ -92,7 +92,7 @@
                                     </div>
                                     <input type="number" id="qtd_ad{{padici.id}}" min="1" name="qtd_ad{{padici.id}}"
                                         class="input-group-field qtd-control id_adicional{{padici.id}}"
-                                        value="{% for padiciCart in produtoAdicionalCart %}{% if padici.id == padiciCart.id_adicional %}{{padiciCart.quantidade}}{% endif %}{% endfor%}">
+                                        value="{% for padiciCart in produtoAdicionalCart %}{% if padici.id == padiciCart.code_adicional %}{{padiciCart.quantidade}}{% endif %}{% endfor%}">
                                     <div class="input-group-button">
                                         <button type="button" class="btn btn-success btn-number"
                                             id-select="{{padici.id}}" data-quantity="plus"

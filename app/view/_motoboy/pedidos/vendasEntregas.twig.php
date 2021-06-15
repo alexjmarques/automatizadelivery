@@ -1,5 +1,4 @@
 
-
     {% for v in vendas %}
     {% if v.status == 3 %}
     <div class="mb-3 osahan-cart-item osahan-home-page">
@@ -8,21 +7,16 @@
                 <div class="d-flex  border-bottom p-3">
                     <div class="left col-md-8 p-0">
                     <h6 class="mb-1 font-weight-bold">#{{ v.numero_pedido }} - 
-                    {% if v.status == 3 %}
-                    Cliente aguardando entrega
-                    {% endif %}
 
-                    {% if v.status == 4 %}
-                    <span class="badge badge-success">Entregue</span>
-                    {% endif %}
-
-                    {% if v.status == 5 %}
-                    <span class="badge badge-danger">Recusado</span>
-                    {% endif %}
-
-                    {% if v.status == 6 %}
-                    <span class="badge badge-secondary">Cancelado</span>
-                    {% endif %}</h6>
+                    {% for st in status %}
+                            {% if v.status == st.id %}
+                            {% if v.tipo_frete == 1 %}
+                            {{st.retirada}}
+                            {% else %}
+                            {{st.delivery}}
+                            {% endif %}
+                            {% endif %}
+                        {% endfor %}
 
                     </div>
                 </div>
@@ -52,15 +46,15 @@
         {% endfor %}
 
         <div class="gold-members d-flex justify-content-between px-3 py-2">
-            <p class="text-muted m-0 __cf_email__"><span class="large"><strong  class="subprice">Dados para a {% for t in tipo_frete %}{% if t.id == v.tipo_frete %}{{t.tipo}}{% endif %}{% endfor %}</strong> </span> </p>
+            <p class="text-muted m-0 __cf_email__"><span class="large"><strong  class="subprice">Dados para a {% for t in tipo_frete %}{% if t.code == v.tipo_frete %}{{t.tipo}}{% endif %}{% endfor %}</strong> </span> </p>
         </div>
 
         <div class="gold-members d-flex justify-content-between px-3 py-2 pt-0">
             <p class=" m-0 __cf_email__">
-            {% for user in usuarios %}
+            {% for user in usuario %}
                 {% if user.id == v.id_cliente %}
                     <strong class="mediumNome">{{ user.nome }} </strong><br/>
-                   Telefone: <a href="tel:{{ user.telefone }}">{{ user.telefone }}</a> <br/>
+                   Telefone: <a href="tel:{{ user.telefone }}">({{ user.telefone[:2] }}) {{ user.telefone|slice(2, 5) }}-{{ user.telefone|slice(7, 9) }}</a> <br/>
                 {% endif %}
             {% endfor %}
 
@@ -96,7 +90,7 @@
         
         <div class="col-md-12 mb-3 mt-3">
         <p class="text-muted m-0 __cf_email__ float-right"><span class="medium">Pagamento via <strong class="subprice">{% for t in tipo_pagamento %}
-                        {% if t.id == v.tipo_pagamento %}
+                        {% if t.code == v.tipo_pagamento %}
                             {{t.tipo}}
                         {% endif %}
                     {% endfor %}</strong> </span>

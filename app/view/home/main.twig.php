@@ -127,7 +127,7 @@
                               <hr class="clearfix">
                               {% for at in atendimento %}
                               {% for d in dias %}
-                              {% if d.id == at.id_dia %}
+                              {% if d.id == at.code_dia %}
                               <p class="mb-2 text-black"><i class="icofont-clock-time text-primary mr-2"></i> {{ d.nome }}  das {{at.abertura}} às {{at.fechamento}}</p>
                               {% endif %}
                               {% endfor %}
