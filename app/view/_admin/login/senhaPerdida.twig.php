@@ -18,9 +18,7 @@
                                 </label>
 
                                 <div class="d-flex justify-content-between align-items-center">
-                                <input type="hidden" id="id" name="id" value="{{usuario[':id']}}">
-                                    
-<button class="btn btn-primary btn-lg btn-shadow acaoBtn" type="submit">ENVIAR</button>
+                                    <button class="btn btn-primary btn-lg btn-shadow acaoBtn" type="submit">ENVIAR</button>
                                 </div>
                                 <div id="mensagem" class="text-center col-md-12 mt-3 m-0 p-0"></div>
                             </form>

@@ -11,6 +11,7 @@ use DElfimov\Translate\Translate;
 use app\controller\AllController;
 use Aura\Session\SessionFactory;
 use function JBZoo\Data\json;
+use app\classes\Email;
 use app\classes\Sessao;
 use Twilio\Rest\Client;
 use app\Models\Usuarios;
@@ -25,6 +26,7 @@ class UsuarioController extends Controller
 
     private $empresa;
     private $acoes;
+    private $email;
     private $usuario;
     private $sessao;
     private $bcrypt;
@@ -40,7 +42,7 @@ class UsuarioController extends Controller
     public function __construct()
     {
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
-
+        $this->email = new Email();
         $this->sessao = new Sessao();
         $this->geral = new AllController();
         $this->empresa = new Empresa();
@@ -258,6 +260,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -285,6 +288,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -314,6 +318,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -354,6 +359,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -381,6 +387,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -410,6 +417,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -448,6 +456,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -475,6 +484,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -504,6 +514,7 @@ class UsuarioController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect(),
             'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
@@ -585,5 +596,61 @@ class UsuarioController extends Controller
         }
 
         redirect(BASE . "{$data['linkSite']}/{$url_dell}");
+    }
+
+
+    public function senhaPerdida($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        if ($this->sessao->getUser()) {
+            redirect(BASE . "{$empresa->link_site}/admin");
+        }
+
+        $this->load('_admin/login/senhaPerdida', [
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
+            'isLogin' => $this->sessao->getUser(),
+        ]);
+    }
+
+    public function senhaPerdidaRecupera($data)
+    {
+        $usuario = $this->acoes->getByField('usuarios', 'email', $data['email']);
+        $email = $this->email->recuperacaoSenha($usuario->nome, $usuario->email, $usuario->id, $data['linkSite']);
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $email, 'resp' => 'send', 'mensagem' => 'Enviamos instruções para que você possa recuperar sua senha!', 'error' => 'Não foi possivel enviar o email o email de recuperação', 'url' => "admin/login"]);
+        exit($json);
+    }
+
+    public function novaSenhaPerdida($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        if ($this->sessao->getUser()) {
+            redirect(BASE . "{$empresa->link_site}/admin");
+        }
+
+        $this->load('_admin/login/senhaPerdidaLogin', [
+            'empresa' => $empresa,
+            'usuario' => $usuario,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect(),
+            'isLogin' => $this->sessao->getUser(),
+        ]);
+    }
+
+    public function insertRecuperacaoSenha($data)
+    {
+        $senha = $this->bcrypt->encrypt($data['senha'], '2a');
+
+        $valor = (new Usuarios())->findById($data['id']);
+        $valor->senha = $senha;
+        $valor->save();
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Senha atualizada com sucesso', 'error' => 'Não foi posível atualizar sua senha', 'url' => 'admin/login',]);
+        exit($json);
     }
 }

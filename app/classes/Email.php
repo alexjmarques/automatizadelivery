@@ -276,7 +276,7 @@ class Email
                         </tr>
                         <tr>
                             <td colspan="2" style="padding-top:30px;" align="center">
-                                <a href="https://automatizadelivery.com.br'.$link_site.'/admin/recuperar/98e4011142eeb9842091bf4812f81656a7d80eac/'.$id.'" title="Cadastrar nova senha" target="_blank" style="font-size: 14px; line-height: 1.5; font-weight: 700; letter-spacing: 1px; padding: 15px 40px; text-align:center; text-decoration:none; color:#FFFFFF; border-radius: 50px; background-color:#880A1F;">Cadastrar nova senha</a>
+                                <a href="https://automatizadelivery.com.br/'.$link_site.'/recuperar/98e4011142eeb9842091bf4812f81656a7d80eac/'.$id.'" title="Cadastrar nova senha" target="_blank" style="font-size: 14px; line-height: 1.5; font-weight: 700; letter-spacing: 1px; padding: 15px 40px; text-align:center; text-decoration:none; color:#FFFFFF; border-radius: 50px; background-color:#880A1F;">Cadastrar nova senha</a>
                             </td>
                         </tr>
                     </tbody>
@@ -292,9 +292,9 @@ class Email
             </center>
         </div>');
             $this->mail->send();
-            echo 'Enviamos para você um email com informações para recuperar sua senha';
+            return 1;
         } catch (Exception $e) {
-            echo "Não foi possível enviar a mensagem. Erro Mailer: {$this->mail->ErrorInfo}";
+            return 0;
         }
     }
 }

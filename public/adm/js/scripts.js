@@ -33,16 +33,16 @@ $('input.timepicker').timepicker({
 });
 $('#telefone').mask('(00) 00000-0000');
 var mask = "HH:MM",
-    pattern = {
-        'translation': {
-            'H': {
-                pattern: /[0-23]/
-            },
-            'M': {
-                pattern: /[0-59]/
-            }
-        }
-    };
+  pattern = {
+    'translation': {
+      'H': {
+        pattern: /[0-23]/
+      },
+      'M': {
+        pattern: /[0-59]/
+      }
+    }
+  };
 
 $(".timepicker").mask(mask, pattern);
 $('#valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_entrega_motoboy, #taxa_entrega2, #taxa_entrega3, #diaria, #taxa').mask('#.##0,00', {
@@ -175,6 +175,16 @@ $("#form, #formIfood, #formCliente").submit(function () {
             $('#alertGeralSite').modal("hide");
             window.location = `/${link_site}/${data.url}`;
             break;
+          case 'Enviamos instruções para que você possa recuperar sua senha!':
+            $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+            window.location = `/${link_site}/${data.url}`;
+            break;
+          case 'Senha atualizada com sucesso':
+            $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+            window.location = `/${link_site}/${data.url}`;
+            break;
+
+
           default:
             $('#mensagem').html(data.mensagem);
             $('#modalNovoCliente').modal("hide");
@@ -196,6 +206,10 @@ $("#form, #formIfood, #formCliente").submit(function () {
           case 'Cliente já possuí conta cadastrada no sistema':
             $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
             $('#modalNovoCliente').modal("hide");
+            break;
+          case 'Não foi possivel enviar o email o email de recuperação':
+            $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
+            window.location = `/${link_site}/${data.url}`;
             break;
           case 'Carrinho interno iniciado':
             $('#alerta').modal("hide");
@@ -471,70 +485,70 @@ function atualizaCart() {
 
 function atualizar() {
   $.get(`/${link_site}/admin/pedidos/recebido`, function (dd) {
-    if(parseInt(dd) === 0){
+    if (parseInt(dd) === 0) {
       $('#recebido').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
-    }else{
-    let orderDay = localStorage.getItem("sttInit")
-    let newOrder = new Audio('/audio/newOrder.mp3');
-
-    let cancelOrder = new Audio('/audio/cancelOrder.mp3');
-    if (parseInt($(dd).attr('data-status')) === 6) {
-      console.log('Cancelado')
-      cancelOrder.play();
-    }
-
-    if (orderDay === null) {
-      //console.log('aqui')
-      localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
-      newOrder.play();
-      $('#recebido').html(dd);
     } else {
-      if (parseInt($(dd).attr('data-qtd')) > parseInt(orderDay)) {
-        localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
-        newOrder.play();
-        $('#recebido').html(dd);
-        //console.log('subiu mais 1')
-      } else {
-        $('#recebido').html(dd);
-        //console.log('Não subiu pedido')
-      }
-    }
-  }
-  })
+      let orderDay = localStorage.getItem("sttInit")
+      let newOrder = new Audio('/audio/newOrder.mp3');
 
-  $.get(`/${link_site}/admin/pedidos/producao`, function (dd) {
-    if(parseInt(dd) === 0){
-      $('#producao').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
-    }else{
       let cancelOrder = new Audio('/audio/cancelOrder.mp3');
       if (parseInt($(dd).attr('data-status')) === 6) {
         console.log('Cancelado')
         cancelOrder.play();
       }
-    $('#producao').html(dd);
+
+      if (orderDay === null) {
+        //console.log('aqui')
+        localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
+        newOrder.play();
+        $('#recebido').html(dd);
+      } else {
+        if (parseInt($(dd).attr('data-qtd')) > parseInt(orderDay)) {
+          localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
+          newOrder.play();
+          $('#recebido').html(dd);
+          //console.log('subiu mais 1')
+        } else {
+          $('#recebido').html(dd);
+          //console.log('Não subiu pedido')
+        }
+      }
+    }
+  })
+
+  $.get(`/${link_site}/admin/pedidos/producao`, function (dd) {
+    if (parseInt(dd) === 0) {
+      $('#producao').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
+    } else {
+      let cancelOrder = new Audio('/audio/cancelOrder.mp3');
+      if (parseInt($(dd).attr('data-status')) === 6) {
+        console.log('Cancelado')
+        cancelOrder.play();
+      }
+      $('#producao').html(dd);
     }
   })
   $.get(`/${link_site}/admin/pedidos/geral`, function (dd) {
-    if(parseInt(dd) === 0){
+    if (parseInt(dd) === 0) {
       $('#geral').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
-    }else{
-    $('#geral').html(dd);
+    } else {
+      $('#geral').html(dd);
     }
   })
 
   $.get(`/${link_site}/admin/pedidos/ifood`, function (dd) {
-    if(parseInt(dd) === 0){
+    if (parseInt(dd) === 0) {
       //$('#producao').html('Sem Pedidos no momento');
-    }else{
-    if (parseInt($('#atendimentoOn').length) === 1) {
-      if (204 === parseInt(dd)) {
-        console.log('Sem novos pedidos no iFood');
-      } else {
-        console.log('Pedido Novo');
-        //$('#geral').html(dd);
+    } else {
+      if (parseInt($('#atendimentoOn').length) === 1) {
+        if (204 === parseInt(dd)) {
+          console.log('Sem novos pedidos no iFood');
+        } else {
+          console.log('Pedido Novo');
+          //$('#geral').html(dd);
+        }
       }
     }
-  }
 
   })
 }
@@ -926,34 +940,34 @@ $("#rua").on('blur touchleave touchcancel', function () {
 $("#cep_end").on('blur touchleave touchcancel', function () {
   var cep = $(this).val().replace(/\D/g, '');
   if (cep != "") {
-      var validacep = /^[0-9]{8}$/;
-      if(validacep.test(cep)) {
-          //Preenche os campos com "..." enquanto consulta webservice.
-          $("#rua_end").val("...");
-          $("#bairro_end").val("...");
-          $("#cidade_end").val("...");
-          $("#estado_end").val("...");
-          $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+    var validacep = /^[0-9]{8}$/;
+    if (validacep.test(cep)) {
+      //Preenche os campos com "..." enquanto consulta webservice.
+      $("#rua_end").val("...");
+      $("#bairro_end").val("...");
+      $("#cidade_end").val("...");
+      $("#estado_end").val("...");
+      $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
 
-              if (!("erro" in dados)) {
-                  $("#rua_end").val(dados.logradouro);
-                  $("#bairro_end").val(dados.bairro);
-                  $("#cidade_end").val(dados.localidade);
-                  $("#estado_end").val(dados.uf);
-              } //end if.
-              else {
-                  //CEP pesquisado não foi encontrado.
-                  $("#alertGeralSite").modal("show");
-                  $(".errorSup").show();
-                  $("#mensagem").text("O Endereço informado não foi encontrado, verifique se digitou corretamente e tente novamente!");
-              }
-          });
-      } //end if.
-      else {
+        if (!("erro" in dados)) {
+          $("#rua_end").val(dados.logradouro);
+          $("#bairro_end").val(dados.bairro);
+          $("#cidade_end").val(dados.localidade);
+          $("#estado_end").val(dados.uf);
+        } //end if.
+        else {
+          //CEP pesquisado não foi encontrado.
           $("#alertGeralSite").modal("show");
           $(".errorSup").show();
-          $("#mensagem").text("Formato de CEP inválido.");
-      }
+          $("#mensagem").text("O Endereço informado não foi encontrado, verifique se digitou corretamente e tente novamente!");
+        }
+      });
+    } //end if.
+    else {
+      $("#alertGeralSite").modal("show");
+      $(".errorSup").show();
+      $("#mensagem").text("Formato de CEP inválido.");
+    }
   }
 });
 
@@ -1147,10 +1161,10 @@ switch (active_link) {
     $('#subUn').addClass('active')
     break;
   case `/${link_site}/admin/meu-perfil`:
-      $('#collapseMenuUsuarios').addClass('show')
-      $('#menuUsuarios .primaryMenu').removeClass('collapsed')
-      $('#subPer').addClass('active')
-      break;
+    $('#collapseMenuUsuarios').addClass('show')
+    $('#menuUsuarios .primaryMenu').removeClass('collapsed')
+    $('#subPer').addClass('active')
+    break;
   case `/${link_site}/admin/administrador/novo`:
     $('#collapseMenuUsuarios').addClass('show')
     $('#menuUsuarios .primaryMenu').removeClass('collapsed')
@@ -1209,16 +1223,16 @@ switch (active_link) {
     $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
     $('#subDeli').addClass('active')
     break;
-    case `/${link_site}/admin/conf/atendimento`:
-      $('#collapseMenuConfiguracoes').addClass('show')
-      $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
-      $('#subHor').addClass('active')
-      break;
-      case `/${link_site}/admin/conf/atendimento/novo`:
-      $('#collapseMenuConfiguracoes').addClass('show')
-      $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
-      $('#subHor').addClass('active')
-      break;
+  case `/${link_site}/admin/conf/atendimento`:
+    $('#collapseMenuConfiguracoes').addClass('show')
+    $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+    $('#subHor').addClass('active')
+    break;
+  case `/${link_site}/admin/conf/atendimento/novo`:
+    $('#collapseMenuConfiguracoes').addClass('show')
+    $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+    $('#subHor').addClass('active')
+    break;
   case `/${link_site}/admin/cupons`:
     $('#collapseMenuConfiguracoes').addClass('show')
     $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
@@ -1236,28 +1250,28 @@ switch (active_link) {
     $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
     $('#subFp').addClass('active')
     break;
-    case `/${link_site}/admin/formas-pagamento/editar/${activeId}`:
+  case `/${link_site}/admin/formas-pagamento/editar/${activeId}`:
     $('#collapseMenuAuxiliares').addClass('show')
     $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
     $('#subFp').addClass('active')
     break;
 
-    case `/${link_site}/admin/status`:
+  case `/${link_site}/admin/status`:
     $('#collapseMenuAuxiliares').addClass('show')
     $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
     $('#subStatus').addClass('active')
     break;
-    case `/${link_site}/admin/status/editar/${activeId}`:
+  case `/${link_site}/admin/status/editar/${activeId}`:
     $('#collapseMenuAuxiliares').addClass('show')
     $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
     $('#subStatus').addClass('active')
     break;
 
-    case `/${link_site}/admin/formas-pagamento/nova`:
-      $('#collapseMenuAuxiliares').addClass('show')
-      $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
-      $('#subFp').addClass('active')
-      break;
+  case `/${link_site}/admin/formas-pagamento/nova`:
+    $('#collapseMenuAuxiliares').addClass('show')
+    $('#menuAuxiliares .primaryMenu').removeClass('collapsed')
+    $('#subFp').addClass('active')
+    break;
   case `/${link_site}/admin/docs`:
     $('#menuDocs').addClass('active')
     break;

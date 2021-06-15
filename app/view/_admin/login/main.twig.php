@@ -21,7 +21,7 @@
                                     <span>Senha</span>
                                 </label>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a href="{{BASE}}admin/recuperar-senha">Perdeu a senha? Clique aqui</a>
+                                    <a href="{{BASE}}{{empresa.link_site}}/admin/recuperar-senha">Perdeu a senha? Clique aqui</a>
                                     <button class="btn btn-primary btn-lg btn-shadow acaoBtnLogin" type="submit">Login</button>
                                 </div>
                                 <div id="mensagem" class="text-center col-md-12 mt-3 m-0 p-0 b-0 alert alert-danger" style="border: none;"></div>
