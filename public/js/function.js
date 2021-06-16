@@ -838,11 +838,20 @@ $("#form").submit(function (e) {
                     case 'Seu produto foi adicionado a sacola aguarde que tem mais!':
                         window.location = `/${link_site}/${dd.url}/${dd.id}`;
                         break;
-                        case 'OK Vai para os pedidos':
+                    case 'OK Vai para os pedidos':
                         window.location = `/${link_site}/${dd.url}`;
                         break;
-
-                        
+                    case 'Agradecemos pela sua avaliação!':
+                        $('#mensagem').html(dd.mensagem);
+                        $('.successSup').show();
+                        $('.errorSup').hide();
+                        $('#alertGeralSite').modal("show");
+                        if (dd.url) {
+                            $(".buttonAlert").on('click', function () {
+                                window.location = `/${link_site}/${dd.url}`;
+                            });
+                        }
+                        break;
                     case 'Primeiro endereço cadastrado com Sucesso!':
                         $('#mensagem').html('Pronto! Agora que tenho suas informações de entrega revise os itens de seu carrinho, adicione ou remova itens para finalizar seu pedido');
                         $('.successSup').show();

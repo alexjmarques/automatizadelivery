@@ -37,13 +37,7 @@
                     
                 <button class="btn btn-success d-block mt-3 full-width">Avaliar {{empresa.nome_fantasia }}</button>
                 </div>
-
-                <div class="clearfix full-width text-center pt-3">ou</div>
-                <div class="mb-0 input-group full-width text-center mb-4">
-                    <a href="{{BASE}}{{empresa.link_site}}/meus-pedidos" class="mt-3 full-width">Não Quero Avaliar</a>
-                </div>
             </section>
-
                 <input type="hidden" id="avaliacao_pedido" name="avaliacao_pedido" value="5">
                 <input type="hidden" id="avaliacao_motoboy" name="avaliacao_motoboy" value="5">
                 <input type="hidden" id="numero_pedido" name="numero_pedido" value="{{pedido}}">

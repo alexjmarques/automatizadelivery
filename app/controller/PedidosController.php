@@ -125,12 +125,13 @@ class PedidosController extends Controller
         $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
         $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
-        $avaliacao = $this->acoes->countsTwo('avaliacao', 'id_cliente', $this->sessao->getUser(), 'id_motoboy', $venda->id, 'id_motoboy', $empresa->id);
+        $avaliacao = $this->acoes->countsTree('avaliacao', 'id_cliente', $this->sessao->getUser(), 'numero_pedido', $data['numero_pedido'], 'id_empresa', $empresa->id);
 
         $this->load('_cliente/pedidos/pedidoAcompanharTotal', [
-            'moeda' => $moeda,
+            'empresa' => $empresa,
             'moeda' => $moeda,
             'carrinho' => $carrinho,
+            'avaliacao' => $avaliacao,
             'usuario' => $usuario,
             'endereco' => $endereco,
             'estados' => $estados,
