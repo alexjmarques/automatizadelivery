@@ -34,7 +34,7 @@
          <div class="restaurant-detailed-header">
             <div class="container">
                <div class="row d-flex align-items-end">
-                  <div class="col-md-8">
+                  <div class="col-md-12">
                      <div class="restaurant-detailed-header-left">
                      {% if empresa.logo is null %}
                         <img src="/uploads/logo_modelo.png" class="img-fluid mr-3 float-left">
@@ -359,8 +359,8 @@
                      </div>
                   </div>
                </div>
-               <div class="col-md-4">
-                  <!-- <div class="pb-2">
+               <!-- <div class="col-md-4">
+                  <div class="pb-2">
 				         <div class="bg-white rounded shadow-sm text-white mb-4 p-4 clearfix restaurant-detailed-earn-pts card-icon-overlap">
                      <img class="img-fluid float-left mr-3" src="img/earn-score-icon.png">
                      <h6 class="pt-0 text-primary mb-1 font-weight-bold">OFFER</h6>
@@ -369,18 +369,8 @@
                         <i class="icofont-sale-discount"></i>
                      </div>
                   </div> -->
-                  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                  <!-- lateral -->
-                  <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-3780305514757482"
-                     data-ad-slot="1411012102"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                  <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                  </script>
-				  </div>
+                  
+				 <!--  </div> -->
                   <!-- <div class="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
                      <h5 class="mb-1 text-white">Your Order</h5>
                      <p class="mb-4 text-white">6 ITEMS</p>
