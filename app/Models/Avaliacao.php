@@ -16,7 +16,7 @@ class Avaliacao extends DataLayer
         parent::__construct("avaliacao", []);
     }
 
-    public function add(Usuarios $usuario, Usuarios $motoboy, Empresa $empresa, $avaliacao_pedido, $avaliacao_motoboy, $data_compra, $data_votacao)
+    public function add(Usuarios $usuario, Usuarios $motoboy, Empresa $empresa, $avaliacao_pedido, $avaliacao_motoboy, $data_compra)
     {
         $this->id_cliente = $usuario->id;
         $this->id_motoboy = $motoboy->id;
@@ -24,7 +24,6 @@ class Avaliacao extends DataLayer
         $this->avaliacao_pedido = $avaliacao_pedido;
         $this->avaliacao_motoboy = $avaliacao_motoboy;
         $this->data_compra = $data_compra;
-        $this->data_votacao = $data_votacao;
 
         $this->save();
         return $this;

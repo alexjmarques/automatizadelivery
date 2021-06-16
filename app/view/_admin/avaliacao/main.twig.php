@@ -14,47 +14,46 @@
 {% set total2Moto = 0 %}
 {% set total1Moto = 0 %}
 
-    {% set loopOutput %} 
 
-    {% for r in ratingAll %}
-    {% if noventa <= r[':data_votacao'] %}
-        {% if r[':avaliacao_pedido'] == 1 %}
+{% for r in ratingAll %}
+    {% if noventa <= r.updated_at %}
+        {% if r.avaliacao_pedido == 1 %}
             {% set total1 = total1 + 1 %}
         {% endif %}
 
-        {% if r[':avaliacao_pedido'] == 2 %}
+        {% if r.avaliacao_pedido == 2 %}
             {% set total2 = total2 + 1 %}
         {% endif %}
-        {% if r[':avaliacao_pedido'] == 3 %}
+        {% if r.avaliacao_pedido == 3 %}
             {% set total3 = total3 + 1 %}
         {% endif %}
-        {% if r[':avaliacao_pedido'] == 4 %}
+        {% if r.avaliacao_pedido == 4 %}
             {% set total4 = total4 + 1 %}
         {% endif %}
-        {% if r[':avaliacao_pedido'] == 5 %}
+        {% if r.avaliacao_pedido == 5 %}
             {% set total5 = total5 + 1 %}
         {% endif %}
 
-        {% if r[':avaliacao_motoboy'] == 1 %}
+        {% if r.avaliacao_motoboy == 1 %}
             {% set total1Moto = total1Moto + 1 %}
         {% endif %}
 
-        {% if r[':avaliacao_motoboy'] == 2 %}
+        {% if r.avaliacao_motoboy == 2 %}
             {% set total2Moto = total2Moto + 1 %}
         {% endif %}
-        {% if r[':avaliacao_motoboy'] == 3 %}
+        {% if r.avaliacao_motoboy == 3 %}
             {% set total3Moto = total3Moto + 1 %}
         {% endif %}
-        {% if r[':avaliacao_motoboy'] == 4 %}
+        {% if r.avaliacao_motoboy == 4 %}
             {% set total4Moto = total4Moto + 1 %}
         {% endif %}
-        {% if r[':avaliacao_motoboy'] == 5 %}
+
+        {% if r.avaliacao_motoboy == 5 %}
             {% set total5Moto = total5Moto + 1 %}
         {% endif %}
     
     {% endif %}
     {% endfor %}
-    {% endset %}
 <div class="container-fluid">
     <div class="col-12">
         <h1>Avaliações</h1>

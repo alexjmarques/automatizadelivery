@@ -45,8 +45,9 @@ class AdminRating extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $rating = $this->acoes->counts('avaliacao', 'id_empresa', $empresa->id);
         $ratingAll = $this->acoes->getByFieldAll('avaliacao', 'id_empresa', $empresa->id);
-        $ratingPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id);
-        $ratingEntrega = $this->acoes->getByFieldAll('carrinhoEntregas', 'id_empresa', $empresa->id);
+        $ratingPedidos = $this->acoes->getByFieldAll('avaliacao', 'id_empresa', $empresa->id);
+        $ratingEntrega = $this->acoes->getByFieldAll('avaliacao', 'id_empresa', $empresa->id);
+
         
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         

@@ -195,11 +195,10 @@ CREATE TABLE avaliacao (
   numero_pedido INT DEFAULT NULL,
   id_cliente INT NOT NULL REFERENCES usuarios(id),
   id_motoboy INT DEFAULT NULL REFERENCES usuarios(id),
-  avaliacao_pedido CHAR(11) DEFAULT NULL,
-  avaliacao_motoboy CHAR(11) DEFAULT NULL,
+  avaliacao_pedido INT DEFAULT NULL,
+  avaliacao_motoboy INT DEFAULT NULL,
   observacao TEXT,
   data_compra TIMESTAMP DEFAULT NULL,
-  data_votacao TIMESTAMP DEFAULT NULL,
   id_empresa INT NOT NULL REFERENCES empresa_dados(id),
   created_at TIMESTAMP NULL DEFAULT NULL,
   updated_at TIMESTAMP NULL DEFAULT NULL
