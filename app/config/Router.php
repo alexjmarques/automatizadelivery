@@ -80,7 +80,7 @@ $router->get('/{linkSite}/delivery', 'PagesController:quemSomos');
 $router->get('/{linkSite}/fale-conosco', 'PagesController:contato');
 $router->post('/{linkSite}/contato/i', 'PagesController:contatoSend');
 $router->get('/{linkSite}/termos-de-uso', 'PagesController:termosUso');
-// $router->get('/{linkSite}/politica-de-privacidade', 'PagesController:politicaPrivacidade');
+$router->get('/{linkSite}/politica-de-privacidade', 'PagesController:politicaPrivacidade');
 
 /**
  * Listagem para tempo de execução

@@ -82,14 +82,7 @@
             <h6 class="font-weight-bold m-0"><i class="feather-chevron-right"></i></h6>
         </div>
     </a>
-    <a href="{{BASE}}{{empresa.link_site}}/fale-conosco" class="d-flex w-100  border-bottom px-3 py-4">
-        <div class="left mr-3">
-            <h6 class="font-weight-bold m-0 text-dark"><i
-                    class="feather-phone bg-primary text-white p-2 rounded-circle mr-2"></i> Fale Conosco</h6>
-        </div>
-        <div class="right ml-auto">
-            <h6 class="font-weight-bold m-0"><i class="feather-chevron-right"></i></h6>
-        </div>
+   
         <a href="{{BASE}}{{empresa.link_site}}/politica-de-privacidade" class="d-flex w-100  px-3 py-4">
             <div class="left mr-3">
                 <h6 class="font-weight-bold m-0 text-dark"><i

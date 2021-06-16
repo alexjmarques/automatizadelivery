@@ -30,17 +30,13 @@
 
                 <div class="sc-kNPvCX iOMsuf">
                     <div class="icon-wrap">
-                        <h5 class="mb-1 font-weight-bold full_page"><i class="feather-clock"></i> Horário de
-                            funcionamento</h5>
+                        <p class="mb-1 font-weight-bold full_page"><i class="feather-clock"></i> Horário de funcionamento</p>
                        
                         <ul>
                             {% for func in funcionamento %}
                             {% for dia in dias %}
                             {% if dia.id == func.id_dia %}
-                            <li class="pl-2"> - {{ dia.nome }} - <strong>Das {{ func.abertura }} às {{ func.fechamento
-                                    }}</strong></li>
-                            {% else %}
-                            <li class="pl-2 text-cian"> - {{ dia.nome }} - Fechado</li>
+                            <li class="pl-2"> - {{ dia.nome }} - <strong>Das {{ func.abertura }} às {{ func.fechamento }}</strong></li>
                             {% endif %}
                             {% endfor %}
                             {% endfor %}
@@ -115,16 +111,13 @@
 
                 <div class="sc-kNPvCX iOMsuf mt-2">
                     <div class="icon-wrap">
-                        <h5 class="mb-1 font-weight-bold full_page"><i class="feather-clock"></i> Horário de
-                            funcionamento</h5>
+                        <p class="mb-1 font-weight-bold full_page"><i class="feather-clock"></i> Horário de funcionamento</p>
                         <ul>
                             {% for func in funcionamento %}
                             {% for dia in dias %}
+                            
                             {% if dia.id == func.id_dia %}
-                            <li class="pl-2"> - {{ dia.nome }} - <strong>Das {{ func.abertura }} às {{ func.fechamento
-                                    }}</strong></li>
-                            {% else %}
-                            <li class="pl-2 text-cian"> - {{ dia.nome }} - Fechado</li>
+                            <li class="pl-2"> - {{ dia.nome }} - <strong>Das {{ func.abertura }} às {{ func.fechamento }}</strong></li>
                             {% endif %}
                             {% endfor %}
                             {% endfor %}
