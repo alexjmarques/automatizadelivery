@@ -34,7 +34,7 @@
          <div class="restaurant-detailed-header">
             <div class="container">
                <div class="row d-flex align-items-end">
-                  <div class="col-md-12">
+                  <div class="col-md-8">
                      <div class="restaurant-detailed-header-left">
                      {% if empresa.logo is null %}
                         <img src="/uploads/logo_modelo.png" class="img-fluid mr-3 float-left">
@@ -96,7 +96,7 @@
       <section class="offer-dedicated-body pt-2 pb-2 mt-4 mb-4">
          <div class="container">
             <div class="row">
-               <div class="col-md-8">
+               <div class="col-md-12">
                   <div class="offer-dedicated-body-left">
                      <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-order-online" role="tabpanel" aria-labelledby="pills-order-online-tab">

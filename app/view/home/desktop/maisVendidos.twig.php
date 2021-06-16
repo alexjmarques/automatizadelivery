@@ -1,6 +1,6 @@
 {% for p in produtoTop5 %}
 {% if hoje in p.dias_disponiveis %}
-<div class="col-md-4 col-sm-6 mb-4">
+<div class="col-md-3 col-sm-6 mb-4">
     <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
         <div class="list-card-image">
             <!-- <div class="star position-absolute"><span class="badge badge-success"><i class="icofont-star"></i> 3.1 (300+)</span></div>
