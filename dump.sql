@@ -491,6 +491,7 @@ CREATE TABLE usuarios_empresa (
   id_usuario INT NOT NULL REFERENCES usuarios(id),
   id_empresa INT NOT NULL REFERENCES empresa_dados(id),
   nivel INT DEFAULT NULL,
+  pedidos INT DEFAULT NULL,
   created_at TIMESTAMP NULL DEFAULT NULL,
   updated_at TIMESTAMP NULL DEFAULT NULL
 );

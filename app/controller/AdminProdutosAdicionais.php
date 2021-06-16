@@ -173,6 +173,6 @@ class AdminProdutosAdicionais extends Controller
         $valor = (new ProdutoAdicional())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE . "{$data['linkSite']}/admin/motoboys");
+        redirect(BASE . "{$data['linkSite']}/admin/produtos-adicionais");
     }
 }
