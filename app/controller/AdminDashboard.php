@@ -100,8 +100,6 @@ class AdminDashboard extends Controller
         $sexta = date('Y-m-d', strtotime('+' . (5 - $day) . ' days'));
         $sabado = date('Y-m-d', strtotime('+' . (6 - $day) . ' days'));
 
-       
-        }
 
         $this->load('_admin/dashboard/main', [
             'moeda' => $moeda,
