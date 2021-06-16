@@ -66,10 +66,10 @@ $router->post('/cadastro/empresa/pagamento/i', 'EmpresaCadastroController:pagame
 
 
 $router->get('/mobilidade/planos', 'MobilidadeCadastroController:index');
-$router->get('/cadastro/empresa/{plano}', 'MobilidadeCadastroController:index');
-$router->post('/cadastro/empresa/i', 'MobilidadeCadastroController:insert');
-$router->get('/{linkSite}/{plano}/pagamento', 'MobilidadeCadastroController:pagamento');
-$router->post('/cadastro/empresa/pagamento/i', 'MobilidadeCadastroController:pagamentoInsert');
+$router->get('/mobilidade/empresa/{plano}', 'MobilidadeCadastroController:index');
+$router->post('/mobilidade/empresa/i', 'MobilidadeCadastroController:insert');
+$router->get('/{linkSite}/mobilidade/{plano}/pagamento', 'MobilidadeCadastroController:pagamento');
+$router->post('/mobilidade/cadastro/empresa/pagamento/i', 'MobilidadeCadastroController:pagamentoInsert');
 
 
 $router->get('/{linkSite}', 'PagesController:home');
