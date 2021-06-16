@@ -204,7 +204,7 @@
                 <div class="form-group col-md-12">
                     <div id="prodAdicional">
                     {% for ta in tipoAdicional %}
-                        <h6 class="clearfix mt-3">{{ ta.tipo}}</h6>
+                        <h6 class="clearfix mt-3">{{ ta.tipo }}</h6>
                         <div class="form-row">
                             {% for padici in produtosAdicionais %}
                             {% if ta.id == padici.tipo_adicional %}
@@ -224,8 +224,7 @@
                                 <input type="checkbox" id="itemcheck{{ padici.id }}" name="adicional[]"
                                     value="{{ padici.id }}">
                                 <label class="form-check-label" for="itemcheck{{ padici.id }}">{{ padici.nome }}
-                                    - <strong>{{ moeda.simbolo }} {{ padici.valor|number_format(2, ',',
-                                        '.') }}</strong></label>
+                                    - <strong>{{ moeda.simbolo }} {{ padici.valor|number_format(2, ',','.') }}</strong></label>
                             </div>
                             </div>
                             {% endif %}

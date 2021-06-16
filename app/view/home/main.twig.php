@@ -57,7 +57,7 @@
                   </div>
                   <div class="col-md-4">
                      <div class="restaurant-detailed-header-right text-right">
-                        <button class="btn btn-success" type="button"><i class="icofont-clock-time"></i> {{delivery.previsao_minutos}} min</button>
+                        <button class="btn btn-success" type="button"><i class="icofont-clock-time"></i> {{delivery.previsao_minutos}}</button>
                         <!-- <h6 class="text-white mb-0 restaurant-detailed-ratings"><span class="generator-bg rounded text-white"><i class="icofont-star"></i> 3.1</span> 23 Ratings  <i class="ml-3 icofont-speech-comments"></i> 91 reviews</h6> -->
                      </div>
                   </div>

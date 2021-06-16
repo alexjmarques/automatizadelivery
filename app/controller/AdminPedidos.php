@@ -172,8 +172,8 @@ class AdminPedidos extends Controller
             if ($this->sessao->getUser()) {
                 $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             }
-
-            $this->load('_admin/pedidos/pedidoListaGeral', [
+            if ($resultPedidos) {
+                $this->load('_admin/pedidos/pedidoListaGeral', [
                 'planoAtivo' => $planoAtivo,
                 'empresa' => $empresa,
                 'trans' => $this->trans,
@@ -186,6 +186,7 @@ class AdminPedidos extends Controller
                 'clientes' => $resultClientes,
                 'motoboy' => $resultMotoboy
             ]);
+            }
         } else {
             echo 0;
         }
