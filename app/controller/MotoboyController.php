@@ -67,13 +67,13 @@ class MotoboyController extends Controller
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
             $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
-            
-            
+
+
             $entregasFeitas = $this->acoes->sumFielsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'status', 4, 'valor_frete');
-            
+
             $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
             $totalMotoboyDia = $this->acoes->sumFielsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4, 'valor_frete');
-            
+
             //dd($resultEntregasDiaCont);
 
             $entregasFeitasDia = $totalMotoboyDia->total - ($resultEntregasDiaCont * $resultDelivery->taxa_entrega_motoboy);
@@ -382,7 +382,7 @@ class MotoboyController extends Controller
         $entregas->numero_pedido = $pedido->numero_pedido;
         $entregas->status = 3;
         $entregas->save();
-        redirect(BASE ."{$empresa->link_site}/motoboy/entregas");
+        redirect(BASE . "{$empresa->link_site}/motoboy/entregas");
 
         // header('Content-Type: application/json');
         // $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Pedido atribuído ao seu perfil', 'error' => 'Não foi possível atribuír ao seu perfil! Tente novamente', 'url' => 'motoboy/entregas']);
@@ -405,27 +405,28 @@ class MotoboyController extends Controller
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resulUsuario = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
             $enderecos = $this->acoes->getFind('usuariosEnderecos');
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-        }
-        if ($usuarioLogado->nivel == 1) {
-            $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
-    
-            $this->load('_motoboy/pedidos/vendasEntregas', [
-                'moeda' => $moeda,
-                'usuario' => $resulUsuario,
-                'status' => $status,
-                'tipo_frete' => $resultTipo,
-                'enderecos' => $enderecos,
-                'tipo_pagamento' => $resultPagamento,
-                'vendas' => $resultVendas,
-                'pedidosQtd' => $resultEntregasDiaCont,
-                'empresa' => $empresa,
-                'usuarioAtivo' => $usuarioLogado,
-                'trans' => $this->trans,
-                'detect' => new Mobile_Detect(),
-                'usuarioLogado' => $usuarioLogado,
-                'isLogin' => $this->sessao->getUser(),
-            ]);
+
+            if ($usuarioLogado->nivel == 1) {
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+
+                $this->load('_motoboy/pedidos/vendasEntregas', [
+                    'moeda' => $moeda,
+                    'usuario' => $resulUsuario,
+                    'status' => $status,
+                    'tipo_frete' => $resultTipo,
+                    'enderecos' => $enderecos,
+                    'tipo_pagamento' => $resultPagamento,
+                    'vendas' => $resultVendas,
+                    'pedidosQtd' => $resultEntregasDiaCont,
+                    'empresa' => $empresa,
+                    'usuarioAtivo' => $usuarioLogado,
+                    'trans' => $this->trans,
+                    'detect' => new Mobile_Detect(),
+                    'usuarioLogado' => $usuarioLogado,
+                    'isLogin' => $this->sessao->getUser(),
+                ]);
+            }
         }
     }
 
@@ -437,20 +438,24 @@ class MotoboyController extends Controller
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($usuarioLogado->nivel == 1) {
+                $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
+
+                $this->load('_motoboy/pedidos/pedidoQtd', [
+                    'pedidosQtd' => $resultCarrinhoQtd,
+                    'empresa' => $empresa,
+                    'trans' => $this->trans,
+                    'detect' => new Mobile_Detect(),
+                    'isLogin' => $this->sessao->getUser(),
+                ]);
+            }
         }
-        $this->load('_motoboy/pedidos/pedidoQtd', [
-            'pedidosQtd' => $resultCarrinhoQtd,
-            'empresa' => $empresa,
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect(),
-            'isLogin' => $this->sessao->getUser(),
-        ]);
     }
 
     public function view($data)
     {
-        
+
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
