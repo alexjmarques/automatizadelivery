@@ -403,31 +403,30 @@ class MotoboyController extends Controller
         $resultVendas = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'status', 3);
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-
             $resulUsuario = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
             $enderecos = $this->acoes->getFind('usuariosEnderecos');
-
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
-
-        $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
-
-        $this->load('_motoboy/pedidos/vendasEntregas', [
-            'moeda' => $moeda,
-            'usuario' => $resulUsuario,
-            'status' => $status,
-            'tipo_frete' => $resultTipo,
-            'enderecos' => $enderecos,
-            'tipo_pagamento' => $resultPagamento,
-            'vendas' => $resultVendas,
-            'pedidosQtd' => $resultEntregasDiaCont,
-            'empresa' => $empresa,
-            'usuarioAtivo' => $usuarioLogado,
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect(),
-            'usuarioLogado' => $usuarioLogado,
-            'isLogin' => $this->sessao->getUser(),
-        ]);
+        if ($usuarioLogado->nivel == 1) {
+            $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+    
+            $this->load('_motoboy/pedidos/vendasEntregas', [
+                'moeda' => $moeda,
+                'usuario' => $resulUsuario,
+                'status' => $status,
+                'tipo_frete' => $resultTipo,
+                'enderecos' => $enderecos,
+                'tipo_pagamento' => $resultPagamento,
+                'vendas' => $resultVendas,
+                'pedidosQtd' => $resultEntregasDiaCont,
+                'empresa' => $empresa,
+                'usuarioAtivo' => $usuarioLogado,
+                'trans' => $this->trans,
+                'detect' => new Mobile_Detect(),
+                'usuarioLogado' => $usuarioLogado,
+                'isLogin' => $this->sessao->getUser(),
+            ]);
+        }
     }
 
 
