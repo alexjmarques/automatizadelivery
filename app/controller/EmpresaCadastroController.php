@@ -119,9 +119,10 @@ class EmpresaCadastroController extends Controller
         $verificacao = $this->acoes->getByField('usuarios', 'email', $data['email']);
         
         if($verificacao_link && $verificacao_razao){
-            //header('Content-Type: application/json');
+            header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Empresa já cadastrada em nosso sistema', 'code' => 9]);
         }else if($verificacao){
+            header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Email já cadastrada em nosso sistema, tente outro email', 'code' => 9]);
         }else{
             $senha = $this->bcrypt->encrypt($data['senha'], '2a');
@@ -278,21 +279,21 @@ class EmpresaCadastroController extends Controller
 
             if($data['plano_id'] == 1){
                 $code = substr(number_format(time() * Rand(), 0, '', ''), 0, 10);
-                $usuarios = new Assinatura();
-                $usuarios->subscription_id = "free-{$code}";
-                $usuarios->plano_id = $plano->plano_id;
-                $usuarios->status = 'paid';
-                $usuarios->id_empresa = $empresa->id;
-                $usuarios->save();
+                $assin = new Assinatura();
+                $assin->subscription_id = "free-{$code}";
+                $assin->plano_id = $plano->plano_id;
+                $assin->status = 'paid';
+                $assin->id_empresa = $empresa->id;
+                $assin->save();
 
-                $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
-                $this->email->bemVindo($data['nome'], $usuarios->email, $data['senha'], $data['link_site']);
+                $sessao = $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
+                $emailEnvia = $this->email->bemVindo($data['nome'], $usuarios->email, $data['senha'], $data['link_site']);
 
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => $usuarios->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Clique em OK para efetuar o login e começar a utilizar nossos serviços', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/admin/login", 'code' => 10 ]);
             }else{
-                $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
-                $this->email->bemVindo($data['nome'], $usuarios->email, $data['senha'], $data['link_site']);
+                $sessao = $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
+                $emailEnvia = $this->email->bemVindo($data['nome'], $usuarios->email, $data['senha'], $data['link_site']);
 
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/{$plano->slug}/pagamento", 'code' => 11 ]);

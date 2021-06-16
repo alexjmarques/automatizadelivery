@@ -192,7 +192,32 @@
               break;
           }
         } else {
-          $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
+          switch (data.code) {
+            case 9:
+              $('#mensagem').html(data.mensagem);
+              $('.successSup').hide();
+              $('.errorSup').show();
+              $('#alertGeralSite').modal("show");
+              break;
+            case 10:
+              $('#mensagem').html(data.mensagem);
+              $('.successSup').show();
+              $('.errorSup').hide();
+              $('#alertGeralSite').modal("show");
+              if (data.url) {
+                $(".buttonAlert").on('click', function () {
+                  window.location = `/${data.url}`;
+                });
+              }
+              break;
+            case 11:
+              window.location = `/${data.url}`;
+              break;
+              case 12:
+              $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
+              break;
+          }
+          
         }
       },
       error: function (data) {
