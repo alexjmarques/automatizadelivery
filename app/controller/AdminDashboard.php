@@ -74,10 +74,18 @@ class AdminDashboard extends Controller
         /**
          * Contagem dos Itens da Empresa do Dia Atual
          */
-        $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
-        $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
-        $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
-        $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
+        if ($estabelecimento) {
+            $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
+            $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+            $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
+            $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
+        }else{
+            $pedidos = 0;
+            $entregas = 0;
+            $recusados = 0;
+            $cancelados = 0;
+        }
+
         $resultMaisVendidos = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
         $pedidosAll = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id);
 
@@ -93,7 +101,7 @@ class AdminDashboard extends Controller
         $sabado = date('Y-m-d', strtotime('+' . (6 - $day) . ' days'));
 
        
-
+        }
 
         $this->load('_admin/dashboard/main', [
             'moeda' => $moeda,
