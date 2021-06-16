@@ -710,8 +710,10 @@ table.dataTable thead .sorting_desc_disabled:before {
 
 .btn {
   border-radius: 5px !important;
-  padding: 0.5rem !important;
+  padding: 0.8rem 1rem !important;
 }
+
+
 
 .btn-continuar,
 .btn-continuar:focus {
@@ -5210,4 +5212,11 @@ main {
   width: 20px;
   font-size: 15px;
     padding: 3px;
+}
+
+.btn.btn-info {
+  color: #fff;
+  font-size: 16px;
+  background-color: #880a1f;
+  border-color: #880a1f;
 }
