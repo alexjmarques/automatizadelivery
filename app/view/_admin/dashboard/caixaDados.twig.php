@@ -188,7 +188,7 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <div class="col-4 center-block text-center float-ceter">
+                    <div class="col-5 center-block text-center float-ceter">
                         {{paginacao|raw}}
                     </div>
 
