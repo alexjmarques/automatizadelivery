@@ -54,7 +54,7 @@
                                         <td>
                                             <p class="text-center">
                                             {% for cat in categorias %}
-                                            {% if p.id_categoria == cat.code %}
+                                            {% if p.id_categoria == cat.id %}
                                                 {{cat.nome}}
                                               {% endif %}
                                             {% endfor %}</p>
