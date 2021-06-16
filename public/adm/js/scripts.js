@@ -1029,6 +1029,11 @@ switch (active_link) {
     $('#menuCaixa .primaryMenu').removeClass('collapsed')
     $('#caiRel').addClass('active')
     break;
+    case `/${link_site}/admin/clientes/relatorio`:
+      $('#collapseCaixaTypes').addClass('show')
+      $('#menuCaixa .primaryMenu').removeClass('collapsed')
+      $('#caiCli').addClass('active')
+      break;
   case `/${link_site}/admin/caixa/dia/${activeId}`:
     $('#collapseCaixaTypes').addClass('show')
     $('#menuCaixa .primaryMenu').removeClass('collapsed')

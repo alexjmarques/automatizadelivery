@@ -16,11 +16,12 @@ class UsuariosEmpresa extends DataLayer
         parent::__construct("usuarios_empresa", ["id_usuario", "id_empresa"]);
     }
 
-    public function add(Usuarios $usuario, Empresa $empresa)
+    public function add(Usuarios $usuario, Empresa $empresa, int $pedidos)
     {
         $this->id_usuario = $usuario->id;
         $this->id_empresa = $empresa->id;
         $this->id_nivel = $usuario->nivel;
+        $this->pedidos = $pedidos;
 
         $this->save();
         return $this;

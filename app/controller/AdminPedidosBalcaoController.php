@@ -598,6 +598,11 @@ class AdminPedidosBalcaoController extends Controller
         $pedido->chave = $chave;
         $pedido->save();
 
+        $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+        $userUp = (new UsuariosEmpresa())->findById($user->id);
+        $userUp->pedidos = $user->pedidos + 1;
+        $userUp->save();
+
         $cliente = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
         $mensagem =  "Você acaba de efetuar um pedido no {$empresa->nome_fantasia} esse é seu número de pedido: {$data['numero_pedido']}. Para acompanhar acesse o link: https://www.automatizadelivery.com.br/{$empresa->link_site}/meu-pedido/{$chave}";
         $ddi = '+55';

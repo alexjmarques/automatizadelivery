@@ -7,10 +7,10 @@
 <div class="p-5 osahan-home-page">
 <h2 class="text-white my-0">Olá novamente</h2>
 <p class="text-white text-50">Valide seu acesso para continuar</p>
-<form class="mt-5 mb-4 pt-4" method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/login/valida">
+<form class="mt-5 mb-4 pt-4" method="post" id="form"  action="{{BASE}}{{empresa.link_site}}/valida/acesso">
     <div class="form-group">
     <label for="email" class="text-white">Telefone (Ex.: (11) 00000-0000)</label>
-    <input type="text" placeholder="Telefone" class="form-control" id="emailOurTel" name="emailOurTel" value="" required>
+    <input type="text" placeholder="Telefone" class="form-control" id="telefone" name="telefone" value="" required>
     </div>
     <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
 <button class="btn btn-primary btn-lg btn-block acaoBtn">VALIDAR</button>

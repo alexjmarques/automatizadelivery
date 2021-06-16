@@ -769,7 +769,10 @@ class CarrinhoController extends Controller
         $pedido->chave = $data['chave'];
         $pedido->save();
 
-        //dd($pedido);
+        $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
+        $userUp = (new UsuariosEmpresa())->findById($user->id);
+        $userUp->pedidos = $user->pedidos + 1;
+        $userUp->save();
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'url' => 'admin/pedidos']);

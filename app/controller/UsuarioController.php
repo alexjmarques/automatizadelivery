@@ -172,59 +172,96 @@ class UsuarioController extends Controller
         }
     }
 
+    public function validaAcesso($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
+
+        if ($getTelefone) {
+            $getUsuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $getTelefone->id);
+            if(!$getUsuario){
+                $valorEmp = new UsuariosEmpresa();
+                $valorEmp->id_usuario = $getTelefone->id;
+                $valorEmp->id_empresa = $empresa->id;
+                $valorEmp->nivel = $getTelefone->nivel;
+                $valorEmp->save();
+            }
+
+            $this->sessao->sessaoNew('codeValida', substr(number_format(time() * Rand(), 0, '', ''), 0, 4));
+            $codeValida = $this->sessao->getSessao('codeValida');
+            $mensagem = $empresa->nome_fantasia . ": seu codigo de autorizacao e " . $codeValida . ". Por seguranca, nao o compartilhe com mais ninguem";
+            $numeroTelefone = preg_replace('/[^0-9]/', '', $data['telefone']);
+            $ddi = '+55';
+            $numerofinal = $ddi . $numeroTelefone;
+
+            $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
+            $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
+
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!', 'url' => "valida/acesso/code/{$getTelefone->id}"]);
+            exit($json);
+
+        } else {
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você precisa fazer um pedido para poder ver os pedidos', 'url' => '/']);
+            exit($json);
+        }
+    }
+
+    public function validaAcessoPage($data)
+    {
+        $isLogin = $this->sessao->getUser() ? redirect(BASE . 'admin') : null;
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
+
+        $this->load('login/validaAcesso', [
+            'empresa' => $empresa,
+            'usuario' => $usuario,
+            'trans' => $this->trans,
+            'isLogin' => $isLogin,
+            'detect' => new Mobile_Detect()
+        ]);
+    }
+
     public function usuarioValidaAcessoCode($data)
     {
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $codeValida = $segment->get('codeValida');
-
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $codeValida = $this->sessao->getSessao('codeValida');
         if ($codeValida == $data['codeValida']) {
-            $resultUp = $this->usuarioModel->getByTelefone($data['telefone']);
-            $session = $this->sessionFactory->newInstance($_COOKIE);
-            $segment = $session->getSegment('Vendor\Aura\Segment');
-
-            $_SESSION = array(
-                'Vendor\Aura\Segment' => array(
-                    'id_usuario' => $resultUp[':id'],
-                    'usuario' => $resultUp[':email'],
-                    'nivel' => $resultUp[':nivel'],
-                    'numero_pedido' => substr(number_format(time() * Rand(), 0, '', ''), 0, 6),
-                ),
-            );
-            $session = $this->sessionFactory->newInstance($_COOKIE);
-            $segment = $session->getSegment('Vendor\Aura\Segment');
-            $SessionIdUsuario = $segment->get('id_usuario');
-
+            $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
+            $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
+            
             if ($this->sessao->getUser()) {
-                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-                echo 'Aguarde estamos redirecionando para a pagina inicial';
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os pedidos', 'url' => 'meus-pedidos']);
+                exit($json);
             }
         }
     }
 
-    public function usuarioLogin($data)
-    {
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $codeValida = $segment->get('codeValida');
+    // public function usuarioLogin($data)
+    // {
+    //     $session = $this->sessionFactory->newInstance($_COOKIE);
+    //     $segment = $session->getSegment('Vendor\Aura\Segment');
+    //     $codeValida = $segment->get('codeValida');
 
-        $resultUp = $this->usuarioModel->getById($data['u']);
-        $session = $this->sessionFactory->newInstance($_COOKIE);
-        $segment = $session->getSegment('Vendor\Aura\Segment');
-        $SessionIdUsuario = $segment->get('id_usuario');
+    //     $resultUp = $this->usuarioModel->getById($data['u']);
+    //     $session = $this->sessionFactory->newInstance($_COOKIE);
+    //     $segment = $session->getSegment('Vendor\Aura\Segment');
+    //     $SessionIdUsuario = $segment->get('id_usuario');
 
-        if (!$this->sessao->getUser()) {
-            $session->setCookieParams(array('lifetime' => '2592000'));
-            $_SESSION = array(
-                'Vendor\Aura\Segment' => array(
-                    'id_usuario' => $resultUp[':id'],
-                    'usuario' => $resultUp[':email'],
-                    'nivel' => $resultUp[':nivel'],
-                    'numero_pedido' => substr(number_format(time() * Rand(), 0, '', ''), 0, 6),
-                ),
-            );
-        }
-    }
+    //     if (!$this->sessao->getUser()) {
+    //         $session->setCookieParams(array('lifetime' => '2592000'));
+    //         $_SESSION = array(
+    //             'Vendor\Aura\Segment' => array(
+    //                 'id_usuario' => $resultUp[':id'],
+    //                 'usuario' => $resultUp[':email'],
+    //                 'nivel' => $resultUp[':nivel'],
+    //                 'numero_pedido' => substr(number_format(time() * Rand(), 0, '', ''), 0, 6),
+    //             ),
+    //         );
+    //     }
+    // }
 
 
     public function atendentes($data)

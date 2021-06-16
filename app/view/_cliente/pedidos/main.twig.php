@@ -9,29 +9,31 @@
         <h5 class="font-weight-bold m-0 text-white">Meus Pedidos</h5>
         <a class="text-white font-weight-bold ml-auto" href="{{BASE}}{{empresa.link_site}}/"> Voltar</a>
     </div>
+    {% set total = 0 %}
     {% for p in pedidos %}
-    
+    {% set total = total + 1 %}
         <div class="p-3 osahan-profile">
-            <div class="bg-white rounded shadow mt-n5">
+            <div class="bg-white rounded shadow {% if total == 1%}mt-n5{% endif%}">
                 <div class="d-flex  border-bottom p-3">
                     <div class="left col-md-12 p-0">
-                    <h6 class="mb-1 font-weight-bold">#{{ p.numero_pedido }} - Seu pedido  
-                    {% for st in status %}
-                            {% if p.status == st.id %}
-                            {% if p.tipo_frete == 1 %}
-                            <span class="badge badge-{{st.class}}">{{st.retirada}}</span>
-                            {% else %}
-                            <span class="badge badge-{{st.class}}">{{st.delivery}}</span>
-                            {% endif %}
-                            {% endif %}
-                        {% endfor %}
+                        <h6 class="mb-1 font-weight-bold">#{{ p.numero_pedido }} - Seu pedido  
+                        {% for st in status %}
+                                {% if p.status == st.id %}
+                                {% if p.tipo_frete == 1 %}
+                                <span class="badge badge-{{st.class}}">{{st.retirada}}</span>
+                                {% else %}
+                                <span class="badge badge-{{st.class}}">{{st.delivery}}</span>
+                                {% endif %}
+                                {% endif %}
+                            {% endfor %}
 
-                    </h6>
-                    <p class="text-muted m-0 __cf_email__">Pedido do dia {{ p.data_pedido|date("d/m/Y") }} • Total {{ moeda.simbolo }} {{ p.total|number_format(2, ',', '.') }}</p>
+                        </h6>
+                        <p class="text-muted m-0 __cf_email__">Pedido do dia {{ p.data_pedido|date("d/m/Y") }} • Total {{ moeda.simbolo }} {{ p.total|number_format(2, ',', '.') }}</p>
                     </div>
-        </div>
+                </div>
+            </div>
         <a href="{{BASE}}{{empresa.link_site}}/meu-pedido/{{ p.chave }}" class="btn btn-primary full-btn">Ver itens do pedido</a>
-    </div>
+        </div>
 
 {% endfor %}
 

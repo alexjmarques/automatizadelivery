@@ -87,8 +87,6 @@ $router->get('/{linkSite}/termos-de-uso', 'PagesController:termosUso');
  */
 $router->get('/{linkSite}/home/ultimaVenda', 'PagesController:ultimaVenda');
 $router->get('/{linkSite}/login', 'UsuarioController:login');
-$router->post('/{linkSite}/login/valida', 'UsuarioController:login');
-$router->get('/{linkSite}/login/validaFacebook', 'UsuarioController:loginFacebook');
 $router->get('/{linkSite}/login/n', 'AllController:verificaNivel');
 $router->get('/{linkSite}/sair', 'AllController:sair');
 $router->get('/{linkSite}/recuperar-senha', 'UsuarioController:senhaPerdida');
@@ -102,8 +100,10 @@ $router->post('/{linkSite}/cadastro/novo', 'UsuarioController:insert');
 $router->get('/{linkSite}/cadastro/finaliza', 'UsuarioController:cadastroSocial');
 $router->post('/{linkSite}/cadastro/finaliza/social', 'UsuarioController:insertSocial');
 
-$router->get('/{linkSite}/valida/acesso', 'UsuarioController:validaAcesso');
-$router->post('/{linkSite}/valida/acesso/code', 'UsuarioController:usuarioValidaAcessoCode');
+$router->post('/{linkSite}/valida/acesso', 'UsuarioController:validaAcesso');
+$router->get('/{linkSite}/valida/acesso/code/{id}', 'UsuarioController:validaAcessoPage');
+$router->post('/{linkSite}/valida/acesso/code/up', 'UsuarioController:usuarioValidaAcessoCode');
+
 $router->get('/{linkSite}/u/valid', 'UsuarioController:verificaLoginJs');
 $router->post('/{linkSite}/u/l/val', 'UsuarioController:usuarioLogin');
 
@@ -219,6 +219,8 @@ $router->get('/{linkSite}/admin/sair', 'AllController:sairAdmin');
 $router->get('/{linkSite}/admin/caixa/visao-geral', 'AdminDashboard:relatorioGeral');
 $router->get('/{linkSite}/admin/caixa/relatorio', 'AdminDashboard:caixaLista');
 $router->get('/{linkSite}/admin/caixa/dia/{id}', 'AdminDashboard:caixaDados');
+
+$router->get('/{linkSite}/admin/clientes/relatorio', 'AdminDashboard:clienteLista');
 
 $router->get('/{linkSite}/admin/avaliacao', 'AdminRating:index');
 $router->get('/{linkSite}/admin/docs', 'AdminGeral:index');

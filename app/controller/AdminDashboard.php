@@ -36,7 +36,6 @@ class AdminDashboard extends Controller
 
         $this->sessao = new Sessao();
         $this->geral = new AllController();
-        //$this->ifood = new iFood();
         $this->cache = new Cache();
         $this->acoes = new Acoes();
     }
@@ -45,10 +44,13 @@ class AdminDashboard extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() != 0) {
                 redirect(BASE . $empresa->link_site);
@@ -56,10 +58,10 @@ class AdminDashboard extends Controller
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
+
         /**
          * Contagem dos Itens da Empresa
          */
-
         $resultCategorias = $this->acoes->countCompany('categorias', 'id_empresa', $empresa->id);
         $resultProdutos = $this->acoes->countCompany('produtos', 'id_empresa', $empresa->id);
         $resultUsuarios = $this->acoes->countCompany('usuariosEmpresa', 'id_empresa', $empresa->id);
@@ -72,19 +74,14 @@ class AdminDashboard extends Controller
         /**
          * Contagem dos Itens da Empresa do Dia Atual
          */
-        $resultPedidos = $this->acoes->countCompanyDay('carrinhoPedidos', 'id_empresa', $empresa->id, 'data_pedido');
-        //dd($resultCategorias);
-        $resultRecebidos = $this->acoes->countStatusCompanyDay('carrinhoPedidos', 'id_empresa', $empresa->id, 1, 'data_pedido');
-        $resultProducao = $this->acoes->countStatusCompanyDay('carrinhoPedidos', 'id_empresa', $empresa->id, 2, 'data_pedido');
-        $resultSaiuEntrega = $this->acoes->countStatusCompanyDay('carrinhoPedidos', 'id_empresa', $empresa->id, 3, 'data_pedido');
-        $resultEntregas = $this->acoes->countStatusCompanyDay('carrinhoPedidos', 'id_empresa', $empresa->id, 4, 'data_pedido');
-        $resultRecusado = $this->acoes->countStatusCompanyDay('carrinhoPedidos', 'id_empresa', $empresa->id, 5, 'data_pedido');
-        $resultCancelados = $this->acoes->countStatusCompanyDay('carrinhoPedidos', 'id_empresa', $empresa->id, 6, 'data_pedido');
+        $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
+        $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+        $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
+        $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
         $resultMaisVendidos = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $pedidosAll = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id);
 
-        //dd($resultPedidos);
+        $clientesMaisGastao = $this->acoes->limitOrder('usuariosEmpresa', 'id_empresa', $empresa->id, 5, 'pedidos', 'DESC');
 
         $day = date('w');
         $domingo = date('Y-m-d', strtotime('-' . $day . ' days'));
@@ -95,6 +92,8 @@ class AdminDashboard extends Controller
         $sexta = date('Y-m-d', strtotime('+' . (5 - $day) . ' days'));
         $sabado = date('Y-m-d', strtotime('+' . (6 - $day) . ' days'));
 
+       
+
 
         $this->load('_admin/dashboard/main', [
             'moeda' => $moeda,
@@ -103,19 +102,17 @@ class AdminDashboard extends Controller
             'isLogin' => $this->sessao->getUser(),
             'categorias' => $resultCategorias,
             'empresa' => $empresa,
+            'pedidos' => $pedidos,
+            'entregas' => $entregas,
+            'cancelados' => $cancelados,
+            'recusados' => $recusados,
             'planoAtivo' => $planoAtivo,
             'produtos' => $resultProdutos,
             'produtosAtivos' => $resultProdutosAtivos,
             'produtosEsgotado' => $resultProdutosEsgotados,
             'usuarios' => $resultUsuarios,
             'motoboys' => $resultMotoboys,
-            'recebidos' => $resultRecebidos,
-            'producao' => $resultProducao,
-            'saiuEntrega' => $resultSaiuEntrega,
-            'entregas' => $resultEntregas,
-            'cancelados' => $resultCancelados,
-            'pedidos' => $resultPedidos,
-            'pedidosAll' => $resultPedidosAll,
+            'pedidosAll' => $pedidosAll,
             'categorias' => $resultCategorias,
             'maisVendidos' => $resultMaisVendidos,
             'caixa' => $estabelecimento[0]->data_inicio,
@@ -180,6 +177,44 @@ class AdminDashboard extends Controller
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario'=> $this->sessao->getNivel(),
             'caixa' => $estabelecimento[0]->data_inicio,
+        ]);
+    }
+
+
+    public function clienteLista($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $countCaixa = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
+
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        }
+
+        $totalPedidos = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
+
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 10, $page);
+        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'pedidos ASC');
+
+        $this->load('_admin/dashboard/clienteLista', [
+            'paginacao' => $pager->render('mt-4 pagin'),
+            'planoAtivo' => $planoAtivo,
+            'totalPedidos' => $totalPedidos,
+            'moeda' => $moeda,
+            'usuarios' => $usuarios,
+            'retorno' => $retorno,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $estabelecimento[0]->data_inicio
         ]);
     }
 

@@ -90,7 +90,6 @@ class PedidosController extends Controller
             'venda' => $venda,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
-            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser()
         ]);
     }

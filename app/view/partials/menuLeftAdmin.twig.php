@@ -36,7 +36,12 @@
                             </li>
                             <li id="caiRel">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/caixa/relatorio">
-                                    <span class="d-inline-block">Relatórios</span>
+                                    <span class="d-inline-block">Fluxo de Caixa</span>
+                                </a>
+                            </li>
+                            <li id="caiCli">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/clientes/relatorio">
+                                    <span class="d-inline-block">Relatórios Clientes</span>
                                 </a>
                             </li>
                         </ul>

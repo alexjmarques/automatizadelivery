@@ -9,134 +9,102 @@
 {% set vr = 0 %}
 {% set va = 0 %}
 {% set total = 0 %}
-    {% for ped in pedidosAll %}
-        {% if ped.data_pedido >= domingo %}
-        {% if ped.data_pedido <= sabado %}
 
-        {% set total = total + 1 %}
+{% set domingoValor = 0 %}
+{% set segundaValor = 0 %}
+{% set tercaValor = 0 %}
+{% set quartaValor = 0 %}
+{% set quintaValor = 0 %}
+{% set sextaValor = 0 %}
+{% set sabadoValor = 0 %}
+{% set domingoValorC = 0 %}
+{% set segundaValorC = 0 %}
+{% set tercaValorC = 0 %}
+{% set quartaValorC = 0 %}
+{% set quintaValorC = 0 %}
+{% set sextaValorC = 0 %}
+{% set sabadoValorC = 0 %}
 
-        {% if ped.tipo_pagamento == 1 %}
-            {% set dinheiro = dinheiro + 1 %}
-        {% endif %}
+{% for ped in pedidosAll %}
 
-        {% if ped.tipo_pagamento == 2 %}
-            {% set debito = debito + 1 %}
-        {% endif %}
+{% if ped.tipo_pagamento == 1 %}
+{% set dinheiro = dinheiro + 1 %}
+{% endif %}
 
-        {% if ped.tipo_pagamento == 3 %}
-            {% set credito = credito + 1 %}
-        {% endif %}
+{% if ped.tipo_pagamento == 2 %}
+{% set debito = debito + 1 %}
+{% endif %}
 
-        {% if ped.tipo_pagamento == 4 %}
-            {% set qrCode = qrCode + 1 %}
-        {% endif %}
+{% if ped.tipo_pagamento == 3 %}
+{% set credito = credito + 1 %}
+{% endif %}
 
-        {% if ped.tipo_pagamento == 5 %}
-            {% set vr = vr + 1 %}
-        {% endif %}
+{% if ped.tipo_pagamento == 4 %}
+{% set qrCode = qrCode + 1 %}
+{% endif %}
 
-        {% if ped.tipo_pagamento == 6 %}
-            {% set va = va + 1 %}
-        {% endif %}
+{% if ped.tipo_pagamento == 5 %}
+{% set vr = vr + 1 %}
+{% endif %}
 
-        {% endif %}
-        {% endif %}
-    {% endfor %}
+{% if ped.tipo_pagamento == 6 %}
+{% set va = va + 1 %}
+{% endif %}
 
-    {% set domingoValor = 0 %}
-    {% set segundaValor = 0 %}
-    {% set tercaValor = 0 %}
-    {% set quartaValor = 0 %}
-    {% set quintaValor = 0 %}
-    {% set sextaValor = 0 %}
-    {% set sabadoValor = 0 %}
+{% if ped.data_pedido >= domingo %}
+{% if ped.data_pedido <= sabado %}
+{% if ped.data_pedido == domingo %}
+{{ped.total_pago}}
+{% set domingoValor = domingoValor + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == segunda %}
+{% set segundaValor = segundaValor + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == terca %}
+{% set tercaValor = tercaValor + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == quarta %}
+{% set quartaValor = quartaValor + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == quinta %}
+{% set quintaValor = quintaValor + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == sexta %}
+{% set sextaValor = sextaValor + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == sabado %}
+{% set sabadoValor = sabadoValor + ped.total_pago %}
+{% endif %}
+{% if ped.status == 6 %}
+{% if ped.data_pedido == domingo %}
+{{ped.total_pago}}
+{% set domingoValorC = domingoValorC + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == segunda %}
+{% set segundaValorC = segundaValorC + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == terca %}
+{% set tercaValorC = tercaValorC + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == quarta %}
+{% set quartaValorC = quartaValorC + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == quinta %}
+{% set quintaValorC = quintaValorC + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == sexta %}
+{% set sextaValorC = sextaValorC + ped.total_pago %}
+{% endif %}
+{% if ped.data_pedido == sabado %}
+{% set sabadoValorC = sabadoValorC + ped.total_pago %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
 
-    {% set domingoValorC = 0 %}
-    {% set segundaValorC = 0 %}
-    {% set tercaValorC = 0 %}
-    {% set quartaValorC = 0 %}
-    {% set quintaValorC = 0 %}
-    {% set sextaValorC = 0 %}
-    {% set sabadoValorC = 0 %}
-
-    {% set loopOutput %} 
-
-    {% for ped in pedidosAll %}
-    {% if ped.data >= domingo %}
-    {% if ped.data <= sabado %}
-
-    
-    {% if ped.data == domingo %}
-        {{ped.total_pago}} 
-        {% set domingoValor = domingoValor + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data == segunda %}
-        {% set segundaValor = segundaValor + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data == terca %}
-        {% set tercaValor = tercaValor + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == quarta %}
-        {% set quartaValor = quartaValor + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == quinta %}
-        {% set quintaValor = quintaValor + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == sexta %}
-        {% set sextaValor = sextaValor + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == sabado %}
-        {% set sabadoValor = sabadoValor + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.status == 6 %}
-
-    
-    {% if ped.data_pedido == domingo %}
-        {{ped.total_pago}} 
-        {% set domingoValorC = domingoValorC + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == segunda %}
-        {% set segundaValorC = segundaValorC + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == terca %}
-        {% set tercaValorC = tercaValorC + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == quarta %}
-        {% set quartaValorC = quartaValorC + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == quinta %}
-        {% set quintaValorC = quintaValorC + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == sexta %}
-        {% set sextaValorC = sextaValorC + ped.total_pago %}
-    {% endif %}
-
-    {% if ped.data_pedido == sabado %}
-        {% set sabadoValorC = sabadoValorC + ped.total_pago %}
-    {% endif %}
-        
-    {% endif %}
-        
-    {% endif %}
-    {% endif %}
-    
-    {% endfor %}
-    {% endset %}
-    
 <div class="container-fluid">
-<div class="col-12">
+    <div class="col-12">
         <h1>Acompanhamento</h1>
         <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
             <ol class="breadcrumb pt-0">
@@ -145,74 +113,65 @@
         </nav>
         <div class="separator mb-5"></div>
 
-</div>
-<div class="row">
-    <div class="col-lg-4">
-        <div class="card mb-4 progress-banner">
-            <a href="{{BASE}}{{empresa.link_site}}/admin/pedidos" class="card-body justify-content-between d-flex flex-row align-items-center">
-                <div>
-                    <i class="iconsminds-money-bag mr-2 text-white align-text-bottom d-inline-block"></i>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card mb-4 progress-banner">
+                <a href="{{BASE}}{{empresa.link_site}}/admin/pedidos" class="card-body justify-content-between d-flex flex-row align-items-center">
                     <div>
-                        
-                        <p class="text-small text-white">Hoje</p>
-                        <p class="text-small text-white">{{pedidos}} Pedidos Feitos</p>
+                        <i class="iconsminds-money-bag mr-2 text-white align-text-bottom d-inline-block"></i>
+                        <div>
+
+                            <p class="text-small text-white">Hoje</p>
+                            <p class="text-small text-white">{{pedidos}} Pedidos Feitos</p>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <div role="progressbar"
-                        class="progress-bar-circle progress-bar-banner position-relative" data-color="white"
-                        data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{pedidos}}" aria-valuemax="12"
-                        data-show-percent="false">
+                    <div>
+                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{pedidos}}" aria-valuemax="12" data-show-percent="false">
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4 progress-banner">
+                <a href="{{BASE}}{{empresa.link_site}}/admin/entregas" class="card-body justify-content-between d-flex flex-row align-items-center">
+                    <div>
+                        <i class="simple-icon-clock mr-2 text-white align-text-bottom d-inline-block"></i>
+                        <div>
+                            <p class="text-small text-white">Total Entregas efetuadas</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{entregas + recusados}}" aria-valuemax="6" data-show-percent="false">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4 progress-banner">
+                <a href="{{BASE}}{{empresa.link_site}}/admin/pedidos-cancelados" class="card-body justify-content-between d-flex flex-row align-items-center">
+                    <div>
+                        <i class="iconsminds-bell mr-2 text-white align-text-bottom d-inline-block"></i>
+                        <div>
+                            <p class="text-small text-white">Total Cancelados e ou Recusados</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{cancelados + recusados}}" aria-valuemax="10" data-show-percent="false">
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="col-lg-4">
-        <div class="card mb-4 progress-banner">
-            <a href="{{BASE}}{{empresa.link_site}}/admin/entregas" class="card-body justify-content-between d-flex flex-row align-items-center">
-                <div>
-                    <i class="simple-icon-clock mr-2 text-white align-text-bottom d-inline-block"></i>
-                    <div>
-                        <p class="text-small text-white">Total Entregas efetuadas</p>
-                    </div>
-                </div>
-                <div>
-                    <div role="progressbar"
-                        class="progress-bar-circle progress-bar-banner position-relative" data-color="white"
-                        data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{totalEntregas + totalRecusado}}" aria-valuemax="6"
-                        data-show-percent="false">
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card mb-4 progress-banner">
-            <a href="{{BASE}}{{empresa.link_site}}/admin/pedidos-cancelados" class="card-body justify-content-between d-flex flex-row align-items-center">
-                <div>
-                    <i class="iconsminds-bell mr-2 text-white align-text-bottom d-inline-block"></i>
-                    <div>
-                        <p class="text-small text-white">Total Cancelados e ou Recusados</p>
-                    </div>
-                </div>
-                <div>
-                    <div role="progressbar"
-                        class="progress-bar-circle progress-bar-banner position-relative" data-color="white"
-                        data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{totalCancelados + totalRecusado}}" aria-valuemax="10"
-                        data-show-percent="false">
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-{% if nivelUsuario == 0 %}
-<div class="row">
-    <div class="col-md-12 col-lg-6 col-xl-7 mb-4">
-        <div class="card dashboard-progress">
-            <div class="card-body">
-                <h5 class="card-title">Panorama da Semana - Ganhos</h5>
+    {% if nivelUsuario == 0 %}
+    <div class="row">
+        <div class="col-md-12 col-lg-6 col-xl-7 mb-4">
+            <div class="card dashboard-progress">
+                <div class="card-body">
+                    <h5 class="card-title">Panorama da Semana - Ganhos</h5>
                     <div class="card-body">
                         <p class="lead color-theme-1 mb-1 value"></p>
                         <p class="mb-0 label text-small"></p>
@@ -220,125 +179,124 @@
                             <canvas id="smallChart1" data-domingo="{{domingoValor}}" data-segunda="{{segundaValor}}" data-terca="{{tercaValor}}" data-quarta="{{quartaValor}}" data-quinta="{{quintaValor}}" data-sexta="{{sextaValor}}" data-sabado="{{sabadoValor}}"></canvas>
                         </div>
                     </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12 col-lg-6 col-xl-5 mb-4">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">Pagamento mais utilizadas esta semana</h5>
-                <div class="dashboard-donut-chart chart">
-                    <canvas id="categoryChart" data-Dinheiro="{{ dinheiro }}" data-Debito="{{ debito }}" data-Credito="{{ credito }}" data-VR="{{ vr }}" data-VA="{{ va }}" data-QRCODE="{{ qrCode }}"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-<div class="row">
-    <div class="col-lg-12 col-xl-6">
-        <div class="icon-cards-row">
-            <div class="glide dashboard-numbers">
-                <div class="glide__track" data-glide-el="track">
-                    <ul class="glide__slides">
-                        <li class="glide__slide">
-                            <a href="#" class="card">
-                                <div class="card-body text-center">
-                                    <i class="iconsminds-clock"></i>
-                                    <p class="card-text mb-0">Produto Esgotado</p>
-                                    <p class="lead text-center">{{produtosEsgotado}}</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="glide__slide">
-                            <a href="#" class="card">
-                                <div class="card-body text-center">
-                                    <i class="iconsminds-basket-coins"></i>
-                                    <p class="card-text mb-0">Produto Ativos</p>
-                                    <p class="lead text-center">{{produtosAtivos}}</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="glide__slide">
-                            <a href="#" class="card">
-                                <div class="card-body text-center">
-                                    <i class="iconsminds-arrow-refresh"></i>
-                                    <p class="card-text mb-0">Categorias</p>
-                                    <p class="lead text-center">{{categorias}}</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="glide__slide">
-                            <a href="#" class="card">
-                                <div class="card-body text-center">
-                                    <i class="simple-icon-plane"></i>
-                                    <p class="card-text mb-0">Motoboys</p>
-                                    <p class="lead text-center">{{motoboys}}</p>
-                                </div>
-                            </a>
-                        </li>
-                        
-                    </ul>
                 </div>
             </div>
         </div>
 
-        <div class="icon-cards-row">
-            <div class="glide dashboard-numbers">
-                <div class="glide__track" data-glide-el="track">
-                    <ul class="glide__slides">
-                        <li class="glide__slide">
-                            <a href="#" class="card">
-                                <div class="card-body text-center">
-                                    <i class="iconsminds-male"></i>
-                                    <p class="card-text mb-0">Usuários cadastrados</p>
-                                    <p class="lead text-center">{{usuarios}}</p>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
+        <div class="col-md-12 col-lg-6 col-xl-5 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Pagamento mais utilizadas esta semana</h5>
+                    <div class="dashboard-donut-chart chart">
+                        <canvas id="categoryChart" data-Dinheiro="{{ dinheiro }}" data-Debito="{{ debito }}" data-Credito="{{ credito }}" data-VR="{{ vr }}" data-VA="{{ va }}" data-QRCODE="{{ qrCode }}"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-12 col-xl-6">
+            <div class="icon-cards-row">
+                <div class="glide dashboard-numbers">
+                    <div class="glide__track" data-glide-el="track">
+                        <ul class="glide__slides">
+                            <li class="glide__slide">
+                                <a href="#" class="card">
+                                    <div class="card-body text-center">
+                                        <i class="iconsminds-clock"></i>
+                                        <p class="card-text mb-0">Produto Esgotado</p>
+                                        <p class="lead text-center">{{produtosEsgotado}}</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="glide__slide">
+                                <a href="#" class="card">
+                                    <div class="card-body text-center">
+                                        <i class="iconsminds-basket-coins"></i>
+                                        <p class="card-text mb-0">Produto Ativos</p>
+                                        <p class="lead text-center">{{produtosAtivos}}</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="glide__slide">
+                                <a href="#" class="card">
+                                    <div class="card-body text-center">
+                                        <i class="iconsminds-arrow-refresh"></i>
+                                        <p class="card-text mb-0">Categorias</p>
+                                        <p class="lead text-center">{{categorias}}</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="glide__slide">
+                                <a href="#" class="card">
+                                    <div class="card-body text-center">
+                                        <i class="simple-icon-plane"></i>
+                                        <p class="card-text mb-0">Motoboys</p>
+                                        <p class="lead text-center">{{motoboys}}</p>
+                                    </div>
+                                </a>
+                            </li>
 
-    <div class="col-xl-6 col-lg-12 mb-4">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">Produtos mais Vendidos</h5>
-                <table class="data-table data-table-simple responsive nowrap"
-                    data-order="[[ 1, &quot;desc&quot; ]]">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Vendas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for p in maisVendidos %}
-                        <tr>
-                            <td>
-                                <p class="text-muted">{{p.nome}}</p>
-                            </td>
-                            <td>
-                                <p class="text-muted">{{p.vendas}}</p>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="icon-cards-row">
+                <div class="glide dashboard-numbers">
+                    <div class="glide__track" data-glide-el="track">
+                        <ul class="glide__slides">
+                            <li class="glide__slide">
+                                <a href="#" class="card">
+                                    <div class="card-body text-center">
+                                        <i class="iconsminds-male"></i>
+                                        <p class="card-text mb-0">Usuários cadastrados</p>
+                                        <p class="lead text-center">{{usuarios}}</p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-6 col-lg-12 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Produtos mais Vendidos</h5>
+                    <table class="data-table data-table-simple responsive nowrap" data-order="[[ 1, &quot;desc&quot; ]]">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Vendas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in maisVendidos %}
+                            <tr>
+                                <td>
+                                    <p class="text-muted">{{p.nome}}</p>
+                                </td>
+                                <td>
+                                    <p class="text-muted">{{p.vendas}}</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-            
-            
-            <div class="row">
-                <!-- <div class="col-md-6 col-sm-12 mb-4">
+
+
+    <div class="row">
+        <!-- <div class="col-md-6 col-sm-12 mb-4">
                     <div class="card dashboard-filled-line-chart">
                         <div class="card-body ">
                             <div class="float-left float-none-xs">
@@ -365,7 +323,7 @@
                     </div>
                 </div> -->
 
-                <!-- <div class="col-md-6 col-sm-12 mb-4">
+        <!-- <div class="col-md-6 col-sm-12 mb-4">
                     <div class="card dashboard-filled-line-chart">
                         <div class="card-body ">
                             <div class="float-left float-none-xs">
@@ -391,6 +349,6 @@
                         </div>
                     </div>
                 </div> -->
-            </div>
-        </div>
+    </div>
+</div>
 {% endblock %}

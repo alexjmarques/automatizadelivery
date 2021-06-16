@@ -13935,7 +13935,7 @@ p {
     border-radius: 0;
     font-weight: 300;
     box-shadow: none;
-  
+    background: transparent;
     border-bottom: 2px solid #ccc;
 }
 
