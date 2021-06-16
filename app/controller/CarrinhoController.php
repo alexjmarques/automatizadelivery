@@ -106,6 +106,7 @@ class CarrinhoController extends Controller
         $valor->valor = $data['valor'];
         $valor->save();
 
+
         if($this->sessao->getUser() == 0){
             $this->sessao->sessaoNew('carrinho', $valor->id);
         }else{
@@ -507,7 +508,10 @@ class CarrinhoController extends Controller
             $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
             $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
 
-            echo 'Enviamos em seu celular um código para validar seu acesso!';
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!', 'url' => "carrinho/valida/acesso/code/{$getTelefone->id}"]);
+            exit($json);
+
             $usuario = $this->acoes->getByField('usuarios', 'telefone', $data['telefone']);
         } else {
             $getSenha = preg_replace('/[^0-9]/', '', $data['telefone']);
@@ -540,8 +544,6 @@ class CarrinhoController extends Controller
             $this->sessao->sessaoNew('usuario', $usuario->email);
             $this->sessao->sessaoNew('nivel', $usuario->nivel);
 
-
-
             //$this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
 
             $cart = (new Carrinho())->findById($this->sessao->getSessao('carrinho'));
@@ -561,6 +563,49 @@ class CarrinhoController extends Controller
             header('Content-Type: application/json');
             $json = json_encode(['id' => $cart->id, 'resp' => 'insert', 'mensagem' => 'Legal, agora preciso que me informe os dados para entrega!', 'url' => 'endereco/novo/cadastro']);
             exit($json);
+        }
+    }
+
+    public function validaAcessoPage($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $isLogin = $this->sessao->getUser() ? redirect(BASE ."{$empresa->link_site}") : null;
+
+        $this->load('_cliente/carrinho/validaAcesso', [
+            'empresa' => $empresa,
+            'usuario' => $usuario,
+            'trans' => $this->trans,
+            'isLogin' => $isLogin,
+            'detect' => new Mobile_Detect()
+        ]);
+    }
+
+    public function usuarioValidaAcessoCode($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $codeValida = $this->sessao->getSessao('codeValida');
+        if ($codeValida == $data['codeValida']) {
+            $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
+            
+                $valor = (new Carrinho())->findById($this->sessao->getSessao('carrinho'));
+                $valor->id_cliente = $usuario->id;
+                $valor->save();
+
+                $cartAdicional = $this->acoes->counts('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'));
+                if ($cartAdicional > 0) {
+                    $cartAdicional = $this->acoes->getByField('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'));
+                    $adicional = (new CarrinhoAdicional())->findById($cartAdicional->id);
+                    $adicional->id_cliente = $usuario->id;
+                    $adicional->save();
+                }
+            $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
+
+            if ($this->sessao->getUser()) {
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os carrinho', 'url' => 'carrinho']);
+                exit($json);
+            }
         }
     }
 
@@ -771,7 +816,7 @@ class CarrinhoController extends Controller
 
         $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
         $userUp = (new UsuariosEmpresa())->findById($user->id);
-        $userUp->pedidos = $user->pedidos + 1;
+        $userUp->pedidos = $user->pedidos == null ? 1 : $user->pedidos + 1;
         $userUp->save();
 
         header('Content-Type: application/json');

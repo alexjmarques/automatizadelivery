@@ -806,12 +806,13 @@ $("#form").submit(function (e) {
         type: 'POST',
         data: formData,
         beforeSend: function () {
-            $(".acaoBtn, .btnFinalizaCadastro").prop("disabled", true);
-            $('.acaoBtn, .btnFinalizaCadastro').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+            $(".acaoBtn, .btnFinalizaCadastro, .addStyle").prop("disabled", true);
+            $('.acaoBtn, .btnFinalizaCadastro, .addStyle').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         },
         complete: function () {
             $(".acaoBtn, .btnFinalizaCadastro").prop("disabled", false);
             $('.acaoBtn').html('LOGIN');
+            $('.addStyle').hide();
             $('.acaoBtnCadastro').html('CADASTRAR');
             $('.acaoBtnEnviar').html('ENVIAR');
             $('.acaoBtnAtualizar').html('ATUALIZAR');
@@ -863,6 +864,10 @@ $("#form").submit(function (e) {
                             });
                         }
                         break;
+                        case 'OK Vai para os carrinho':
+                            window.location = `/${link_site}/${dd.url}`;
+                            break;
+                        
                     case 'Enviamos em seu celular um código para validar seu acesso!':
                         $('#mensagem').html(dd.mensagem);
                         $('.successSup').show();
@@ -1098,6 +1103,7 @@ $(document).ready(function () {
                 var audio = new Audio('/audio/gS21.mp3');
                 audio.play();
             }
+
             //console.log(dd)
             $('#listarUltimaVenda').html(dd);
         })

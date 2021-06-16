@@ -127,8 +127,9 @@ $router->get('/{linkSite}/carrinho', 'CarrinhoController:carrinho');
 $router->get('/{linkSite}/carrinho/dados', 'CarrinhoController:carrinhoCadastro');
 $router->post('/{linkSite}/carrinho/cadastro/valida', 'CarrinhoController:carrinhoCadastroValida');
 
-$router->get('/{linkSite}/carrinho/valida/acesso', 'CarrinhoController:carrinhoVisitanteCadastroValida');
-$router->post('/{linkSite}/carrinho/valida/acesso/code', 'CarrinhoController:carrinhoValidaAcessoCode');
+$router->get('/{linkSite}/carrinho/valida/acesso/code/{id}', 'CarrinhoController:validaAcessoPage');
+$router->post('/{linkSite}/carrinho/valida/acesso/code/up', 'CarrinhoController:usuarioValidaAcessoCode');
+
 $router->get('/{linkSite}/carrinho/entrega', 'CarrinhoController:carrinhoVisitanteEndereco');
 $router->get('/{linkSite}/produto/{id_produto}/e/{id_carrinho}', 'CarrinhoController:carrinhoProdutoEditar');
 
