@@ -43,7 +43,7 @@
 
                             </td>
                             <td>
-                                <p class="text-muted">{{ moedaAtivo.simbolo }} {{ p.valor|number_format(2, ',', '.') }}</p>
+                                <p class="text-muted">{{ moeda.simbolo }} {{ p.valor|number_format(2, ',', '.') }}</p>
                             </td>
                             <td>
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i> Editar</a>

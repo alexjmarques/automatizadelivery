@@ -40,10 +40,10 @@
                                     <p>{% if u.id == p.id_usuario %}({{ u.telefone[:2] }}) {{ u.telefone|slice(2, 5) }}-{{ u.telefone|slice(7, 9) }}{% endif %}</p>
                                     </td>
                                     <td>
-                                        <p class="text-center">{{ moedaAtivo.simbolo }} {{ p.diaria|number_format(2, ',', '.') }}</p>
+                                        <p class="text-center">{{ moeda.simbolo }} {{ p.diaria|number_format(2, ',', '.') }}</p>
                                     </td>
                                     <td>
-                                        <p class="text-center">{{ moedaAtivo.simbolo }} {{ p.taxa|number_format(2, ',', '.') }}</p>
+                                        <p class="text-center">{{ moeda.simbolo }} {{ p.taxa|number_format(2, ',', '.') }}</p>
                                     </td>
                                     <td>
                                         <p class="text-center">{{ p.placa }}</p>

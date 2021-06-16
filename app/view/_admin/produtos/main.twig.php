@@ -49,7 +49,7 @@
                                         
                                         <td>
                                             <p class="text-center">
-                                            {{ moedaAtivo.simbolo }} {{ p.valor|number_format(2, ',', '.') }}</p>
+                                            {{ moeda.simbolo }} {{ p.valor|number_format(2, ',', '.') }}</p>
                                         </td>
                                         <td>
                                             <p class="text-center">

@@ -214,7 +214,7 @@
                                 <input type="checkbox" checked id="itemcheck{{ padici.id }}" name="adicional[]"
                                     value="{{ padici.id }}">
                                 <label class="form-check-label" for="itemcheck{{ padici.id }}">{{ padici.nome }}
-                                    - <strong>{{ moedaAtivo.simbolo }} {{ padici.valor|number_format(2, ',',
+                                    - <strong>{{ moeda.simbolo }} {{ padici.valor|number_format(2, ',',
                                         '.') }}</strong></label>
                             </div>
                             </div>
@@ -224,7 +224,7 @@
                                 <input type="checkbox" id="itemcheck{{ padici.id }}" name="adicional[]"
                                     value="{{ padici.id }}">
                                 <label class="form-check-label" for="itemcheck{{ padici.id }}">{{ padici.nome }}
-                                    - <strong>{{ moedaAtivo.simbolo }} {{ padici.valor|number_format(2, ',',
+                                    - <strong>{{ moeda.simbolo }} {{ padici.valor|number_format(2, ',',
                                         '.') }}</strong></label>
                             </div>
                             </div>
