@@ -95,7 +95,7 @@
 
                   </div>
 
-                  <a href="#" class="btn btn-success btn-lg mt-1 float-left">Eu quero <i class="fa fa-chevron-circle-right"></i></a>
+                  <a href="https://api.whatsapp.com/send?phone=11980309212&text=Ol%C3%A1!%20Tenho%20Interesse%20no%20plano%20de%20mobilidade" target="_blank" class="btn btn-success btn-lg mt-1 float-left">Eu quero <i class="fa fa-chevron-circle-right"></i></a>
 
             </div>
          </div>
@@ -129,7 +129,7 @@
 
                   </div>
 
-                  <a href="#" class="btn btn-success btn-lg mt-1 float-right">Eu quero <i class="fa fa-chevron-circle-right"></i></a>
+                  <a href="https://api.whatsapp.com/send?phone=11980309212&text=Ol%C3%A1!%20Tenho%20Interesse%20no%20plano%20de%20mobilidade" target="_blank" class="btn btn-success btn-lg mt-1 float-right">Eu quero <i class="fa fa-chevron-circle-right"></i></a>
 
             </div>
          </div>
