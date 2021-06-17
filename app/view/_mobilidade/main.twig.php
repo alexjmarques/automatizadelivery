@@ -28,7 +28,7 @@
                <p>Soluções pensada de ponta a ponta</p>
                <span class="line"></span>
             </div>
-            <p>Cliente liga, manda mensagem reclamando do tempo de entrega, e você do outro lado aguardando a chegado do entregador de Aplicativo!
+            <p>Cliente liga, manda mensagem reclamando do tempo de entrega, e você do outro lado aguardando a chegada do entregador de Aplicativo!
                <br><br>Pensando nisso lançamos planos para sua empresa não precisar mais de entregadores tercerizados.
             </p>
 
