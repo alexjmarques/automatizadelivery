@@ -13984,9 +13984,11 @@ p {
     font-size: 25px !important;
     border-radius: 0
 }
-.btn-number{
+
+.btn-number {
     background: #c60021 !important;
 }
+
 .count-number-input {
     width: 39px;
     text-align: center;
@@ -14961,10 +14963,12 @@ textarea.form-control {
     float: left;
     width: 100%
 }
-h6.d-inline{
+
+h6.d-inline {
     font-size: 14px;
     font-weight: 700;
 }
+
 .valorFullSize {
     font-size: 38px !important;
     font-weight: 700 !important;
@@ -14974,9 +14978,10 @@ h6.d-inline{
     font-family: 'Merriweather Sans', sans-serif;
     font-weight: 300
 }
+
 .shadow h5.valorFullSizeMini,
 .valorFullSizeMini {
-    font-size: 22px ​!important;
+    font-size: 22px ​ !important;
     font-weight: 700 !important;
     color: #2c2e2f !important;
     float: none !important;
@@ -14984,9 +14989,11 @@ h6.d-inline{
     font-family: 'Merriweather Sans', sans-serif;
     font-weight: 300
 }
+
 .shadows {
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
 }
+
 .metade {
     width: 50%;
     float: left
@@ -15214,6 +15221,7 @@ h6.d-inline{
 .modal-dialog {
     position: fixed !important;
 }
+
 .text-black-50 {
     font-size: 18px;
     font-weight: 600;
@@ -15223,66 +15231,64 @@ h6.d-inline{
 
 .mdc-top-app-bar-sub {
     background-color: #880a1f !important
-  }
+}
 
-  .cad_mod {
-    background: #ea1d2c
+.cad_mod {
+    background: #ea1d2c;
 
-    ;
+    border-color: #ea1d2c;
+}
 
-    border-color: #ea1d2c
-
-    ;
-  }
-
-  #menuCat a.active {
+#menuCat a.active {
     border: 1px solid #ea1d2c !important;
 
     color: #ea1d2c !important;
-  }
+}
 
-  .sabor_item_ok,
-  .sabor_item,
-  .adicional_item_ok,
-  .adicional_item,
-  .list-card a:hover {
+.sabor_item_ok,
+.sabor_item,
+.adicional_item_ok,
+.adicional_item,
+.list-card a:hover {
     color: #ea1d2c
-  }
+}
 
-  #menuCat a {
+#menuCat a {
     border: 1px solid #ea1d2c;
 
     background-color: #ea1d2c;
-  }
+}
 
-  .bg-primary,
-  .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
-  .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
-  .mdc-checkbox__native-control[data-indeterminate="true"]:enabled~.mdc-checkbox__background,
-  .mdc-top-app-bar,
-  #overlayer,
-  .StatusRest,
-  .mdc-radio .mdc-radio__background::before,
-  .mdc-radio .mdc-radio__ripple::before,
-  #listar-carrinho .cart-inline-item .ml-2,
-  .mdc-radio .mdc-radio__ripple::after {
+.bg-primary,
+.mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
+.mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
+.mdc-checkbox__native-control[data-indeterminate="true"]:enabled~.mdc-checkbox__background,
+.mdc-top-app-bar,
+#overlayer,
+.StatusRest,
+.mdc-radio .mdc-radio__background::before,
+.mdc-radio .mdc-radio__ripple::before,
+#listar-carrinho .cart-inline-item .ml-2,
+.mdc-radio .mdc-radio__ripple::after {
     background: #ea1d2c;
     background-color: #ea1d2c !important;
-  }
+}
 
-  .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle,
-  .mdc-radio .mdc-radio__native-control:enabled:checked+.mdc-radio__background .mdc-radio__outer-circle {
-    border-color: #ea1d2c!important
-  }
+.mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle,
+.mdc-radio .mdc-radio__native-control:enabled:checked+.mdc-radio__background .mdc-radio__outer-circle {
+    border-color: #ea1d2c !important
+}
 
-.linhaTop{
+.linhaTop {
     background: #ea1d2c;
     color: #fff;
     padding: 5px;
 }
-.border-r0{
+
+.border-r0 {
     border-radius: 0 !important;
 }
+
 .text-cian {
     color: rgb(138, 136, 136) !important;
-  }
+}

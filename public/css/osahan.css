@@ -3089,3 +3089,18 @@ a.gold:hover {
   .bg-green{
       background-color: #880A1F;
   }
+  .bg-city{
+    background: url('/img/bg-city.png');
+    background-position: bottom left;
+    background-size: 100%;
+    background-repeat: repeat-x;
+}
+.text-successs{
+    color: #880A1F;
+}
+
+.price_ull{
+    background: #f1efef;
+    border-radius: 15px;
+    padding-bottom: 15px;
+}

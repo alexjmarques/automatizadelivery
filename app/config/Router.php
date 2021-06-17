@@ -65,7 +65,7 @@ $router->get('/{linkSite}/{plano}/pagamento', 'EmpresaCadastroController:pagamen
 $router->post('/cadastro/empresa/pagamento/i', 'EmpresaCadastroController:pagamentoInsert');
 
 
-$router->get('/mobilidade/planos', 'MobilidadeCadastroController:index');
+$router->get('/mobilidade/nossos-planos', 'MobilidadeCadastroController:index');
 $router->get('/mobilidade/empresa/{plano}', 'MobilidadeCadastroController:index');
 $router->post('/mobilidade/empresa/i', 'MobilidadeCadastroController:insert');
 $router->get('/{linkSite}/mobilidade/{plano}/pagamento', 'MobilidadeCadastroController:pagamento');
