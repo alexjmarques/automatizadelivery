@@ -122,7 +122,7 @@
                             <p>
                                 {% if endereco.principal == 1 %}
                                 <strong>{{ endereco.rua }} {{ endereco.numero }}</strong>  <br />
-                                {{ endereco.complemento }} - {{ endereco.bairro }} - {{ endereco.cidade }}/{% for e in estados %}{% if e.id == endereco.estado %}{{ e.uf }}{% endif %}{% endfor %}
+                                {{ endereco.complemento }} - {{ endereco.bairro }} - {{ endereco.cidade }}/{{ endereco.estado }}
                                 {% endif %}
                             </p>
                         </div>

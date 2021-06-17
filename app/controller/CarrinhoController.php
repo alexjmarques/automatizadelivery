@@ -253,6 +253,7 @@ class CarrinhoController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
+        $usu = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -489,8 +490,9 @@ class CarrinhoController extends Controller
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
         if ($getTelefone) {
-            $getUsuario = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
+            $getUsuario = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'id_usuario', $getTelefone->id);
             if(!$getUsuario){
+                //dd($getUsuario);
                 $valorEmp = new UsuariosEmpresa();
                 $valorEmp->id_usuario = $getTelefone->id;
                 $valorEmp->id_empresa = $empresa->id;
@@ -534,7 +536,6 @@ class CarrinhoController extends Controller
             $valoEmp->nivel = 3;
             $valoEmp->save();
             
-            //dd($valoEmp);
 
             $usuario = $this->acoes->getByField('usuarios', 'id', $valor->id);
             $carrinhoSessao = $this->sessao->getSessao('carrinho');
@@ -599,7 +600,7 @@ class CarrinhoController extends Controller
                     $adicional->id_cliente = $usuario->id;
                     $adicional->save();
                 }
-            $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
+                $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
 
             if ($this->sessao->getUser()) {
                 header('Content-Type: application/json');
@@ -630,8 +631,8 @@ class CarrinhoController extends Controller
                     $adicional->id_cliente = $usuario->id;
                     $adicional->save();
                 }
-                $getTelefone = $this->acoes->counts('usuarios', 'id', $this->sessao->getUser());
-                if ($getTelefone == 0) {
+                $getTelefone = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                if (!$getTelefone) {
                     $valorEmp = new UsuariosEmpresa();
                     $valorEmp->id_usuario = $usuario->id;
                     $valorEmp->id_empresa = $empresa->id;
@@ -744,6 +745,7 @@ class CarrinhoController extends Controller
     {
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $data['id_empresa'], 1, 'id', 'DESC');
+        $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
 
         if ($carrinho) {
             foreach ($carrinho as $cart) {
@@ -754,6 +756,7 @@ class CarrinhoController extends Controller
         }
 
         $carrinhoAdicional = $this->acoes->getByFieldAllTwoNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
+        
 
         if ($carrinhoAdicional) {
             foreach ($carrinhoAdicional as $cartAdic) {
@@ -814,7 +817,7 @@ class CarrinhoController extends Controller
         $pedido->chave = $data['chave'];
         $pedido->save();
 
-        $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
+        
         $userUp = (new UsuariosEmpresa())->findById($user->id);
         $userUp->pedidos = $user->pedidos == null ? 1 : $user->pedidos + 1;
         $userUp->save();
