@@ -26,6 +26,8 @@
                 {{produto.observacao}}
             </div>
             {% endif %}
+
+            {% if isLogin != 0 %}
             {% if delivery.status == 1 %}
             <div class="d-flex mb-3 osahan-cart-item-profile bg-white shadow rounded p-3">
                 <p class="mb-1 mt-2 font-weight-bold line-e">Informe a quantidade?</p>
@@ -66,6 +68,7 @@
                 </div>
             </div>
             {% endif%}
+            
             {% if delivery.status == 1 %}
             <div class="mb-3 shadow bg-white rounded p-3 py-3 mt-3 clearfix">
                 <div class="mb-0 input-group full-width">
@@ -75,6 +78,7 @@
                         aria-label="With textarea" class="form-control"></textarea>
                 </div>
             </div>
+            {% endif%}
             {% endif%}
 
             {% if produto.sabores is null %}
@@ -105,8 +109,14 @@
             <button class="btn btn-success btn-block btn-lg addStyle">ADICIONAR AO PEDIDO <i
                     class="feather-shopping-cart"></i></button>
             {% else %}
-
+            {% if isLogin == 0 %}
+            <div class="alert alert-warning text-center mt-3" role="alert">Para efetuar um pedido você precisa informar seus dados, tais como <strong>Nome</strong>, <strong>Telefone</strong> e <strong>Endereço de entrega</strong>!
+            <a href="{{BASE}}{{empresa.link_site}}/login" class="btn btn-success btn-block btn-lg addStyleMod mt-3">Informar meus Dados</a>
+        </div>
+            {% else %}
             <button class="btn btn-info btn-block btn-lg addStyle">PROSSEGUIR <i class="feather-next"></i></button>
+            {% endif %}
+
             {% endif %}
 
             {% endif %}

@@ -91,13 +91,12 @@ class CarrinhoController extends Controller
 
     public function insert($data)
     {
-        $id_cliente = $this->sessao->getUser() ? $this->sessao->getUser() : 0;
         $id_sabores = $data['sabores'][0] ? $data['sabores'][0] : null;
         $id_adicional = $data['adicional'] ? $data['adicional'] : null;
 
         $valor = new Carrinho();
         $valor->id_produto = $data['id_produto'];
-        $valor->id_cliente = $id_cliente;
+        $valor->id_cliente = $this->sessao->getUser();
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = $data['quantity'];
         $valor->id_sabores = $id_sabores;
@@ -105,14 +104,6 @@ class CarrinhoController extends Controller
         $valor->observacao = $data['observacao'];
         $valor->valor = $data['valor'];
         $valor->save();
-
-
-        if($this->sessao->getUser() == 0){
-            $this->sessao->sessaoNew('carrinho', $valor->id);
-        }else{
-            unset($_SESSION['Vendor\Aura\Segment']['carrinho']);
-        }
-        
 
         header('Content-Type: application/json');
         if ($valor->id_adicional != null) {
