@@ -1,7 +1,5 @@
 {% extends 'partials/body.twig.php' %}
-
 {% block title %}Meu pedido - {{empresa.nome_fantasia }}{% endblock %}
-
 {% block body %}
 
 <div class="osahan-checkout">

@@ -154,6 +154,7 @@ class PagesController extends Controller
 
                 if ($verificaVendaAtiva > 0) {
                     $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
+                    $diahoje = date('d');
                 }
                 // $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresa->id);
             }
@@ -190,7 +191,7 @@ class PagesController extends Controller
             'ultimaVenda' => $ultimaVenda,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'enderecoAtivo' => $enderecoAtivo,
-            // 'veriFavoritos' => $veriFavoritos,
+            '$diahoje' => $diahoje,
             // 'favoritos' => $favoritos,
             // 'produtoQtd' => $produtoQtd,
             'hoje' =>  $hoje,

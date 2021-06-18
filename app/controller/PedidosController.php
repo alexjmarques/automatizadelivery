@@ -61,7 +61,8 @@ class PedidosController extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $pedidos = $this->acoes->pagination('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), $pager->limit(), $pager->offset(), 'id ASC');
+        $pedidos = $this->acoes->pagination('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), $pager->limit(), $pager->offset(), 'id DESC');
+        $diahoje = date('d');
 
         $this->load('_cliente/pedidos/main', [
             'moeda' => $moeda,
@@ -69,6 +70,7 @@ class PedidosController extends Controller
             'status' => $status,
             'pedidos' => $pedidos,
             'empresa' => $empresa,
+            'diahoje' => $diahoje,
             'empresas' => $empresas,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'usuario' => $usuario,

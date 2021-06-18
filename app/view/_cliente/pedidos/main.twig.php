@@ -14,7 +14,11 @@
     {% set total = total + 1 %}
         <div class="p-3 osahan-profile">
             <div class="bg-white rounded shadow {% if total == 1%}mt-n5{% endif%}">
+            {% if p.data_pedido|date('d') == diahoje %}
+               <span class="badge badge-success p-2 position-absolute lt1"> Pedido de hoje</span>
+                {% endif %}
                 <div class="d-flex  border-bottom p-3">
+                
                     <div class="left col-md-12 p-0">
                         <h6 class="mb-1 font-weight-bold">#{{ p.numero_pedido }} - Seu pedido  
                         {% for st in status %}
@@ -37,9 +41,7 @@
 
 {% endfor %}
 
-<div class="col-5 center-block text-center float-ceter">
-                    {{paginacao|raw}}
-                </div>
+<div class="col-5 center-block text-center float-ceter">{{paginacao|raw}}</div>
 
     {% if pedidos is null %}
     <div class="osahan-coming-soon p-4 d-flex justify-content-center">

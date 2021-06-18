@@ -1,5 +1,6 @@
+{% if ultimaVenda.data_pedido|date('d') == diahoje %}
 {% if ultimaVenda.status > 0 %}
-{% if ultimaVenda.status < 4 %} 
+{% if ultimaVenda.status < 4 %}
 <a data-status="{{ultimaVenda.status}}" class="status {% if ultimaVenda.status == 1 %}recebido{% endif %} {% if ultimaVenda.status == 2 %}producao{% endif %} {% if ultimaVenda.status == 3 %}saiu-entregar{% endif %} {{ ultimaVenda.status }}" href="{{BASE}}{{empresa.link_site}}/meu-pedido/{{ ultimaVenda.chave }}">
         <div class="col-12">
                 <div class="d-flex list-card bg-white h-100 overflow-hidden position-relative shadow-sm">
@@ -27,6 +28,7 @@
                 </div>
         </div>
 </a>
+{% endif %}
 {% endif %}
 {% endif %}
 

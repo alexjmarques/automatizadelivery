@@ -713,12 +713,12 @@ function mudarEndereco(id) {
         beforeSend: function () {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
-          },
-          complete: function () {
+        },
+        complete: function () {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
-          },
-          success: function (data) {
+        },
+        success: function (data) {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             //console.log(data)
@@ -759,14 +759,8 @@ $("#form").submit(function (e) {
         beforeSend: function () {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
-          },
-          complete: function () {
-            $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
-          },
-          success: function (dd) {
-            $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+        },
+        success: function (dd) {
             console.log(dd);
             if (dd.id > 0) {
                 console.log(dd.mensagem);
@@ -780,10 +774,18 @@ $("#form").submit(function (e) {
                         localStorage.setItem('username', $('#emailOurTel').val());
                         window.location = `/${link_site}/${dd.url}`;
                         break;
+                    case 'Seu produto foi adicionado a Sacola!':
+                        $('#FinalizarPedido').modal("show");
+                        break;
+
                     case 'Pedido finalizado com sucesso':
                         $('#FinalizarPedidoOK').modal("show");
                         break;
                     case 'Seu produto foi adicionado a sacola aguarde que tem mais!':
+                        $('#mensagem').html('Adicionamos seu item a sacola, aguarde que iremos redirecionar para o proximo passo!');
+                        $('.successSup').show();
+                        $('.errorSup, .buttonAlert').hide();
+                        $('#alertGeralSite').modal("show");
                         window.location = `/${link_site}/${dd.url}/${dd.id}`;
                         break;
                     case 'OK Vai para os pedidos':
@@ -853,6 +855,9 @@ $("#form").submit(function (e) {
                         break;
                 }
             } else {
+                $(".btn_acao a, .btn_acao button").removeClass('hide');
+                $('.btn_acao .carrega').html('')
+
                 $('.errorSup').show();
                 $('.successSup').hide();
                 $('#alertGeralSite').modal("show");
@@ -899,14 +904,14 @@ $("#formFinish").submit(function () {
             beforeSend: function () {
                 $(".btn_acao a, .btn_acao button").addClass('hide');
                 $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
-              },
-              complete: function () {
+            },
+            complete: function () {
                 $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
-              },
-              success: function (data) {
+                $('.btn_acao .carrega').html('')
+            },
+            success: function (data) {
                 $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+                $('.btn_acao .carrega').html('')
                 console.log(data);
                 if (data.id > 0) {
                     $('#mensagem').html(data.mensagem);
@@ -1271,12 +1276,12 @@ $("#btnValidarCode").on('click', function () {
         beforeSend: function () {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
-          },
-          complete: function () {
+        },
+        complete: function () {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
-          },
-          success: function (dd) {
+        },
+        success: function (dd) {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             console.log(dd)
@@ -1315,12 +1320,12 @@ $("#btnValidarCodeLogin").on('click', function () {
         beforeSend: function () {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
-          },
-          complete: function () {
+        },
+        complete: function () {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
-          },
-          success: function (dd) {
+        },
+        success: function (dd) {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             console.log(dd)
