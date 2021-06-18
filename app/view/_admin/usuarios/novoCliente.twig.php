@@ -98,7 +98,7 @@
                 <input type="hidden" id="nivel" name="nivel" value="3">
                 <input type="hidden" id="senha" name="senha" value="{{senha}}">
                 
-<div class="btn_acao">
+<div class="btn_acao"><div class="carrega"></div>
                 <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
                 </div>
             

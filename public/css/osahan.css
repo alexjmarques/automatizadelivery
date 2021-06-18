@@ -3148,3 +3148,6 @@ a.gold:hover {
         display: none !important;
     }
 }
+.btn_acao{
+    text-align: center;
+}

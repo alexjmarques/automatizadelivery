@@ -126,7 +126,7 @@
 
         <input type="hidden" id="id" name="id" value="{{retorno.id}}">
         <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
-        <div class="btn_acao">
+        <div class="btn_acao"><div class="carrega"></div>
                 <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
                 </div>
 

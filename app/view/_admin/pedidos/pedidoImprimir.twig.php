@@ -239,14 +239,14 @@ $btnPrint.addEventListener("click", () => {
 {% if pedido[':status'] == 1 %}
     {% set count = pedido[':status'] %}
     {% set count = count + 1 %}
-    <div class="btn_acao">
+    <div class="btn_acao"><div class="carrega"></div>
         <a class="col-meio btn-processo bg-danger" onclick="mudarStatus({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">Colocar em produção<i class="simple-icon-arrow-right"></i></a>
     </div>
 {% endif %}
 {% if pedido[':status'] == 2 %}
     {% set count = pedido[':status'] %}
     {% set count = count + 1 %}
-    <div class="btn_acao">
+    <div class="btn_acao"><div class="carrega"></div>
         <a class="col-meio btn-processo bg-warning" onclick="mudarStatusEntrega({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">
 
     {% if pedido[':tipo_frete'] == 1 %}
@@ -259,7 +259,7 @@ $btnPrint.addEventListener("click", () => {
 {% if pedido[':status'] == 3 %}
     {% set count = pedido[':status'] %}
     {% set count = count + 1 %}
-    <div class="btn_acao">
+    <div class="btn_acao"><div class="carrega"></div>
         <a class="col-meio btn-processo bg-secondary" onclick="mudarStatus({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></a>
     </div>
         {% endif %}

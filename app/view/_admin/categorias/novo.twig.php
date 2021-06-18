@@ -39,7 +39,7 @@
                                 </div>
                             <input type="hidden" id="produtos" name="produtos" value="0">
                             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
-                            <div class="btn_acao">
+                            <div class="btn_acao"><div class="carrega"></div>
                 <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
                 </div>
                             

@@ -29,7 +29,7 @@
                      <textarea class="form-control" id="msn" name="msn" rows="4" required></textarea>
                   </div>
                   <div id="mensagem"></div>
-                  <div class="btn_acao">
+                  <div class="btn_acao"><div class="carrega"></div>
                   <button id="btn-atualizar-end" class="elementor-price-table__button elementor-button elementor-size-md gold"><span>Enviar</span></button>
                   </div>
                </form>

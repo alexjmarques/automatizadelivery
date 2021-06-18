@@ -132,7 +132,7 @@
 
                                 </div>
                                 <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
-                                <div class="btn_acao">
+                                <div class="btn_acao"><div class="carrega"></div>
                                 <button id="btn-atualizar-end" class="btn btn-primary btn-lg btn-block acaoBtnAutorizar"><span>Validar</span></button>
                                 </div>
                             </form>

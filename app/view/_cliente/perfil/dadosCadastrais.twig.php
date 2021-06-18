@@ -43,7 +43,7 @@
 
                         </div>
                             <input type="hidden" id="id_usuario" name="id_usuario" value="{{usuarioAtivo.id}}">
-                            <div class="btn_acao">
+                            <div class="btn_acao"><div class="carrega"></div>
                             <button id="btn-atualizar-end" class="btn btn-primary btn-lg btn-block acaoBtn acaoBtnAtualizar"><span>Atualizar</span></button>
                             </div>
                     </form>

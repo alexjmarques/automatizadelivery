@@ -31,8 +31,9 @@
                         </div>
                         </div>
                         </div>
+                        <div class="btn_acao"><div class="carrega"></div>
                             <button id="btn-atualizar-end" class="btn btn-primary btn-lg btn-block acaoBtn acaoBtnCadastro"><span>Alterar</span></button>
-                            
+                        </div>
                     </form>
                 </div>
             </div>
