@@ -15292,3 +15292,18 @@ h6.d-inline {
 .text-cian {
     color: rgb(138, 136, 136) !important;
 }
+
+.enderecoCampo{
+    position: relative;
+}
+.enderecoCampo input{
+    height: 60px !important;
+    padding-left: 30px;
+}
+.enderecoCampo svg{
+    position: absolute;
+    top: 15px;
+    left: 8px;
+    width: auto;
+    margin: 0;
+}

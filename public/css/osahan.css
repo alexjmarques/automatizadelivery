@@ -1744,6 +1744,12 @@ footer {
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) {
+    .col-md-4.py-2{
+        width: 40%;
+    }
+    .col-md-8.py-2{
+        width: 60%;
+    }
     .dropdown-menu {
         display: none;
     }
@@ -3103,4 +3109,42 @@ a.gold:hover {
     background: #f1efef;
     border-radius: 15px;
     padding-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .col-md-4.p-1{
+        float: left;
+        width: 40% !important;
+    }
+    .col-md-8.py-2{
+        float: left;
+        width: 60% !important;
+    }
+    .col-md-5.col-6,
+    .col-md-7.col-6{
+        text-align: center;
+        width: 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .big-table.combo{
+        text-align: center;
+    }
+    .big-table.combo .label-line-table{
+        padding: 10px 0;
+    }
+    .col-sm-6.float-left.parallax-content{
+        display: none;
+    }
+    .col-md-2.col-6.col-sm-4{
+        width: 100%;
+        text-align: center;
+        max-width: 100%;
+        flex: 0 0 100%;
+        padding: 25px 0;
+    }
+    .big-table.combo .box-check,
+    .big-table.combo .table-header{
+        display: none !important;
+    }
 }

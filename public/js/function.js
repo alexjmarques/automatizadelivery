@@ -54,7 +54,7 @@ $('.select2-single').select2();
 $(".selectMes").select2({
     minimumResultsForSearch: -1
 });
-$('#telefone').mask('(00) 00000-0000');
+$('#telefone, #telefoneVeri').mask('(00) 00000-0000');
 $('#cpf').mask('000.000.000-00', {
     reverse: true
 });
@@ -70,55 +70,7 @@ $("#emailOurTel").on('blur touchleave touchcancel', function () {
         $(this).mask('(00) 00000-0000');
     } else {}
 });
-$("#rua").on('blur touchleave touchcancel', function () {
-    var estado = $('#estadoPrinc').val();
-    var cidade = $('#cidadePrinc').val();
-    var rua = $(this).val();
-    if (rua != "") {
-        $.getJSON(`https://maps.google.com/maps/api/geocode/json?address=${rua},${cidade}-${estado}/&key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc`, function (dados) {
-            console.log(dados);
-            if (dados.status === "OK") {
-                $("#endOK").show();
-                $('.btnValida').attr("disabled", true);
-                $("#endPrint").text(dados.results[0].formatted_address);
 
-                if (dados.results[0].address_components[0].types[0] === "street_number") {
-                    $("#rua").val(dados.results[0].address_components[1].long_name);
-                    $("#bairro").val(dados.results[0].address_components[2].long_name);
-                    $("#cidade").val(dados.results[0].address_components[3].long_name);
-                    $(`#estado option:contains(${dados.results[0].address_components[4].short_name})`).attr('selected', true);
-                    $("#cep").val(dados.results[0].address_components[6].long_name);
-                } else {
-                    $("#rua").val(dados.results[0].address_components[0].long_name);
-                    $("#bairro").val(dados.results[0].address_components[1].long_name);
-                    $("#cidade").val(dados.results[0].address_components[2].long_name);
-                    $(`#estado option:contains(${dados.results[0].address_components[3].short_name})`).attr('selected', true);
-                    $("#cep").val(dados.results[0].address_components[5].long_name);
-                }
-
-                $("#numero").on('blur touchleave touchcancel', function () {
-                    $("#numeroPrint").text($(this).val());
-                });
-
-                $("#complemento").on('blur touchleave touchcancel', function () {
-                    $("#complementoPrint").text($(this).val());
-                    $('.btnValida').attr("disabled", false);
-                });
-
-                if (dados.results[0].geometry.location_type === "APPROXIMATE") {
-                    $("#alertGeralSite").modal("show");
-                    $(".errorSup").show();
-                    $("#mensagem").text("O Endereço informado é APROXIMADO, verifique se confere com sua localização antes de prosseguir!");
-                }
-            } else {
-                $("#alertGeralSite").modal("show");
-                $(".errorSup").show();
-                $("#mensagem").text("O Endereço informado não foi encontrado, verifique se digitou corretamente e tente novamente!");
-            }
-        });
-
-    }
-});
 
 $(".avaliacao_motoboy, .avaliacao_pedido").starRating({
     totalStars: 5,
@@ -312,7 +264,7 @@ $('#add_itenSabores input[type=radio]').on('change', function (e) {
 });
 
 //Produto Adicional
-$('input[type=checkbox]').on('change', function (e1) {
+$('.mdc-card input[type=checkbox]').on('change', function (e1) {
     //loadTeachers($(e1.target).val());
     //console.log(e1);
     let tipoSlug = $(this).attr('data-tiposlug')
@@ -853,6 +805,17 @@ $("#form").submit(function (e) {
                             });
                         }
                         break;
+                    case 'Seu cadastro foi realizado com sucesso':
+                        $('#mensagem').html(dd.mensagem);
+                        $('.successSup').show();
+                        $('.errorSup').hide();
+                        $('#alertGeralSite').modal("show");
+                        if (dd.url) {
+                            $(".buttonAlert").on('click', function () {
+                                window.location = `/${link_site}/`;
+                            });
+                        }
+                        break;
                     case 'Primeiro endereço cadastrado com Sucesso!':
                         $('#mensagem').html('Pronto! Agora que tenho suas informações de entrega revise os itens de seu carrinho, adicione ou remova itens para finalizar seu pedido');
                         $('.successSup').show();
@@ -864,10 +827,10 @@ $("#form").submit(function (e) {
                             });
                         }
                         break;
-                        case 'OK Vai para os carrinho':
-                            window.location = `/${link_site}/${dd.url}`;
-                            break;
-                        
+                    case 'OK Vai para os carrinho':
+                        window.location = `/${link_site}/${dd.url}`;
+                        break;
+
                     case 'Enviamos em seu celular um código para validar seu acesso!':
                         $('#mensagem').html(dd.mensagem);
                         $('.successSup').show();
@@ -1393,4 +1356,77 @@ function produtoModalView(id_produto) {
             $('#productTitle').html(dd.titulo)
         },
     })
+}
+
+$("#telefoneVeri").on('blur touchleave touchcancel', function () {
+    let telefone = $(this).val();
+    $.ajax({
+        url: `/${link_site}/verifica/telefone`,
+        method: "post",
+        data: {
+            telefone
+        },
+        dataType: "html",
+        success: function (dd) {
+            console.log(dd)
+            if (parseInt(dd) === 1) {
+                $('#ValidaCode').modal("hide");
+                $('#mensagem').html("Telefone já cadastrado! Faça o login ou tente outro número");
+                $('.successSup').hide();
+                $('.errorSup').show();
+                $('#alertGeralSite').modal("show");
+            }
+        },
+    })
+})
+
+let autocomplete;
+let address1Field;
+
+function initAutocomplete() {
+    address1Field = document.querySelector("#ship-address");
+    autocomplete = new google.maps.places.Autocomplete(address1Field, {
+        componentRestrictions: {
+            country: ["br", "br"]
+        },
+        fields: ["address_components", "geometry"],
+        types: ["address"],
+    });
+    address1Field.focus();
+    autocomplete.addListener("place_changed", fillInAddress);
+}
+
+function fillInAddress() {
+    const place = autocomplete.getPlace();
+
+    for (const component of place.address_components) {
+        const componentType = component.types[0];
+        switch (componentType) {
+            case "street_number": {
+                $("#numero").val(component.long_name);
+                break;
+            }
+            case "route": {
+                $("#rua").val(component.long_name);
+                break;
+            }
+            case "postal_code": {
+                $("#cep").val(component.long_name);
+                break;
+            }
+            case "administrative_area_level_2": {
+                $("#cidade").val(component.long_name);
+                break;
+            }
+            case "administrative_area_level_1": {
+                $("#estado").val(component.short_name);
+                break;
+            }
+            case "sublocality_level_1":
+                $("#bairro").val(component.short_name);
+                break;
+        }
+    }
+    //address1Field.value = address1Field;
+    //address2Field.focus();
 }

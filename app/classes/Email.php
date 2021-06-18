@@ -27,7 +27,7 @@ class Email
             $this->mail->isSMTP();
             $this->mail->Host = 'smtp.gmail.com';
             $this->mail->SMTPAuth = true;
-            $this->mail->Username = 'oi@automatiza.app';
+            $this->mail->Username = 'oi@automatizadelivery.com';
             $this->mail->Password = '1@ut98l1znapp0xl';
             $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mail->Port = 587;
@@ -104,7 +104,7 @@ class Email
             $this->mail->isSMTP();
             $this->mail->Host = 'smtp.gmail.com';
             $this->mail->SMTPAuth = true;
-            $this->mail->Username = 'oi@automatiza.app';
+            $this->mail->Username = 'oi@automatizadelivery.com';
             $this->mail->Password = '1@ut98l1znapp0xl';
             $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mail->Port = 587;
@@ -172,12 +172,12 @@ class Email
             $this->mail->isSMTP();
             $this->mail->Host = 'smtp.gmail.com';
             $this->mail->SMTPAuth = true;
-            $this->mail->Username = 'oi@automatiza.app';
+            $this->mail->Username = 'oi@automatizadelivery.com';
             $this->mail->Password = '1@ut98l1znapp0xl';
             $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mail->Port = 587;
             $this->mail->setFrom('contato@automatizadelivery.com.br', utf8_decode('Automatiza Delivery'));
-            $this->mail->addAddress('alex@automatiza.app', 'Alex Marques');
+            $this->mail->addAddress('atendimento@automatizadelivery.com', 'Atendimento');
 
             $this->mail->isHTML(true);
             $this->mail->Subject = utf8_decode('Contato Site Delivery');
@@ -237,7 +237,7 @@ class Email
             $this->mail->isSMTP();
             $this->mail->Host = 'smtp.gmail.com';
             $this->mail->SMTPAuth = true;
-            $this->mail->Username = 'oi@automatiza.app';
+            $this->mail->Username = 'oi@automatizadelivery.com';
             $this->mail->Password = '1@ut98l1znapp0xl';
             $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mail->Port = 587;

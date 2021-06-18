@@ -25,7 +25,7 @@
         {% endif %}
         {% if isLogin == 0 or isLogin is empty %}
         <div class="btn_henv">
-          <a href="{{BASE}}{{empresa.link_site}}/login" class="new__button"><i class="feather-user"></i> Meus Pedidos</a>
+          <a href="{{BASE}}{{empresa.link_site}}/login" class="new__button"><i class="feather-user"></i> Login/Cadastro</a>
         </div>
         {% endif %}
       </div>

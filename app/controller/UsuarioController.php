@@ -18,6 +18,7 @@ use app\Models\Usuarios;
 use app\Models\Empresa;
 use app\classes\SMS;
 use app\Models\UsuariosEmpresa;
+use app\Models\UsuariosEnderecos;
 use Bcrypt\Bcrypt;
 use Mobile_Detect;
 
@@ -688,6 +689,97 @@ class UsuarioController extends Controller
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Senha atualizada com sucesso', 'error' => 'Não foi posível atualizar sua senha', 'url' => 'admin/login',]);
+        exit($json);
+    }
+
+
+
+
+    public function cadastro($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        }
+        $this->load('login/cadastro', [
+            'empresa' => $empresa,
+            'enderecoAtivo' => $enderecoAtivo,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'detect' => new Mobile_Detect()
+        ]);
+    }
+    
+    public function verificaCadastro($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
+        if ($getTelefone) {
+            $clienteEmpresa = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $getTelefone->id, 'id_empresa', $empresa->id);
+            if($clienteEmpresa){
+                echo 1;
+            }else{
+                echo 0;
+            }
+        }else{
+            echo 0;
+        }
+    }
+
+    public function cadastroInsert($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefoneVeri']));
+        
+        if ($getTelefone) {            
+            $valorEmp = new UsuariosEmpresa();
+            $valorEmp->id_usuario = $getTelefone->id;
+            $valorEmp->id_empresa = $empresa->id;
+            $valorEmp->nivel = $getTelefone->nivel;
+            $valorEmp->save();
+        } else {
+            $getSenha = preg_replace('/[^0-9]/', '', $data['telefoneVeri']);
+            $senha = $this->bcrypt->encrypt($getSenha, '2a');
+            
+            $hash =  md5(uniqid(rand(), true));
+            $email = $hash . 'ath@automatizadelivery.com.br';
+            
+            $valor = new Usuarios();
+            $valor->nome = $data['nome'];
+            $valor->email = $email;
+            $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefoneVeri']);
+            $valor->senha = $senha;
+            $valor->nivel = 3;
+            $valor->save();
+            print_r($valor);
+
+            $valorEnd = new UsuariosEnderecos();
+            $valorEnd->id_usuario = $valor->id;
+            $valorEnd->nome_endereco = "Padrão";
+            $valorEnd->rua = $data['rua'];
+            $valorEnd->numero = $data['numero'];
+            $valorEnd->complemento = $data['complemento'];
+            $valorEnd->bairro = $data['bairro'];
+            $valorEnd->cidade = $data['cidade'];
+            $valorEnd->estado = $data['estado'];
+            $valorEnd->cep = $data['cep'];
+            $valorEnd->principal = 1;
+            $valorEnd->save();
+            print_r($valorEnd);
+
+            $valoEmp = new UsuariosEmpresa();
+            $valoEmp->id_usuario = $valor->id;
+            $valoEmp->id_empresa = $empresa->id;
+            $valoEmp->nivel = 3;
+            $valoEmp->save();
+            
+            print_r($valoEmp);
+        }
+        dd($valorEmp->id);
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valoEmp->id, 'resp' => 'insert', 'mensagem' => 'Seu cadastro foi realizado com sucesso', 'url' => '/']);
         exit($json);
     }
 }

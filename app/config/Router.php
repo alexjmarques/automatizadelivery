@@ -94,9 +94,12 @@ $router->post('/{linkSite}/recuperar-senha/recuperar', 'UsuarioController:senhaP
 $router->get('/{linkSite}/recuperar/98e4011142eeb9842091bf4812f81656a7d80eac/{id}', 'UsuarioController:novaSenhaPerdida');
 $router->post('/{linkSite}/recuperar/senha/i', 'UsuarioController:insertRecuperacaoSenha');
 $router->get('/{linkSite}/cadastro', 'UsuarioController:cadastro');
+$router->post('/{linkSite}/verifica/telefone', 'UsuarioController:verificaCadastro');
+$router->post('/{linkSite}/cadastro/novo', 'UsuarioController:cadastroInsert');
+
 $router->get('/{linkSite}/cadastro/motoboy', 'UsuarioController:cadastroMotoca');
 $router->get('/{linkSite}/cadastro/atendente', 'UsuarioController:cadastroAtendente');
-$router->post('/{linkSite}/cadastro/novo', 'UsuarioController:insert');
+
 $router->get('/{linkSite}/cadastro/finaliza', 'UsuarioController:cadastroSocial');
 $router->post('/{linkSite}/cadastro/finaliza/social', 'UsuarioController:insertSocial');
 

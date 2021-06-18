@@ -3,7 +3,7 @@
 {% block body %}
 {% block head %}
 {% endblock %}
-{# {% if detect.isMobile() %} #}
+{% if detect.isMobile() %}
 {% include 'partials/headerPrincipal.twig.php' %}
 <div id="listarUltimaVenda"></div>
 <div class="osahan-home-page">
@@ -16,12 +16,12 @@
 {% if delivery.status == 0 %}
 <div class="StatusRest ">ESTAMOS FECHADOS NO MOMENTO</div>
 {% endif %}
-{# {% if isLogin is not empty %}
-{% if isLogin != 0 %} #}
+{% if isLogin is not empty %}
+{% if isLogin != 0 %}
 {% include 'partials/footer.twig.php' %}
-{# {% endif %} #}
-{# {% endif %} #}
-{# {% else %}
+{% endif %}
+{% endif %}
+{% else %}
 
 
 <!-- Sidebar -->
