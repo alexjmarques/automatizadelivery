@@ -134,18 +134,14 @@ $("#form, #formIfood, #formCliente").submit(function () {
     type: 'POST',
     data: formData,
     beforeSend: function () {
-      $(".acaoBtn, .acaoPlano").prop("disabled", true);
-      $('.acaoBtn, .acaoBtnLogin, .acaoPlano').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      $(".btn_acao a, .btn_acao button").hide();
+      $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
     },
     complete: function () {
-      $(".acaoBtn, .acaoPlano").prop("disabled", false);
-      $('.acaoBtnCadastro').html('Cadastrar');
-      $('.acaoBtnAtualizar').html('Atualizar');
-      $('.acaoPlano').html('<i class="fa fa-lock"></i> Pagar');
-      $('.acaoBtnAutorizar').html('Autorizar');
-      $('.acaoBtnLogin').html('Login');
+      $(".btn_acao a, .btn_acao button").show();
     },
     success: function (data) {
+      $(".btn_acao a, .btn_acao button").show();
       console.log(data)
       if (data.id > 0) {
         switch (data.mensagem) {
@@ -252,16 +248,14 @@ $("#formMk").submit(function () {
     type: 'POST',
     data: formData,
     beforeSend: function () {
-      $(".acaoBtn").prop("disabled", true);
-      $('.acaoBtn, .acaoBtnLogin').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      $(".btn_acao a, .btn_acao button").hide();
+      $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
     },
     complete: function () {
-      $(".acaoBtn").prop("disabled", false);
-      $('.acaoBtnCadastro').html('Cadastrar');
-      $('.acaoBtnAtualizar').html('Atualizar');
-      $('.acaoBtnLogin').html('Login');
+      $(".btn_acao a, .btn_acao button").show();
     },
     success: function (data) {
+      $(".btn_acao a, .btn_acao button").show();
       console.log(data)
       switch (data) {
         case 'Não foi possível Cadastar os dados do iFood':
@@ -306,14 +300,14 @@ $("#formAtendimento").submit(function () {
     type: 'POST',
     data: formData,
     beforeSend: function () {
-      $(".btn-continuar").prop("disabled", true);
-      $('.btn-continuar').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      $(".btn_acao a, .btn_acao button").hide();
+      $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
     },
     complete: function () {
-      $(".btn-continuar").prop("disabled", false);
-      $('.btn-continuar').html('Iniciar Atendimento');
+      $(".btn_acao a, .btn_acao button").show();
     },
     success: function (data) {
+      $(".btn_acao a, .btn_acao button").show();
       console.log(data)
       switch (data.mensagem) {
         case 'Atendimento iniciado com sucesso':
@@ -386,7 +380,6 @@ $("#formBusca").submit(function () {
           $('.carregar').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         },
         complete: function (data) {
-          //console.log(data)
           $('.carregar').html('');
         },
         success: function (data) {
@@ -582,15 +575,15 @@ function mudarStatus(id, status, id_caixa) {
     data: valores,
     dataType: "text",
     beforeSend: function () {
-      $(".acaoBtn").prop("disabled", true);
-      $('#btn-carrinho').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+      $(".btn_acao a, .btn_acao button").hide();
+      $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
     },
     complete: function () {
-      $(".acaoBtn").prop("disabled", false);
+      $(".btn_acao a, .btn_acao button").show();
       $('#btn-carrinho').html('Pedido entregue <i class="simple-icon-arrow-right"></i>');
     },
     success: function (dd) {
-      console.log(dd)
+      $(".btn_acao a, .btn_acao button").show();
       if (dd == 'Status alterado com sucesso') {
         atualizar();
         $('#close-modal').trigger('click');
@@ -631,14 +624,15 @@ function mudarStatusEntrega(id, status, id_caixa) {
       data: valores,
       dataType: "text",
       beforeSend: function () {
-        $(".acaoBtn").prop("disabled", true);
-        $('#btn-carrinho').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+        $(".btn_acao a, .btn_acao button").hide();
+        $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
       },
       complete: function () {
-        $(".acaoBtn").prop("disabled", false);
+        $(".btn_acao a, .btn_acao button").show();
         $('#btn-carrinho').html('Pedido entregue <i class="simple-icon-arrow-right"></i>');
       },
       success: function (dd) {
+        $(".btn_acao a, .btn_acao button").show();
         if (dd == 'Status alterado com sucesso') {
           atualizar();
           $('#close-modal').trigger('click');
@@ -864,14 +858,14 @@ $(document).ready(function () {
             image: base64data
           },
           beforeSend: function () {
-            $("#crop").prop("disabled", true);
-            $('#crop').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+            $(".btn_acao a, .btn_acao button").hide();
+            $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
           },
           complete: function () {
-            $("#crop").prop("disabled", false);
-            $('#crop').html('Cortar Imagem');
+            $(".btn_acao a, .btn_acao button").show();
           },
           success: function (data) {
+            $(".btn_acao a, .btn_acao button").show();
             console.log(data)
             $modal.modal('hide');
             $('#uploaded_image').attr('src', `/uploads/${data}`);
@@ -1453,14 +1447,14 @@ $("#formFinish").submit(function () {
       type: 'POST',
       data: formData,
       beforeSend: function () {
-        $(".btnValida").prop("disabled", true);
-        $('.btnValida').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
+        $(".btn_acao a, .btn_acao button").hide();
+        $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
       },
       complete: function () {
-        $(".btnValida").prop("disabled", false);
-        $('.btnValida').html('FINALIZAR PEDIDO');
+        $(".btn_acao a, .btn_acao button").show();
       },
       success: function (dd) {
+        $(".btn_acao a, .btn_acao button").show();
         console.log(dd);
         switch (dd.mensagem) {
           case 'Pedido finalizado com sucesso':

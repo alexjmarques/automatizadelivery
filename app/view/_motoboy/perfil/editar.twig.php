@@ -94,8 +94,9 @@
                             <input type="hidden" id="id" name="id" value="{{enderecoAtivo.id}}">
                             <input type="hidden" id="id_usuario" name="id_usuario" value="{{enderecoAtivo.id_usuario}}">
                             <input type="hidden" id="email" name="email" value="{{enderecoAtivo.email}}">
+                            <div class="btn_acao">
                             <button id="btn-atualizar-end" class="btn btn-primary btn-lg btn-block acaoBtn acaoBtnCadastro"><span>Atualizar</span></button>
-                            
+                            </div>
                     </form>
                 </div>
             </div>

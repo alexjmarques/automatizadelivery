@@ -234,7 +234,7 @@ class UsuarioController extends Controller
             
             if ($this->sessao->getUser()) {
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os pedidos', 'url' => 'meus-pedidos']);
+                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os pedidos', 'url' => '']);
                 exit($json);
             }
         }
@@ -693,8 +693,6 @@ class UsuarioController extends Controller
     }
 
 
-
-
     public function cadastro($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
@@ -739,6 +737,12 @@ class UsuarioController extends Controller
             $valorEmp->id_empresa = $empresa->id;
             $valorEmp->nivel = $getTelefone->nivel;
             $valorEmp->save();
+
+            $this->sessao->add($valorEmp->id, $valorEmp->email, $valorEmp->nivel);
+
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => $valorEmp->id, 'resp' => 'insert', 'mensagem' => 'Seu cadastro foi realizado com sucesso', 'url' => '/']);
+            exit($json);
         } else {
             $getSenha = preg_replace('/[^0-9]/', '', $data['telefoneVeri']);
             $senha = $this->bcrypt->encrypt($getSenha, '2a');
@@ -753,7 +757,7 @@ class UsuarioController extends Controller
             $valor->senha = $senha;
             $valor->nivel = 3;
             $valor->save();
-            print_r($valor);
+            //print_r($valor);
 
             $valorEnd = new UsuariosEnderecos();
             $valorEnd->id_usuario = $valor->id;
@@ -767,19 +771,20 @@ class UsuarioController extends Controller
             $valorEnd->cep = $data['cep'];
             $valorEnd->principal = 1;
             $valorEnd->save();
-            print_r($valorEnd);
+            //print_r($valorEnd);
 
             $valoEmp = new UsuariosEmpresa();
             $valoEmp->id_usuario = $valor->id;
             $valoEmp->id_empresa = $empresa->id;
             $valoEmp->nivel = 3;
             $valoEmp->save();
+
+            $this->sessao->add($valor->id, $valor->email, $valor->nivel);
             
-            print_r($valoEmp);
+            //print_r($valoEmp);
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => $valoEmp->id, 'resp' => 'insert', 'mensagem' => 'Seu cadastro foi realizado com sucesso', 'url' => '/']);
+            exit($json);
         }
-        dd($valorEmp->id);
-        header('Content-Type: application/json');
-        $json = json_encode(['id' => $valoEmp->id, 'resp' => 'insert', 'mensagem' => 'Seu cadastro foi realizado com sucesso', 'url' => '/']);
-        exit($json);
     }
 }

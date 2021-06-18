@@ -34,8 +34,9 @@
         <label for="exampleFormControlTextarea1" class="small font-weight-bold">COMO PODEMOS TE AJUDAR?</label>
         <textarea class="form-control" id="mensagem" name="mensagem" rows="4"></textarea>
         </div>
+        <div class="btn_acao">
             <button id="btn-atualizar-end" class="btn btn-primary btn-lg btn-block acaoBtn acaoBtnEnviar"><span>Enviar</span></button>
-            
+        </div>
         </form>
     </div>
 
@@ -88,8 +89,9 @@
                                 <label for="exampleFormControlTextarea1" class="small font-weight-bold">COMO PODEMOS TE AJUDAR?</label>
                                 <textarea class="form-control" id="mensagem" name="mensagem" rows="4"></textarea>
                                 </div>
+                                <div class="btn_acao">
                                     <button id="btn-atualizar-end" class="btn btn-primary btn-lg btn-block acaoBtn acaoBtnEnviar"><span>Enviar</span></button>
-                                    
+                                </div>
                                 </form>
                             </div>
                                 </div>

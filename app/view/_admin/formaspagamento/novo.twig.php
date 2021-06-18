@@ -36,7 +36,9 @@
                                     </div>
                                 </div>
                                 <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
-<button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+<div class="btn_acao">
+                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+                </div>
                             
                         </div>
                     </div>

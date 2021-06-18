@@ -187,7 +187,9 @@
         <input type="hidden" id="id_endresa" name="id_endresa" value="{{empresa.id}}">
         <input type="hidden" name="logoUpdate" id="logoUpdate" value="{{empresa.logo}}">
         <input type="hidden" name="capaUpdate" id="capaUpdate" value="{{empresa.capa}}">
-        <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+        <div class="btn_acao">
+                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+                </div>
       </div>
     </div>
   </form>

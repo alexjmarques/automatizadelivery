@@ -711,17 +711,14 @@ function mudarEndereco(id) {
         type: 'POST',
         data: id,
         beforeSend: function () {
-            $(".acaoBtn").prop("disabled", true);
-            $('.acaoBtn').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-        },
-        complete: function () {
-            $(".acaoBtn").prop("disabled", false);
-            $('.acaoBtn').html('LOGIN');
-            $('.acaoBtnCadastro').html('CADASTRAR');
-            $('.acaoBtnEnviar').html('ENVIAR');
-            $('.acaoBtnAtualizar').html('ATUALIZAR');
-        },
-        success: function (data) {
+            $(".btn_acao a, .btn_acao button").hide();
+            $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
+          },
+          complete: function () {
+            $(".btn_acao a, .btn_acao button").show();
+          },
+          success: function (data) {
+            $(".btn_acao a, .btn_acao button").show();
             //console.log(data)
             switch (data.mensagem) {
                 case 'Endereço definido como principal':
@@ -758,20 +755,14 @@ $("#form").submit(function (e) {
         type: 'POST',
         data: formData,
         beforeSend: function () {
-            $(".acaoBtn, .btnFinalizaCadastro, .addStyle").prop("disabled", true);
-            $('.acaoBtn, .btnFinalizaCadastro, .addStyle').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-        },
-        complete: function () {
-            $(".acaoBtn, .btnFinalizaCadastro").prop("disabled", false);
-            $('.acaoBtn').html('LOGIN');
-            $('.addStyle').hide();
-            $('.acaoBtnCadastro').html('CADASTRAR');
-            $('.acaoBtnEnviar').html('ENVIAR');
-            $('.acaoBtnAtualizar').html('ATUALIZAR');
-            $('.btnFinalizaCadastro').html('Finaliza Cadastro');
-
-        },
-        success: function (dd) {
+            $(".btn_acao a, .btn_acao button").hide();
+            $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
+          },
+          complete: function () {
+            $(".btn_acao a, .btn_acao button").show();
+          },
+          success: function (dd) {
+            $(".btn_acao a, .btn_acao button").show();
             console.log(dd);
             if (dd.id > 0) {
                 console.log(dd.mensagem);
@@ -902,14 +893,14 @@ $("#formFinish").submit(function () {
             type: 'POST',
             data: formData,
             beforeSend: function () {
-                $(".btnValida").prop("disabled", true);
-                $('.btnValida').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-            },
-            complete: function () {
-                $(".btnValida").prop("disabled", false);
-                $('.btnValida').html('FINALIZAR PEDIDO');
-            },
-            success: function (data) {
+                $(".btn_acao a, .btn_acao button").hide();
+                $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
+              },
+              complete: function () {
+                $(".btn_acao a, .btn_acao button").show();
+              },
+              success: function (data) {
+                $(".btn_acao a, .btn_acao button").show();
                 console.log(data);
                 if (data.id > 0) {
                     $('#mensagem').html(data.mensagem);
@@ -1272,14 +1263,14 @@ $("#btnValidarCode").on('click', function () {
         data: valores,
         dataType: "text",
         beforeSend: function () {
-            $(".btnValidarCode").prop("disabled", true);
-            $('.btnValidarCode').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-        },
-        complete: function () {
-            $(".btnValidarCode").prop("disabled", false);
-            $('.btnValidarCode').html('VALIDAR');
-        },
-        success: function (dd) {
+            $(".btn_acao a, .btn_acao button").hide();
+            $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
+          },
+          complete: function () {
+            $(".btn_acao a, .btn_acao button").show();
+          },
+          success: function (dd) {
+            $(".btn_acao a, .btn_acao button").show();
             console.log(dd)
             switch (dd.mensagem) {
                 case 'OK Vai para o carrinho':
@@ -1288,7 +1279,7 @@ $("#btnValidarCode").on('click', function () {
                     break;
                 default:
                     $('#ValidaCode').modal("hide");
-                    $('#mensagem').html(data);
+                    $('#mensagem').html(dd.mensagem);
                     $('.successSup').hide();
                     $('.errorSup').show();
                     $('#alertGeralSite').modal("show");
@@ -1314,14 +1305,14 @@ $("#btnValidarCodeLogin").on('click', function () {
         data: valores,
         dataType: "text",
         beforeSend: function () {
-            $(".btnValidarCode").prop("disabled", true);
-            $('.btnValidarCode').html('<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-        },
-        complete: function () {
-            $(".btnValidarCode").prop("disabled", false);
-            $('.btnValidarCode').html('VALIDAR');
-        },
-        success: function (dd) {
+            $(".btn_acao a, .btn_acao button").hide();
+            $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
+          },
+          complete: function () {
+            $(".btn_acao a, .btn_acao button").show();
+          },
+          success: function (dd) {
+            $(".btn_acao a, .btn_acao button").show();
             console.log(dd)
             switch (dd.mensagem) {
                 case 'Aguarde estamos redirecionando para a pagina inicial':

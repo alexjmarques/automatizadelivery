@@ -35,7 +35,9 @@
                 </div>
             </div>
             <input type="hidden" id="id" name="id" value="{{retorno.id}}">
-            <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+            <div class="btn_acao">
+                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+                </div>
         </div>
     </div>
 </form>

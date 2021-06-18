@@ -83,9 +83,9 @@
                         <input type="hidden" id="estadoPrinc" name="estadoPrinc" value="{{ end.uf }}">
                         {% endif %}
                         {% endfor %}
-
-                        <button id="btn-atualizar-end"
-                            class="btn btn-primary btn-lg btn-block acaoBtn acaoBtnCadastro"><span>Cadastrar</span></button>
+                        <div class="btn_acao">
+                        <button id="btn-atualizar-end" class="btn btn-primary btn-lg btn-block acaoBtn acaoBtnCadastro"><span>Cadastrar</span></button>
+                        </div>
                     </form>
 
                 </div>

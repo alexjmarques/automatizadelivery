@@ -40,7 +40,9 @@
                 <input type="hidden" id="mensagemError" name="mensagemError" value="Não foi possível atualizado o cliente no sistema!">
                 <input type="hidden" id="url" name="url" value="admin/clientes">
                 <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
+                <div class="btn_acao">
                 <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+                </div>
         </div>
     </div>
 </form>

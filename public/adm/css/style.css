@@ -581,3 +581,9 @@ nav.pagin .pagin_item {
 .select_sabores .selection{
     width: 100%;
 }
+.btn_acao{
+    text-align: center;
+    background-color: rgb(236, 236, 236);
+    padding: 5px;
+    border-radius: 10px;
+}

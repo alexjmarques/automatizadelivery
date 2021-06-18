@@ -29,7 +29,9 @@
                                   </div> 
                                 </div>
                                 <input type="hidden"class="form-control" id="slug" name="slug" value="">
-                            <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+                            <div class="btn_acao">
+                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+                </div>
                             
                         </div>
                     </div>

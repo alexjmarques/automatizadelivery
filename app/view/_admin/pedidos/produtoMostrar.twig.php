@@ -398,14 +398,14 @@ $("#form").submit(function () {
     type: 'POST',
     data: formData,
     beforeSend: function () {
-      $(".addStyle").prop("disabled", true);
-      $('.addStyle').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-    },
-    complete: function () {
-      $(".addStyle").prop("disabled", false);
-      $('.addStyle').html('Adicionar ao pedido');
-    },
-    success: function (data) {
+        $(".btn_acao a, .btn_acao button").hide();
+        $('.btn_acao').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
+      },
+      complete: function () {
+        $(".btn_acao a, .btn_acao button").show();
+      },
+      success: function (data) {
+        $(".btn_acao a, .btn_acao button").show();
       console.log(data)
       if (data.id > 0) {
         $('#modProdutoCarrinho').removeClass("hide");

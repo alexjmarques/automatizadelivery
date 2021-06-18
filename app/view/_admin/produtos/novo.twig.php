@@ -181,7 +181,9 @@
                             <input type="hidden" id="imagemNome" name="imagemNome" value="">
                             <input type="hidden" id="vendas" name="vendas" value="0">
                             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">     
-                            <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+                            <div class="btn_acao">
+                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+                </div>
                         </div>
                     </div>
                 </form>
