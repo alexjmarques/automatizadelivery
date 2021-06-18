@@ -42,7 +42,9 @@
                 </label>
             </div>
             <input type="hidden" id="nivel" name="nivel" value="3">
+            <div class="btn_acao"><div class="carrega"></div>
             <button class="btn btn-primary btn-lg btn-block acaoBtnCadastro">CADASTRAR</button>
+            </div>
         </form>
     </div>
 

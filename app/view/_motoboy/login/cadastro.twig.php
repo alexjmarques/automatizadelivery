@@ -31,9 +31,10 @@
             </div>
             <input type="hidden" placeholder="Email" class="form-control" id="email" name="email" value="">
             <input type="hidden" id="nivel" name="nivel" value="1">
-
-            <button class="btn btn-primary btn-lg btn-block acaoBtn">CADASTRAR</button>
-
+            <div class="btn_acao">
+                <div class="carrega"></div>
+                <button class="btn btn-primary btn-lg btn-block acaoBtn">CADASTRAR</button>
+            </div>
         </form>
     </div>
 

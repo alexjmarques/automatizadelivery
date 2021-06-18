@@ -10,7 +10,9 @@
       <input type="hidden" id="id" name="id" value="{{usuario.id}}">
       </div>
       </div>
+      <div class="btn_acao"><div class="carrega"></div>
       <button id="btnValidarCode" class="btn btn-success btn-block btn-lg btnValidarCode">VALIDAR</button>
+      </div>
       </div>
     </div>
   </div>

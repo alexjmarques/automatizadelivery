@@ -115,8 +115,9 @@
                   {% else %}
                   Valor: <strong class="mt-3 size20">{{ moeda.simbolo }} {{ plano.valor }}</strong> (Mensal)
                   {% endif %}
-                  
+                  <div class="btn_acao"><div class="carrega"></div>
                   <button class="btn btn-info d-block mt-3 p-3 pl-4 pr-4 acaoBtn">Finalizar Pedido <i class="fa fa-chevron-circle-right"></i></button>
+                  </div>
                </div>
             </div>
          </div>
