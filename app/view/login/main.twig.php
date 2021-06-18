@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="login-page" style="">
-    <div class="p-5 osahan-home-page">
+    <div class="p-4 osahan-home-page">
         <h2 class="text-white my-0">Olá novamente</h2>
         <p class="text-white text-50">Valide seu acesso para continuar</p>
         <form class="mt-5 mb-4 pt-4" method="post" id="form" action="{{BASE}}{{empresa.link_site}}/valida/acesso">
