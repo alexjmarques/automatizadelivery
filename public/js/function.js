@@ -711,15 +711,15 @@ function mudarEndereco(id) {
         type: 'POST',
         data: id,
         beforeSend: function () {
-            $(".btn_acao a, .btn_acao button").hide();
+            $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
           },
           complete: function () {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
           },
           success: function (data) {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             //console.log(data)
             switch (data.mensagem) {
@@ -757,15 +757,15 @@ $("#form").submit(function (e) {
         type: 'POST',
         data: formData,
         beforeSend: function () {
-            $(".btn_acao a, .btn_acao button").hide();
+            $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
           },
           complete: function () {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
           },
           success: function (dd) {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             console.log(dd);
             if (dd.id > 0) {
@@ -897,15 +897,15 @@ $("#formFinish").submit(function () {
             type: 'POST',
             data: formData,
             beforeSend: function () {
-                $(".btn_acao a, .btn_acao button").hide();
+                $(".btn_acao a, .btn_acao button").addClass('hide');
                 $('.btn_acao .carrega').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
               },
               complete: function () {
-                $(".btn_acao a, .btn_acao button").show();
+                $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
               },
               success: function (data) {
-                $(".btn_acao a, .btn_acao button").show();
+                $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
                 console.log(data);
                 if (data.id > 0) {
@@ -1269,15 +1269,15 @@ $("#btnValidarCode").on('click', function () {
         data: valores,
         dataType: "text",
         beforeSend: function () {
-            $(".btn_acao a, .btn_acao button").hide();
+            $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
           },
           complete: function () {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
           },
           success: function (dd) {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             console.log(dd)
             switch (dd.mensagem) {
@@ -1313,15 +1313,15 @@ $("#btnValidarCodeLogin").on('click', function () {
         data: valores,
         dataType: "text",
         beforeSend: function () {
-            $(".btn_acao a, .btn_acao button").hide();
+            $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações! ');
           },
           complete: function () {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
           },
           success: function (dd) {
-            $(".btn_acao a, .btn_acao button").show();
+            $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             console.log(dd)
             switch (dd.mensagem) {

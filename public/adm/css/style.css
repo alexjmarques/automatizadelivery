@@ -584,3 +584,10 @@ nav.pagin .pagin_item {
 .btn_acao{
     text-align: center;
 }
+.btn_acao .carrega{
+    background-color: rgb(240, 240, 240);
+    padding: 10px 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+}
