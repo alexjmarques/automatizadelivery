@@ -1113,7 +1113,7 @@ $(document).ready(function () {
             }
             $.ajax({
                 url: `/${link_site}/u/l/val`,
-                method: "post",
+                method: "POST",
                 data: valores,
                 dataType: "text",
                 success: function (dd) {

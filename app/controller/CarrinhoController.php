@@ -240,7 +240,13 @@ class CarrinhoController extends Controller
 
     public function carrinho($data)
     {
+        $verificaEnd = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+
+        if(!$verificaEnd){
+            redirect(BASE . "{$empresa->link_site}/endereco/novo/cadastro");
+        }
+
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 

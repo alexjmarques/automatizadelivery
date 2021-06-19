@@ -139,6 +139,20 @@ class UsuarioController extends Controller
         exit($json);
     }
 
+    public function usuarioLogin($data)
+    {
+        if($data['u'] != $this->sessao->getUser()){
+            $this->sessao->sessaoNew('id_usuario', $data['u']);
+            $this->sessao->sessaoNew('nivel', $data['n']);
+        }
+        
+        header('Content-Type: application/json');
+        $json = json_encode(['user' => $this->sessao->getUser(), 'nivel' => $this->sessao->getNivel()]);
+        exit($json);
+    }
+
+    
+
     /**
      * Valida Acesso do usuario Admin
      *

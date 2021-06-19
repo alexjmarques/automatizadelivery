@@ -163,31 +163,22 @@ class PerfilController extends Controller
         ]);
     }
 
+    
+    
     public function novoEnderecoPrimeiro($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-
-            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-            $resulEstados = $this->acoes->getFind('estados');
-
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
-
-        $this->load('_cliente/perfil/primeiroEndereco', [
+        $this->load('login/endereco', [
             'empresa' => $empresa,
-            'usuarioAtivo' => $resulUsuario,
-            'carrinhoQtd' => $resultCarrinhoQtd,
-            'resulEnderecos' => $resulEnderecos,
-            'detect' => new Mobile_Detect(),
-            'estadosSelecao' => $resulEstados,
+            'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-
+            'detect' => new Mobile_Detect()
         ]);
     }
 
@@ -247,27 +238,11 @@ class PerfilController extends Controller
         ]);
     }
 
-    public function insertEndereco($data)
+    public function insertPrimeiroEndereco($data)
     {
-        $enderecos = $this->acoes->counts('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-        $resulEnderecos = $this->acoes->countsTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-        if ($resulEnderecos > 0) {
-            $endereco = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            $valor = (new UsuariosEnderecos())->findById($endereco->id);
-            $valor->principal = 0;
-            $valor->save();
-        }
-        if ($enderecos > 0) {
-            $nome_endereco =  $data['nome_endereco'];
-            $principal =  $data['principal'];
-        } else {
-            $nome_endereco =  'Principal';
-            $principal =  1;
-        }
-
         $novo = new UsuariosEnderecos();
         $novo->id_usuario = $this->sessao->getUser();
-        $novo->nome_endereco = $nome_endereco;
+        $novo->nome_endereco = "Principal";
         $novo->rua = $data['rua'];
         $novo->numero = $data['numero'];
         $novo->complemento = $data['complemento'];
@@ -275,17 +250,43 @@ class PerfilController extends Controller
         $novo->cidade = $data['cidade'];
         $novo->estado = $data['estado'];
         $novo->cep = $data['cep'];
-        $novo->principal = $principal;
+        $novo->principal = 1;
         $novo->save();
 
-        //dd($novo);
 
         header('Content-Type: application/json');
-        if ($enderecos > 0) {
-            $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar um novo endereço', 'url' => 'enderecos',]);
-        } else {
-            $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço', 'url' => 'carrinho',]);
+        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço', 'url' => 'carrinho',]);
+        exit($json);
+    }
+
+    public function insertEndereco($data)
+    {
+        if ($data['principal'] == 1) {
+            $resulEnderecos = $this->acoes->countsTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        
+            if ($resulEnderecos > 0) {
+                $endereco = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+                $valor = (new UsuariosEnderecos())->findById($endereco->id);
+                $valor->principal = 0;
+                $valor->save();
+            }
         }
+
+        $novo = new UsuariosEnderecos();
+        $novo->id_usuario = $this->sessao->getUser();
+        $novo->nome_endereco = $data['nome_endereco'];
+        $novo->rua = $data['rua'];
+        $novo->numero = $data['numero'];
+        $novo->complemento = $data['complemento'];
+        $novo->bairro = $data['bairro'];
+        $novo->cidade = $data['cidade'];
+        $novo->estado = $data['estado'];
+        $novo->cep = $data['cep'];
+        $novo->principal = $data['principal'];
+        $novo->save();
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar um novo endereço', 'url' => 'enderecos',]);
         exit($json);
     }
 

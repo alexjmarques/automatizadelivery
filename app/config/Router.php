@@ -162,11 +162,12 @@ $router->post('/{linkSite}/dados-cadastrais/u', 'PerfilController:updateDados');
 
 $router->get('/{linkSite}/enderecos', 'PerfilController:enderecos');
 $router->get('/{linkSite}/endereco/novo', 'PerfilController:novoEndereco');
+
 $router->get('/{linkSite}/endereco/novo/cadastro', 'PerfilController:novoEnderecoPrimeiro');
-$router->get('/{linkSite}/endereco/{id}/editar', 'PerfilController:editarEndereco');
-$router->post('/{linkSite}/endereco/principal/{id}', 'PerfilController:editarPrincipal');
 
 $router->post('/{linkSite}/endereco/i', 'PerfilController:insertEndereco');
+$router->post('/{linkSite}/endereco/pri/i', 'PerfilController:insertPrimeiroEndereco');
+
 $router->post('/{linkSite}/endereco/u', 'PerfilController:updateEndereco');
 $router->get('/{linkSite}/endereco/d/{id}', 'PerfilController:deletarEndereco');
 
