@@ -3114,6 +3114,10 @@ a.gold:hover {
     display: none;
  }
 @media (max-width: 768px) {
+    .newsletter-form .full-img{
+        width: 60%;
+        margin: 0 auto;
+    }
     .align-center{
         left: 0;
         margin-left: 0px;
