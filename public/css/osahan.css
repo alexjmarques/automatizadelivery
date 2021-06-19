@@ -3110,8 +3110,18 @@ a.gold:hover {
     border-radius: 15px;
     padding-bottom: 15px;
 }
-
+.col-sm-6.float-left.parallax-content .mobile{
+    display: none;
+ }
 @media (max-width: 768px) {
+    .align-center{
+        left: 0;
+        margin-left: 0px;
+        position: relative;
+    }
+    .section-header.text-left.white-text.position-absolute.text-white.p-4.mt-4.bg-green{
+        position: relative !important;
+    }
     .col-md-4.p-1{
         float: left;
         width: 40% !important;
@@ -3133,9 +3143,15 @@ a.gold:hover {
     .big-table.combo .label-line-table{
         padding: 10px 0;
     }
-    .col-sm-6.float-left.parallax-content{
-        display: none;
+    .col-sm-6.float-left.parallax-content img{
+        width: 100%;
     }
+    .col-sm-6.float-left.parallax-content .mobile{
+       display: block;
+    }
+    .col-sm-6.float-left.parallax-content .desk{
+        display: none;
+     }
     .col-md-2.col-6.col-sm-4{
         width: 100%;
         text-align: center;

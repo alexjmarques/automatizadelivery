@@ -481,14 +481,11 @@
          <p>Conheça mas da <a href="https://e-moving.com.br/" target="_blank">E-Moving Mobilidade Urbana</a></p>
          <img src="{{BASE}}img/logo-e-moving-escuro.svg" class="float-left mt-4 mb-4" alt="E-Moving Mobilidade Urbana" width="200px">
 <div class="clearfix"></div>
-         <a href="{{BASE}}mobilidade/nossos-planos" class="btn btn-success btn-lg mt-3 float-left">
-         <!-- <a href="https://api.whatsapp.com/send?phone=11980309212&text=Ol%C3%A1!%20Tenho%20Interesse%20no%20plano%20de%20mobilidade" class="btn btn-success btn-lg mt-3 float-left"> -->
-         
-               Quero Mobilidade <i class="fa fa-chevron-circle-right"></i>
-            </a>
+         <a href="{{BASE}}mobilidade/nossos-planos" class="btn btn-success btn-lg mt-3 float-left">Quero Mobilidade <i class="fa fa-chevron-circle-right"></i></a>
       </div>
       <div class="col-sm-6 float-left parallax-content">
-         <img src="{{BASE}}img/delivery2.jpg" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
+         <img src="{{BASE}}img/delivery2.jpg" class="desk" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
+         <img src="{{BASE}}img/delivery-bike.png" class="mobile" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
       </div>
       <!-- <div class="row">
          <div class="col-sm-12 text-center">
