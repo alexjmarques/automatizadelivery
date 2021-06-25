@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,8 +25,8 @@
   <title>{% block title %}{% endblock %}</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H85LB3TTM9"></script>
 
-{% if detect.isMobile() %}
-<link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
+  {% if detect.isMobile() %}
+    <link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -42,18 +41,12 @@
     <link href="{{BASE}}css/style.css" rel="stylesheet" type="text/css">
     <link href="{{BASE}}css/automatiza.css" rel="stylesheet" type="text/css">
   {% else %}
-  <!-- Bootstrap core CSS-->
-  <link href="{{BASE}}css/bootstrap.min.css" rel="stylesheet">
-      <!-- Font Awesome-->
-      <link href="{{BASE}}css/fontawesome/css/all.min.css" rel="stylesheet">
-      <!-- Font Awesome-->
-      <link href="{{BASE}}css/icofont/icofont.min.css" rel="stylesheet">
-      <!-- Select2 CSS-->
-      <link href="{{BASE}}css/select2.min.css" rel="stylesheet">
-      <!-- Custom styles for this template-->
-      <link href="{{BASE}}css/osahan.css" rel="stylesheet">
+    <link href="{{BASE}}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{BASE}}css/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="{{BASE}}css/icofont/icofont.min.css" rel="stylesheet">
+    <link href="{{BASE}}css/select2.min.css" rel="stylesheet">
+    <link href="{{BASE}}css/osahan.css" rel="stylesheet">
   {% endif %}
-
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
@@ -195,33 +188,32 @@
     <div></div>
   </div>
 {% else %}
-  <body id="page-top" data-link_site="{{empresa.link_site}}">
-    {% endif %}
-    {% block body %}{% endblock %}
+<body id="page-top" data-link_site="{{empresa.link_site}}">
+{% endif %}
+  {% block body %}{% endblock %}
 {% if detect.isMobile() %}
-    <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery-ui.js"></script>
-    <script src="{{BASE}}js/jquery.complexify.js"></script>
-    <script src="{{BASE}}js/bootstrap.bundle.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/slick.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery.star-rating-svg.js"></script>
-    <script src="{{BASE}}js/osahan.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/rocket-loader.min.js" defer=""></script>
-    <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
-    <script src="{{BASE}}js/function.js" type="text/javascript"></script>
- {% else %}
-    <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery-ui.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/bootstrap.bundle.min.js"></script>
-    <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
-    <script src="{{BASE}}js/owl-carousel/owl.carousel.js"></script>
-    <script src="{{BASE}}js/custom.js"></script>
-    {% endif %}
-  </body>
-
+  <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/jquery-ui.js"></script>
+  <script src="{{BASE}}js/jquery.complexify.js"></script>
+  <script src="{{BASE}}js/bootstrap.bundle.min.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/slick.min.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/jquery.star-rating-svg.js"></script>
+  <script src="{{BASE}}js/osahan.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/rocket-loader.min.js" defer=""></script>
+  <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
+  <script src="{{BASE}}js/function.js" type="text/javascript"></script>
+{% else %}
+  <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/jquery-ui.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/bootstrap.bundle.min.js"></script>
+  <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
+  <script src="{{BASE}}js/owl-carousel/owl.carousel.js"></script>
+  <script src="{{BASE}}js/custom.js"></script>
+{% endif %}
+</body>
 </html>

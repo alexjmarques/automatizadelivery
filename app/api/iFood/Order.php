@@ -3,15 +3,12 @@
 namespace app\api\iFood;
 
 use app\core\Controller;
-use app\Models\AdminMarketplacesModel;
 use HTTP_Request2;
 use HTTP_Request2_Exception;
 use app\classes\Cache;
 
 class Order extends Controller
 {
-
-    private $marketplace;
     private $client;
     private $cache;
     private $resulifood;
@@ -20,10 +17,8 @@ class Order extends Controller
      */
     public function __construct()
     {
-        $this->marketplace = new AdminMarketplacesModel();
         $this->cache = new Cache();
         $this->client = new HTTP_Request2();
-        $this->resulifood = $this->marketplace->getById(1);
     }
 
     /**

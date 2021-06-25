@@ -575,6 +575,13 @@ function mudarStatus(id, status, id_caixa) {
     id_empresa,
     id_motoboy
   }
+
+  if(parseInt(status) === 2){
+    $.getJSON(`/${link_site}/admin/pedido/imprimir/${id}`, function (dd) {
+      console.log('Imprimiu');
+    })
+  }
+
   $.ajax({
     url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${id_motoboy}`,
     method: "POST",

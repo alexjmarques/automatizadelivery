@@ -4,6 +4,7 @@ namespace app\controller;
 
 use app\classes\Input;
 use app\classes\Acoes;
+use app\classes\item;
 use app\classes\Cache;
 use app\core\Controller;
 use DElfimov\Translate\Loader\PhpFilesLoader;
@@ -19,6 +20,7 @@ use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\LinuxPrintConnector;
+use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
 use Exception;
 // use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 // use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
@@ -174,18 +176,18 @@ class AdminPedidos extends Controller
             }
             if ($resultPedidos) {
                 $this->load('_admin/pedidos/pedidoListaGeral', [
-                'planoAtivo' => $planoAtivo,
-                'empresa' => $empresa,
-                'trans' => $this->trans,
-                'usuarioLogado' => $usuarioLogado,
-                'isLogin' => $this->sessao->getUser(),
-                'nivelUsuario' => $this->sessao->getNivel(),
-                'caixa' => $estabelecimento[0]->data_inicio,
-                'caixaId' => $estabelecimento[0]->id,
-                'pedidos' => $resultPedidos,
-                'clientes' => $resultClientes,
-                'motoboy' => $resultMotoboy
-            ]);
+                    'planoAtivo' => $planoAtivo,
+                    'empresa' => $empresa,
+                    'trans' => $this->trans,
+                    'usuarioLogado' => $usuarioLogado,
+                    'isLogin' => $this->sessao->getUser(),
+                    'nivelUsuario' => $this->sessao->getNivel(),
+                    'caixa' => $estabelecimento[0]->data_inicio,
+                    'caixaId' => $estabelecimento[0]->id,
+                    'pedidos' => $resultPedidos,
+                    'clientes' => $resultClientes,
+                    'motoboy' => $resultMotoboy
+                ]);
             }
         } else {
             echo 0;
@@ -375,219 +377,289 @@ class AdminPedidos extends Controller
 
     public function pedidoTestImprimir($data)
     {
+
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', 9);
+        $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
+        $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $pedido->id_cliente);
+
+        $tipoPagamento = $this->acoes->getByField('formasPagamento', 'id', $pedido->tipo_pagamento);
+        $tipoFrete = $this->acoes->getByField('tipoDelivery', 'id', $pedido->tipo_frete);
+        $status = $this->acoes->getByField('status', 'id', $pedido->status);
+
+        $motoboys = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
+
+        $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'numero_pedido', $pedido->numero_pedido);
+        $clientePagamento = $this->acoes->getByFieldAll('carrinhoPedidoPagamento', 'numero_pedido', $pedido->numero_pedido);
+
+
+        if ($empresa->nf_paulista == 1) {
+            $nfPaulista = $this->acoes->getByFieldAll('carrinhoCPFNota', 'numero_pedido', $pedido->numero_pedido);
+        }
+        $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $carrinho = $this->acoes->getByFieldAll('carrinho', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $empresa->id);
+
+        $cupomVerifica = $this->acoes->counts('cupomDesconto', 'id_empresa', $empresa->id);
+        $cupomVerificaUtilizadores = $this->acoes->counts('cupomDescontoUtilizadores', 'id_empresa', $empresa->id);
+
+        if ($cupomVerifica > 0 && $cupomVerificaUtilizadores) {
+            $cupomUtilizado = $this->acoes->getByField('cupomDescontoUtilizadores', 'numero_pedido', $pedido->numero_pedido);
+            $cupomValida = $this->acoes->getByField('cupomDesconto', 'id_cupom', $cupomUtilizado->id);
+
+            if ((int)$cupomValida->tipo_cupom == 1) {
+                $valor = $pedido->total;
+                $porcentagem = floatval($cupomValida->valor_cupom);
+                $resul = $valor * ($porcentagem / 100);
+                $resultado = $resul;
+            } else {
+                $resultado = $cupomValida->valor_cupom;
+            }
+        }
+
+
+        $nf = $nfPaulista->cpf != "" ? "NOTA FISCAL " . $nfPaulista->cpf : "";
+
+        //dd($carrinho);
+        foreach ($carrinho as $car) {
+            foreach ($produtos as $prod) {
+                if ($pedido->numero_pedido == $car->numero_pedido) {
+                    if ($car->id_produto == $prod->id) {
+                        echo $car->quantidade . 'x - ' . $prod->nome;
+
+                        foreach ($sabores as $s) {
+                            echo $s->id == $car->id_sabores ? ' | Sabor.: ' . $s->nome . ' | ' : "";
+                        }
+
+                        echo "{$moeda->simbolo} " . number_format(($car->valor * $car->quantidade), 2, '.', '');
+
+                        foreach ($carrinhoAdicional as $cartAd) {
+                            if ($prod->id == $cartAd->id_produto) {
+                                if ($car->chave == $cartAd->chave) {
+                                    foreach ($produtosAdicionais as $a) {
+                                        if ($a->id == $cartAd->id_adicional) {
+                                            echo "\n<br/> -" . $cartAd->quantidade . 'x ' . $a->nome . ' ' . $moeda->simbolo . ' ' . number_format(($a->valor * $cartAd->quantidade), 2, '.', '');
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        echo $car->observacao != "" ? "\n<br/>(Obs.:" . $car->observacao . ')' : "";
+                    }
+                }
+            }
+        }
+
+        dd('fim');
+
         // try {
         //     //$connector = new FilePrintConnector("/dev/usb/lp0");
-        //     $connector = new NetworkPrintConnector("159.65.220.187", 9100);
-        //     //$connector = new WindowsPrintConnector("smb://computername/STMicroelectronics POS58 Printer USB");
+        //     $connector = new CupsPrintConnector("STMicroelectronics_POS58_Printer_USB");
 
-        //     /* Print a "Hello world" receipt" */
+        //     //$tmpfname = tempnam(sys_get_temp_dir(), 'print-');
+        //     //$connector = new FilePrintConnector($tmpfname);
+
+        //     //$connector = new NetworkPrintConnector("127.0.0.1", 9100);
         //     $printer = new Printer($connector);
         //     $printer -> text("Hello World!\n");
         //     $printer -> cut();
 
         //     /* Close printer */
         //     $printer -> close();
-        // } finally {
-        //     $printer -> close();
+        // } catch (Exception $e) {
+        //     echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
         // }
+    }
+
+    public function masc_tel($TEL) {
+        $tam = strlen(preg_replace("/[^0-9]/", "", $TEL));
+          if ($tam == 13) { // COM CÓDIGO DE ÁREA NACIONAL E DO PAIS e 9 dígitos
+          return "+".substr($TEL,0,$tam-11)."(".substr($TEL,$tam-11,2).")".substr($TEL,$tam-9,5)."-".substr($TEL,-4);
+          }
+          if ($tam == 12) { // COM CÓDIGO DE ÁREA NACIONAL E DO PAIS
+          return "+".substr($TEL,0,$tam-10)."(".substr($TEL,$tam-10,2).")".substr($TEL,$tam-8,4)."-".substr($TEL,-4);
+          }
+          if ($tam == 11) { // COM CÓDIGO DE ÁREA NACIONAL e 9 dígitos
+          return "(".substr($TEL,0,2).")".substr($TEL,2,5)."-".substr($TEL,7,11);
+          }
+          if ($tam == 10) { // COM CÓDIGO DE ÁREA NACIONAL
+          return "(".substr($TEL,0,2).")".substr($TEL,2,4)."-".substr($TEL,6,10);
+          }
+          if ($tam <= 9) { // SEM CÓDIGO DE ÁREA
+          return substr($TEL,0,$tam-4)."-".substr($TEL,-4);
+          }
+      }
+
+    public function pedidoImprimir($data)
+    {
+        setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+        date_default_timezone_set('America/Sao_Paulo');
+
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
+        $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
+        $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $pedido->id_cliente);
+
+        $tipoPagamento = $this->acoes->getByField('formasPagamento', 'id', $pedido->tipo_pagamento);
+        $tipoFrete = $this->acoes->getByField('tipoDelivery', 'id', $pedido->tipo_frete);
+        $status = $this->acoes->getByField('status', 'id', $pedido->status);
+
+        $motoboys = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
+
+        $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'numero_pedido', $pedido->numero_pedido);
+        $clientePagamento = $this->acoes->getByFieldAll('carrinhoPedidoPagamento', 'numero_pedido', $pedido->numero_pedido);
+
+        if ($empresa->nf_paulista == 1) {
+            $nfPaulista = $this->acoes->getByFieldAll('carrinhoCPFNota', 'numero_pedido', $pedido->numero_pedido);
+        }
+        $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $carrinho = $this->acoes->getByFieldAll('carrinho', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $empresa->id);
+        $nf = $nfPaulista->cpf != "" ? "NOTA FISCAL " . $nfPaulista->cpf : 0;
 
         try {
-            //$connector = new FilePrintConnector("/dev/usb/lp0");
-            $connector = new NetworkPrintConnector("159.65.220.187", 9100);
-            $printer = new Printer($connector);
-            $printer -> text("Hello World!\n");
-            $printer -> cut();
+            $connector = new CupsPrintConnector($print->code);
+            $subtotal = 'Subtotal ' .$moeda->simbolo . ' ' . number_format($pedido->total, 2, '.', '');
+            $tax = $pedido->tipo_frete == 2 ? 'Taxa de Entrega'. $pedido->valor_frete : 'Taxa de Entrega'. 'Grátis';
 
-            /* Close printer */
-            $printer -> close();
+            $total = 'Total'. $moeda->simbolo . ' ' . number_format($pedido->total_pago, 2, '.', '');
+            /* Date is kept the same for testing */
+            // $date = date('l jS \of F Y h:i:s A');
+
+            $date = strftime('%A, %d de %B de %Y', strtotime('today'));
+            $printer = new Printer($connector);
+            //$printer->selectPrintMode();
+            /* Print top logo */
+
+            // Most simple example
+            $printer->setEmphasis(true);
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text('');
+            $printer->feed(2);
+            $printer->feed(2);
+            $printer->feed(2);
+            $printer->feed(2);
+            $printer->setEmphasis(false);
+
+            $printer->feed(2);
+            $printer->setEmphasis(true);
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text(">>> PEDIDO DE VENDA <<<");
+            $printer->feed(2);
+            $printer->setEmphasis(false);
+            $printer->text("PEDIDO #" . $pedido->numero_pedido . "\n\n");
+            $printer->text("--------------------------------\n");
+            $printer->setEmphasis(false);
+            $printer->feed();
+
+            /* Items */
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->setEmphasis(false);
+            $printer->text(">>> ITENS DO PEDIDO <<<\n");
+            $printer->feed();
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->setEmphasis(false);
+            foreach ($carrinho as $car) {
+                foreach ($produtos as $prod) {
+                    if ($pedido->numero_pedido == $car->numero_pedido) {
+                        if ($car->id_produto == $prod->id) {
+                            $printer->text($car->quantidade . 'x - ' . $prod->nome);
+
+                            foreach ($sabores as $s) {
+                                $printer->text($s->id == $car->id_sabores ? ' | Sabor.: ' . $s->nome . ' | ' : "");
+                            }
+
+                            $printer->text(" {$moeda->simbolo} " . number_format(($car->valor * $car->quantidade), 2, '.', '')."\n");
+
+                            foreach ($carrinhoAdicional as $cartAd) {
+                                if ($prod->id == $cartAd->id_produto) {
+                                    if ($car->chave == $cartAd->chave) {
+                                        foreach ($produtosAdicionais as $a) {
+                                            if ($a->id == $cartAd->id_adicional) {
+                                                $printer->text(" - " . $cartAd->quantidade . 'x ' . $a->nome ."\n");
+                                                $printer->feed();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            $printer->text($car->observacao != "" ? "\n(Obs.:" . $car->observacao . ')' : "");
+                        }
+                    }
+                }
+            }
+            $printer->feed(1);
+            /* Tax and total */
+            $printer->text("--------------------------------\n");
+            $printer->feed(1);
+            $printer->text($subtotal);
+            $printer->feed();
+            $printer->text($tax);
+            $printer->feed();
+            $printer->setEmphasis(true);
+            $printer->text($total);
+            $printer->setEmphasis(false);
+            
+            /* Dados Entrega */
+            $printer->feed(1);
+            $printer->text("--------------------------------\n");
+            $printer->setEmphasis(false);
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("\nDADOS CLIENTE\n");
+            $printer->setEmphasis(false);
+
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->setEmphasis(false);
+            $printer->text($cliente->nome . "\n");
+            $printer->text("TELEFONE ". $this->masc_tel($cliente->telefone) . "\n");
+            $printer->text($endereco->rua ." ".$endereco->numero. "\n");
+            $printer->text("COMP ".$endereco->complemento . "\n");
+            $printer->text($endereco->bairro . "\n");
+            $printer->text("\n--------------------------------\n");
+            $printer->setEmphasis(false);
+
+            /* NF PAULISTA */
+            if($nf != 0){
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->setEmphasis(true);
+                $printer->text($nf . "\n");
+                $printer->setEmphasis(false);
+            }
+            
+            /* Footer */
+            $printer->feed(2);
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("AGRADECEMOS A PREFERÊNCIA!");
+            $printer->feed();
+            $printer->feed(1);
+            $printer->text($empresa->nome_fantasia  . "\n");
+            $printer->text("WHATSAPP " . $this->masc_tel($empresa->telefone) . "\n");
+            $printer->feed(1);
+            $printer->text($date . "\n");
+            $printer->text("Automatiza Delivery\n\n");
+            $printer->feed(1);
+            /* Cut the receipt and open the cash drawer */
+
+            //print_r($printer);
+            $printer->cut();
+            $printer->pulse();
+
+            $printer->close();
         } catch (Exception $e) {
             echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
         }
     }
-
-    // public function pedidoImprimir($data)
-    // {
-    //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-    //     setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-    //     date_default_timezone_set('America/Sao_Paulo');
-
-    //     $empresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-    //     $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
-    //     $moeda = $this->moedaModel->getById($empresa[':moeda']);
-    //     //$pedido = $this->adminVendasModel->getById(11);
-    //     $pedido = $this->adminVendasModel->getById($data['id']);
-    //     $cliente = $this->adminUsuarioModel->getClienteById($pedido[':id_cliente']);
-    //     $resultPagamento = $this->adminPagamentoModel->getById($pedido[':tipo_pagamento']);
-
-    //     $endereco = $this->adminEnderecoModel->getByIdPedido($cliente[':id']);
-    //     $resultFrete = $this->adminTipoModel->getById($pedido[':tipo_frete']);
-
-    //     //Recuperando Produtos
-    //     $carrinho = $this->adminCarrinhoModel->getPedidoFeito($pedido[':numero_pedido'], $empresaAct[':id']);
-    //     $produtos = $this->adminProdutosModel->getAllPorEmpresa($empresaAct[':id']);
-
-    //     $adicionais = $this->adminProdutosAdicionaisModel->getAllPorEmpresa($empresaAct[':id']);
-    //     $sabores = $this->adminProdutosSaboresModel->getAllPorEmpresa($empresaAct[':id']);
-
-    //     $carrinhoAdicional = $this->adminCarrinhoAdicionaisModel->getPedidoFeito($pedido[':numero_pedido'], $empresaAct[':id']);
-    //     $nfPaulista = $this->carrinhoNFPaulistaModel->getBynumero_pedidoCLiente($pedido[':numero_pedido'], $pedido[':id_cliente'], $empresaAct[':id']);
-    //     $resultPagamentoCli = $this->pedidosPagamentoModel->getPedidoFeito($pedido[':numero_pedido'], $empresaAct[':id']);
-
-    //     $nf = $nfPaulista[':cpf'] != "" ? "NOTA FISCAL " . $nfPaulista[':cpf'] : "";
-
-    //     // foreach($carrinho as $car)
-    //     //     {
-    //     //         foreach($produtos as $prod)
-    //     //         {
-    //     //             if($pedido[':numero_pedido'] == $car[':numero_pedido']){
-    //     //                 if($car[':id_produto'] == $prod[':id']){
-    //     //                     echo $car[':quantidade'].'x - '.$prod[':nome'];
-
-    //     //                    foreach($sabores as $s){
-    //     //                     echo $s[':id'] == $car[':id_sabores'] ? ' | Sabor.: '.$s[':nome'].' | ' : "";
-    //     //                    }
-
-    //     //                    echo ' '.$moeda[':simbolo'].' '.number_format(($car[':valor'] * $car[':quantidade']), 2, '.', '');
-
-    //     //                    foreach ($carrinhoAdicional as $cartAd) {
-    //     //                        if ($prod[':id'] == $cartAd[':id_produto']) {
-    //     //                            if ($car[':chave'] == $cartAd[':chave']) {
-    //     //                                foreach ($adicionais as $a) {
-    //     //                                    if ($a[':id'] == $cartAd[':id_adicional']) {
-    //     //                                        echo "\n<br/> -". $cartAd[':quantidade']. 'x '. $a[':nome'] .' '. $moeda[':simbolo']. ' '.number_format(($a[':valor'] * $cartAd[':quantidade']), 2, '.', '');
-    //     //                                    }
-    //     //                                }
-    //     //                            }
-    //     //                        }
-    //     //                    }
-    //     //                    echo $car[':observacao'] != "" ? "\n<br/>(Obs.:".$car[':observacao'].')': "";
-
-    //     //                 }
-    //     //             }
-
-    //     //         }
-
-    //     //     }
-
-    //     //     dd();
-
-    //     /* Fill in your own connector here */
-    //     //$connector = new FilePrintConnector("php://stdout");
-    //     $profile = CapabilityProfile::load("simple");
-    //     $connector = new WindowsPrintConnector("smb://computer/printer");
-
-
-    //     /* Information for the receipt */
-    //     $subtotal = new item('Subtotal', $moeda[':simbolo'] . ' ' . number_format($pedido[':total'], 2, '.', ''));
-    //     $tax = $pedido[':tipo_frete'] == 2 ? new item('Taxa de Entrega', $pedido[':valor_frete']) : new item('Taxa de Entrega', 'Grátis');
-
-    //     $total = new item('Total', $moeda[':simbolo'] . ' ' . number_format($pedido[':total_pago'], 2, '.', ''), true);
-    //     /* Date is kept the same for testing */
-    //     // $date = date('l jS \of F Y h:i:s A');
-
-    //     $date = strftime('%A, %d de %B de %Y', strtotime('today'));
-
-    //     /* Start the printer */
-    //     //$logo = EscposImage::load(UPLOADS_BASE . $empresa[':logo'], false);
-    //     //$printer = new Printer($connector);
-    //     $printer = new Printer($connector, $profile);
-
-    //     /* Print top logo */
-    //     $printer->setJustification(Printer::JUSTIFY_CENTER);
-    //     //$printer->graphics($logo);
-
-    //     /* Name of shop */
-    //     $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-    //     $printer->text($empresa . nome_fantasia  . "\n");
-    //     $printer->selectPrintMode();
-    //     $printer->text("Numero do Pedido. " . $pedido[':numero_pedido'] . "\n");
-    //     $printer->feed();
-
-    //     /* Title of receipt */
-    //     $printer->setEmphasis(true);
-    //     $printer->text("PEDIDO DE VENDA\n");
-    //     $printer->setEmphasis(false);
-
-    //     /* Dados Entrega */
-    //     $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-    //     $printer->setJustification(Printer::JUSTIFY_LEFT);
-    //     $printer->setEmphasis(true);
-    //     $printer->text($cliente[':nome'] . "\n");
-    //     $printer->text($cliente[':telefone'] . "\n");
-    //     $printer->text($endereco[':rua'] . "\n");
-    //     $printer->text("Nº" . $endereco[':numero'] . "\n");
-    //     $printer->text($endereco[':complemento'] . "\n");
-    //     $printer->text($endereco[':bairro'] . "\n");
-    //     $printer->text($endereco[':cidade'] . "\n");
-    //     $printer->text($endereco[':cep'] . "\n");
-    //     $printer->setEmphasis(false);
-
-    //     /* Items */
-    //     $printer->setJustification(Printer::JUSTIFY_LEFT);
-    //     $printer->setEmphasis(true);
-    //     $printer->text(new item('', $moeda[':simbolo']));
-    //     $printer->setEmphasis(false);
-    //     foreach ($carrinho as $car) {
-    //         foreach ($produtos as $prod) {
-    //             if ($pedido[':numero_pedido'] == $car[':numero_pedido']) {
-    //                 if ($car[':id_produto'] == $prod[':id']) {
-    //                     $printer->text($car[':quantidade'] . 'x - ' . $prod[':nome']);
-
-    //                     foreach ($sabores as $s) {
-    //                         $printer->text($s[':id'] == $car[':id_sabores'] ? ' | Sabor.: ' . $s[':nome'] . ' | ' : "");
-    //                     }
-
-    //                     $printer->text(' ' . $moeda[':simbolo'] . ' ' . number_format(($car[':valor'] * $car[':quantidade']), 2, '.', ''));
-
-    //                     foreach ($carrinhoAdicional as $cartAd) {
-    //                         if ($prod[':id'] == $cartAd[':id_produto']) {
-    //                             if ($car[':chave'] == $cartAd[':chave']) {
-    //                                 foreach ($adicionais as $a) {
-    //                                     if ($a[':id'] == $cartAd[':id_adicional']) {
-    //                                         $printer->text("\n<br/> -" . $cartAd[':quantidade'] . 'x ' . $a[':nome'] . ' ' . $moeda[':simbolo'] . ' ' . number_format(($a[':valor'] * $cartAd[':quantidade']), 2, '.', ''));
-    //                                     }
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                     $printer->text($car[':observacao'] != "" ? "\n (Obs.:" . $car[':observacao'] . ')' : "");
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     $printer->setEmphasis(true);
-    //     $printer->text($subtotal);
-    //     $printer->setEmphasis(false);
-    //     $printer->feed();
-
-    //     /* Tax and total */
-    //     $printer->text($tax);
-    //     $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-    //     $printer->text($total);
-    //     $printer->selectPrintMode();
-
-    //     /* NF PAULIST */
-    //     $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-    //     $printer->setJustification(Printer::JUSTIFY_LEFT);
-    //     $printer->setEmphasis(true);
-    //     $printer->text($nf . "\n");
-    //     $printer->setEmphasis(false);
-
-    //     /* Footer */
-    //     $printer->feed(2);
-    //     $printer->setJustification(Printer::JUSTIFY_CENTER);
-    //     $printer->text("AGRADECEMOS A PREFERÊNCIA!\n");
-    //     $printer->text("WHATSAPP " . $empresa[':telefone'] . "\n");
-    //     $printer->feed(2);
-    //     $printer->text($date . "\n");
-
-    //     /* Cut the receipt and open the cash drawer */
-
-    //     //print_r($printer);
-    //     $printer->cut();
-    //     $printer->pulse();
-
-    //     $printer->close();
-    // }
-
 }

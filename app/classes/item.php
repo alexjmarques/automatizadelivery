@@ -11,11 +11,11 @@ class item extends Controller
     private $price;
     private $dollarSign;
 
-    public function __construct($name = '', $price = '')
+    public function __construct($name = '', $price = '', $dollarSig = null)
     {
         $this->name = $name;
         $this->price = $price;
-        $this->dollarSign = $dollarSign;
+        $this->dollarSign = $dollarSig;
     }
     
     public function __toString()
@@ -27,7 +27,7 @@ class item extends Controller
         }
         $left = str_pad($this -> name, $leftCols) ;
         
-        $sign = ($this -> dollarSign ? 'R$ ' : '');
+        $sign = ($this->dollarSign ? 'R$ ' : '');
         $right = str_pad($sign . $this -> price, $rightCols, ' ', STR_PAD_LEFT);
         return "$left$right\n";
     }

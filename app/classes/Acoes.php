@@ -4,6 +4,7 @@ namespace app\classes;
 
 use Aura\Session\SessionFactory;
 use app\Models\Assinatura;
+use app\Models\Imprimir;
 use app\Models\Empresa;
 use app\Models\Paginas;
 use app\Models\EmpresaFuncionamento;
@@ -51,6 +52,7 @@ class Acoes
     private $assinatura;
     private $dias;
     private $estados;
+    private $imprimir;
     private $empresaCaixa;
     private $empresaFrete;
     private $empresaMarketplaces;
@@ -97,6 +99,7 @@ class Acoes
     {
         $this->sessao = new SessionFactory();
         $this->empresa = new Empresa();
+        $this->imprimir = new Imprimir();
         $this->empresaFuncionamento = new EmpresaFuncionamento();
         $this->assinatura = new Assinatura();
         $this->dias = new Dias();

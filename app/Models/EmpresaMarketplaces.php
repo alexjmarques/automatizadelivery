@@ -13,17 +13,16 @@ class EmpresaMarketplaces extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("empresa_marketplaces", ["id_marketplaces","idLoja"]);
+        parent::__construct("empresa_marketplaces", ["id_marketplaces","id_loja"]);
     }
 
-    public function add(Empresa $empresa, string $id_marketplaces, string $idLoja, string $authorization_code, string $user_code, string $data_atualizacao)
+    public function add(Empresa $empresa, string $id_marketplaces, string $id_loja, string $authorization_code, string $user_code)
     {
         $this->id_empresa = $empresa->id;
         $this->id_marketplaces = $id_marketplaces;
-        $this->idLoja = $idLoja;
+        $this->id_loja = $id_loja;
         $this->authorization_code = $authorization_code;
         $this->user_code = $user_code;
-        $this->data_atualizacao = $data_atualizacao;
 
         $this->save();
         return $this;

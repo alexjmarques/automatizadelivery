@@ -3,15 +3,12 @@
 namespace app\api\iFood;
 
 use app\core\Controller;
-use app\Models\AdminMarketplacesModel;
 use HTTP_Request2;
 use HTTP_Request2_Exception;
 use app\classes\Cache;
 
 class Financial extends Controller
 {
-
-    private $marketplace;
     private $client;
     private $cache;
     private $resulifood;
@@ -20,10 +17,8 @@ class Financial extends Controller
      */
     public function __construct()
     {
-        $this->marketplace = new AdminMarketplacesModel();
         $this->cache = new Cache();
         $this->client = new HTTP_Request2();
-        $this->resulifood = $this->marketplace->getById(1);
     }
 
     /**
@@ -31,10 +26,9 @@ class Financial extends Controller
      *
      * @return void
      */
-    public function grossRevenue()
+    public function grossRevenue(string $merchantId)
     {
-
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/grossRevenue';
         $token = $this->cache->read('tokenIfood');
 
@@ -61,10 +55,10 @@ class Financial extends Controller
         }
     }
 
-    public function dailyGrossRevenue()
+    public function dailyGrossRevenue(string $merchantId)
     {
 
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/dailyGrossRevenue';
         $token = $this->cache->read('tokenIfood');
 
@@ -92,10 +86,10 @@ class Financial extends Controller
     }
 
 
-    public function sales(string $dateBegin, string $dateEnd)
+    public function sales(string $merchantId, string $dateBegin, string $dateEnd)
     {
         //2021-02-01
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/sales?beginLastProcessingDate=' . $dateBegin . '&endLastProcessingDate=' . $dateEnd;
         $token = $this->cache->read('tokenIfood');
 
@@ -122,10 +116,10 @@ class Financial extends Controller
         }
     }
 
-    public function payments(string $dateBegin, string $dateEnd)
+    public function payments(string $merchantId, string $dateBegin, string $dateEnd)
     {
         //2021-02-01
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/payments?beginExpectedExecutionDate=' . $dateBegin . '&endExpectedExecutionDate=' . $dateEnd;
         $token = $this->cache->read('tokenIfood');
 
@@ -152,10 +146,10 @@ class Financial extends Controller
         }
     }
 
-    public function occurrences(string $dateBegin, string $dateEnd)
+    public function occurrences(string $merchantId, string $dateBegin, string $dateEnd)
     {
         //2021-02-01
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/occurrences?transactionDateBegin=' . $dateBegin . '&transactionDateEnd=' . $dateEnd;
         $token = $this->cache->read('tokenIfood');
 
@@ -182,10 +176,10 @@ class Financial extends Controller
         }
     }
 
-    public function maintenanceFees(string $dateBegin, string $dateEnd)
+    public function maintenanceFees(string $merchantId, string $dateBegin, string $dateEnd)
     {
         //2021-02-01
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/maintenanceFees?transactionDateBegin=' . $dateBegin . '&transactionDateEnd=' . $dateEnd;
         $token = $this->cache->read('tokenIfood');
 
@@ -212,10 +206,10 @@ class Financial extends Controller
         }
     }
 
-    public function incomeTaxes(string $dateBegin, string $dateEnd)
+    public function incomeTaxes(string $merchantId, string $dateBegin, string $dateEnd)
     {
         //2021-02-01
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/incomeTaxes?transactionDateBegin=' . $dateBegin . '&transactionDateEnd=' . $dateEnd;
         $token = $this->cache->read('tokenIfood');
 
@@ -242,10 +236,10 @@ class Financial extends Controller
         }
     }
 
-    public function chargeCancellations(string $dateBegin, string $dateEnd)
+    public function chargeCancellations(string $merchantId, string $dateBegin, string $dateEnd)
     {
         //2021-02-01
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/financial/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/chargeCancellations?transactionDateBegin=' . $dateBegin . '&transactionDateEnd=' . $dateEnd;
         $token = $this->cache->read('tokenIfood');
 

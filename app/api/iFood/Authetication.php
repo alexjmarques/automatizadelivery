@@ -3,26 +3,21 @@
 namespace app\api\iFood;
 
 use app\core\Controller;
-use app\Models\AdminMarketplacesModel;
 use HTTP_Request2;
 use HTTP_Request2_Exception;
 use app\classes\Cache;
 
 class Authetication extends Controller
 {
-    private $marketplace;
     private $cache;
     private $client;
-    private $resulifood;
     /**
      * Payment constructor.
      */
     public function __construct()
     {
-        $this->marketplace = new AdminMarketplacesModel();
         $this->cache = new Cache();
         $this->client = new HTTP_Request2();
-        $this->resulifood = $this->marketplace->getById(1);
     }
 
     /**
@@ -58,7 +53,7 @@ class Authetication extends Controller
         }
     }
 
-    public function gerarToken()
+    public function gerarToken(int $empresa)
     {
         $endPoint = IFOOD['URL'] .'/authentication/' . IFOOD['VERSION'] . '/oauth/token';
         $this->client->setUrl($endPoint);
@@ -66,22 +61,21 @@ class Authetication extends Controller
         $this->client->setConfig(array(
             'follow_redirects' => TRUE
         ));
+        
         $this->client->setHeader(array(
             'Content-Type' => 'application/x-www-form-urlencoded'
         ));
         $this->client->addPostParameter(array(
-            'grantType' => "authorization_code",
+            'grantType' => "client_credentials",
             'clientId' => IFOOD['CLIENT_ID'],
-            'clientSecret' => IFOOD['CLIENT_SECRET'],
-            'authorizationCode' => $this->resulifood[':userCode'],
-            'authorizationCodeVerifier' => $this->resulifood[':authorizationCode']
+            'clientSecret' => IFOOD['CLIENT_SECRET']
         ));
         try {
             $response = $this->client->send();
             if ($response->getStatus() == 200) {
                 $body = $response->getBody();
                 $result = json_decode($body);
-                return $this->cache->save('tokenIfood', $result->accessToken, '6 hours');
+                return $this->cache->save("tokenIfood-{$empresa}", $result->accessToken, '6 hours');
             } else {
                 return $response->getStatus();
             }
@@ -90,10 +84,43 @@ class Authetication extends Controller
         }
     }
 
-    public function refreshToken()
+    // public function gerarToken(int $empresa, string $user, string $authorization)
+    // {
+    //     //dd($user);
+    //     $endPoint = IFOOD['URL'] .'/authentication/' . IFOOD['VERSION'] . '/oauth/token';
+    //     $this->client->setUrl($endPoint);
+    //     $this->client->setMethod(HTTP_Request2::METHOD_POST);
+    //     $this->client->setConfig(array(
+    //         'follow_redirects' => TRUE
+    //     ));
+    //     $this->client->setHeader(array(
+    //         'Content-Type' => 'application/x-www-form-urlencoded'
+    //     ));
+    //     $this->client->addPostParameter(array(
+    //         'grantType' => "authorization_code",
+    //         'clientId' => IFOOD['CLIENT_ID'],
+    //         'clientSecret' => IFOOD['CLIENT_SECRET'],
+    //         'authorizationCode' => $user,
+    //         'authorizationCodeVerifier' => $authorization
+    //     ));
+    //     try {
+    //         $response = $this->client->send();
+    //         if ($response->getStatus() == 200) {
+    //             $body = $response->getBody();
+    //             $result = json_decode($body);
+    //             return $this->cache->save("tokenIfood-{$empresa}", $result->accessToken, '6 hours');
+    //         } else {
+    //             return $response->getStatus();
+    //         }
+    //     } catch (HTTP_Request2_Exception $e) {
+    //         return 'Error: ' . $e->getMessage();
+    //     }
+    // }
+
+    public function refreshToken(int $empresa, string $user, string $authorization)
     {
         $endPoint = IFOOD['URL'] .'/authentication/' . IFOOD['VERSION'] . '/oauth/token';
-        $token = $this->cache->read('tokenIfood');
+        $token = $this->cache->read("tokenIfood-{$empresa}");
         $this->client->setUrl($endPoint);
         $this->client->setMethod(HTTP_Request2::METHOD_POST);
         $this->client->setConfig(array(
@@ -106,8 +133,8 @@ class Authetication extends Controller
             'grantType' => "refresh_token",
             'clientId' => IFOOD['CLIENT_ID'],
             'clientSecret' => IFOOD['CLIENT_SECRET'],
-            'authorizationCode' => $this->resulifood[':userCode'],
-            'authorizationCodeVerifier' => $this->resulifood[':authorizationCode'],
+            'authorizationCode' => $user,
+            'authorizationCodeVerifier' => $authorization,
             'refreshToken' => $token
         ));
         try {
@@ -115,7 +142,7 @@ class Authetication extends Controller
             if ($response->getStatus() == 200) {
                 $body = $response->getBody();
                 $result = json_decode($body);
-                $this->cache->save('tokenIfood', $result->accessToken, '60 hours');
+                $this->cache->save("tokenIfood-{$empresa}", $result->accessToken, '60 hours');
             } else {
                 return $response->getStatus();
             }

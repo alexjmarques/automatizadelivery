@@ -3,7 +3,6 @@
 namespace app\api\iFood;
 
 use app\core\Controller;
-use app\Models\AdminMarketplacesModel;
 use HTTP_Request2;
 use HTTP_Request2_Exception;
 use app\classes\Cache;
@@ -19,11 +18,11 @@ class Merchants extends Controller
      */
     public function __construct()
     {
-        $this->marketplace = new AdminMarketplacesModel();
         $this->cache = new Cache();
         $this->client = new HTTP_Request2();
-        $this->resulifood = $this->marketplace->getById(1);
     }
+
+    
 
     /**
      * Merchants
@@ -32,11 +31,10 @@ class Merchants extends Controller
      */
     public function list()
     {
-
         $endPoint = IFOOD['URL'] .'/merchant/' . IFOOD['VERSION'] . '/merchants';
-        $token = $this->cache->read('tokenIfood');
+        //$token = $this->cache->read("tokenIfood-{$empresa}");
 
-        if ($token) {
+        //if ($token) {
             $this->client->setUrl($endPoint);
             $this->client->setMethod(HTTP_Request2::METHOD_GET);
             $this->client->setConfig(array(
@@ -56,16 +54,16 @@ class Merchants extends Controller
             } catch (HTTP_Request2_Exception $e) {
                 echo 'Error: ' . $e->getMessage();
             }
-        }
+        //}
     }
 
 
-    public function listInterruptions()
+    public function listInterruptions(int $empresa, string $merchantId)
     {
 
-        $merchantId = $this->resulifood[':idLoja'];
+        
         $endPoint = IFOOD['URL'] .'/merchant/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/interruptions';
-        $token = $this->cache->read('tokenIfood');
+        $token = $this->cache->read("tokenIfood-{$empresa}");
 
         if ($token) {
             $this->client->setUrl($endPoint);
@@ -90,12 +88,10 @@ class Merchants extends Controller
         }
     }
 
-    public function details()
+    public function details(int $empresa, string $merchantId)
     {
-
-        $merchantId = $this->resulifood[':idLoja'];
         $endPoint = IFOOD['URL'] .'/merchant/' . IFOOD['VERSION'] . '/merchants/' . $merchantId;
-        $token = $this->cache->read('tokenIfood');
+        $token = $this->cache->read("tokenIfood-{$empresa}");
 
         if ($token) {
             $this->client->setUrl($endPoint);
@@ -121,12 +117,11 @@ class Merchants extends Controller
     }
 
 
-    public function status()
+    public function status(int $empresa, string $merchantId)
     {
         //2021-02-01
-        $merchantId = $this->resulifood[':idLoja'];
         $endPoint = IFOOD['URL'] .'/merchant/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/status';
-        $token = $this->cache->read('tokenIfood');
+        $token = $this->cache->read("tokenIfood-{$empresa}");
 
         if ($token) {
             $this->client->setUrl($endPoint);
@@ -152,12 +147,11 @@ class Merchants extends Controller
         }
     }
 
-    public function statusOperation(string $operation)
+    public function statusOperation(int $empresa, string $operation, string $merchantId)
     {
         //delivery
-        $merchantId = $this->resulifood[':idLoja'];
         $endPoint = IFOOD['URL'] .'/merchant/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/status/' . $operation;
-        $token = $this->cache->read('tokenIfood');
+        $token = $this->cache->read("tokenIfood-{$empresa}");
 
         if ($token) {
             $this->client->setUrl($endPoint);
@@ -184,12 +178,11 @@ class Merchants extends Controller
 
 
 
-    public function create(string $description, string $start, string $end)
+    public function create(int $empresa, string $merchantId, string $description, string $start, string $end)
     {
         //'2021-03-01T12:10:00.000'
-        $merchantId = $this->resulifood[':idLoja'];
         $endPoint = IFOOD['URL'] .'/merchant/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/interruptions';
-        $token = $this->cache->read('tokenIfood');
+        $token = $this->cache->read("tokenIfood-{$empresa}");
 
         if ($token) {
             $this->client->setUrl($endPoint);
@@ -220,12 +213,11 @@ class Merchants extends Controller
         }
     }
 
-    public function delete(string $interruptionId)
+    public function delete(int $empresa, string $merchantId,string $interruptionId)
     {
         //'2021-03-01T12:10:00.000'
-        $merchantId = $this->resulifood[':idLoja'];
         $endPoint = IFOOD['URL'] .'/merchant/' . IFOOD['VERSION'] . '/merchants/' . $merchantId . '/interruptions/' . $interruptionId;
-        $token = $this->cache->read('tokenIfood');
+        $token = $this->cache->read("tokenIfood-{$empresa}");
 
         if ($token) {
             $this->client->setUrl($endPoint);
