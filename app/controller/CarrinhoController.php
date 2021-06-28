@@ -753,7 +753,6 @@ class CarrinhoController extends Controller
         }
 
         $carrinhoAdicional = $this->acoes->getByFieldAllTwoNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
-        
 
         if ($carrinhoAdicional) {
             foreach ($carrinhoAdicional as $cartAdic) {
@@ -813,6 +812,7 @@ class CarrinhoController extends Controller
         $pedido->km = $data['km'];
         $pedido->chave = $data['chave'];
         $pedido->save();
+        dd($pedido);
 
         
         $userUp = (new UsuariosEmpresa())->findById($user->id);
