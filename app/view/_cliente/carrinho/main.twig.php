@@ -199,8 +199,8 @@
                         valorPedido|number_format(2, ',', '.') }}</span></p>
 
 
-{km}<br/>
-{deliveryEntregaExcedente}
+{{km}}<br/>
+{{deliveryEntregaExcedente}}
 
                     {% if km < deliveryEntregaExcedente %}
                     {% if calculoFrete == 0 %}
