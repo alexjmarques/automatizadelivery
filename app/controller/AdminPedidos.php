@@ -126,7 +126,9 @@ class AdminPedidos extends Controller
     public function pedidosProducao($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        if($empresa){
+            $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        }
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
