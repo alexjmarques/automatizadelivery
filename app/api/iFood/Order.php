@@ -30,7 +30,6 @@ class Order extends Controller
     {
         $endPoint = IFOOD['URL'] .'/order/' . IFOOD['VERSION'] . '/events:polling';
         $token = $this->cache->read('tokenIfood');
-
         if ($token) {
             $this->client->setUrl($endPoint);
             $this->client->setMethod(HTTP_Request2::METHOD_GET);

@@ -73,7 +73,6 @@ class AdminIfoodController extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-
         $status = 0;
         if ($this->cache->read("tokenIfood-{$empresa->id}") != null) {
             $status = $this->ifood->status($empresa->id, $ifoodVerif->id_loja);
@@ -157,22 +156,18 @@ class AdminIfoodController extends Controller
                 echo "Code OK";
             }
         }
-        
-
-        
     }
 
-    public function polling($data)
+    public function polling()
     {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id,'id_marketplaces', 1);
-
         if ($this->cache->readTime('tokenIfood')) {
             $time = $this->cache->readTime('tokenIfood') - time();
             if ($time < 500) {
-                $this->validacao->refreshToken($empresa->id, $ifoodVerif->user_code, $ifoodVerif->authorization_code);
+                $this->validacao->refreshToken();
             }
             echo $this->ifoodOrder->eventsPolling();
+        }else{
+            $this->validacao->gerarToken();
         }
     }
 
@@ -251,6 +246,7 @@ class AdminIfoodController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id,'id_marketplaces', 1);
+        //dd($ifoodVerif);
         //$dd = $this->cache->read('tokenIfood-1');
         //$time = $this->cache->readTime('tokenIfood') - time();
         
@@ -263,10 +259,18 @@ class AdminIfoodController extends Controller
         // print_r($ifoodVerif->authorization_code);
 
 //        print_r($this->cache->read("tokenIfood-{$empresa->id}"));
-        $dd = $this->validacao->gerarToken(1);
+        //$dd = $this->validacao->gerarToken();
         //$dd = $this->validacao->refreshToken(1, 'FNSR-ZVNW', 'mbu1treoa4m0vemth0vm0jg60daoosd4574pwet4j26p8mmk3rsl5wr561uj7c0ne5bz1hks4n8kv1o7qb96xl3igc32yhpe4q7');
-        dd($dd);
-        //$dd = $this->ifoodMerchant->listCurrent();
+        //$dd = $this->ifood->listInterruptions($ifoodVerif->id_loja);
+
+        //$dd = $this->ifood->status($ifoodVerif->id_loja);
+
+        //$dd = $this->ifood->delete($ifoodVerif->id_loja, 'c5e94367-e5b5-4f47-8e6f-7f2bf9de8b31');
+
+        
+
+        //$dd =  $this->ifoodOrder->eventsPolling();
+        dd($this->cache->readTime('tokenIfood'));
         //$dd = $this->ifoodMerchant->status();
         $dd = $this->ifoodCatalogCategory->list('0a276985-df4f-4934-b38b-3f408cca702e');
         //$dd = $this->ifoodCatalogProduct->list(1, 10);

@@ -535,16 +535,17 @@ function atualizar() {
     }
   })
 
-  $.get(`/${link_site}/admin/pedidos/ifood`, function (dd) {
+  $.get(`/admin/pedidos/ifood`, function (dd) {
     if (parseInt(dd) === 0) {
-      //$('#producao').html('Sem Pedidos no momento');
+      $('#producao').html('Sem Pedidos no momento');
     } else {
       if (parseInt($('#atendimentoOn').length) === 1) {
         if (204 === parseInt(dd)) {
-          console.log('Sem novos pedidos no iFood');
+          console.log('No pending events found.');
+        } else if (200 === parseInt(dd)) {
+          console.log('OK');
         } else {
-          console.log('Pedido Novo');
-          //$('#geral').html(dd);
+          console.log('Bad Request ' + dd);
         }
       }
     }
@@ -575,7 +576,7 @@ function mudarStatus(id, status, id_caixa) {
     id_empresa,
     id_motoboy
   }
-
+  console.log('Imprimiu');
   if(parseInt(status) === 2){
     $.getJSON(`/${link_site}/admin/pedido/imprimir/${id}`, function (dd) {
       console.log('Imprimiu');

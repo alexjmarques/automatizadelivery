@@ -13,7 +13,7 @@ class Imprimir extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("apd_print", []);
+        parent::__construct("aux_print", []);
     }
 
     public function add(Empresa $empresa, string $nome, string $code)

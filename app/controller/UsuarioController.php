@@ -242,6 +242,7 @@ class UsuarioController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $codeValida = $this->sessao->getSessao('codeValida');
+
         if ($codeValida == $data['codeValida']) {
             $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
             $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
@@ -771,31 +772,38 @@ class UsuarioController extends Controller
             $valor->senha = $senha;
             $valor->nivel = 3;
             $valor->save();
-            //print_r($valor);
 
-            $valorEnd = new UsuariosEnderecos();
-            $valorEnd->id_usuario = $valor->id;
-            $valorEnd->nome_endereco = "Padrão";
-            $valorEnd->rua = $data['rua'];
-            $valorEnd->numero = $data['numero'];
-            $valorEnd->complemento = $data['complemento'];
-            $valorEnd->bairro = $data['bairro'];
-            $valorEnd->cidade = $data['cidade'];
-            $valorEnd->estado = $data['estado'];
-            $valorEnd->cep = $data['cep'];
-            $valorEnd->principal = 1;
-            $valorEnd->save();
-            //print_r($valorEnd);
+            if($valor->id > 0){
+                $valorEnd = new UsuariosEnderecos();
+                $valorEnd->id_usuario = $valor->id;
+                $valorEnd->nome_endereco = "Padrão";
+                $valorEnd->rua = $data['rua'];
+                $valorEnd->numero = $data['numero'];
+                $valorEnd->complemento = $data['complemento'];
+                $valorEnd->bairro = $data['bairro'];
+                $valorEnd->cidade = $data['cidade'];
+                $valorEnd->estado = $data['estado'];
+                $valorEnd->cep = $data['cep'];
+                $valorEnd->principal = 1;
+                $valorEnd->save();
+            }else{
+              dd($valor);  
+            }
 
-            $valoEmp = new UsuariosEmpresa();
-            $valoEmp->id_usuario = $valor->id;
-            $valoEmp->id_empresa = $empresa->id;
-            $valoEmp->nivel = 3;
-            $valoEmp->save();
+            if ($valor->id > 0 && $valorEnd->id > 0) {
+                $valoEmp = new UsuariosEmpresa();
+                $valoEmp->id_usuario = $valor->id;
+                $valoEmp->id_empresa = $empresa->id;
+                $valoEmp->nivel = 3;
+                $valoEmp->save();
+            }else{
+                dd($valorEnd);
+              }
 
-            $this->sessao->add($valor->id, $valor->email, $valor->nivel);
+            if ($valor->id > 0 && $valorEnd->id > 0 && $valoEmp->id > 0) {
+                $this->sessao->add($valor->id, $valor->email, $valor->nivel);
+            }
             
-            //print_r($valoEmp);
             header('Content-Type: application/json');
             $json = json_encode(['id' => $valoEmp->id, 'resp' => 'insert', 'mensagem' => 'Seu cadastro foi realizado com sucesso', 'url' => '/']);
             exit($json);

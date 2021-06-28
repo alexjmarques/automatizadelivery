@@ -409,7 +409,7 @@ $router->post('/{linkSite}/admin/status/u/{id}', 'AdminStatus:update');
 
 
 
-$router->get('/{linkSite}//adminpedidos/ifood', 'AdminIfoodController:polling');
+$router->get('/admin/pedidos/ifood', 'AdminIfoodController:polling');
 $router->post('/{linkSite}/admin/sync/categoria/ifood', 'AdminIfoodController:syncCategory');
 $router->post('/{linkSite}/admin/sync/produto/ifood', 'AdminIfoodController:syncProduct');
 

@@ -29,6 +29,15 @@ CREATE TABLE empresa_dados (
   updated_at TIMESTAMP NULL DEFAULT NULL
 );
 
+CREATE TABLE aux_print (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR DEFAULT NULL,
+  code VARCHAR DEFAULT NULL,
+  id_empresa INT DEFAULT NULL REFERENCES empresa_dados(id),
+  created_at TIMESTAMP NULL DEFAULT NULL,
+  updated_at TIMESTAMP NULL DEFAULT NULL
+);
+
 CREATE TABLE empresa_caixa (
   id SERIAL PRIMARY KEY,
   data_inicio date NOT NULL,
