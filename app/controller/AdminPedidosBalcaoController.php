@@ -60,16 +60,16 @@ class AdminPedidosBalcaoController extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        if($estabelecimento){
+        if ($estabelecimento) {
             $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
         }
-        
+
         $resultClientes = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
         $clientesEmpresa = $this->acoes->getByFieldTwoAll('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 3);
-        
+
         $resultMotoboy = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
-        
-        
+
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -92,7 +92,7 @@ class AdminPedidosBalcaoController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'moeda' => $moeda,
             'planoAtivo' => $planoAtivo,
             'clientes' => $resultClientes,
@@ -119,16 +119,16 @@ class AdminPedidosBalcaoController extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
         $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
         $dias = $this->acoes->getFind('dias');
         $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
-        
+
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
-        
-        
+
+
         $ultimaVenda = null;
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
@@ -155,7 +155,7 @@ class AdminPedidosBalcaoController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'moeda' => $moeda,
             'estabelecimento' => $estabelecimento,
             'produtoSabores' => $resultSabores,
@@ -168,7 +168,7 @@ class AdminPedidosBalcaoController extends Controller
     public function carrinhoQtd($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        if($this->sessao->getSessao('id_cliente')){    
+        if ($this->sessao->getSessao('id_cliente')) {
             $contagem = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
             echo $contagem;
         }
@@ -247,7 +247,7 @@ class AdminPedidosBalcaoController extends Controller
             'produto' => $produto,
             'planoAtivo' => $planoAtivo,
             'produtoAdicional' => $resultProdutoAdicional,
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'tipoAdicional' => $resulTipoAdicional,
             'produtoSabores' => $resultSabores,
             'produtoSabores' => $resultSabores,
@@ -262,8 +262,8 @@ class AdminPedidosBalcaoController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        
-        
+
+
         if ($this->sessao->getSessao('id_cliente')) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
@@ -290,7 +290,7 @@ class AdminPedidosBalcaoController extends Controller
 
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
-            
+
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega * 1000;
 
@@ -328,7 +328,7 @@ class AdminPedidosBalcaoController extends Controller
                     $total = $taxa_entregaNova;
                 }
             }
-            
+
             if ($km_entrega3 != 0.00) {
                 if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
                     $total = $taxa_entrega3;
@@ -397,7 +397,7 @@ class AdminPedidosBalcaoController extends Controller
             'planoAtivo' => $planoAtivo,
             'pagamento' => $pagamento,
             'numero_pedido' => $this->sessao->getSessao('numeroPedido'),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'valorPedido' => $valorCarrinho,
             'carrinhoQtd' => $resultCarrinhoQtd,
         ]);
@@ -410,8 +410,8 @@ class AdminPedidosBalcaoController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        
-        
+
+
         if ($this->sessao->getSessao('id_cliente')) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
@@ -438,18 +438,67 @@ class AdminPedidosBalcaoController extends Controller
 
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
+
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega * 1000;
+
+            $taxa_entrega2 = $delivery->taxa_entrega2;
+            $km_entrega2 = $delivery->km_entrega2 * 1000;
+
+            $taxa_entrega3 = $delivery->taxa_entrega3;
+            $km_entrega3 = $delivery->km_entrega3 * 1000;
+
+
             $km_entrega_excedente = $delivery->km_entrega_excedente * 1000;
             $valor_excedente = $delivery->valor_excedente;
 
+
             if ($cFrete <= $km_entrega) {
                 $total = $taxa_entrega;
-            } else if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
-                $kmACalcular = (round($infoKm) - $delivery->km_entrega);
-                $freteVezes = ($kmACalcular * $valor_excedente);
-                $taxa_entregaNova = $taxa_entrega + $freteVezes;
-                $total = $taxa_entregaNova;
+                if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = (round($infoKm) - $delivery->km_entrega);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                    $total = $taxa_entregaNova;
+                }
+            }
+
+            if ($delivery->km_entrega_excedente != 0) {
+                $deliveryEntregaExcedente = $delivery->km_entrega_excedente * 1000;
+            }
+
+            if ($km_entrega2 != 0.00) {
+                if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
+                    $total = $taxa_entrega2;
+                }
+
+                if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = (round($infoKm) - $delivery->km_entrega2);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                    $total = $taxa_entregaNova;
+                }
+
+                if ($delivery->km_entrega_excedente == 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega2 * 1000;
+                }
+            }
+
+            if ($km_entrega3 != 0.00) {
+                if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
+                    $total = $taxa_entrega3;
+                }
+
+                if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = (round($infoKm) - $delivery->km_entrega3);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                    $total = $taxa_entregaNova;
+                }
+
+                if ($delivery->km_entrega_excedente == 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega3 * 1000;
+                }
             }
 
             if ($delivery->frete_status == 1) {
@@ -464,9 +513,9 @@ class AdminPedidosBalcaoController extends Controller
                 }
             }
 
-            
+
             $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
-            
+
             $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
             if ($cupomVerifica > 0) {
@@ -512,7 +561,7 @@ class AdminPedidosBalcaoController extends Controller
             'pagamento' => $pagamento,
             'calculoFrete' => $total,
             'numero_pedido' => $this->sessao->getSessao('numeroPedido'),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'valorPedido' => $valorCarrinho,
             'endereco' => $endereco,
             'km' => $cFrete,
@@ -609,7 +658,7 @@ class AdminPedidosBalcaoController extends Controller
         $numerofinal = $ddi . $cliente->telefone;
 
         $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
-        $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
+        $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);

@@ -294,14 +294,11 @@ class CarrinhoController extends Controller
             $taxa_entrega3 = $delivery->taxa_entrega3;
             $km_entrega3 = $delivery->km_entrega3 * 1000;
 
-
             $km_entrega_excedente = $delivery->km_entrega_excedente * 1000;
             $valor_excedente = $delivery->valor_excedente;
 
-
             if ($cFrete <= $km_entrega) {
                 $total = $taxa_entrega;
-
                 if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
                     $kmACalcular = (round($infoKm) - $delivery->km_entrega);
                     $freteVezes = ($kmACalcular * $valor_excedente);
@@ -309,6 +306,10 @@ class CarrinhoController extends Controller
                     $total = $taxa_entregaNova;
                 }
             }
+
+            if($delivery->km_entrega_excedente != 0){
+                $deliveryEntregaExcedente = $delivery->km_entrega_excedente * 1000;
+             }
 
             if ($km_entrega2 != 0.00) {
                 if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
@@ -322,6 +323,9 @@ class CarrinhoController extends Controller
                     $total = $taxa_entregaNova;
                 }
 
+                if($delivery->km_entrega_excedente == 0){
+                    $deliveryEntregaExcedente = $delivery->km_entrega2 * 1000;
+                 }
             }
             
             if ($km_entrega3 != 0.00) {
@@ -335,10 +339,13 @@ class CarrinhoController extends Controller
                     $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
                     $total = $taxa_entregaNova;
                 }
+
+                if($delivery->km_entrega_excedente == 0){
+                   $deliveryEntregaExcedente = $delivery->km_entrega3 * 1000;
+                }
             }
             
             
-
             if ($delivery->frete_status == 1) {
                 if ($delivery->valor <= $valorCarrinho) {
                     $total = 0;
@@ -380,6 +387,9 @@ class CarrinhoController extends Controller
             redirect(BASE . "{$empresa->link_site}");
         }
 
+        
+        
+
         $this->load('_cliente/carrinho/main', [
             'empresa' => $empresa,
             'moeda' => $moeda,
@@ -388,7 +398,7 @@ class CarrinhoController extends Controller
             'estados' => $estados,
             'delivery' => $delivery,
             'enderecoAtivo' => $enderecoAtivo,
-            'deliveryEntregaExcedente' => $delivery->km_entrega_excedente * 1000,
+            'deliveryEntregaExcedente' => $deliveryEntregaExcedente,
             'carrinho' => $carrinho,
             'carrinhoAdicional' => $carrinhoAdicional,
             'produtos' => $produtos,
@@ -791,7 +801,7 @@ class CarrinhoController extends Controller
         $cpp->id_empresa = $data['id_empresa'];
         $cpp->save();
 
-        
+
         $pedido = new CarrinhoPedidos();
         $pedido->id_caixa = $estabelecimento[0]->id;
         $pedido->id_cliente = $this->sessao->getUser();
