@@ -199,9 +199,6 @@
                         valorPedido|number_format(2, ',', '.') }}</span></p>
 
 
-{{km}}<br/>
-{{deliveryEntregaExcedente}}
-
                     {% if km < deliveryEntregaExcedente %}
                     {% if calculoFrete == 0 %}
                     <p class="mb-1 text-success" id="freteCal">Taxa de Entrega<span class="float-right text-success">

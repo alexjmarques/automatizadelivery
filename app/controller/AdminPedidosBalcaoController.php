@@ -512,8 +512,7 @@ class AdminPedidosBalcaoController extends Controller
                     $total = 0;
                 }
             }
-
-
+            
             $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
 
             $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
