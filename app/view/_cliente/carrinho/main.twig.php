@@ -104,7 +104,7 @@
                             <p><strong>{{ empresaEndereco.rua }}, {{ empresaEndereco.numero }} </strong> <br />
                                 {% if empresaEndereco.complemento != "" %}
                                 {{ empresaEndereco.complemento }} -
-                                {% endif %}{{ empresaEndereco.bairro }} - {{ empresaEndereco.cidade }}/{% for e in estados %}{% if e.id == empresaEndereco.estado %}{{ e.uf }}{% endif %}{% endfor %}
+                                {% endif %}{{ empresaEndereco.bairro }} - {{ empresaEndereco.cidade }}/{{ empresaEndereco.estado }}
                             </p>
                         </div>
                         {% endif %}
@@ -199,7 +199,8 @@
                         valorPedido|number_format(2, ',', '.') }}</span></p>
 
 
-
+{km}<br/>
+{deliveryEntregaExcedente}
 
                     {% if km < deliveryEntregaExcedente %}
                     {% if calculoFrete == 0 %}

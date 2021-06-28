@@ -791,8 +791,7 @@ class CarrinhoController extends Controller
         $cpp->id_empresa = $data['id_empresa'];
         $cpp->save();
 
-
-
+        
         $pedido = new CarrinhoPedidos();
         $pedido->id_caixa = $estabelecimento[0]->id;
         $pedido->id_cliente = $this->sessao->getUser();
@@ -812,12 +811,14 @@ class CarrinhoController extends Controller
         $pedido->km = $data['km'];
         $pedido->chave = $data['chave'];
         $pedido->save();
-        dd($pedido);
 
-        
-        $userUp = (new UsuariosEmpresa())->findById($user->id);
-        $userUp->pedidos = $user->pedidos == null ? 1 : $user->pedidos + 1;
-        $userUp->save();
+        if($pedido->id > 0){
+            $userUp = (new UsuariosEmpresa())->findById($user->id);
+            $userUp->pedidos = $user->pedidos == null ? 1 : $user->pedidos + 1;
+            $userUp->save();
+        }else{
+            dd($pedido);
+        }
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'url' => 'admin/pedidos']);
