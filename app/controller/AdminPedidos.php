@@ -324,6 +324,7 @@ class AdminPedidos extends Controller
 
     public function mudarStatus($data)
     {
+        dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $pedidos = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
@@ -337,7 +338,7 @@ class AdminPedidos extends Controller
         }
         $valor->save();
 
-        dd($valor);
+        
 
         $count = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
         $pedido = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
