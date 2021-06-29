@@ -102,7 +102,6 @@ class PedidosController extends Controller
      */
     public function statusPedidoFull($data)
     {
-
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $venda = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -110,6 +109,7 @@ class PedidosController extends Controller
         $carrinhoAdicional = $this->acoes->getByFieldTwoAll('carrinhoAdicional', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
         $carrinho = $this->acoes->getByFieldAll('carrinho', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
         $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        $status = $this->acoes->getFind('status');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -132,6 +132,7 @@ class PedidosController extends Controller
         $this->load('_cliente/pedidos/pedidoAcompanharTotal', [
             'empresa' => $empresa,
             'moeda' => $moeda,
+            'status' => $status,
             'carrinho' => $carrinho,
             'avaliacao' => $avaliacao,
             'usuario' => $usuario,

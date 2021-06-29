@@ -1,22 +1,23 @@
 {% for stats in status %}
-{% if venda.status == stats.id %}
-{% if venda.tipo_frete == 2 %}
-<div class="status badge-{{stats.class}} p-2 text-center">
-{{ stats.mensagem }}
-</div>
-{% else %}
-{% if stats.id == 3 %}
-<div class="status badge-{{stats.class}} p-2 text-center">
-{{ stats.retirada }}
-</div>
-{% else %}
-<div class="status badge-{{stats.class}} p-2 text-center">
-{{ stats.mensagem }}
-</div>
-{% endif %}
+    {% if venda.status == stats.id %}
+        {% if venda.tipo_frete == 2 %}
+            <div class="status badge-{{stats.class}} p-2 text-center">
+            {{ stats.mensagem }}
+            </div>
+        {% else %}
 
-{% endif %}
-{% endif %}
+            {% if stats.id == 3 %}
+            <div class="status badge-{{stats.class}} p-2 text-center">
+            {{ stats.retirada }}
+            </div>
+            {% else %}
+            <div class="status badge-{{stats.class}} p-2 text-center">
+            {{ stats.mensagem }}
+            </div>
+            {% endif %}
+
+        {% endif %}
+    {% endif %}
 {% endfor %}
 
 

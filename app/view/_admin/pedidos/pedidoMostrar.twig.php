@@ -168,7 +168,6 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
     Entregar ao motoboy{% endif %}<i class="simple-icon-arrow-right"></i></button>
 {% endif %}
 
-
 {% if pedido.status == 3 %}
     {% set count = pedido.status %}
     {% set count = count + 1 %}
@@ -177,9 +176,6 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
     </select>
     <button class="col-meio btn-processo bg-secondary" onclick="mudarStatusEntrega({{pedido.id}}, {{count}}, {{estabelecimento}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></button>
 {% endif %}
-
-
-
 
 {% if pedido.status >= 3 %}
 {% if pedido.status == 5 %}
@@ -191,7 +187,6 @@ Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|nu
         <span>Pedido Cancelado pelo Cliente</span>
 {% endif %}
 {% endif %}
-
 
  </footer>
  <div id="mensagem{{pedido.id}}" class="text-center full_id mt-2"></div>
