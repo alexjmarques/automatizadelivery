@@ -787,7 +787,10 @@ class UsuarioController extends Controller
                 $valorEnd->principal = 1;
                 $valorEnd->save();
             }else{
-              dd($valor);  
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Informe o némero juntamente com o endereço', 'erro' => 'Informe o némero juntamente com o endereço']);
+                exit($json);
+                dd('stop');
             }
 
             if ($valor->id > 0 && $valorEnd->id > 0) {
