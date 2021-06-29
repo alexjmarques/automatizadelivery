@@ -337,9 +337,12 @@ class AdminPedidos extends Controller
         }
         $valor->save();
 
+        dd($valor);
+
         $count = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
         $pedido = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
         if ($planoAtivo > 2) {
+            //dd('1');
             if ($data['motoboy'] > 0) {
                 if (!$count) {
                     $entregas = new CarrinhoEntregas();
@@ -357,6 +360,7 @@ class AdminPedidos extends Controller
                 }
             }
         } else {
+            //dd('2');
             if (!$count) {
                 $entregas = new CarrinhoEntregas();
                 $entregas->id_motoboy = 0;
