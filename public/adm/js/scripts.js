@@ -598,6 +598,7 @@ function mudarStatus(id, status, id_caixa) {
       $('#btn-carrinho').html('Pedido entregue <i class="simple-icon-arrow-right"></i>');
     },
     success: function (dd) {
+      console.log(dd);
       $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
       if (dd == 'Status alterado com sucesso') {
