@@ -338,8 +338,6 @@ class AdminPedidos extends Controller
         }
         $valor->save();
 
-        dd($valor);
-
         $count = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $data['id_empresa']);
         $entrega = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $data['id_empresa']);
         if ($planoAtivo > 2) {
