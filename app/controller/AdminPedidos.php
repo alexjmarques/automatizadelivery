@@ -324,12 +324,12 @@ class AdminPedidos extends Controller
 
     public function mudarStatus($data)
     {
-        dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $pedidos = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
+        $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
+        
 
-        $valor = (new CarrinhoPedidos())->findById($data['id']);
+        $valor = (new CarrinhoPedidos())->findById($pedido->id);
         $valor->status = $data['status'];
         if ($planoAtivo > 2) {
             $valor->id_motoboy = $data['motoboy'];
@@ -338,10 +338,10 @@ class AdminPedidos extends Controller
         }
         $valor->save();
 
-        
+        dd($valor);
 
-        $count = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
-        $pedido = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedidos->numero_pedido, 'id_empresa', $data['id_empresa']);
+        $count = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $data['id_empresa']);
+        $entrega = $this->acoes->getByFieldTwo('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $data['id_empresa']);
         if ($planoAtivo > 2) {
             //dd('1');
             if ($data['motoboy'] > 0) {
@@ -355,7 +355,7 @@ class AdminPedidos extends Controller
                     $entregas->status = $data['status'];
                     $entregas->save();
                 } else {
-                    $entregas = (new CarrinhoEntregas())->findById($pedido->id);
+                    $entregas = (new CarrinhoEntregas())->findById($entrega->id);
                     $entregas->status = $data['status'];
                     $entregas->save();
                 }
@@ -372,7 +372,7 @@ class AdminPedidos extends Controller
                 $entregas->status = $data['status'];
                 $entregas->save();
             } else {
-                $entregas = (new CarrinhoEntregas())->findById($pedido->id);
+                $entregas = (new CarrinhoEntregas())->findById($entrega->id);
                 $entregas->status = $data['status'];
                 $entregas->id_motoboy = 0;
                 $entregas->save();
