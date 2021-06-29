@@ -66,6 +66,7 @@ class AllController extends Controller
     {
         $empresa = $data['linkSite'] ? $data['linkSite'] : "";
         $this->sessao->sair($empresa);
+        
     }
 
     public function sairAdmin($data)

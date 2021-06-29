@@ -96,8 +96,6 @@ class Sessao
                 break;
             case 3:
                 $session->destroy();
-                echo 0;
-                dd('1');
                 redirect(BASE . "{$empresa}/login");
                 break;
             default :
