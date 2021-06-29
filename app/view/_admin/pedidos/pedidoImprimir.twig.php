@@ -240,19 +240,19 @@ $btnPrint.addEventListener("click", () => {
     {% set count = pedido[':status'] %}
     {% set count = count + 1 %}
     <div class="btn_acao"><div class="carrega"></div>
-        <a class="col-meio btn-processo bg-danger" onclick="mudarStatus({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">Colocar em produção<i class="simple-icon-arrow-right"></i></a>
+        <button class="col-meio btn-processo bg-danger" onclick="mudarStatus({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">Colocar em produção<i class="simple-icon-arrow-right"></i></button>
     </div>
 {% endif %}
 {% if pedido[':status'] == 2 %}
     {% set count = pedido[':status'] %}
     {% set count = count + 1 %}
     <div class="btn_acao"><div class="carrega"></div>
-        <a class="col-meio btn-processo bg-warning" onclick="mudarStatusEntrega({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">
+        <button class="col-meio btn-processo bg-warning" onclick="mudarStatusEntrega({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">
 
     {% if pedido[':tipo_frete'] == 1 %}
     Pronto para retirada
     {% else %}
-    Entregar ao motoboy{% endif %}<i class="simple-icon-arrow-right"></i></a>
+    Entregar ao motoboy{% endif %}<i class="simple-icon-arrow-right"></i></button>
     </div>
 {% endif %}
 
@@ -260,7 +260,7 @@ $btnPrint.addEventListener("click", () => {
     {% set count = pedido[':status'] %}
     {% set count = count + 1 %}
     <div class="btn_acao"><div class="carrega"></div>
-        <a class="col-meio btn-processo bg-secondary" onclick="mudarStatus({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></a>
+        <button class="col-meio btn-processo bg-secondary" onclick="mudarStatus({{pedido[':id']}}, {{count}}, {{caixa[':id']}})" id="btn-carrinho">Pedido entregue<i class="simple-icon-arrow-right"></i></button>
     </div>
         {% endif %}
 
