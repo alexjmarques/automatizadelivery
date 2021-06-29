@@ -32,7 +32,7 @@ class PedidosController extends Controller
      */
     public function __construct()
     {
-
+        
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
         $this->sessao = new Sessao();
         $this->geral = new AllController();

@@ -24,8 +24,8 @@
                 <input type="text" class="form-control" id="ship-address" name="ship-address" placeholder="Digite o endereço com número" required autocomplete="off">
             </div>
 
-            <input type="hidden" id="rua" name="rua" value="">
-            <input type="hidden" id="numero" name="numero" value="">
+            <input type="hidden" id="rua" name="rua" value="" required>
+            <input type="hidden" id="numero" name="numero" value="" required>
             <input type="hidden" id="cep" name="cep" value="">
             <input type="hidden" id="bairro" name="bairro" value="">
             <input type="hidden" id="cidade" name="cidade" value="">
