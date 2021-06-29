@@ -772,7 +772,7 @@ class UsuarioController extends Controller
                 $valor->senha = $senha;
                 $valor->nivel = 3;
                 $valor->save();
-
+                
                 if ($valor->id > 0) {
                     $valorEnd = new UsuariosEnderecos();
                     $valorEnd->id_usuario = $valor->id;
@@ -809,7 +809,7 @@ class UsuarioController extends Controller
                 exit($json);
             } else {
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Informe o número juntamente com o endereço digitado']);
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Vi que não informou o número, informe após o nome da Rua digitado!']);
                 exit($json);
             }
         }
