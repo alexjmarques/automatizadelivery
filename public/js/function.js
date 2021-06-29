@@ -1122,7 +1122,8 @@ $(document).ready(function () {
             })
         } else {
             $.get(`/${link_site}/u/valid`, function (dd) {
-                if (dd.user !== null && dd.user !== null) {
+                console.log(dd);
+                if (dd.user !== null && dd.user !== null || dd.user !== 0 && dd.user !== 0) {
                     localStorage.setItem('u', dd.user);
                     localStorage.setItem('n', dd.nivel);
                 }
