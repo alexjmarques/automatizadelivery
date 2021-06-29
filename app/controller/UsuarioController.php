@@ -141,17 +141,17 @@ class UsuarioController extends Controller
 
     public function usuarioLogin($data)
     {
-        if($data['u'] != $this->sessao->getUser()){
+        if ($data['u'] != $this->sessao->getUser()) {
             $this->sessao->sessaoNew('id_usuario', $data['u']);
             $this->sessao->sessaoNew('nivel', $data['n']);
         }
-        
+
         header('Content-Type: application/json');
         $json = json_encode(['user' => $this->sessao->getUser(), 'nivel' => $this->sessao->getNivel()]);
         exit($json);
     }
 
-    
+
 
     /**
      * Valida Acesso do usuario Admin
@@ -194,7 +194,7 @@ class UsuarioController extends Controller
 
         if ($getTelefone) {
             $getUsuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $getTelefone->id);
-            if(!$getUsuario){
+            if (!$getUsuario) {
                 $valorEmp = new UsuariosEmpresa();
                 $valorEmp->id_usuario = $getTelefone->id;
                 $valorEmp->id_empresa = $empresa->id;
@@ -210,12 +210,11 @@ class UsuarioController extends Controller
             $numerofinal = $ddi . $numeroTelefone;
 
             $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
-            $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
+            $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
 
             header('Content-Type: application/json');
             $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!', 'url' => "valida/acesso/code/{$getTelefone->id}"]);
             exit($json);
-
         } else {
             header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você precisa fazer um pedido para poder ver os pedidos', 'url' => '/']);
@@ -246,7 +245,7 @@ class UsuarioController extends Controller
         if ($codeValida == $data['codeValida']) {
             $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
             $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
-            
+
             if ($this->sessao->getUser()) {
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os pedidos', 'url' => '']);
@@ -724,19 +723,19 @@ class UsuarioController extends Controller
             'detect' => new Mobile_Detect()
         ]);
     }
-    
+
     public function verificaCadastro($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
         if ($getTelefone) {
             $clienteEmpresa = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $getTelefone->id, 'id_empresa', $empresa->id);
-            if($clienteEmpresa){
+            if ($clienteEmpresa) {
                 echo 1;
-            }else{
+            } else {
                 echo 0;
             }
-        }else{
+        } else {
             echo 0;
         }
     }
@@ -745,8 +744,8 @@ class UsuarioController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefoneVeri']));
-        
-        if ($getTelefone) {            
+
+        if ($getTelefone) {
             $valorEmp = new UsuariosEmpresa();
             $valorEmp->id_usuario = $getTelefone->id;
             $valorEmp->id_empresa = $empresa->id;
@@ -761,55 +760,58 @@ class UsuarioController extends Controller
         } else {
             $getSenha = preg_replace('/[^0-9]/', '', $data['telefoneVeri']);
             $senha = $this->bcrypt->encrypt($getSenha, '2a');
-            
+
             $hash =  md5(uniqid(rand(), true));
             $email = $hash . 'ath@automatizadelivery.com.br';
-            
-            $valor = new Usuarios();
-            $valor->nome = $data['nome'];
-            $valor->email = $email;
-            $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefoneVeri']);
-            $valor->senha = $senha;
-            $valor->nivel = 3;
-            $valor->save();
 
-            if($valor->id > 0){
-                $valorEnd = new UsuariosEnderecos();
-                $valorEnd->id_usuario = $valor->id;
-                $valorEnd->nome_endereco = "Padrão";
-                $valorEnd->rua = $data['rua'];
-                $valorEnd->numero = $data['numero'];
-                $valorEnd->complemento = $data['complemento'];
-                $valorEnd->bairro = $data['bairro'];
-                $valorEnd->cidade = $data['cidade'];
-                $valorEnd->estado = $data['estado'];
-                $valorEnd->cep = $data['cep'];
-                $valorEnd->principal = 1;
-                $valorEnd->save();
-            }else{
+            if ($data['numero']) {
+                $valor = new Usuarios();
+                $valor->nome = $data['nome'];
+                $valor->email = $email;
+                $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefoneVeri']);
+                $valor->senha = $senha;
+                $valor->nivel = 3;
+                $valor->save();
+
+                if ($valor->id > 0) {
+                    $valorEnd = new UsuariosEnderecos();
+                    $valorEnd->id_usuario = $valor->id;
+                    $valorEnd->nome_endereco = "Padrão";
+                    $valorEnd->rua = $data['rua'];
+                    $valorEnd->numero = $data['numero'];
+                    $valorEnd->complemento = $data['complemento'];
+                    $valorEnd->bairro = $data['bairro'];
+                    $valorEnd->cidade = $data['cidade'];
+                    $valorEnd->estado = $data['estado'];
+                    $valorEnd->cep = $data['cep'];
+                    $valorEnd->principal = 1;
+                    $valorEnd->save();
+                } else {
+                    dd($valor);
+                }
+
+                if ($valor->id > 0 && $valorEnd->id > 0) {
+                    $valoEmp = new UsuariosEmpresa();
+                    $valoEmp->id_usuario = $valor->id;
+                    $valoEmp->id_empresa = $empresa->id;
+                    $valoEmp->nivel = 3;
+                    $valoEmp->save();
+                } else {
+                    dd($valorEnd);
+                }
+
+                if ($valor->id > 0 && $valorEnd->id > 0 && $valoEmp->id > 0) {
+                    $this->sessao->add($valor->id, $valor->email, $valor->nivel);
+                }
+
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Informe o némero juntamente com o endereço', 'erro' => 'Informe o némero juntamente com o endereço']);
+                $json = json_encode(['id' => $valoEmp->id, 'resp' => 'insert', 'mensagem' => 'Seu cadastro foi realizado com sucesso', 'url' => '/']);
                 exit($json);
-                dd('stop');
+            } else {
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Informe o número juntamente com o endereço digitado', 'erro' => 'Informe o número juntamente com o endereço digitado']);
+                exit($json);
             }
-
-            if ($valor->id > 0 && $valorEnd->id > 0) {
-                $valoEmp = new UsuariosEmpresa();
-                $valoEmp->id_usuario = $valor->id;
-                $valoEmp->id_empresa = $empresa->id;
-                $valoEmp->nivel = 3;
-                $valoEmp->save();
-            }else{
-                dd($valorEnd);
-              }
-
-            if ($valor->id > 0 && $valorEnd->id > 0 && $valoEmp->id > 0) {
-                $this->sessao->add($valor->id, $valor->email, $valor->nivel);
-            }
-            
-            header('Content-Type: application/json');
-            $json = json_encode(['id' => $valoEmp->id, 'resp' => 'insert', 'mensagem' => 'Seu cadastro foi realizado com sucesso', 'url' => '/']);
-            exit($json);
         }
     }
 }
