@@ -1105,12 +1105,14 @@ $(document).ready(function () {
         })
 
         if (localStorage.getItem("u") && localStorage.getItem("n")) {
+            
             let u = localStorage.getItem("u");
             let n = localStorage.getItem("n");
             let valores = {
                 u,
                 n
             }
+            if(localStorage.getItem("u") !== null){
             $.ajax({
                 url: `/${link_site}/u/l/val`,
                 method: "POST",
@@ -1120,10 +1122,11 @@ $(document).ready(function () {
                     //console.log(dd);
                 },
             })
+        }
         } else {
             $.get(`/${link_site}/u/valid`, function (dd) {
                 console.log(dd);
-                if (dd.user !== null && dd.user !== null || dd.user !== 0 && dd.user !== 0) {
+                if (dd.user !== null && dd.user !== null) {
                     localStorage.setItem('u', dd.user);
                     localStorage.setItem('n', dd.nivel);
                 }
