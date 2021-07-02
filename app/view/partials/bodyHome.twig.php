@@ -35,15 +35,16 @@
   <link href="{{BASE}}css/select2.min.css" rel="stylesheet">
   <link href="{{BASE}}css/osahan.css" rel="stylesheet">
 
-  <script>
-    window.dataLayer = window.dataLayer || [];
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-201209024-1">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'G-P14WHHWPWF');
-  </script>
+  gtag('config', 'UA-201209024-1');
+</script>
   <!-- Facebook Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)

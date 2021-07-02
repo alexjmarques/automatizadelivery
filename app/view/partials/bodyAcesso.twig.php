@@ -27,12 +27,15 @@
     <link href="{{BASE}}pc/css/demo.css" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H85LB3TTM9"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-201209024-1">
+</script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-P14WHHWPWF');
+  gtag('config', 'UA-201209024-1');
 </script>
 </head>
 <body data-link_site="{{empresa.link_site}}">
