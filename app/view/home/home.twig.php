@@ -24,13 +24,17 @@
 <section class="section pt-5 pb-5 bg-white homepage-add-section">
    <div class="container">
       <div class="row">
-         {% for emp in empresas|sort|slice(2,7) %}
+         {% for emp in empresas|sort|slice(2,6) %}
          <div class="col-md-4">
             <a href="{{BASE}}{{ emp.link_site }}">
                <div class="bg-white shadow-sm rounded align-items-center p-1 mb-4 flex-column">
 
                   <div class="col-md-4 p-1 float-left">
+                  {% if emp.logo is null %}
+                  <img src="{{BASE}}uploads/no-foto.png" class="img-float">
+                  {% else %}
                      <img src="{{BASE}}uploads/{{ emp.logo }}" class="img-float">
+                  {% endif %}
                   </div>
                   <div class="col-md-8 py-2 float-left pl-0">
                      <p class="mb-0 text-black font-weight-bold size18">{{ emp.nome_fantasia }}</p>
