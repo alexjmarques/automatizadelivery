@@ -1,4 +1,4 @@
-{% extends 'partials/body.twig.php'  %}
+{% extends 'partials/bodyHome.twig.php'  %}
 {% block title %}{{page.titulo}}{{ trans.t(' - Automatiza Delivery') }}{% endblock %}
 {% block body %}
 {% block head %}
