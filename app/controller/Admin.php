@@ -59,7 +59,7 @@ class Admin extends Controller
         ]);
     }
 
-    public function paginas($data)
+    public function paginasInt($data)
     {
         $count = $this->acoes->countAdd('paginas');
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);

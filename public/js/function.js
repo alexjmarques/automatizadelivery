@@ -142,7 +142,7 @@ switch (active_link) {
         $('#home').addClass('selected')
         $('#home a, #home a i').addClass('text-danger').removeClass('text-dark')
         break;
-    case `/${link_site}/politica-de-privacidade`:
+    case `/${link_site}/privacidade`:
         $('#perfil').addClass('selected')
         $('#perfil a, #perfil a i').addClass('text-danger').removeClass('text-dark')
         break;
@@ -154,7 +154,7 @@ switch (active_link) {
         $('#perfil').addClass('selected')
         $('#perfil a, #perfil a i').addClass('text-danger').removeClass('text-dark')
         break;
-    case `/${link_site}/termos-de-uso`:
+    case `/${link_site}/termos`:
         $('#perfil').addClass('selected')
         $('#perfil a, #perfil a i').addClass('text-danger').removeClass('text-dark')
         break;

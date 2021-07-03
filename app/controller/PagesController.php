@@ -82,12 +82,14 @@ class PagesController extends Controller
     public function politicaPrivacidade($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $links = $this->acoes->getFind('paginas');
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $this->load('_geral/politicaPrivacidade/main', [
             'empresa' => $empresa,
+            'links' => $links,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect()
@@ -310,6 +312,7 @@ class PagesController extends Controller
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
         }
+        $links = $this->acoes->getFind('paginas');
 
         $this->load('_cliente/contato/main', [
             'empresa' => $empresa,
@@ -317,6 +320,7 @@ class PagesController extends Controller
             'usuarioAtivo' => $resulUsuario,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
+            'links' => $links,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect()

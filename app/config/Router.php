@@ -79,8 +79,8 @@ $router->get('/{linkSite}/novo-por-aqui', 'PagesController:novoDelivery');
 $router->get('/{linkSite}/delivery', 'PagesController:quemSomos');
 $router->get('/{linkSite}/fale-conosco', 'PagesController:contato');
 $router->post('/{linkSite}/contato/i', 'PagesController:contatoSend');
-$router->get('/{linkSite}/termos-de-uso', 'PagesController:termosUso');
-$router->get('/{linkSite}/politica-de-privacidade', 'PagesController:politicaPrivacidade');
+$router->get('/{linkSite}/termos', 'PagesController:termosUso');
+$router->get('/{linkSite}/privacidade', 'PagesController:politicaPrivacidade');
 
 /**
  * Listagem para tempo de execução
@@ -210,7 +210,7 @@ $router->get('/admin', 'Admin:index');
 $router->get('/admin/clientes', 'Admin:clientes');
 $router->get('/admin/pagamentos', 'Admin:pagamentos');
 $router->get('/admin/usuarios', 'Admin:usuarios');
-$router->get('/admin/paginas', 'Admin:paginas');
+$router->get('/admin/paginas', 'Admin:paginasInt');
 $router->get('/admin/pagina/nova', 'Admin:nova');
 $router->get('/admin/pagina/editar/{id}', 'Admin:editar');
 $router->post('/admin/pagina/i', 'Admin:insert');
