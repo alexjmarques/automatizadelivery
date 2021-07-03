@@ -34,11 +34,11 @@
                   </div>
                   <div class="col-md-8 py-2 float-left pl-0">
                      <p class="mb-0 text-black font-weight-bold size18">{{ emp.nome_fantasia }}</p>
-                     {% for cat in categoria %}
+                     {# {% for cat in categoria %}
                      {% if cat.id == emp.id_categoria %}
-                     <p class="small mb-1 text-dark">{{cat.nome }}</p>
+                     <-- p class="small mb-1 text-dark">{{cat.nome }}</p-->
                      {% endif %}
-                     {% endfor %}
+                     {% endfor %} #}
                      <p class="small mb-1 text-dark">
                      Telefone: ({{ emp.telefone[:2] }}) {{ emp.telefone|slice(2, 5) }}-{{ emp.telefone|slice(7, 9) }}
                      </p>
