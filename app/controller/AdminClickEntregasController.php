@@ -79,7 +79,7 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
             'estabelecimento' => $estabelecimento,
             'trans' => $trans,
             
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
 
         ]);
     }

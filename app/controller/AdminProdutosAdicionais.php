@@ -39,7 +39,8 @@ class AdminProdutosAdicionais extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
@@ -70,7 +71,7 @@ class AdminProdutosAdicionais extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
 
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 
@@ -79,7 +80,8 @@ class AdminProdutosAdicionais extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
 
         //dd($tipoAdicional);
@@ -102,7 +104,7 @@ class AdminProdutosAdicionais extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'tipoAdicional' => $tipoAdicional,
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 
@@ -113,7 +115,8 @@ class AdminProdutosAdicionais extends Controller
         $retorno = $this->acoes->getByField('produtoAdicional', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
         
         if ($this->sessao->getUser()) {
@@ -136,7 +139,7 @@ class AdminProdutosAdicionais extends Controller
             'usuarioLogado' => $usuarioLogado,
             'tipoAdicional' => $tipoAdicional,
             'isLogin' => $this->sessao->getUser(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 

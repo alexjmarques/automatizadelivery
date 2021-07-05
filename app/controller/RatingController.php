@@ -43,7 +43,8 @@ class RatingController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $pedido = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         $this->load('_geral/rating/main', [
@@ -57,7 +58,7 @@ class RatingController extends Controller
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuario,
             'isLogin' => $this->sessao->getUser(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 

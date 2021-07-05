@@ -56,3 +56,11 @@ define('DB_PORT', '9889');
 
 #Permissão de Upload 
 sudo chmod -R 755 /var/www/{NOME DA EMPRESA}.automatiza.app/public_htm/public/uploads/
+
+
+
+
+SELECT MAX(id) FROM usuarios;
+SELECT nextval('carrinho_id_seq1');
+
+SELECT setval('usuarios_id_seq', (SELECT MAX(id) FROM usuarios)+1);

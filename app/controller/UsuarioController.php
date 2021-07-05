@@ -64,7 +64,8 @@ class UsuarioController extends Controller
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('login/main', [
             'empresa' => $empresa,
@@ -119,7 +120,8 @@ class UsuarioController extends Controller
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/login/main', [
             'trans' => $this->trans,
@@ -284,7 +286,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -313,7 +316,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -322,7 +325,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -341,7 +345,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -351,7 +355,8 @@ class UsuarioController extends Controller
         $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -371,7 +376,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -382,7 +387,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -412,7 +418,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -421,7 +427,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -440,7 +447,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -450,7 +457,8 @@ class UsuarioController extends Controller
         $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -470,7 +478,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -480,7 +488,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -509,7 +518,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -518,7 +527,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -537,7 +547,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -547,7 +557,8 @@ class UsuarioController extends Controller
         $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -567,7 +578,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -588,22 +599,35 @@ class UsuarioController extends Controller
             $senha = $this->bcrypt->encrypt($data['senha'], '2a');
         }
 
-        $valor = new Usuarios();
-        $valor->nome = $data['nome'];
-        $valor->email = $email;
-        $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
-        $valor->senha = $senha;
-        $valor->nivel = $data['nivel'];
-        $valor->save();
+        if($senha && $email){
 
-        $valorEmp = new UsuariosEmpresa();
-        $valorEmp->id_usuario = $valor->id;
-        $valorEmp->id_empresa = $data['id_empresa'];
-        $valorEmp->nivel = $data['nivel'];
-        $valorEmp->save();
+            $valor = new Usuarios();
+            $valor->nome = $data['nome'];
+            $valor->email = $email;
+            $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
+            $valor->senha = $senha;
+            $valor->nivel = $data['nivel'];
+            $valor->save();
 
+            if($valor->id > 0){
+                $valorEmp = new UsuariosEmpresa();
+                $valorEmp->id_usuario = $valor->id;
+                $valorEmp->id_empresa = $data['id_empresa'];
+                $valorEmp->nivel = $data['nivel'];
+                $valorEmp->save();
+
+                if($valorEmp->id > 0){
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => $data['mensagemSuccess'], 'error' => $data['mensagemError'], 'url' => $data['url']]);
+                exit($json);
+                }
+            }
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0, 'error' => $data['mensagemError']]);
+            exit($json);
+        }
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => $data['mensagemSuccess'], 'error' => $data['mensagemError'], 'url' => $data['url']]);
+        $json = json_encode(['id' => 0, 'error' => 'Preencha os campos necessários']);
         exit($json);
     }
 

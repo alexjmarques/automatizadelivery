@@ -37,7 +37,8 @@ class AdminProdutosSabores extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
@@ -65,7 +66,7 @@ class AdminProdutosSabores extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 
@@ -74,7 +75,8 @@ class AdminProdutosSabores extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
@@ -94,7 +96,7 @@ class AdminProdutosSabores extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 
@@ -104,7 +106,8 @@ class AdminProdutosSabores extends Controller
         $retorno = $this->acoes->getByField('produtoSabor', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
@@ -125,7 +128,7 @@ class AdminProdutosSabores extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 

@@ -38,7 +38,7 @@
         <div class="header-icons d-inline-block align-middle">
             <div class="d-none d-md-inline-block align-text-bottom mr-3">
             {% if planoAtivo is not null %}
-            {% if caixa is not null %}
+            {% if caixa == 1 %}
                 <button type="button" id="atendimentoOn" class="botao atendimento on" data-toggle="modal" data-target="#caixa"><p><i class="simple-icon-check text-success"></i> <span class="botao">LOJA ABERTA</span></p></button>
                 {% else %}
                 <button type="button" id="atendimentoOff" class="atendimento" data-toggle="modal" data-target="#caixa"><p><i class="simple-icon-close"></i> <span class="botao">Loja Fechada</span></p></button>

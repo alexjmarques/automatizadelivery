@@ -47,7 +47,8 @@ class AdminConfiguracoesController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
         $moedas = $this->acoes->getFind('moeda');
         $estadosSelecao = $this->acoes->getFind('estados');
@@ -74,7 +75,7 @@ class AdminConfiguracoesController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario'=> $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
 
         ]);
     }

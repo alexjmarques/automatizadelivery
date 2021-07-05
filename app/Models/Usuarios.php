@@ -12,7 +12,7 @@ class Usuarios extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("usuarios", ["nome", "email", "nivel"]);
+        parent::__construct("usuarios", []);
     }
 
     public function add(string $nome, string $email, string $telefone, string $senha, string $nivel)

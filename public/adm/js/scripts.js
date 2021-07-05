@@ -165,6 +165,17 @@ $("#form, #formIfood, #formCliente").submit(function () {
               });
             }
             break;
+            case 'Administrador cadastrado com sucesso!':
+            $('#mensagem').html(data.mensagem);
+            $('.successSup').show();
+            $('.errorSup').hide();
+            $('#alerta').modal("show");
+            if (data.url) {
+              $(".buttonAlert").on('click', function () {
+                window.location = `/${link_site}/${data.url}`;
+              });
+            }
+            break;
           case 'Pedido cancelado com sucesso!':
             $('#cancelarPedido').modal("show");
             break;
@@ -181,8 +192,6 @@ $("#form, #formIfood, #formCliente").submit(function () {
             $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
             window.location = `/${link_site}/${data.url}`;
             break;
-
-
           default:
             $('#mensagem').html(data.mensagem);
             $('#modalNovoCliente').modal("hide");
@@ -483,57 +492,69 @@ function atualizaCart() {
 // });
 
 function atualizar() {
-  $.get(`/${link_site}/admin/pedidos/recebido`, function (dd) {
-    if (parseInt(dd) === 0) {
-      $('#recebido').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
-    } else {
-      let orderDay = localStorage.getItem("sttInit")
-      let newOrder = new Audio('/audio/newOrder.mp3');
-
-      let cancelOrder = new Audio('/audio/cancelOrder.mp3');
-      if (parseInt($(dd).attr('data-status')) === 6) {
-        console.log('Cancelado')
-        cancelOrder.play();
-      }
-
-      if (orderDay === null) {
-        //console.log('aqui')
-        localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
-        newOrder.play();
-        $('#recebido').html(dd);
+  $.ajax({
+    url: `/${link_site}/admin/pedidos/recebido`,
+    method: "get",
+    beforeSend: function () {$('#carregaRecebido').html(`<div class="text-center" id="carregaRecebido"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path></svg></div>`);},
+    complete: function () {$('#carregaRecebido').html('');},
+    success: function (dd) {
+      if (parseInt(dd) === 0) {
+        $('#recebido').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
       } else {
-        if (parseInt($(dd).attr('data-qtd')) > parseInt(orderDay)) {
+        let orderDay = localStorage.getItem("sttInit")
+        let newOrder = new Audio('/audio/newOrder.mp3');
+  
+        let cancelOrder = new Audio('/audio/cancelOrder.mp3');
+        if (parseInt($(dd).attr('data-status')) === 6) {
+          console.log('Cancelado')
+          cancelOrder.play();
+        }
+  
+        if (orderDay === null) {
           localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
           newOrder.play();
           $('#recebido').html(dd);
-          //console.log('subiu mais 1')
         } else {
-          $('#recebido').html(dd);
-          //console.log('Não subiu pedido')
+          if (parseInt($(dd).attr('data-qtd')) > parseInt(orderDay)) {
+            localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
+            newOrder.play();
+            $('#recebido').html(dd);
+          } else {
+            $('#recebido').html(dd);
+          }
         }
       }
-    }
+    },
   })
 
-  $.get(`/${link_site}/admin/pedidos/producao`, function (dd) {
-    if (parseInt(dd) === 0) {
-      $('#producao').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
-    } else {
-      let cancelOrder = new Audio('/audio/cancelOrder.mp3');
-      if (parseInt($(dd).attr('data-status')) === 6) {
-        console.log('Cancelado')
-        cancelOrder.play();
+  $.ajax({
+    url: `/${link_site}/admin/pedidos/producao`,
+    method: "get",
+    success: function (dd) {
+      if (parseInt(dd) === 0) {
+        $('#producao').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
+      } else {
+        let cancelOrder = new Audio('/audio/cancelOrder.mp3');
+        if (parseInt($(dd).attr('data-status')) === 6) {
+          console.log('Cancelado')
+          cancelOrder.play();
+        }
+        $('#producao').html(dd);
       }
-      $('#producao').html(dd);
-    }
+    },
   })
-  $.get(`/${link_site}/admin/pedidos/geral`, function (dd) {
+
+  $.ajax({
+    url: `/${link_site}/admin/pedidos/geral`,
+    method: "get",
+    success: function (dd) {
     if (parseInt(dd) === 0) {
       $('#geral').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
     } else {
       $('#geral').html(dd);
     }
-  })
+  }
+})
 
   $.get(`/admin/pedidos/ifood`, function (dd) {
     if (parseInt(dd) === 0) {

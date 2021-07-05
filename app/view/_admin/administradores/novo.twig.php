@@ -34,7 +34,7 @@
 
                     <div class="form-group col-md-3">
                         <label>Senha <span style="color:red;">*</span></label>
-                        <input type="text" class="form-control" id="senha" name="senha" value="" required>
+                        <input type="password" class="form-control" id="senha" name="senha" value="" required>
                     </div>
                 </div>
                 <input type="hidden" id="nivel" name="nivel" value="0">

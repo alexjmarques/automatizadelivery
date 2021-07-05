@@ -20,7 +20,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             <div class="modal-body text-center">
-                {% if caixa is not null %}
+                {% if caixa == 1 %}
                 <div class="cian-rouded p-2">
                     <div class="w4rAnimated_checkmark pb-3">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" class="successSup">

@@ -62,7 +62,8 @@ class MotoboyController extends Controller
         //dd($resultDelivery);
 
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         if ($this->sessao->getUser()) {
             $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
@@ -106,7 +107,7 @@ class MotoboyController extends Controller
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
 
         ]);
     }
@@ -114,7 +115,8 @@ class MotoboyController extends Controller
     public function login($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             redirect(BASE . "{$empresa->link_site}/motoboy");
@@ -126,7 +128,7 @@ class MotoboyController extends Controller
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
 
         ]);
     }
@@ -168,7 +170,8 @@ class MotoboyController extends Controller
     public function cadastro($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/login/cadastro', [
             'empresa' => $empresa,
@@ -176,7 +179,7 @@ class MotoboyController extends Controller
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
 
         ]);
     }
@@ -276,7 +279,8 @@ class MotoboyController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         if ($this->sessao->getUser()) {
-            $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+            $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultPedidoQtd = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
         }
@@ -340,7 +344,8 @@ class MotoboyController extends Controller
         }
 
         $resulCaixa = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/pedidos/pesquisarEntregaView', [
             'moeda' => $moeda,
@@ -367,7 +372,8 @@ class MotoboyController extends Controller
     {
         $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['pedido']);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $valor = (new CarrinhoPedidos())->findById($data['pedido']);
         $valor->status = 3;
@@ -393,7 +399,8 @@ class MotoboyController extends Controller
     public function entregaListar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $status = $this->acoes->getFind('status');
         $resultTipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
@@ -435,7 +442,8 @@ class MotoboyController extends Controller
     public function numeroEntregaListar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());

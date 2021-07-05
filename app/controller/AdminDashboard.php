@@ -45,6 +45,7 @@ class AdminDashboard extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
@@ -121,7 +122,7 @@ class AdminDashboard extends Controller
             'pedidosAll' => $pedidosAll,
             'categorias' => $resultCategorias,
             'maisVendidos' => $resultMaisVendidos,
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
             'nivelUsuario'=> $this->sessao->getNivel(),
             'domingo' => $domingo,
             'segunda' => $segunda,
@@ -138,7 +139,8 @@ class AdminDashboard extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -152,7 +154,7 @@ class AdminDashboard extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario'=> $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 
@@ -161,7 +163,8 @@ class AdminDashboard extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $countCaixa = $this->acoes->counts('empresaCaixa', 'id_empresa', $empresa->id);
 
 
@@ -182,7 +185,7 @@ class AdminDashboard extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario'=> $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
         ]);
     }
 
@@ -192,7 +195,8 @@ class AdminDashboard extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $countCaixa = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
 
 
@@ -220,7 +224,7 @@ class AdminDashboard extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -246,7 +250,8 @@ class AdminDashboard extends Controller
         $totalRecusado = $this->acoes->countCompanyVar('carrinhoPedidos', 'id_caixa', $empresaCaixa->id, 'status', 5);
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         //$totasEntregas = $this->acoes->sumFiels('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id,'valor_frete');
 
@@ -279,7 +284,7 @@ class AdminDashboard extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario'=> $this->sessao->getNivel(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -313,10 +318,11 @@ class AdminDashboard extends Controller
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/dashboard/caixaVisaoGeral', [
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
             'estabelecimento' => $estabelecimento,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),

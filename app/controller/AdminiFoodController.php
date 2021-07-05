@@ -56,7 +56,8 @@ class AdminIfoodController extends Controller
         $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id,'id_marketplaces', 1);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $resultClientes = $this->acoes->getFind('usuarios');
         $resultMotoboy = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
@@ -101,7 +102,7 @@ class AdminIfoodController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'caixaId' => $estabelecimento[0]->id,
-            'caixa' => $estabelecimento[0]->data_inicio,
+            'caixa' => $caixa->status,
             'nivelUsuario' => $this->sessao->getNivel(),
             'pedidos' => $resultPedidos,
             'clientes' => $resultClientes,

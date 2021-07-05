@@ -291,23 +291,31 @@ class AllController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        //dd($estabelecimento[0]->id);
 
-        $caixa = (new EmpresaCaixa())->findById($estabelecimento->id);
-        $caixa->data_inicio = date('Y-m-d');
-        $caixa->hora_inicio = date('H:m:s');
+        $caixa = (new EmpresaCaixa())->findById($estabelecimento[0]->id);
+        $caixa->data_final = date('Y-m-d');
+        $caixa->hora_final = date('H:m:s');
         $caixa->id_empresa = $empresa->id;
         $caixa->save();
 
-        $valor = (new EmpresaFrete())->findById($delivery->id);
-        $valor->status = 0;
-        $valor->save();
+        if($caixa->id > 0){
+            $valor = (new EmpresaFrete())->findById($delivery->id);
+            $valor->status = 0;
+            $valor->save();
 
-        echo "Atendimento finalizado com sucesso";
-        $_SESSION['caixaAtendimento'] = 0;
-        unset($_SESSION['caixaAtendimento']);
+            if($valor->id > 0){
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => $caixa->id, 'resp' => 'update', 'mensagem' => 'Atendimento finalizado com sucesso', 'error' => 'Não foi possível finalizar o atendimento']);
+                exit($json);
+            }
+        }
 
-        //$resulifood == null ? '' : $this->ifoodAuthetication->refreshToken();
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $caixa->id, 'resp' => 'update', 'error' => 'Não foi possível finalizar o atendimento']);
+        exit($json);
     }
 
     public function verificaEmpresaUser(int $idEmpresa, int $idUsuario)

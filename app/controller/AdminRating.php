@@ -49,7 +49,8 @@ class AdminRating extends Controller
         $ratingEntrega = $this->acoes->getByFieldAll('avaliacao', 'id_empresa', $empresa->id);
 
         
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         
         $day = date('w');
         $domingo = date('Y-m-d', strtotime('-' . $day . ' days'));
@@ -79,7 +80,7 @@ class AdminRating extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 }

@@ -20,6 +20,7 @@
 			<header>Pedidos Recebidos</header>
             <ul id="recebido" class="filtro">
             </ul>
+            <div id="carregaRecebido"></div>
 		</div>
 
 		<div class="list orange">

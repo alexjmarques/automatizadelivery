@@ -308,7 +308,6 @@ class EmpresaCadastroController extends Controller
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
-
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         if($planoAtivo > 0){
             //dd($empresa->id);
