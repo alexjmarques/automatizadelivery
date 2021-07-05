@@ -217,6 +217,8 @@ $router->post('/admin/pagina/i', 'Admin:insert');
 $router->post('/admin/pagina/u', 'Admin:update');
 $router->delete('/admin/pagina/d', 'Admin:delete');
 
+$router->get('/admin/empresas', 'Admin:empresas');
+
 
 $router->get('/{linkSite}/admin', 'AdminDashboard:index');
 $router->get('/{linkSite}/admin/', 'AdminDashboard:index');

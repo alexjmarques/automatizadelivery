@@ -1,5 +1,5 @@
 {% extends 'partials/bodyAdminLogin.twig.php'  %}
-{% block title %}Admin Automatiza.App - Cadastre sua nova senha!{% endblock %}
+{% block title %}Admin Automatiza Delivery - Cadastre sua nova senha!{% endblock %}
 {% block body %}
 <div class="container">
             <div class="row h-100">

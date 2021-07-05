@@ -1,5 +1,5 @@
 {% extends 'partials/bodyAdmin.twig.php'  %}
-{% block title %}Admin Automatiza.App{% endblock %}
+{% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
 
 <h1>Formas de pagamento</h1>

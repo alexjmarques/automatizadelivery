@@ -171,9 +171,9 @@ $("#form, #formIfood, #formCliente").submit(function () {
             window.location = `/${link_site}/${data.url}`;
           }
           break;
-          case 4:
-            $('#mensagem').html(data.mensagem);
-            $('#mensagem').removeClass('m-0').removeClass('b-0').removeClass('p-0');
+        case 4:
+          $('#mensagem').html(data.mensagem);
+          $('#mensagem').removeClass('m-0').removeClass('b-0').removeClass('p-0');
           if (data.id > 0) {
             $('#mensagem').removeClass('alert-danger').addClass('alert-success');
             window.location = data.url;
@@ -1281,6 +1281,21 @@ switch (active_link) {
     break;
   case `/${link_site}/admin/docs`:
     $('#menuDocs').addClass('active')
+    break;
+  case `/admin/empresas`:
+    $('#menuEmpresa').addClass('active')
+    break;
+  case `/admin/empresas?page=${activeId}`:
+    $('#menuEmpresa').addClass('active')
+    break;
+  case `/admin/paginas`:
+    $('#menuPaginas').addClass('active')
+    break;
+  case `/admin/pagina/nova`:
+    $('#menuPaginas').addClass('active')
+    break;
+  case `/admin/paginas/editar/${activeId}`:
+    $('#menuPaginas').addClass('active')
     break;
   default:
     $('#menuPainel').addClass('active')

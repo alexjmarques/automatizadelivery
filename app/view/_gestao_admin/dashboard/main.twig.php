@@ -1,4 +1,4 @@
-{% extends 'partials/bodyAdmin.twig.php'  %}
+{% extends 'partials/bodySupAdmin.twig.php'  %}
 {% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
 
@@ -105,29 +105,26 @@
 
 <div class="container-fluid">
     <div class="col-12">
-        <h1>Acompanhamento</h1>
+        <h1>Dashboard</h1>
         <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
             <ol class="breadcrumb pt-0">
                 <li class="breadcrumb-item active" aria-current="page">tempo real</li>
             </ol>
         </nav>
         <div class="separator mb-5"></div>
-
     </div>
     <div class="row">
         <div class="col-lg-4">
             <div class="card mb-4 progress-banner">
-                <a href="{{BASE}}{{empresa.link_site}}/admin/pedidos" class="card-body justify-content-between d-flex flex-row align-items-center">
+                <a href="#" class="card-body justify-content-between d-flex flex-row align-items-center">
                     <div>
                         <i class="iconsminds-money-bag mr-2 text-white align-text-bottom d-inline-block"></i>
                         <div>
-
-                            <p class="text-small text-white">Hoje</p>
-                            <p class="text-small text-white">{{pedidos}} Pedidos Feitos</p>
+                            <p class="text-small text-white">Empresas Cadastradas</p>
                         </div>
                     </div>
                     <div>
-                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{pedidos}}" aria-valuemax="12" data-show-percent="false">
+                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{empresasCont}}" aria-valuemax="12" data-show-percent="false">
                         </div>
                     </div>
                 </a>
@@ -135,15 +132,15 @@
         </div>
         <div class="col-lg-4">
             <div class="card mb-4 progress-banner">
-                <a href="{{BASE}}{{empresa.link_site}}/admin/entregas" class="card-body justify-content-between d-flex flex-row align-items-center">
+                <a href="#" class="card-body justify-content-between d-flex flex-row align-items-center">
                     <div>
                         <i class="simple-icon-clock mr-2 text-white align-text-bottom d-inline-block"></i>
                         <div>
-                            <p class="text-small text-white">Total Entregas efetuadas</p>
+                            <p class="text-small text-white">Total Pedidos</p>
                         </div>
                     </div>
                     <div>
-                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{entregas + recusados}}" aria-valuemax="6" data-show-percent="false">
+                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="0" aria-valuemax="6" data-show-percent="false">
                         </div>
                     </div>
                 </a>
@@ -151,51 +148,23 @@
         </div>
         <div class="col-lg-4">
             <div class="card mb-4 progress-banner">
-                <a href="{{BASE}}{{empresa.link_site}}/admin/pedidos-cancelados" class="card-body justify-content-between d-flex flex-row align-items-center">
+                <a href="#" class="card-body justify-content-between d-flex flex-row align-items-center">
                     <div>
                         <i class="iconsminds-bell mr-2 text-white align-text-bottom d-inline-block"></i>
                         <div>
-                            <p class="text-small text-white">Total Cancelados e ou Recusados</p>
+                            <p class="text-small text-white">Total Entregas</p>
                         </div>
                     </div>
                     <div>
-                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="{{cancelados + recusados}}" aria-valuemax="10" data-show-percent="false">
+                        <div role="progressbar" class="progress-bar-circle progress-bar-banner position-relative" data-color="white" data-trail-color="rgba(255,255,255,0.2)" aria-valuenow="0" aria-valuemax="10" data-show-percent="false">
                         </div>
                     </div>
                 </a>
             </div>
         </div>
     </div>
-    {% if nivelUsuario == 0 %}
-    <div class="row">
-        <div class="col-md-12 col-lg-6 col-xl-7 mb-4">
-            <div class="card dashboard-progress">
-                <div class="card-body">
-                    <h5 class="card-title">Panorama da Semana - Ganhos</h5>
-                    <div class="card-body">
-                        <p class="lead color-theme-1 mb-1 value"></p>
-                        <p class="mb-0 label text-small"></p>
-                        <div class="chart">
-                            <canvas id="smallChart1" data-domingo="{{domingoValor}}" data-segunda="{{segundaValor}}" data-terca="{{tercaValor}}" data-quarta="{{quartaValor}}" data-quinta="{{quintaValor}}" data-sexta="{{sextaValor}}" data-sabado="{{sabadoValor}}"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12 col-lg-6 col-xl-5 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Pagamento mais utilizadas esta semana</h5>
-                    <div class="dashboard-donut-chart chart">
-                        <canvas id="categoryChart" data-Dinheiro="{{ dinheiro }}" data-Debito="{{ debito }}" data-Credito="{{ credito }}" data-VR="{{ vr }}" data-VA="{{ va }}" data-QRCODE="{{ qrCode }}"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    <div class="row">
+    
+    {# <div class="row">
         <div class="col-lg-12 col-xl-6">
             <div class="icon-cards-row">
                 <div class="glide dashboard-numbers">
@@ -290,7 +259,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> #}
 
 
 

@@ -1,5 +1,5 @@
 {% extends 'partials/bodyAdminLogin.twig.php'  %}
-{% block title %}Admin Automatiza.App - Login{% endblock %}
+{% block title %}Admin Automatiza Delivery - Login{% endblock %}
 {% block body %}
 <div class="container">
             <div class="row h-100">

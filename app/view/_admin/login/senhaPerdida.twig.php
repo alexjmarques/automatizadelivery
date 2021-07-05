@@ -1,5 +1,5 @@
 {% extends 'partials/bodyAdminLogin.twig.php'  %}
-{% block title %}Admin Automatiza.App - Recuperar Senha{% endblock %}
+{% block title %}Admin Automatiza Delivery - Recuperar Senha{% endblock %}
 {% block body %}
 <div class="container">
             <div class="row h-100">

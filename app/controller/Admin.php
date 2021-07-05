@@ -40,15 +40,17 @@ class Admin extends Controller
 
     public function index($data)
     {
-        dd('aqui');
+        //dd('aqui');
         $empresas = $this->acoes->getFind('empresa');
+        $empresasCont = $this->acoes->countAdd('empresa');
         $empresaDelivery = $this->acoes->getFind('empresaFrete');
         $empresaEndereco = $this->acoes->getFind('empresaEnderecos');
         $categoria = $this->acoes->getFind('categoriaSeguimentoSub');
         $pedidos = $this->acoes->getFind('carrinhoPedidos');
 
-        $this->load('_adminClient/dashboard', [
+        $this->load('_gestao_admin/dashboard/main', [
             'empresas' => $empresas,
+            'empresasCont' => $empresasCont,
             'empresaDelivery' => $empresaDelivery,
             'empresaEndereco' => $empresaEndereco,
             'categoria' => $categoria,
@@ -59,9 +61,32 @@ class Admin extends Controller
         ]);
     }
 
+    public function empresas($data)
+    {
+        $count = $this->acoes->countAdd('empresa');
+        $planos = $this->acoes->getFind('planos');
+        $assinatura = $this->acoes->getFind('assinatura');
+        $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 10, $page);
+        $empresas = $this->acoes->paginationAdd('empresa', $pager->limit(), $pager->offset(), 'id ASC');
+
+        $this->load('_gestao_admin/empresas/main', [
+            'planos' => $planos,
+            'assinatura' => $assinatura,
+            'usuarioLogado' => $usuarioLogado,
+            'empresas' => $empresas,
+            'trans' => $this->trans,
+            'paginacao' => $pager->render('mt-4 pagin'),
+            'detect' => new Mobile_Detect()
+        ]);
+    }  
+
     public function paginasInt($data)
     {
         $count = $this->acoes->countAdd('paginas');
+        $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
@@ -70,6 +95,7 @@ class Admin extends Controller
         $this->load('_gestao_admin/paginas/main', [
             'paginas' => $paginas,
             'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
             'paginacao' => $pager->render('mt-4 pagin'),
             'detect' => new Mobile_Detect()
         ]);

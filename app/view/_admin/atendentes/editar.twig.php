@@ -1,6 +1,6 @@
 
 {% extends 'partials/bodyAdmin.twig.php'  %}
-{% block title %}Admin Automatiza.App{% endblock %}
+{% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
 <h1>Editar Atendente</h1>
 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">

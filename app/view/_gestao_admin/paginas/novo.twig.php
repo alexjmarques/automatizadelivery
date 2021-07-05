@@ -1,4 +1,4 @@
-{% extends 'partials/bodyAdmin.twig.php'  %}
+{% extends 'partials/bodySupAdmin.twig.php'  %}
 {% block title %}Admin Automatiza.App{% endblock %}
 {% block body %}
 <h1>Nova Pagina</h1>
