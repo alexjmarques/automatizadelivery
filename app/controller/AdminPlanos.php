@@ -200,7 +200,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                         $valor->save();
                     }
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Plano contratado com sucesso!', 'error' => 'Não foi posível contratar o Plano!', 'url' => 'admin/planos']);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Plano contratado com sucesso!', 'error' => 'Não foi posível contratar o Plano!','code' => 2 ,  'url' => 'admin/planos']);
                     exit($json);
                 }
                 if ($subscription->status == 'processing' || $subscription->status == 'waiting_payment') {
@@ -212,11 +212,11 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                     $valor->save();
 
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Aguarde! Estamos aguardando o processamento do pagamento!', 'url' => 'admin/planos']);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Aguarde! Estamos aguardando o processamento do pagamento!','code' => 2 ,  'url' => 'admin/planos']);
                     exit($json);
                 } else {
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'error' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'url' => 'admin/planos']);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'error' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão','code' => 2 ,  'url' => 'admin/planos']);
                     exit($json);
                 }
             }

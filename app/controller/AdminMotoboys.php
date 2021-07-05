@@ -165,7 +165,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         //print_r($valor);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Motoboy cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Motoboy', 'url' => 'admin/motoboys']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Motoboy cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Motoboy','code' => 2 ,  'url' => 'admin/motoboys']);
         exit($json);
     }
 
@@ -180,7 +180,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Motoboy atualizado com sucesso', 'error' => 'Não foi possível atualizar o Motoboy', 'url' => 'admin/motoboys']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Motoboy atualizado com sucesso', 'error' => 'Não foi possível atualizar o Motoboy','code' => 2 ,  'url' => 'admin/motoboys']);
         exit($json);
     }
 

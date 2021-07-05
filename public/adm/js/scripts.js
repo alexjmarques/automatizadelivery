@@ -74,8 +74,8 @@ $(document).ready(function () {
   var mediaDevices = navigator.mediaDevices;
   let mediaRecorder
   mediaDevices.getUserMedia({
-      audio: true
-    })
+    audio: true
+  })
     .then(stream => {
       mediaRecorder = new MediaRecorder(stream)
       mediaRecorder.ondataavailable = data => {
@@ -139,97 +139,63 @@ $("#form, #formIfood, #formCliente").submit(function () {
     },
     complete: function () {
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
     },
     success: function (data) {
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
       console.log(data)
-      if (data.id > 0) {
-        switch (data.mensagem) {
-          case 'Enviado o Código agora e só validar':
-            $('#ValidaCode').modal("show");
-            break;
-          case 'Aguarde estamos redirecionando para a pagina inicial':
-            $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
+
+      switch (data.code) {
+        case 3:
+          $('#ValidaCode').modal("show");
+          break;
+        case 2:
+          $('#mensagem').html(data.mensagem);
+          $('.successSup').show();
+          $('.errorSup').hide();
+          $('#alerta').modal("show");
+
+          if (data.id > 0) {
+            if (data.url) {
+              $(".buttonAlert").on('click', function () {
+                window.location = `/${link_site}/${data.url}`;
+              });
+            }
+          }
+          break;
+        case 1:
+          $('#alerta').modal("hide");
+          $('#alertGeralSite').modal("hide");
+          if (data.id > 0) {
+            window.location = `/${link_site}/${data.url}`;
+          }
+          break;
+          case 4:
+            $('#mensagem').html(data.mensagem);
+            $('#mensagem').removeClass('m-0').removeClass('b-0').removeClass('p-0');
+          if (data.id > 0) {
+            $('#mensagem').removeClass('alert-danger').addClass('alert-success');
             window.location = data.url;
-            break;
-          case 'Primeiro endereço cadastrado com Sucesso!':
-            $('#mensagem').html('Pronto! Agora que tenho suas informações de entrega revise os itens de seu carrinho, adicione ou remova itens para finalizar seu pedido');
-            $('.successSup').show();
-            $('.errorSup').hide();
-            $('#alerta').modal("show");
-            if (data.url) {
-              $(".buttonAlert").on('click', function () {
-                window.location = `/${link_site}/${data.url}`;
-              });
-            }
-            break;
-            case 'Administrador cadastrado com sucesso!':
-            $('#mensagem').html(data.mensagem);
-            $('.successSup').show();
-            $('.errorSup').hide();
-            $('#alerta').modal("show");
-            if (data.url) {
-              $(".buttonAlert").on('click', function () {
-                window.location = `/${link_site}/${data.url}`;
-              });
-            }
-            break;
-          case 'Pedido cancelado com sucesso!':
-            $('#cancelarPedido').modal("show");
-            break;
-          case 'Carrinho interno iniciado':
-            $('#alerta').modal("hide");
-            $('#alertGeralSite').modal("hide");
-            window.location = `/${link_site}/${data.url}`;
-            break;
-          case 'Enviamos instruções para que você possa recuperar sua senha!':
-            $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
-            window.location = `/${link_site}/${data.url}`;
-            break;
-          case 'Senha atualizada com sucesso':
-            $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
-            window.location = `/${link_site}/${data.url}`;
-            break;
-          default:
-            $('#mensagem').html(data.mensagem);
-            $('#modalNovoCliente').modal("hide");
-            $('.successSup').show();
-            $('.errorSup').hide();
-            $('#alerta').modal("show");
-            atualizar()
-            atualizaCart()
+          }
+          break;
+        default:
+          $('#mensagem').html(data.mensagem);
+          $('#modalNovoCliente').modal("hide");
+          $('.successSup').show();
+          $('.errorSup').hide();
+          $('#alerta').modal("show");
+          atualizar()
+          atualizaCart()
+          if (data.id > 0) {
             if (data.url) {
               $(".buttonAlert").on('click', function () {
                 atualizar();
                 window.location = `/${link_site}/${data.url}`;
               });
             }
-            break;
-        }
-      } else {
-        switch (data.mensagem) {
-          case 'Cliente já possuí conta cadastrada no sistema':
-            $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
-            $('#modalNovoCliente').modal("hide");
-            break;
-          case 'Não foi possivel enviar o email o email de recuperação':
-            $('#mensagem').html(`<div class="alert alert-danger" role="alert">${data.error}</div>`);
-            window.location = `/${link_site}/${data.url}`;
-            break;
-          case 'Carrinho interno iniciado':
-            $('#alerta').modal("hide");
-            $('#alertGeralSite').modal("hide");
-            window.location = `/${link_site}/${data.url}`;
-            break;
-          default:
-            $('.errorSup').show();
-            $('.successSup').hide();
-            $('#alertGeralSite').modal("show");
-            $('#mensagem').html(data.error);
-            break;
-        }
+          }
+          break;
       }
     },
     error: function (data) {
@@ -243,7 +209,7 @@ $("#form, #formIfood, #formCliente").submit(function () {
     xhr: function () {
       var myXhr = $.ajaxSettings.xhr();
       if (myXhr.upload) {
-        myXhr.upload.addEventListener('progress', function () {}, false);
+        myXhr.upload.addEventListener('progress', function () { }, false);
       }
       return myXhr;
     }
@@ -264,25 +230,25 @@ $("#formMk").submit(function () {
     },
     complete: function () {
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
     },
     success: function (data) {
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
       console.log(data)
       switch (data) {
         case 'Não foi possível Cadastar os dados do iFood':
           $('.errorSup').show();
           $('#alerta').modal("show");
           $('#mensagem').html(data + '!');
-          $(".buttonAlert").on('click', function () {});
+          $(".buttonAlert").on('click', function () { });
           break;
         default:
           let resultado = data.substring(data.indexOf("=") + 1);
           $('#alertaIfood').modal("show");
           $('#codeLink').html(`<a href="${data}" target="_blank">Clique aqui</a>`);
           $('#codeOpen').html(resultado);
-          $(".buttonAlert").on('click', function () {});
+          $(".buttonAlert").on('click', function () { });
           break;
       }
     },
@@ -297,7 +263,7 @@ $("#formMk").submit(function () {
     xhr: function () {
       var myXhr = $.ajaxSettings.xhr();
       if (myXhr.upload) {
-        myXhr.upload.addEventListener('progress', function () {}, false);
+        myXhr.upload.addEventListener('progress', function () { }, false);
       }
       return myXhr;
     }
@@ -318,11 +284,11 @@ $("#formAtendimento").submit(function () {
     },
     complete: function () {
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
     },
     success: function (data) {
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
       console.log(data)
       switch (data.mensagem) {
         case 'Atendimento iniciado com sucesso':
@@ -359,7 +325,7 @@ $("#formAtendimento").submit(function () {
     xhr: function () {
       var myXhr = $.ajaxSettings.xhr();
       if (myXhr.upload) {
-        myXhr.upload.addEventListener('progress', function () {}, false);
+        myXhr.upload.addEventListener('progress', function () { }, false);
       }
       return myXhr;
     }
@@ -495,21 +461,21 @@ function atualizar() {
   $.ajax({
     url: `/${link_site}/admin/pedidos/recebido`,
     method: "get",
-    beforeSend: function () {$('#carregaRecebido').html(`<div class="text-center" id="carregaRecebido"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path></svg></div>`);},
-    complete: function () {$('#carregaRecebido').html('');},
+    beforeSend: function () { $('#carregaRecebido').html(`<div class="text-center" id="carregaRecebido"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path></svg></div>`); },
+    complete: function () { $('#carregaRecebido').html(''); },
     success: function (dd) {
       if (parseInt(dd) === 0) {
         $('#recebido').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
       } else {
         let orderDay = localStorage.getItem("sttInit")
         let newOrder = new Audio('/audio/newOrder.mp3');
-  
+
         let cancelOrder = new Audio('/audio/cancelOrder.mp3');
         if (parseInt($(dd).attr('data-status')) === 6) {
           console.log('Cancelado')
           cancelOrder.play();
         }
-  
+
         if (orderDay === null) {
           localStorage.setItem("sttInit", $(dd).attr('data-qtd'));
           newOrder.play();
@@ -548,13 +514,13 @@ function atualizar() {
     url: `/${link_site}/admin/pedidos/geral`,
     method: "get",
     success: function (dd) {
-    if (parseInt(dd) === 0) {
-      $('#geral').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
-    } else {
-      $('#geral').html(dd);
+      if (parseInt(dd) === 0) {
+        $('#geral').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
+      } else {
+        $('#geral').html(dd);
+      }
     }
-  }
-})
+  })
 
   $.get(`/admin/pedidos/ifood`, function (dd) {
     if (parseInt(dd) === 0) {
@@ -598,7 +564,7 @@ function mudarStatus(id, status, id_caixa) {
     id_motoboy
   }
   console.log('Imprimiu');
-  if(parseInt(status) === 2){
+  if (parseInt(status) === 2) {
     $.getJSON(`/${link_site}/admin/pedido/imprimir/${id}`, function (dd) {
       console.log('Imprimiu');
     })
@@ -615,17 +581,17 @@ function mudarStatus(id, status, id_caixa) {
     },
     complete: function () {
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
       $('#btn-carrinho').html('Pedido entregue <i class="simple-icon-arrow-right"></i>');
     },
     success: function (dd) {
       console.log(dd);
       $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+      $('.btn_acao .carrega').html('')
       if (dd == 'Status alterado com sucesso') {
         atualizar();
         $('#close-modal').trigger('click');
-      } else {}
+      } else { }
 
     },
   })
@@ -667,12 +633,12 @@ function mudarStatusEntrega(id, status, id_caixa) {
       },
       complete: function () {
         $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+        $('.btn_acao .carrega').html('')
         $('#btn-carrinho').html('Pedido entregue <i class="simple-icon-arrow-right"></i>');
       },
       success: function (dd) {
         $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+        $('.btn_acao .carrega').html('')
         if (dd == 'Status alterado com sucesso') {
           atualizar();
           $('#close-modal').trigger('click');
@@ -821,11 +787,11 @@ function syncIfood(id, tipo) {
     if (
       !(
         $(event.target)
-        .parents()
-        .hasClass("theme-colors") ||
+          .parents()
+          .hasClass("theme-colors") ||
         $(event.target)
-        .parents()
-        .hasClass("theme-button") ||
+          .parents()
+          .hasClass("theme-button") ||
         $(event.target).hasClass("theme-button") ||
         $(event.target).hasClass("theme-colors")
       )
@@ -1065,11 +1031,11 @@ switch (active_link) {
     $('#menuCaixa .primaryMenu').removeClass('collapsed')
     $('#caiRel').addClass('active')
     break;
-    case `/${link_site}/admin/clientes/relatorio`:
-      $('#collapseCaixaTypes').addClass('show')
-      $('#menuCaixa .primaryMenu').removeClass('collapsed')
-      $('#caiCli').addClass('active')
-      break;
+  case `/${link_site}/admin/clientes/relatorio`:
+    $('#collapseCaixaTypes').addClass('show')
+    $('#menuCaixa .primaryMenu').removeClass('collapsed')
+    $('#caiCli').addClass('active')
+    break;
   case `/${link_site}/admin/caixa/dia/${activeId}`:
     $('#collapseCaixaTypes').addClass('show')
     $('#menuCaixa .primaryMenu').removeClass('collapsed')
@@ -1217,11 +1183,11 @@ switch (active_link) {
     $('#subUn').addClass('active')
     break;
 
-    // case `/${link_site}/admin/planos`:
-    // $('#collapseMenuConfiguracoes').addClass('show')
-    // $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
-    // $('#subMp').addClass('active')
-    // break;
+  // case `/${link_site}/admin/planos`:
+  // $('#collapseMenuConfiguracoes').addClass('show')
+  // $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+  // $('#subMp').addClass('active')
+  // break;
 
 
   case `/${link_site}/admin/planos`:
@@ -1494,11 +1460,11 @@ $("#formFinish").submit(function () {
       },
       complete: function () {
         $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+        $('.btn_acao .carrega').html('')
       },
       success: function (dd) {
         $(".btn_acao a, .btn_acao button").removeClass('hide');
-            $('.btn_acao .carrega').html('')
+        $('.btn_acao .carrega').html('')
         console.log(dd);
         switch (dd.mensagem) {
           case 'Pedido finalizado com sucesso':
@@ -1530,7 +1496,7 @@ $("#formFinish").submit(function () {
       xhr: function () {
         var myXhr = $.ajaxSettings.xhr();
         if (myXhr.upload) {
-          myXhr.upload.addEventListener('progress', function () {}, false);
+          myXhr.upload.addEventListener('progress', function () { }, false);
         }
         return myXhr;
       }

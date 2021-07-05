@@ -255,7 +255,7 @@ class PerfilController extends Controller
 
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço', 'url' => 'carrinho',]);
+        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço','code' => 2 ,  'url' => 'carrinho',]);
         exit($json);
     }
 
@@ -286,7 +286,7 @@ class PerfilController extends Controller
         $novo->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar um novo endereço', 'url' => 'enderecos',]);
+        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar um novo endereço','code' => 2 ,  'url' => 'enderecos',]);
         exit($json);
     }
 
@@ -322,7 +322,7 @@ class PerfilController extends Controller
         $novo->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Endereço atualizado com Sucesso!', 'error' => 'Erro ao atualizar o endereço', 'url' => 'enderecos',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Endereço atualizado com Sucesso!', 'error' => 'Erro ao atualizar o endereço','code' => 2 ,  'url' => 'enderecos',]);
         exit($json);
     }
 
@@ -340,7 +340,7 @@ class PerfilController extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados atualizado com sucesso', 'error' => 'Erro ao atualizar o seus dados', 'url' => 'perfil',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados atualizado com sucesso', 'error' => 'Erro ao atualizar o seus dados','code' => 2 ,  'url' => 'perfil',]);
         exit($json);
     }
 }

@@ -356,7 +356,7 @@ class PagesController extends Controller
         $this->email->contato($data['nome'], $data['email'], $data['telefone'], $data['msn']);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde', 'url' => 'institucional/contato', 'code' => 12]);
+        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde','code' => 2 ,  'url' => 'institucional/contato', 'code' => 12]);
         exit($json);
         redirect("https://automatizadelivery.com.br/institucional/contato");
     }

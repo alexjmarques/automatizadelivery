@@ -109,7 +109,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $this->sessao->sessaoNew('id_cliente', $data['cliente']);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'Carrinho interno iniciado', 'error' => 'Não foi posível iniciar carrinho interno iniciado', 'url' => 'admin/pedido/novo/produtos']);
+        $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'Carrinho interno iniciado', 'error' => 'Não foi posível iniciar carrinho interno iniciado','code' => 1 ,  'url' => 'admin/pedido/novo/produtos']);
         exit($json);
     }
 
@@ -664,7 +664,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);
+        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso','code' => 2 ,  'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);
         exit($json);
     }
 
@@ -732,7 +732,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $this->sessao->sessaoNew('id_cliente', $valor->id);
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso', 'url' => 'admin/pedido/novo/produtos']);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso','code' => 2 ,  'url' => 'admin/pedido/novo/produtos']);
             exit($json);
         }
     }

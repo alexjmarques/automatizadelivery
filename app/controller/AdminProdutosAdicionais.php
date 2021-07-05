@@ -153,7 +153,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicional cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o produto adicional', 'url' => 'admin/produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicional cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o produto adicional','code' => 2 ,  'url' => 'admin/produtos-adicionais']);
         exit($json);
     }
 
@@ -167,7 +167,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto Adicional atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto adicional', 'url' => 'admin/produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto Adicional atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto adicional','code' => 2 ,  'url' => 'admin/produtos-adicionais']);
         exit($json);
     }
 

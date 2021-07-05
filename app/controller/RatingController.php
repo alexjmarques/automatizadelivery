@@ -78,7 +78,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Agradecemos pela sua avaliação!', 'error' => 'Não foi posível avaliar o pedido', 'url' => 'meus-pedidos',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Agradecemos pela sua avaliação!', 'error' => 'Não foi posível avaliar o pedido','code' => 2 ,  'url' => 'meus-pedidos',]);
         exit($json);
     }
 }

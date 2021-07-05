@@ -106,7 +106,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Status atualizada com sucesso', 'error' => 'Não foi possível atualizar o Status', 'url' => 'admin/status',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Status atualizada com sucesso', 'error' => 'Não foi possível atualizar o Status','code' => 2 ,  'url' => 'admin/status',]);
         exit($json);
     }
 }

@@ -145,10 +145,12 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                 $this->sessao->sessaoNew('nivel', $motoboy->nivel);
 
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $motoboy->id, 'resp' => 'login', 'mensagem' => 'Aguarde estamos redirecionando para a pagina inicial', 'url' => 'motoboy']);
+                $json = json_encode(['id' => $motoboy->id, 'resp' => 'login', 'mensagem' => 'Aguarde estamos redirecionando para a pagina inicial','code' => 2 ,  'url' => 'motoboy']);
                 exit($json);
             } else {
-                echo "Senha incorreta. Verifique se digitou sua senha corretamente!";
+                header('Content-Type: application/json');
+                $json = json_encode(['link' => "", 'resp' => 'login', 'error' => "Senha incorreta. Verifique se digitou sua senha corretamente!"]);
+                exit($json);
             }
 
             $nivel = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $motoboy->id);
@@ -194,7 +196,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $nivel = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $telefone->id);
             if ($nivel->nivel == 1) {
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Número de telefone já cadastrado em nossa plataforma', 'error' => 'Número de telefone já cadastrado em nossa plataforma', 'url' => 'motoboy/login']);
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Número de telefone já cadastrado em nossa plataforma', 'error' => 'Número de telefone já cadastrado em nossa plataforma','code' => 2 ,  'url' => 'motoboy/login']);
                 exit($json);
             } else {
                 $valorEmp = new UsuariosEmpresa();
@@ -229,7 +231,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $valorEmp->save();
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Conta criada com sucesso', 'error' => 'Erro ao criar sua conta', 'url' => 'motoboy/login']);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Conta criada com sucesso', 'error' => 'Erro ao criar sua conta','code' => 2 ,  'url' => 'motoboy/login']);
             exit($json);
         }
     }
@@ -391,7 +393,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         redirect(BASE . "{$empresa->link_site}/motoboy/entregas");
 
         // header('Content-Type: application/json');
-        // $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Pedido atribuído ao seu perfil', 'error' => 'Não foi possível atribuír ao seu perfil! Tente novamente', 'url' => 'motoboy/entregas']);
+        // $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Pedido atribuído ao seu perfil', 'error' => 'Não foi possível atribuír ao seu perfil! Tente novamente','code' => 2 ,  'url' => 'motoboy/entregas']);
         // exit($json);
     }
 
@@ -500,7 +502,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $entrega->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Informamos ao estabelecimento o novo Status', 'error' => 'Não foi possivel informamos ao estabelecimento o novo Status! Tente novamente', 'url' => 'motoboy']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Informamos ao estabelecimento o novo Status', 'error' => 'Não foi possivel informamos ao estabelecimento o novo Status! Tente novamente','code' => 2 ,  'url' => 'motoboy']);
         exit($json);
     }
 }

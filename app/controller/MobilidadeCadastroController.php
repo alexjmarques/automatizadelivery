@@ -285,11 +285,11 @@ class MobilidadeCadastroController extends Controller
                 $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
 
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $usuarios->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Clique em OK para efetuar o login e começar a utilizar nossos serviços', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/admin/login", 'code' => 10 ]);
+                $json = json_encode(['id' => $usuarios->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Clique em OK para efetuar o login e começar a utilizar nossos serviços', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde','code' => 2 ,  'url' => "{$data['link_site']}/admin/login", 'code' => 10 ]);
             }else{
                 $this->sessao->add($usuarios->id, $usuarios->email, $usuarios->nivel);
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde', 'url' => "{$data['link_site']}/{$plano->slug}/pagamento", 'code' => 11 ]);
+                $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde','code' => 2 ,  'url' => "{$data['link_site']}/{$plano->slug}/pagamento", 'code' => 11 ]);
             }
 
         }
@@ -388,7 +388,7 @@ class MobilidadeCadastroController extends Controller
                         $valor->save();
                     }
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Plano contratado com sucesso!', 'error' => 'Não foi posível contratar o Plano!', 'url' => "{$empresa->link_site}/admin", 'code' => 10]);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Plano contratado com sucesso!', 'error' => 'Não foi posível contratar o Plano!','code' => 2 ,  'url' => "{$empresa->link_site}/admin", 'code' => 10]);
                     exit($json);
                 }
                 if ($subscription->status == 'processing' || $subscription->status == 'waiting_payment') {
@@ -400,11 +400,11 @@ class MobilidadeCadastroController extends Controller
                     $valor->save();
 
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Aguarde! Estamos aguardando o processamento do seu pagamento!', 'url' => "{$empresa->link_site}/admin", 'code' => 10]);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Aguarde! Estamos aguardando o processamento do seu pagamento!','code' => 2 ,  'url' => "{$empresa->link_site}/admin", 'code' => 10]);
                     exit($json);
                 } else {
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'error' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'url' => "{$empresa->link_site}/admin", 'code' => 9]);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'error' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão','code' => 2 ,  'url' => "{$empresa->link_site}/admin", 'code' => 9]);
                     exit($json);
                 }
             }

@@ -150,7 +150,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Horário de Funcionamento cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Horário de Funcionamento', 'url' => 'admin/conf/atendimento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Horário de Funcionamento cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Horário de Funcionamento','code' => 2 ,  'url' => 'admin/conf/atendimento',]);
         exit($json);
     }
 
@@ -163,7 +163,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Horário de Funcionamento atualizado com sucesso', 'error' => 'Não foi posível atualizar o Horário de Funcionamento', 'url' => 'admin/conf/atendimento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Horário de Funcionamento atualizado com sucesso', 'error' => 'Não foi posível atualizar o Horário de Funcionamento','code' => 2 ,  'url' => 'admin/conf/atendimento',]);
         exit($json);
     }
 

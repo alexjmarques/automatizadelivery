@@ -108,7 +108,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         //print_r($valor);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados de Entrega atualizado com sucesso', 'error' => 'Não foi possível atualizar os dados de entrega', 'url' => 'admin/conf/delivery/e',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados de Entrega atualizado com sucesso', 'error' => 'Não foi possível atualizar os dados de entrega','code' => 2 ,  'url' => 'admin/conf/delivery/e',]);
         exit($json);
     }
 }

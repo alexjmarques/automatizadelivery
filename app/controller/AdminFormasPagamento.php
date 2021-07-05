@@ -144,7 +144,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Forma de Pagamento cadastrado com sucesso', 'error' => 'Não foi possível cadastrar a Forma de Pagamento', 'url' => 'admin/formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Forma de Pagamento cadastrado com sucesso', 'error' => 'Não foi possível cadastrar a Forma de Pagamento','code' => 2 ,  'url' => 'admin/formas-pagamento',]);
         exit($json);
     }
 
@@ -158,7 +158,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Forma de Pagamento atualizada com sucesso', 'error' => 'Não foi possível atualizar a Forma de Pagamento', 'url' => 'admin/formas-pagamento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Forma de Pagamento atualizada com sucesso', 'error' => 'Não foi possível atualizar a Forma de Pagamento','code' => 2 ,  'url' => 'admin/formas-pagamento',]);
         exit($json);
     }
 

@@ -105,7 +105,7 @@ class Admin extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Página cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a página', 'url' => 'admin/paginas',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Página cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a página','code' => 2 ,  'url' => 'admin/paginas',]);
         exit($json);
     }
 
@@ -119,7 +119,7 @@ class Admin extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Página atualizada com sucesso', 'error' => 'Não foi posível atualizar a página', 'url' => 'admin/paginas',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Página atualizada com sucesso', 'error' => 'Não foi posível atualizar a página','code' => 2 ,  'url' => 'admin/paginas',]);
         exit($json);
     }
 

@@ -156,7 +156,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria Adicional cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria adicional', 'url' => 'admin/tipo-adicionais',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria Adicional cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria adicional','code' => 2 ,  'url' => 'admin/tipo-adicionais',]);
         exit($json);
     }
 
@@ -172,7 +172,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria Adicional atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria adicional', 'url' => 'admin/tipo-adicionais',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria Adicional atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria adicional','code' => 2 ,  'url' => 'admin/tipo-adicionais',]);
         exit($json);
     }
 

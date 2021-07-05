@@ -18,7 +18,7 @@ use Bcrypt\Bcrypt;
 class AllController extends Controller
 {
     //Instancia da Classe Adminempresa
-    
+
     private $acoes;
     private $sessao;
     private $bcrypt;
@@ -33,7 +33,7 @@ class AllController extends Controller
      */
     public function __construct()
     {
-        
+
         $this->bcrypt = new Bcrypt();
         //$this->ifood = new iFood();
         $this->sessao = new Sessao();
@@ -42,7 +42,7 @@ class AllController extends Controller
 
     public function verificaPlano($data)
     {
-        $assinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid','id_empresa', $data);
+        $assinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid', 'id_empresa', $data);
         $plano = 0;
         if ($assinatura->plano_id != null) {
             $getPlanId = $this->acoes->getByField('planos', 'plano_id', $assinatura->plano_id);
@@ -66,7 +66,6 @@ class AllController extends Controller
     {
         $empresa = $data['linkSite'] ? $data['linkSite'] : "";
         $this->sessao->sair($empresa);
-        
     }
 
     public function sairAdmin($data)
@@ -106,7 +105,7 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() == 0) {
                 redirect(BASE . "{$empresaAct->link_site}/admin");
             } else if ($this->sessao->getNivel() == 1) {
@@ -116,7 +115,7 @@ class AllController extends Controller
             } else if ($this->sessao->getNivel() == 3) {
                 if ($this->sessao->getUser() == 0) {
                 } else {
-                    $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa','id_empresa', $empresaAct->id, 'id_usuario', $this->sessao->getUser());
+                    $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa', $empresaAct->id, 'id_usuario', $this->sessao->getUser());
                     if ($resulEnderecos == 0) {
                         redirect(BASE . "{$empresaAct->link_site}/endereco/novo/cadastro");
                     } else {
@@ -136,7 +135,7 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() == 0) {
             } else if ($this->sessao->getNivel() == 1) {
                 redirect(BASE . "{$empresaAct->link_site}/motoboy/entregas");
@@ -199,8 +198,8 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
-            $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa',$empresaAct->id, 'id_usuario', $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa', $empresaAct->id, 'id_usuario', $this->sessao->getUser());
             if ($resulEnderecos == 0) {
                 redirect(BASE . "{$empresaAct->link_site}/endereco/novo/cadastro");
                 exit;
@@ -208,8 +207,9 @@ class AllController extends Controller
         }
     }
 
-    public function brl2decimal($brl, $casasDecimais = 2) {
-        if(preg_match('/^\d+\.{1}\d+$/', $brl))
+    public function brl2decimal($brl, $casasDecimais = 2)
+    {
+        if (preg_match('/^\d+\.{1}\d+$/', $brl))
             return (float) number_format($brl, $casasDecimais, '.', '');
         $brl = preg_replace('/[^\d\.\,]+/', '', $brl);
         $decimal = str_replace('.', '', $brl);
@@ -217,12 +217,13 @@ class AllController extends Controller
         return (float) number_format($decimal, $casasDecimais, '.', '');
     }
 
-    function formataTelefone($numero){
+    function formataTelefone($numero)
+    {
         $formata = substr($numero, 0, 2);
         $formata_2 = substr($numero, 3, 5);
         $formata_3 = substr($numero, 4, 4);
-        return "(".$formata.") " . $formata_2 . "-". $formata_3;
-     }
+        return "(" . $formata . ") " . $formata_2 . "-" . $formata_3;
+    }
 
 
     public function iniciarAtendimento($data)
@@ -230,7 +231,7 @@ class AllController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $planoAtivo = $this->verificaPlano($empresa->id);
-        
+
         if ($planoAtivo == 4) {
             $resulifood = $this->marketplace->getById(1);
             $conecao = $this->ifood->gerarToken();
@@ -238,17 +239,17 @@ class AllController extends Controller
 
         if ($planoAtivo == 0) {
             header('Content-Type: application/json');
-            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você não possuí um plano contratado', 'error' => 'Você não possuí um plano contratado', 'url' => 'admin/planos']);
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você não possuí um plano contratado', 'error' => 'Você não possuí um plano contratado',  'url' => 'admin/planos']);
             exit($json);
         }
 
-        $plano = $this->acoes->getByField('planos', 'plano_id', $planoAtivo);
-
-        if ($plano->id <= 2) {
+        $plano = $this->acoes->getByField('planos', 'id', $planoAtivo);
+        if ($plano->id <= 3) {
             $qtdPedidos = $this->acoes->countStatusMes('carrinhoPedidos', 'id_empresa', $empresa->id, 'data_pedido');
+            //dd($qtdPedidos .' '. $plano->limite);
             if ($plano->limite < $qtdPedidos) {
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você ultrapassou o limite contratado para este mês', 'error' => 'Você ultrapassou o limite contratado para este mês', 'url' => 'admin/planos']);
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você ultrapassou o limite contratado para este mês', 'error' => 'Você ultrapassou o limite contratado para este mês',  'url' => 'admin/planos']);
                 exit($json);
                 exit;
             }
@@ -292,7 +293,7 @@ class AllController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         //dd($estabelecimento[0]->id);
 
         $caixa = (new EmpresaCaixa())->findById($estabelecimento[0]->id);
@@ -301,12 +302,12 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $caixa->id_empresa = $empresa->id;
         $caixa->save();
 
-        if($caixa->id > 0){
+        if ($caixa->id > 0) {
             $valor = (new EmpresaFrete())->findById($delivery->id);
             $valor->status = 0;
             $valor->save();
 
-            if($valor->id > 0){
+            if ($valor->id > 0) {
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => $caixa->id, 'resp' => 'update', 'mensagem' => 'Atendimento finalizado com sucesso', 'error' => 'Não foi possível finalizar o atendimento']);
                 exit($json);
@@ -321,10 +322,10 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function verificaEmpresaUser(int $idEmpresa, int $idUsuario)
     {
         $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $idUsuario);
-        if($usuario){
+        if ($usuario) {
             $empresa = $this->acoes->getByField('empresa', 'id', $usuario->id_empresa);
-            if($idEmpresa != $usuario->id_empresa){
-                redirect(BASE."{$empresa->link_site}/admin");
+            if ($idEmpresa != $usuario->id_empresa) {
+                redirect(BASE . "{$empresa->link_site}/admin");
             }
         }
     }

@@ -107,9 +107,9 @@ class CarrinhoController extends Controller
 
         header('Content-Type: application/json');
         if ($valor->id_adicional != null) {
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'var' => $valor->id_adicional, 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'url' => 'produto/adicional']);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'var' => $valor->id_adicional, 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.','code' => 2 ,  'url' => 'produto/adicional']);
         } else {
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'url' => 'carrinho',]);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.','code' => 2 ,  'url' => 'carrinho',]);
         }
         exit($json);
     }
@@ -518,7 +518,7 @@ class CarrinhoController extends Controller
             $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!', 'url' => "carrinho/valida/acesso/code/{$getTelefone->id}"]);
+            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!','code' => 2 ,  'url' => "carrinho/valida/acesso/code/{$getTelefone->id}"]);
             exit($json);
 
             $usuario = $this->acoes->getByField('usuarios', 'telefone', $data['telefone']);
@@ -569,7 +569,7 @@ class CarrinhoController extends Controller
             }
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $cart->id, 'resp' => 'insert', 'mensagem' => 'Legal, agora preciso que me informe os dados para entrega!', 'url' => 'endereco/novo/cadastro']);
+            $json = json_encode(['id' => $cart->id, 'resp' => 'insert', 'mensagem' => 'Legal, agora preciso que me informe os dados para entrega!','code' => 2 ,  'url' => 'endereco/novo/cadastro']);
             exit($json);
         }
     }
@@ -611,7 +611,7 @@ class CarrinhoController extends Controller
 
             if ($this->sessao->getUser()) {
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os carrinho', 'url' => 'carrinho']);
+                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os carrinho','code' => 2 ,  'url' => 'carrinho']);
                 exit($json);
             }
         }
@@ -648,7 +648,7 @@ class CarrinhoController extends Controller
                 }
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $usuario->id, 'resp' => 'insert', 'mensagem' => 'OK Vai para o carrinho', 'url' => 'carrinho']);
+                $json = json_encode(['id' => $usuario->id, 'resp' => 'insert', 'mensagem' => 'OK Vai para o carrinho','code' => 2 ,  'url' => 'carrinho']);
                 exit($json);
             }
         }
@@ -744,7 +744,7 @@ class CarrinhoController extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'url' => 'produto/adicional/atualiza']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!','code' => 2 ,  'url' => 'produto/adicional/atualiza']);
         exit($json);
     }
 
@@ -831,7 +831,7 @@ class CarrinhoController extends Controller
         }
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'url' => 'admin/pedidos']);
+        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso','code' => 2 ,  'url' => 'admin/pedidos']);
         exit($json);
     }
 }
