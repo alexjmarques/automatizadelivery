@@ -47,7 +47,7 @@ class Admin extends Controller
         $categoria = $this->acoes->getFind('categoriaSeguimentoSub');
         $pedidos = $this->acoes->getFind('carrinhoPedidos');
 
-        $this->load('home/home', [
+        $this->load('_adminClient/dashboard', [
             'empresas' => $empresas,
             'empresaDelivery' => $empresaDelivery,
             'empresaEndereco' => $empresaEndereco,

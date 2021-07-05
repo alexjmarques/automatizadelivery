@@ -88,11 +88,11 @@ class Sessao
                 break;
             case 1:
                 $session->destroy();
-                redirect(BASE . "{$empresa}/atendente/login");
+                redirect(BASE . "{$empresa}/motoboy/login");
                 break;
             case 2:
                 $session->destroy();
-                redirect(BASE . "{$empresa}/motoboy/login");
+                redirect(BASE . "{$empresa}/admin/login");
                 break;
             case 3:
                 $session->destroy();

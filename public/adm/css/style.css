@@ -209,6 +209,9 @@ textarea.form-control {
 .bg-danger.rounded-circle.mt-n0.shadow {
     border-radius: 50%!important;
 }
+#acompanharStatusPedido .status{
+    border: 1px solid #fff !important;
+}
 .status h6.fttHome{
     font-size: 13px;
     font-weight: bold;

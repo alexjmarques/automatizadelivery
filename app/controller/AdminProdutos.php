@@ -53,7 +53,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() != 0) {
+            if ($this->sessao->getNivel() == 3) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
@@ -109,7 +109,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() != 0) {
+            if ($this->sessao->getNivel() == 3) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {
@@ -160,7 +160,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() != 0) {
+            if ($this->sessao->getNivel() == 3) {
                 redirect(BASE . $empresa->link_site);
             }
         } else {

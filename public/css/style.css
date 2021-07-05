@@ -15321,3 +15321,6 @@ h6.d-inline {
     right: -5px;
     top: -10px;
 }
+#acompanharStatusPedido .status{
+    border: 1px solid #fff !important;
+}
