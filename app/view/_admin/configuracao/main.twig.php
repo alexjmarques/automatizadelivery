@@ -184,7 +184,7 @@
           {% endif %}
           {% endfor %}
         </div>
-        <input type="hidden" id="id_endresa" name="id_endresa" value="{{empresa.id}}">
+        <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
         <input type="hidden" name="logoUpdate" id="logoUpdate" value="{{empresa.logo}}">
         <input type="hidden" name="capaUpdate" id="capaUpdate" value="{{empresa.capa}}">
         <div class="btn_acao"><div class="carrega"></div>

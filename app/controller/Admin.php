@@ -36,90 +36,105 @@ class Admin extends Controller
         $this->acoes = new Acoes();
     }
 
-    
+
 
     public function index($data)
     {
-        //dd('aqui');
-        $empresas = $this->acoes->getFind('empresa');
-        $empresasCont = $this->acoes->countAdd('empresa');
-        $empresaDelivery = $this->acoes->getFind('empresaFrete');
-        $empresaEndereco = $this->acoes->getFind('empresaEnderecos');
-        $categoria = $this->acoes->getFind('categoriaSeguimentoSub');
-        $pedidos = $this->acoes->getFind('carrinhoPedidos');
+        if ($this->sessao->getNivel()) {
+            $empresas = $this->acoes->getFind('empresa');
+            $empresasCont = $this->acoes->countAdd('empresa');
+            $empresaDelivery = $this->acoes->getFind('empresaFrete');
+            $empresaEndereco = $this->acoes->getFind('empresaEnderecos');
+            $categoria = $this->acoes->getFind('categoriaSeguimentoSub');
+            $pedidos = $this->acoes->getFind('carrinhoPedidos');
 
-        $this->load('_gestao_admin/dashboard/main', [
-            'empresas' => $empresas,
-            'empresasCont' => $empresasCont,
-            'empresaDelivery' => $empresaDelivery,
-            'empresaEndereco' => $empresaEndereco,
-            'categoria' => $categoria,
-            'pedidos' => $pedidos,
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect()
+            if ($this->sessao->getNivel() == 10) {redirect(BASE);}
 
-        ]);
+            $this->load('_gestao_admin/dashboard/main', [
+                'empresas' => $empresas,
+                'empresasCont' => $empresasCont,
+                'empresaDelivery' => $empresaDelivery,
+                'empresaEndereco' => $empresaEndereco,
+                'categoria' => $categoria,
+                'pedidos' => $pedidos,
+                'trans' => $this->trans,
+                'detect' => new Mobile_Detect()
+
+            ]);
+        }
     }
 
     public function empresas($data)
     {
-        $count = $this->acoes->countAdd('empresa');
-        $planos = $this->acoes->getFind('planos');
-        $assinatura = $this->acoes->getFind('assinatura');
-        $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
-        $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
-        $empresas = $this->acoes->paginationAdd('empresa', $pager->limit(), $pager->offset(), 'id ASC');
+        if ($this->sessao->getNivel()) {
+            if ($this->sessao->getNivel() == 10) {redirect(BASE);}
+            $count = $this->acoes->countAdd('empresa');
+            $planos = $this->acoes->getFind('planos');
+            $assinatura = $this->acoes->getFind('assinatura');
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+            $pager = new \CoffeeCode\Paginator\Paginator();
+            $pager->pager((int)$count, 10, $page);
+            $empresas = $this->acoes->paginationAdd('empresa', $pager->limit(), $pager->offset(), 'id ASC');
 
-        $this->load('_gestao_admin/empresas/main', [
-            'planos' => $planos,
-            'assinatura' => $assinatura,
-            'usuarioLogado' => $usuarioLogado,
-            'empresas' => $empresas,
-            'trans' => $this->trans,
-            'paginacao' => $pager->render('mt-4 pagin'),
-            'detect' => new Mobile_Detect()
-        ]);
-    }  
+            $this->load('_gestao_admin/empresas/main', [
+                'planos' => $planos,
+                'assinatura' => $assinatura,
+                'usuarioLogado' => $usuarioLogado,
+                'empresas' => $empresas,
+                'trans' => $this->trans,
+                'paginacao' => $pager->render('mt-4 pagin'),
+                'detect' => new Mobile_Detect()
+            ]);
+        }
+    }
 
     public function paginasInt($data)
     {
-        $count = $this->acoes->countAdd('paginas');
-        $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
-        $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
-        $paginas = $this->acoes->paginationAdd('paginas', $pager->limit(), $pager->offset(), 'id ASC');
+        if ($this->sessao->getNivel()) {
+            if ($this->sessao->getNivel() == 10) {redirect(BASE);}
+            $count = $this->acoes->countAdd('paginas');
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+            $pager = new \CoffeeCode\Paginator\Paginator();
+            $pager->pager((int)$count, 10, $page);
+            $paginas = $this->acoes->paginationAdd('paginas', $pager->limit(), $pager->offset(), 'id ASC');
 
-        $this->load('_gestao_admin/paginas/main', [
-            'paginas' => $paginas,
-            'trans' => $this->trans,
-            'usuarioLogado' => $usuarioLogado,
-            'paginacao' => $pager->render('mt-4 pagin'),
-            'detect' => new Mobile_Detect()
-        ]);
-    }  
-    
+            $this->load('_gestao_admin/paginas/main', [
+                'paginas' => $paginas,
+                'trans' => $this->trans,
+                'usuarioLogado' => $usuarioLogado,
+                'paginacao' => $pager->render('mt-4 pagin'),
+                'detect' => new Mobile_Detect()
+            ]);
+        }
+    }
+
     public function nova($data)
     {
-        $this->load('_gestao_admin/paginas/novo', [
-            'isLogin' => $this->sessao->getUser(),
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect()
-        ]);
+        if ($this->sessao->getNivel()) {
+            if ($this->sessao->getNivel() == 10) {redirect(BASE);}
+            $this->load('_gestao_admin/paginas/novo', [
+                'isLogin' => $this->sessao->getUser(),
+                'trans' => $this->trans,
+                'detect' => new Mobile_Detect()
+            ]);
+        }
     }
 
     public function editar($data)
     {
-        $retorno = $this->acoes->getByField('paginas', 'id', $data['id']);
+        if ($this->sessao->getNivel()) {
+            if ($this->sessao->getNivel() == 10) {redirect(BASE);}
+            $retorno = $this->acoes->getByField('paginas', 'id', $data['id']);
 
-        $this->load('_gestao_admin/paginas/editar', [
-            'retorno' => $retorno,
-            'isLogin' => $this->sessao->getUser(),
-            'trans' => $this->trans,
-            'detect' => new Mobile_Detect()
-        ]);
+            $this->load('_gestao_admin/paginas/editar', [
+                'retorno' => $retorno,
+                'isLogin' => $this->sessao->getUser(),
+                'trans' => $this->trans,
+                'detect' => new Mobile_Detect()
+            ]);
+        }
     }
 
     public function insert($data)
@@ -131,7 +146,7 @@ class Admin extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Página cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a página','code' => 2 ,  'url' => 'admin/paginas',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Página cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a página', 'code' => 2,  'url' => 'admin/paginas',]);
         exit($json);
     }
 
@@ -145,7 +160,7 @@ class Admin extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Página atualizada com sucesso', 'error' => 'Não foi posível atualizar a página','code' => 2 ,  'url' => 'admin/paginas',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Página atualizada com sucesso', 'error' => 'Não foi posível atualizar a página', 'code' => 2,  'url' => 'admin/paginas',]);
         exit($json);
     }
 

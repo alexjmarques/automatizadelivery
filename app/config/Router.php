@@ -18,6 +18,7 @@ require "../app/controller/AdminProdutos.php";
 require "../app/controller/AdminDashboard.php";
 require "../app/controller/PagesController.php";
 require "../app/controller/AdminCategorias.php";
+require "../app/controller/AdminImpressora.php";
 require "../app/controller/AdminAtendimento.php";
 require "../app/controller/PerfilController.php";
 require "../app/controller/RatingController.php";
@@ -382,6 +383,9 @@ $router->get('/{linkSite}/admin/cliente/novo', 'UsuarioController:clienteNovo');
 
 $router->get('/{linkSite}/admin/conf/e', 'AdminConfiguracoesController:index');
 $router->post('/{linkSite}/admin/conf/u', 'AdminConfiguracoesController:update');
+
+$router->get('/{linkSite}/admin/impressora/e', 'AdminImpressoraController:index');
+$router->post('/{linkSite}/admin/impressora/u', 'AdminImpressoraController:update');
 
 $router->get('/{linkSite}/admin/meu-perfil', 'AdminUsuarioController:index');
 $router->post('/{linkSite}/admin/meu-perfil/u', 'AdminUsuarioController:update');

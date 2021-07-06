@@ -48,12 +48,12 @@ class AdminConfiguracoesController extends Controller
         $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         $moedas = $this->acoes->getFind('moeda');
         $estadosSelecao = $this->acoes->getFind('estados');
         $diaSelecao = $this->acoes->getFind('dias');
-        
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -74,7 +74,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $caixa->status,
 
         ]);
@@ -82,15 +82,15 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
     public function update($data)
     {
-        if($data['imagemNome'] != null){
+        if ($data['imagemNome'] != null) {
             $caminhoLogo = $data['imagemNome'];
-        }else{
+        } else {
             $caminhoLogo = $data['logoUpdate'];
         }
 
-        if($data['switch']){
+        if ($data['switch']) {
             $nf_paulista = $data['switch'];
-        }else{
+        } else {
             $nf_paulista = 0;
         }
 
@@ -137,10 +137,10 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valorEnd->cidade = $data['cidade_end'];
         $valorEnd->estado = $data['estado_end'];
         $valorEnd->save();
-        
+
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa','code' => 2 ,  'url' => 'admin/conf/e',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'code' => 2,  'url' => 'admin/conf/e',]);
         exit($json);
     }
 }
