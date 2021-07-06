@@ -406,10 +406,13 @@ class AdminPedidos extends Controller
     }
     public function pedidoTestImprimir($data)
     {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
         //$connector = new CupsPrintConnector("{$print->code}");
 
         try {
-        $connector = new FilePrintConnector("/dev/usb/lp1");
+        $connector = new CupsPrintConnector("{$print->code}");
+        //$connector = new FilePrintConnector("/dev/usb/lp1");
         $printer = new Printer($connector);
 
         /* Print some bold text */
