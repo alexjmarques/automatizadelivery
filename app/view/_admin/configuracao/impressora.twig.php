@@ -104,7 +104,7 @@ function directPrint(socket, printData) {
 /**
  * Connect to print server on startup.
  */
-var printSocket = new WebSocket("ws://localhost:7000", ["protocolOne", "protocolTwo"]);
+var printSocket = new WebSocket("ws://localhost:5555", ["protocolOne", "protocolTwo"]);
 printSocket.onopen = function (event) {
   console.log("Socket is connected.");
 }
