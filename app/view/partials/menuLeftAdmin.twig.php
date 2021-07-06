@@ -237,12 +237,25 @@
                                     <span class="d-inline-block"><strong>Empresa</strong></span>
                                 </a>
                             </li>
+                            
                             <li id="subDeli">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/delivery/e">
                                     <span class="d-inline-block"><strong>Delivery</strong></span>
                                 </a>
                             </li>
-
+                            {% if planoAtivo > 3 %}
+                            <li id="subImp">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/impressora/e">
+                                    <span class="d-inline-block"><strong>Impressora</strong></span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li id="subImp" class="indisponivel">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                                    <span class="d-inline-block"><strong>Impressora</strong> <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
+                                </a>
+                            </li>
+                            {% endif %}
                             <li id="subHor">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento">
                                     <span class="d-inline-block"><strong>Horários</strong></span>

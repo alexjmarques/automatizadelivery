@@ -1230,6 +1230,11 @@ switch (active_link) {
     $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
     $('#subDeli').addClass('active')
     break;
+  case `/${link_site}/admin/conf/impressora/e`:
+    $('#collapseMenuConfiguracoes').addClass('show')
+    $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
+    $('#subImp').addClass('active')
+    break;
   case `/${link_site}/admin/conf/atendimento`:
     $('#collapseMenuConfiguracoes').addClass('show')
     $('#menuConfiguracoes .primaryMenu').removeClass('collapsed')
