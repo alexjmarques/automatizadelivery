@@ -893,7 +893,7 @@ $("#rua").on('blur touchleave touchcancel', function () {
   var cidade = $('#cidadePrinc').val();
   var rua = $(this).val();
   if (rua != "") {
-    $.getJSON(`https://maps.google.com/maps/api/geocode/json?address=${rua},${cidade}-${estado}/&key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc`, function (dados) {
+    $.getJSON(`https://maps.google.com/maps/api/geocode/json?address=${rua},${cidade}-${estado}/&key=AIzaSyAV-tzLHHVyrs97IUXFKWiYYrtzYm9Syek`, function (dados) {
       console.log(dados);
       if (dados.status === "OK") {
         $("#endOK").show();
