@@ -36,10 +36,10 @@
                 <div class="list-card-body">
                     <h6 class="mb-1">
                         <a href="{{BASE}}{{empresa.link_site}}/{{c.slug}}/produto/{{tamCat.id}}/{{tam.id}}/{{i}}" class="text-black text-uppercase">
-                            Pizza {{tam.nome}} {% if i == 1 %}{{i}} SABOR {% else %}{{i}} SABORES {% endif %}({{tam.qtd_pedacos}} PEDAÇOS)
+                            Pizza {{tam.nome}} {% if i == 1 %}{{i}} SABOR {% else %}{{i}} SABORES {% endif %}
                             </a>
                     </h6>
-                    <p class="text-gray mb-0 pb-0">Escolha {% if i == 1 %}{{i}} sabor {% else %} {{i}} sabores{% endif %}</p>
+                    <p class="text-gray mb-0 pb-0">Esta pizza tem {% if i == 1 %} {{tam.qtd_pedacos}} PEDAÇO {% else %} {{tam.qtd_pedacos}} PEDAÇO {% endif %}</p>
                 </div>
             </div>
         </div>
