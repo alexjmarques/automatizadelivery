@@ -30684,3 +30684,6 @@ vendor/twilio/sdk/src/Twilio/Rest/Verify/V2/Service/Entity/Challenge/Notificatio
 vendor/twilio/sdk/src/Twilio/Rest/Verify/V2/Service/Entity/ChallengeOptions.php
 vendor/twilio/sdk/src/Twilio/VersionInfo.php
 *.yaml
+certificado/automatizadelivery.crt
+certificado/automatizadelivery.key
+public/localStorage.db
