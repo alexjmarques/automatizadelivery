@@ -41,7 +41,7 @@
 
 {% endfor %}
 
-<div class="col-5 center-block text-center float-ceter">{{paginacao|raw}}</div>
+<div class="col-7 center-block text-center float-ceter">{{paginacao|raw}}</div>
 
     {% if pedidos is null %}
     <div class="osahan-coming-soon p-4 d-flex justify-content-center">
