@@ -35,7 +35,7 @@
             <div class="p-1 position-relative">
                 <div class="list-card-body">
                     <h6 class="mb-1">
-                        <a href="{{BASE}}{{empresa.link_site}}/{{c.slug}}/produto/{{tamCat.id}}/{{tam.id}}/{{i}}" class="text-black text-uppercase">
+                        <a href="{{BASE}}{{empresa.link_site}}/{{c.slug}}/produto/{{tc.id}}/{{tam.id}}/{{i}}" class="text-black text-uppercase">
                             Pizza {{tam.nome}} {% if i == 1 %}{{i}} SABOR {% else %}{{i}} SABORES {% endif %}
                             </a>
                     </h6>
