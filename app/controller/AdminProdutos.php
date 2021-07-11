@@ -51,7 +51,7 @@ class AdminProdutos extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        $produtosValor = $this->acoes->getByFieldAll('produtoValor', 'id_empresa', $empresa->id);
+        $produtosValor = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
@@ -257,7 +257,7 @@ class AdminProdutos extends Controller
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
-        $valorProduto = $this->acoes->getByFieldAll('produtoValor', 'id_produto', $retorno->id);
+        $valorProduto = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_produto', $retorno->id);
 
         $diaSelecao = $this->acoes->getFind('dias');
 
