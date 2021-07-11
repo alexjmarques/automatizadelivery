@@ -39,7 +39,7 @@
                             Pizza {{tam.nome}} {% if i == 1 %}{{i}} SABOR {% else %}{{i}} SABORES {% endif %}
                             </a>
                     </h6>
-                    <p class="text-gray mb-0 pb-0">Esta pizza tem {% if i == 1 %} {{tam.qtd_pedacos}} PEDAÇO {% else %} {{tam.qtd_pedacos}} PEDAÇO {% endif %}</p>
+                    <p class="text-gray mb-0 pb-0">Esta pizza tem {% if i == 1 %} {{tam.qtd_pedacos}} pedaço {% else %} {{tam.qtd_pedacos}} pedaços {% endif %}</p>
                 </div>
             </div>
         </div>
