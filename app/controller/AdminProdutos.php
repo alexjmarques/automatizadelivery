@@ -15,7 +15,7 @@ use app\classes\Preferencias;
 use app\classes\Sessao;
 use app\Models\Categorias;
 use app\Models\Produtos;
-use app\Models\ProdutoValor;
+use app\Models\PizzaProdutoValor;
 
 class AdminProdutos extends Controller
 {
@@ -369,7 +369,7 @@ class AdminProdutos extends Controller
                     }
                 }
                 foreach ($newArray as $res) {
-                    $prodValor = new ProdutoValor();
+                    $prodValor = new PizzaProdutoValor();
                     $prodValor->id_tamanho = $res['tamanho'];
                     $prodValor->valor = $this->geral->brl2decimal($res['valor']);
                     $prodValor->id_produto = $valor->id;
@@ -448,7 +448,7 @@ class AdminProdutos extends Controller
                     }
                 }
                 foreach ($newArray as $res) {
-                    $prodValor = (new ProdutoValor())->findById($res['id_valor']);
+                    $prodValor = (new PizzaProdutoValor())->findById($res['id_valor']);
                     $prodValor->valor = $this->geral->brl2decimal($res['valor']);
                     $prodValor->save();
                 }
