@@ -306,7 +306,7 @@ class AdminProdutos extends Controller
             $file = $files["image"];
             try {
                 $uploaded = $upload->upload($file, $file["name"]);
-                $partes = explode("/uploads", $uploaded);
+                $partes = explode("/uploads/", $uploaded);
                 echo $partes[1];
             } catch (\Exception $e) {
                 echo "<p>(!) {$e->getMessage()}</p>";

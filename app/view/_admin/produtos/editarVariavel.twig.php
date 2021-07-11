@@ -24,18 +24,16 @@
                     <input type="text" class="form-control" id="nome" name="nome" value="{{ retorno.nome }}" required>
                 </div>
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 hide">
                     <label>Valor</label>
-                    <input type="text" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="{{ retorno.valor|number_format(2, ',', '.') }}" required>
+                    <input type="hidden" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="{{ retorno.valor|number_format(2, ',', '.') }}" required>
                 </div>
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 hide">
                     <label>Valor Promocional</label>
-                    <input type="text" class="form-control" id="valor_promocional" placeholder="Insira o Valor " name="valor_promocional" value="{% if(retorno.valor_promocional != 0.00) %}{{ retorno.valor_promocional|number_format(2, ',', '.') }}{% endif %}">
+                    <input type="hidden" class="form-control" id="valor_promocional" placeholder="Insira o Valor " name="valor_promocional" value="{% if(retorno.valor_promocional != 0.00) %}{{ retorno.valor_promocional|number_format(2, ',', '.') }}{% endif %}">
                 </div>
-            </div>
-
-            <div class="form-row">
+            
                 <div class="form-group col-md-3">
                     <label for="exampleFormControlSelect1">Categoria</label>
                     <select class="form-control select2-single" id="categoria" name="categoria">
@@ -192,51 +190,6 @@
 
     <div class="card mb-4">
         <div class="card-body">
-            <h5>Item Adicional</h5>
-            <p class="mb-4">Este elemento serve para definir se seu produto possui complemento de escolha antes da
-                adição do mesmo ao carrinho do cliente</p>
-            {% if qtdProdutosAdicionais == 0 %}
-            <div class="alert alert-warning" role="alert"> Para cadastrar um novo produdo com e inserir variações de
-                escolhas cadastre um Produto Adicional! <a href="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/novo">Clique aqui</a>
-                para Cadastrar.</div>
-            {% else %}
-            <div class="form-row">
-
-                <div class="form-group col-md-12">
-                    <div id="prodAdicional">
-                        {% for ta in tipoAdicional %}
-                        <h6 class="clearfix mt-3">{{ ta.tipo }}</h6>
-                        <div class="form-row">
-                            {% for padici in produtosAdicionais %}
-                            {% if ta.id == padici.tipo_adicional %}
-                            {% if padici.id in retorno.adicional %}
-                            <div class="col-md-4">
-                                <div class="p-2 colAdc">
-                                    <input type="checkbox" checked id="itemcheck{{ padici.id }}" name="adicional[]" value="{{ padici.id }}">
-                                    <label class="form-check-label" for="itemcheck{{ padici.id }}">{{ padici.nome }}
-                                        - <strong>{{ moeda.simbolo }} {{ padici.valor|number_format(2, ',',
-                                        '.') }}</strong></label>
-                                </div>
-                            </div>
-                            {% else %}
-                            <div class="col-md-4">
-                                <div class="p-2 colAdc">
-                                    <input type="checkbox" id="itemcheck{{ padici.id }}" name="adicional[]" value="{{ padici.id }}">
-                                    <label class="form-check-label" for="itemcheck{{ padici.id }}">{{ padici.nome }}
-                                        - <strong>{{ moeda.simbolo }} {{ padici.valor|number_format(2, ',','.') }}</strong></label>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% endif %}
-
-                            {% endfor %}
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
             <input type="hidden" id="categoriaCad" name="categoriaCad" value="{{retorno.id_categoria}}">
             <input type="hidden" id="imagemNome" name="imagemNome" value="{{retorno.imagem}}">

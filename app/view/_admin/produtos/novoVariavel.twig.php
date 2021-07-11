@@ -153,37 +153,6 @@
 
     <div class="card mb-4">
         <div class="card-body">
-
-            <h5>Item Adicional</h5>
-            <p class="mb-4">Este elemento serve para definir se seu produto possui complemento de escolha antes da adição do mesmo ao carrinho</p>
-
-            {% if qtdProdutosAdicionais == 0 %}
-            <div class="alert alert-warning" role="alert"> Para cadastrar um novo produdo com e inserir variações de escolhas cadastre um Produto Adicional! <a href="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/novo">Clique aqui</a> para Cadastrar.</div>
-            {% else %}
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <div id="prodAdicional">
-                        {% for ta in tipoAdicional %}
-                        <h6 class="clearfix mt-3">{{ ta.tipo }}</h6>
-                        <div class="form-row pb-3">
-                            {% for padici in produtosAdicionais %}
-
-                            {% if ta.id == padici.tipo_adicional %}
-                            <div class="col-md-4">
-                                <div class="p-2 colAdc">
-                                    <input type="checkbox" id="itemcheck{{ padici.id }}" name="adicional[]" value="{{ padici.id }}">
-                                    <label class="form-check-label" for="itemcheck{{ padici.id }}">{{ padici.nome }} - <strong>{{ moeda.simbolo }} {{ padici.valor|number_format(2, ',', '.') }}</strong></label>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
             <input type="hidden" id="imagemNome" name="imagemNome" value="">
             <input type="hidden" id="vendas" name="vendas" value="0">
             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">

@@ -57,10 +57,7 @@
                             <td>
                                 <p class="text-center">
                                 {% if p.valor == 0.00 %}
-                                {% set maxValue = 0 %}
-                                -----
-                                
-                                {% else %}
+                                {% set maxValue = 0 %}-----{% else %}
                                     {{ moeda.simbolo }} {{ p.valor|number_format(2, ',', '.') }}
                                 {% endif %}
                                 </p>

@@ -5267,7 +5267,7 @@ main {
 }
 
 .dropzone .img-thumbnail {
-  height: auto!important;
+  height: 100px !important;
 }
 
 .dropzone .dz-preview.dz-file-preview .remove, .dropzone .dz-preview.dz-image-preview .remove {
