@@ -73,7 +73,7 @@ class CalculoFrete extends Controller
 
         $empresa = urlencode($empresa);
         $cliente = urlencode($cliente);
-        $data = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $empresa . '&destinations=' . $cliente . '&language=pt-BR&sensor=false&mode=driving&language=pt-BR&key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc'); //&key=AIzaSyDAJ05io1966D_KmF7lbRsucehr8GtUBqk');
+        $data = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $empresa . '&destinations=' . $cliente . '&language=pt-BR&sensor=false&mode=driving&language=pt-BR&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ'); //&key=AIzaSyDAJ05io1966D_KmF7lbRsucehr8GtUBqk');
         $data = json_decode($data);
         $time = 0;
         $text = 0;
@@ -94,7 +94,7 @@ class CalculoFrete extends Controller
 
         $empresa = urlencode($empresa);
         $cliente = urlencode($cliente);
-        $data = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $empresa . '&destinations=' . $cliente . '&language=pt-BR&sensor=false&mode=driving&language=pt-BR&key=AIzaSyAHQnNSFjLAJUQ6Y869H9uZ0AIsqAed1Fc'); //&key=AIzaSyDAJ05io1966D_KmF7lbRsucehr8GtUBqk');
+        $data = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $empresa . '&destinations=' . $cliente . '&language=pt-BR&sensor=false&mode=driving&language=pt-BR&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ'); //&key=AIzaSyDAJ05io1966D_KmF7lbRsucehr8GtUBqk');
         $data = json_decode($data);
         $time = 0;
         $text = 0;

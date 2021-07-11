@@ -15,7 +15,6 @@ use app\classes\Preferencias;
 use app\classes\Sessao;
 use app\Models\Categorias;
 use app\Models\Produtos;
-use app\Models\ProdutoValor;
 
 class AdminProdutos extends Controller
 {
@@ -47,12 +46,10 @@ class AdminProdutos extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $qtdTamanho = $this->acoes->counts('pizzaTamanhos', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        $produtosValor = $this->acoes->getByFieldAll('produtoValor', 'id_empresa', $empresa->id);
-
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -74,12 +71,10 @@ class AdminProdutos extends Controller
 
         $this->load('_admin/produtos/main', [
             'produtos' => $resultProdutos,
-            'categoriaQtd' => $categoriaQtd,
-            'produtosValor' => $produtosValor,
             'categorias' => $resultCategorias,
+            'categoriaQtd' => $categoriaQtd,
             'paginacao' => $pager->render('mt-4 pagin'),
             'planoAtivo' => $planoAtivo,
-            'qtdTamanho' => $qtdTamanho,
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
@@ -99,19 +94,18 @@ class AdminProdutos extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
         $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
-
+        
         $categoriaLista = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
-
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $diaSelecao = $this->acoes->getFind('dias');
-
+        
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -141,57 +135,6 @@ class AdminProdutos extends Controller
         ]);
     }
 
-
-    public function novoVariavel($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
-        $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
-
-        $qtdTamanho = $this->acoes->counts('pizzaTamanhos', 'id_empresa', $empresa->id);
-        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
-        $categoriaLista = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
-        $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
-        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
-        $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
-        $diaSelecao = $this->acoes->getFind('dias');
-
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-
-        if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
-            }
-        } else {
-            redirect(BASE . "{$empresa->link_site}/admin/login");
-        }
-
-        $this->load('_admin/produtos/novoVariavel', [
-            'planoAtivo' => $planoAtivo,
-            'categoriaLista' => $categoriaLista,
-            'qtdProdutosAdicionais' => $qtdProdutosAdicionais,
-            'tamanhos' => $tamanhos,
-            'produtosSabores' => $produtosSabores,
-            'produtosAdicionais' => $produtosAdicionais,
-            'tipoAdicional' => $tipoAdicional,
-            'diaSelecao' => $diaSelecao,
-            'qtdSabores' => $qtdSabores,
-            'qtdTamanho' => $qtdTamanho,
-            'moeda' => $moeda,
-            'empresa' => $empresa,
-            'trans' => $this->trans,
-            'usuarioLogado' => $usuarioLogado,
-            'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $caixa->status,
-        ]);
-    }
-
     /**
      *
      * Recupera a pagina de produto selecionada
@@ -207,14 +150,13 @@ class AdminProdutos extends Controller
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
-        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
         $diaSelecao = $this->acoes->getFind('dias');
-
+        
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-
+$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -228,60 +170,7 @@ class AdminProdutos extends Controller
         $this->load('_admin/produtos/editar', [
             'retorno' => $retorno,
             'planoAtivo' => $planoAtivo,
-            'tamanhos' => $tamanhos,
             'categoriaLista' => $categoriaLista,
-            'qtdProdutosAdicionais' => $qtdProdutosAdicionais,
-            'produtosSabores' => $produtosSabores,
-            'produtosAdicionais' => $produtosAdicionais,
-            'tipoAdicional' => $tipoAdicional,
-            'diaSelecao' => $diaSelecao,
-            'qtdSabores' => $qtdSabores,
-            'moeda' => $moeda,
-            'empresa' => $empresa,
-            'trans' => $this->trans,
-            'usuarioLogado' => $usuarioLogado,
-            'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario' => $this->sessao->getNivel(),
-            'caixa' => $caixa->status,
-        ]);
-    }
-
-    public function editarVariavel($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
-        $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
-        $retorno = $this->acoes->getByField('produtos', 'id', $data['id']);
-        $categoriaLista = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
-        $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
-        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
-        $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
-        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
-        $valorProduto = $this->acoes->getByFieldAll('produtoValor', 'id_produto', $retorno->id);
-
-        $diaSelecao = $this->acoes->getFind('dias');
-
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-
-        if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
-            }
-        } else {
-            redirect(BASE . "{$empresa->link_site}/admin/login");
-        }
-
-        $this->load('_admin/produtos/editarVariavel', [
-            'retorno' => $retorno,
-            'planoAtivo' => $planoAtivo,
-            'categoriaLista' => $categoriaLista,
-            'tamanhos' => $tamanhos,
-            'valorProduto' => $valorProduto,
             'qtdProdutosAdicionais' => $qtdProdutosAdicionais,
             'produtosSabores' => $produtosSabores,
             'produtosAdicionais' => $produtosAdicionais,
@@ -300,17 +189,28 @@ class AdminProdutos extends Controller
 
     public function uploadImagem($data)
     {
-        $upload = new \CoffeeCode\Uploader\Image(UPLOADS_BASE, "images");
-        $files = $_FILES;
-        if (!empty($files["image"])) {
-            $file = $files["image"];
-            try {
-                $uploaded = $upload->upload($file, $file["name"]);
-                $partes = explode("/uploads", $uploaded);
-                echo $partes[1];
-            } catch (\Exception $e) {
-                echo "<p>(!) {$e->getMessage()}</p>";
-            }
+        if (isset($_POST['image'])) {
+            $data = $_POST['image'];
+            $imageArray1 = explode(";", $data);
+            $imageArray2 = explode(",", $imageArray1[1]);
+            $data = base64_decode($imageArray2[1]);
+            $imageNome = time() . '.jpg';
+            $imageCaminho = UPLOADS_BASE . $imageNome;
+
+            // $image = new CoffeeCode\Uploader\Image(UPLOADS_BASE, "images", 600);
+
+            // $upload = $image->upload($data, $imageCaminho);
+            // // if ($_FILES) {
+            // //     try {
+            // //         echo "<img src='{$upload}' width='100%'>";
+            // //     } catch (Exception $e) {
+            // //         echo "<p>(!) {$e->getMessage()}</p>";
+            // //     }
+            // // }
+
+
+            file_put_contents($imageCaminho, $data);
+            echo $imageNome;
         }
     }
 
@@ -333,7 +233,7 @@ class AdminProdutos extends Controller
 
         if ($data['valor_promocional']) {
             $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
-        } else {
+        }else{
             $valor_promocional = 0;
         }
 
@@ -359,25 +259,7 @@ class AdminProdutos extends Controller
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
-        if ($data['valor'] ==  0) {
-            if ($valor->id >  0) {
-                $array = $data['preco'];
-                $newArray = array();
-                foreach (array_keys($array) as $fieldKey) {
-                    foreach ($array[$fieldKey] as $key => $value) {
-                        $newArray[$key][$fieldKey] = $value;
-                    }
-                }
-                foreach ($newArray as $res) {
-                    $prodValor = new ProdutoValor();
-                    $prodValor->id_tamanho = $res['tamanho'];
-                    $prodValor->valor = $this->geral->brl2decimal($res['valor']);
-                    $prodValor->id_produto = $valor->id;
-                    $prodValor->id_empresa = $data['id_empresa'];
-                    $prodValor->save();
-                }
-            }
-        }
+
 
         $catNe = $this->acoes->getByField('categorias', 'id', $data['categoria']);
         $novaQtdN = $catNe->produtos + 1;
@@ -388,7 +270,7 @@ class AdminProdutos extends Controller
         $valorNCat->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Produto', 'code' => 2,  'url' => 'admin/produtos',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Produto','code' => 2 ,  'url' => 'admin/produtos',]);
         exit($json);
     }
 
@@ -412,7 +294,7 @@ class AdminProdutos extends Controller
 
         if ($data['valor_promocional']) {
             $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
-        } else {
+        }else{
             $valor_promocional = 0;
         }
 
@@ -438,22 +320,7 @@ class AdminProdutos extends Controller
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
-        if ($data['valor'] ==  0) {
-            if ($valor->id >  0) {
-                $array = $data['preco'];
-                $newArray = array();
-                foreach (array_keys($array) as $fieldKey) {
-                    foreach ($array[$fieldKey] as $key => $value) {
-                        $newArray[$key][$fieldKey] = $value;
-                    }
-                }
-                foreach ($newArray as $res) {
-                    $prodValor = (new ProdutoValor())->findById($res['id_valor']);
-                    $prodValor->valor = $this->geral->brl2decimal($res['valor']);
-                    $prodValor->save();
-                }
-            }
-        }
+        //dd($valor);
 
         if ($data['categoriaCad'] != $data['categoria']) {
             $cat = $this->acoes->getByField('categorias', 'id', $data['categoriaCad']);
@@ -475,7 +342,7 @@ class AdminProdutos extends Controller
         }
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto', 'code' => 2,  'url' => 'admin/produtos',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto','code' => 2 ,  'url' => 'admin/produtos',]);
         exit($json);
     }
 

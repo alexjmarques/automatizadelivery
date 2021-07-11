@@ -13,7 +13,7 @@ class Produtos extends DataLayer
 {
     public function __construct()
     {
-        parent::__construct("produtos", ["nome", "valor", "id_categoria", "id_empresa"]);
+        parent::__construct("produtos", []);
     }
 
     public function add(Categorias $categoria, Empresa $empresa, $nome, $descricao, $observacao, $valor, $valor_promocional, $imagem, $sabores, $dias_disponiveis, $status, $vendas )

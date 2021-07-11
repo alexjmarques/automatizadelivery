@@ -126,8 +126,7 @@
                     </a>
                 </li>
                 {% endif %}
-
-
+                
                 {% endif %}
                 <li id="menuProdutos">
                     <a href="#" data-toggle="collapse" data-target="#collapseProdutos" aria-expanded="true" aria-controls="collapseProdutos" class="primaryMenu rotate-arrow-icon collapsed">
@@ -139,14 +138,27 @@
                         <ul class="list-unstyled inner-level-menu">
                             <li id="subProd">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produtos">
-                                    <span class="d-inline-block"><strong>Produtos</strong></span>
+                                    <span class="d-inline-block"><strong>Todos os Produtos</strong></span>
                                 </a>
                             </li>
+                            {% if empresa.id_categoria == 6 %}
+                            <li id="subTam">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/tamanhos">
+                                    <span class="d-inline-block"><strong>Tamanho de Pizza</strong></span>
+                                </a>
+                            </li>
+                            <li id="subMass">
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/massas">
+                                    <span class="d-inline-block"><strong>Massas de Pizza</strong></span>
+                                </a>
+                            </li>
+                            {% endif %}
                             <li id="subCat">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/categorias">
                                     <span class="d-inline-block"><strong>Categorias</strong></span>
                                 </a>
                             </li>
+                            
                             <li id="subSabores">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-sabores">
                                     <span class="d-inline-block"><strong>Sabores</strong></span>

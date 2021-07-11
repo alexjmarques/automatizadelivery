@@ -45,7 +45,6 @@
     <link rel="stylesheet" href="{{BASE}}adm/css/vendor/perfect-scrollbar.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/jquery.timepicker.min.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/main.css" />
-
     <script src="https://cdn.tiny.cloud/1/1gynmt6biui7yo713cxe0avaiicbqc9quif500b40zeyiush/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
@@ -62,6 +61,10 @@
         </div>
     </main>
     {% include 'partials/footerAdmin.twig.php' %}
+
+    <link href="https://unpkg.com/dropzone/dist/dropzone.css" rel="stylesheet"/>
+    <link href="https://unpkg.com/croppie/croppie.css" rel="stylesheet"/>
+
     <script src="{{BASE}}adm/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/jquery.dataTables.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/bootstrap.bundle.min.js"></script>
@@ -89,7 +92,8 @@
     <script src="{{BASE}}adm/js/jquery.timepicker.min.js"></script>
     <script src="{{BASE}}adm/js/card.js"></script>
 	<script src="https://unpkg.com/dropzone"></script>
-	<script src="https://unpkg.com/cropperjs"></script>
+    <script src="https://unpkg.com/croppie"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
     <script src="{{BASE}}adm/js/scripts.js"></script>
 </body>
 

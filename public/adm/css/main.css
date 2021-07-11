@@ -710,7 +710,7 @@ table.dataTable thead .sorting_desc_disabled:before {
 
 .btn {
   border-radius: 5px !important;
-  padding: 0.8rem 1rem !important;
+  padding: 0.5rem 1rem !important;
 }
 
 
@@ -5219,4 +5219,62 @@ main {
   font-size: 16px;
   background-color: #880a1f;
   border-color: #880a1f;
+}
+.fGBOdX {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(247, 247, 247) !important;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1.5px dashed rgb(220, 220, 220) !important;
+    border-radius: 6px;
+    transition: all 100ms ease-in 0s;
+}
+.jRUqac {
+    display: flex;
+}
+.daagyf {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    max-width: 478px;
+    width: 100%;
+}
+.kYjbTi {
+  width: 124px !important;
+  height: 124px !important;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+}
+.dropzone.dz-clickable .dz-message, .dropzone.dz-clickable .dz-message * {
+    position: initial;
+    transform: inherit;
+    top: 0%!important;
+    margin: 0;
+}
+.dropzone .dz-preview.dz-file-preview, .dropzone .dz-preview.dz-image-preview {
+  width: 300px;
+  height: auto !important;
+}
+
+.dropzone .img-thumbnail {
+  height: auto!important;
+}
+
+.dropzone .dz-preview.dz-file-preview .remove, .dropzone .dz-preview.dz-image-preview .remove {
+  position: absolute;
+  right: 0 !important;
+  top: 0 !important;
+  background: #fff !important;
+  padding: 10px !important;
+  color: #880a1f!important;
 }

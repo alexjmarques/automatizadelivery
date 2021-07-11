@@ -60,7 +60,7 @@ class AdminPedidosBalcaoController extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         if ($estabelecimento) {
             $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
         }
@@ -109,7 +109,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $this->sessao->sessaoNew('id_cliente', $data['cliente']);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'Carrinho interno iniciado', 'error' => 'Não foi posível iniciar carrinho interno iniciado','code' => 1 ,  'url' => 'admin/pedido/novo/produtos']);
+        $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'Carrinho interno iniciado', 'error' => 'Não foi posível iniciar carrinho interno iniciado', 'code' => 1,  'url' => 'admin/pedido/novo/produtos']);
         exit($json);
     }
 
@@ -120,7 +120,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
@@ -221,7 +221,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByField('produtos', 'id', $data['id']);
@@ -515,7 +515,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                     $total = 0;
                 }
             }
-            
+
             $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
 
             $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
@@ -578,7 +578,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $chave = md5(uniqid(rand(), true));
 
         if ($carrinho) {
@@ -664,7 +664,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso','code' => 2 ,  'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);
+        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'code' => 2,  'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);
         exit($json);
     }
 
@@ -688,9 +688,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function carrinhoCadastroValida($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $getTelefone = $this->acoes->counts('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
+        $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
-        if ($getTelefone > 0) {
+        if ($getTelefone->id > 0) {
             header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Cliente já possuí conta cadastrada no sistema']);
             exit($json);
@@ -709,11 +709,13 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $valor->nivel = 3;
             $valor->save();
 
-            $valorEmp = new UsuariosEmpresa();
-            $valorEmp->id_usuario = $valor->id;
-            $valorEmp->id_empresa = $empresa->id;
-            $valorEmp->nivel = 3;
-            $valorEmp->save();
+            if ($valor->id > 0) {
+                $valorEmp = new UsuariosEmpresa();
+                $valorEmp->id_usuario = $valor->id;
+                $valorEmp->id_empresa = $empresa->id;
+                $valorEmp->nivel = 3;
+                $valorEmp->save();
+            }
 
             if ($data['entrega'] == 1) {
                 $valorEnd = new UsuariosEnderecos();
@@ -730,10 +732,10 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                 $valorEnd->save();
             }
             $this->sessao->sessaoNew('id_cliente', $valor->id);
-
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso','code' => 2 ,  'url' => 'admin/pedido/novo/produtos']);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso', 'code' => 5,  'url' => 'admin/pedido/novo/produtos']);
             exit($json);
         }
+        
     }
 }

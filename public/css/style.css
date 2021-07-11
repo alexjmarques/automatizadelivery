@@ -15324,3 +15324,70 @@ h6.d-inline {
 #acompanharStatusPedido .status{
     border: 1px solid #fff !important;
 }
+.garnish-choices__header {
+    padding: 12px 40px 10px;
+}
+.garnish-choices__header {
+    padding: 12px 20px 10px;
+    display: block;
+    background: #f2f2f2;
+    z-index: 20;
+    position: sticky;
+    top: 0;
+}
+.garnish-choices__header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.garnish-choices__title {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.25em;
+    font-weight: 500;
+    color: #3f3e3e;
+}
+.garnish-choices__tags {
+    display: inline-block;
+    margin-left: 5px;
+}
+.marmita-minitag {
+    display: inline-block;
+    padding: 0 6px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    font-size: 0.75rem;
+    border-radius: 3px;
+    margin: 0 3px 0 0;
+    line-height: 20px;
+    height: 20px;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+}
+.marmita-minitag--black {
+    background-color: #717171;
+    color: #f5f0eb;
+    border: none;
+    padding: 6px 6px 4px;
+}
+.marmita-minitag--small {
+    font-size: 0.5625rem;
+    line-height: 1;
+    padding: 5px 5px 3px;
+}
+.garnish-choices__title {
+    margin: 0;
+    font-size: .8rem;
+    line-height: 1.25em;
+    font-weight: bold;
+    color: #3f3e3e;
+}
+.garnish-choices__title-desc {
+    font-weight: 400;
+    font-size: 0.7rem;
+    line-height: 17px;
+    display: block;
+    color: #717171;
+}

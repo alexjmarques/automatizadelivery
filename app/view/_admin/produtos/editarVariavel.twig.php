@@ -107,18 +107,48 @@
         </div>
     </div>
 
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="mb-3">Imagem de Capa do produto</h5>
-            <img src="/uploads/{{ retorno.imagem }}" alt="">
-            <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX dz-clickable" id="myDropzone"></div>
-            {# Formatos: JPEG, JPG, PNG e HEIC
-            Peso máximo: 5 MB
-            Resolução mínima: 300x300 #}
+    <div class="col-md-6 float-left pl-0">
+        <div class="card mb-4 ">
+            <div class="card-body">
+                <h5>Tamanho</h5>
+                <p class="mb-0">Este elemento serve para definir o valor de cada pizza de acordo com seu tamanho</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                            <div class="form-row">
+                                {% for tam in tamanhos %}
+                                <div class="col-md-12 linhaFooter pb-2">
+                                    <div class="pt-2 pb-2 pl-0">
+                                        <div class="col-md-6 float-left pl-0 bold text-left text-uppercase">Tamanho <input type="text" value="{{ tam.nome }}" class="p-2" disabled> </div>
+                                        <div class="col-md-6 float-left pl-0 bold  text-left text-uppercase">Valor 
+                                        <input class="p-2 valor" type="text" id="valor{{ tam.id }}" name="preco[valor][]" value="{% for valorProd in valorProduto %}{% if valorProd.id_tamanho == tam.id %}{{valorProd.valor|number_format(2, ',','.')}}{% endif %}{% endfor %}">
+                                        <input class="p-2 valor" type="hidden" id="id{{ tam.id }}" {% for valorProd in valorProduto %}{% if valorProd.id_tamanho == tam.id %}name="preco[id_valor][]" value="{{ valorProd.id }}"{% endif %}{% endfor %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 float-left pr-0">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="mb-3">Imagem do produto</h5>
+                <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX" id="myDropzone">
+                {# Formatos: JPEG, JPG, PNG e HEIC
+                Peso máximo: 5 MB
+                Resolução mínima: 300x300 #}
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <div class="card mb-4">
+    <div class="clearfix"></div>
+
+    {# <div class="card mb-4">
         <div class="card-body">
             <h5>Sabores</h5>
             <p class="mb-4">Este elemento serve para definir se seu produto possui complemento de escolha antes da
@@ -158,7 +188,7 @@
             </div>
             {% endif %}
         </div>
-    </div>
+    </div> #}
 
     <div class="card mb-4">
         <div class="card-body">

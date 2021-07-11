@@ -596,3 +596,23 @@ nav.pagin .pagin_item {
 .btn_acao .carrega .env{
     padding: 10px 15px;
 }
+
+.enderecoCampo{
+    position: relative;
+}
+.enderecoCampo input{
+    height: 60px !important;
+    padding-left: 30px;
+}
+.enderecoCampo svg{
+    position: absolute;
+    top: 15px;
+    left: 8px;
+    width: auto;
+    margin: 0;
+}
+.pac-container{
+    z-index: 999999;
+    top: 341px !important;
+}
+

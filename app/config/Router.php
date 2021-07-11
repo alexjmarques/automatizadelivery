@@ -11,7 +11,9 @@ require "../app/controller/AdminCupom.php";
 require "../app/controller/AdminStatus.php";
 require "../app/controller/AdminPlanos.php";
 require "../app/controller/AdminRating.php";
+require "../app/controller/AdminMassas.php";
 require "../app/controller/AdminPedidos.php";
+require "../app/controller/AdminTamanhos.php";
 require "../app/controller/AllController.php";
 require "../app/controller/AdminMotoboys.php";
 require "../app/controller/AdminProdutos.php";
@@ -39,6 +41,7 @@ require "../app/controller/AdminiFoodController.php";
 require "../app/controller/AdminUsuarioController.php";
 require "../app/controller/AdminUberEatsController.php";
 require "../app/controller/AdminProdutosAdicionais.php";
+require "../app/controller/CarrinhoPizzaController.php";
 require "../app/controller/EmpresaCadastroController.php";
 require "../app/controller/MobilidadeCadastroController.php";
 require "../app/controller/AdminPedidosBalcaoController.php";
@@ -118,6 +121,10 @@ $router->post('/{linkSite}/u/l/val', 'UsuarioController:usuarioLogin');
 $router->get('/{linkSite}/produto/{id}', 'CarrinhoController:index');
 $router->post('/{linkSite}/produto/addCarrinho/{id}', 'CarrinhoController:insert');
 $router->post('/{linkSite}/produto/updateCarrinho/{id}', 'CarrinhoController:carrinhoCheckoutUpdate');
+
+$router->get('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}', 'CarrinhoPizzaController:index');
+$router->post('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}/addCarrinho/{id}', 'CarrinhoPizzaController:insert');
+$router->post('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}/updateCarrinho/{id}', 'CarrinhoPizzaController:carrinhoCheckoutUpdate');
 
 $router->get('/{linkSite}/produto/adicional/{id}', 'CarrinhoController:carrinhoAdicional');
 $router->get('/{linkSite}/produto/adicional/atualiza/{id}', 'CarrinhoController:carrinhoCheckoutAdicionalUpdate');
@@ -310,6 +317,10 @@ $router->get('/{linkSite}/admin/carrinho/pedido/acao/{id_produto}/{id_carrinho}'
 $router->get('/{linkSite}/admin/produtos', 'AdminProdutos:index');
 $router->get('/{linkSite}/admin/produto/novo', 'AdminProdutos:novo');
 $router->get('/{linkSite}/admin/produto/editar/{id}', 'AdminProdutos:editar');
+
+$router->get('/{linkSite}/admin/produto-pizza/novo', 'AdminProdutos:novoVariavel');
+$router->get('/{linkSite}/admin/produto-pizza/editar/{id}', 'AdminProdutos:editarVariavel');
+
 $router->post('/{linkSite}/admin/produto/i', 'AdminProdutos:insert');
 $router->post('/{linkSite}/admin/produto/u/{id}', 'AdminProdutos:update');
 $router->get('/{linkSite}/admin/produto/d/{id}', 'AdminProdutos:deletar');
@@ -332,6 +343,19 @@ $router->get('/{linkSite}/admin/categoria/editar/{id}', 'AdminCategorias:editar'
 $router->post('/{linkSite}/admin/categoria/i', 'AdminCategorias:insert');
 $router->post('/{linkSite}/admin/categoria/u/{id}', 'AdminCategorias:update');
 $router->get('/{linkSite}/admin/categoria/d/{id}', 'AdminCategorias:deletar');
+$router->get('/{linkSite}/admin/tamanhos', 'AdminTamanhos:index');
+$router->get('/{linkSite}/admin/tamanho/novo', 'AdminTamanhos:novo');
+$router->get('/{linkSite}/admin/tamanho/editar/{id}', 'AdminTamanhos:editar');
+$router->post('/{linkSite}/admin/tamanho/i', 'AdminTamanhos:insert');
+$router->post('/{linkSite}/admin/tamanho/u/{id}', 'AdminTamanhos:update');
+$router->post('/{linkSite}/admin/tamanho/u/item', 'AdminTamanhos:updateItem');
+
+$router->get('/{linkSite}/admin/massas', 'AdminMassas:index');
+$router->get('/{linkSite}/admin/massa/nova', 'AdminMassas:novo');
+$router->get('/{linkSite}/admin/massa/editar/{id}', 'AdminMassas:editar');
+$router->post('/{linkSite}/admin/massa/i', 'AdminMassas:insert');
+$router->post('/{linkSite}/admin/massa/u/{id}', 'AdminMassas:update');
+
 $router->get('/{linkSite}/admin/tipo-adicionais', 'AdminTipoAdicional:index');
 $router->get('/{linkSite}/admin/tipo-adicional/nova', 'AdminTipoAdicional:novo');
 $router->get('/{linkSite}/admin/tipo-adicional/editar/{id}', 'AdminTipoAdicional:editar');

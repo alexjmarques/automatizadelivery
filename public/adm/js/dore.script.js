@@ -1,4 +1,5 @@
 var formatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
+var link_site = $('body').attr('data-link_site');
 $.fn.addCommas = function (nStr) {
   nStr += "";
   var x = nStr.split(".");
@@ -3208,131 +3209,210 @@ $.dore = function (element, options) {
     }
 
     /* 03.20. Dropzone */
-    if ($().dropzone && !$(".dropzone").hasClass("disabled")) {
+    // if ($().dropzone && !$(".dropzone").hasClass("disabled")) {
 
-      $(".dropzone").dropzone({
-        dictDefaultMessage: "Clique aqui ou arraste suas imagens para cá! Até 5 imagens",
-        url: `src/produtos/uploads.php`,
-        type: 'POST',
-        paramName: "uploadme",
-        fileName: true,
-        renameFile: function (file) {
-          let newName = new Date().getTime() + '_' + file.name;
-          return newName;
-        },
-        autoProcessQueue: true,
-        uploadMultiple: true,
-        parallelUploads: 10,
-        maxFiles: 10,
-        acceptedFiles: "image/*",
-        maxFilesize: 10,
-        init: function () {
-          this.processQueue();
-          // var submitButton = document.querySelector("#Salvar");
-          //   myDropzone = this; 
-          //   submitButton.addEventListener("click", function () {
-          //   });
-          this.on("success", function (file) {
-            //console.log(file.xhr.response);
-          });
-        },
-        thumbnailWidth: 160,
-        previewTemplate: '<div class="dz-preview dz-file-preview mb-3"><div class="d-flex flex-row "><div class="p-0 w-30 position-relative"><div class="dz-error-mark"><span><i></i></span></div><div class="dz-success-mark"><span><i></i></span></div><div class="preview-container"><img data-dz-thumbnail class="img-thumbnail border-0" /><i class="simple-icon-doc preview-icon" ></i></div></div><div class="pl-3 pt-2 pr-2 pb-1 w-70 dz-details position-relative"><div><span data-dz-name></span></div><div class="text-primary text-extra-small" data-dz-size /><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div></div><a href="#/" class="remove" data-dz-remove><i class="glyph-icon simple-icon-trash"></i></a></div>'
-      });
+    //   $(".dropzone").dropzone({
+    //     dictDefaultMessage: `<div class="sc-exiMuG daagyf">
+    //     <div class="sc-eishCr kYjbTi">
+    //         <div class="sc-fubCfw cqjzZd"><svg viewBox="0 0 50 50" fill="none" width="50px" height="50px">
+    //                 <path d="M19.3413 20.7821C19.3413 19.9867 19.9862 19.3418 20.7817 19.3418H40.5349C41.3304 19.3418 41.9753 19.9867 41.9753 20.7821V40.5354C41.9753 41.3309 41.3304 41.9758 40.5349 41.9758H20.7817C19.9862 41.9758 19.3413 41.3309 19.3413 40.5354V20.7821Z" fill="#DCDCDC"></path>
+    //                 <path fill-rule="evenodd" clip-rule="evenodd" d="M1.64586 0C0.736743 0 -0.000244141 0.736987 -0.000244141 1.64611V4.59538C-0.000244141 5.5045 0.736743 6.24149 1.64586 6.24149C2.55498 6.24149 3.29197 5.5045 3.29197 4.59538V3.29222H4.59514C5.50426 3.29222 6.24125 2.55523 6.24125 1.64611C6.24125 0.736987 5.50426 0 4.59514 0H1.64586ZM10.4937 0C9.58457 0 8.84758 0.736987 8.84758 1.64611C8.84758 2.55523 9.58457 3.29222 10.4937 3.29222H16.3922C17.3014 3.29222 18.0384 2.55523 18.0384 1.64611C18.0384 0.736987 17.3014 0 16.3922 0H10.4937ZM22.2908 0C21.3817 0 20.6447 0.736987 20.6447 1.64611C20.6447 2.55523 21.3817 3.29222 22.2908 3.29222H28.1893C29.0985 3.29222 29.8355 2.55523 29.8355 1.64611C29.8355 0.736987 29.0985 0 28.1893 0H22.2908ZM34.0879 0C33.1788 0 32.4418 0.736987 32.4418 1.64611C32.4418 2.55523 33.1788 3.29222 34.0879 3.29222H35.3911V4.42235C35.3911 5.33147 36.1281 6.06846 37.0372 6.06846C37.9463 6.06846 38.6833 5.33147 38.6833 4.42235V1.64611C38.6833 0.736987 37.9463 0 37.0372 0H34.0879ZM38.6833 9.97968C38.6833 9.07056 37.9463 8.33357 37.0372 8.33357C36.1281 8.33357 35.3911 9.07056 35.3911 9.97968V11.3167H16.255C13.5277 11.3167 11.3167 13.5277 11.3167 16.255V35.3913H10.0564C9.14732 35.3913 8.41034 36.1283 8.41034 37.0374C8.41034 37.9465 9.14732 38.6835 10.0564 38.6835H11.3167V45.0619C11.3167 47.7893 13.5277 50.0002 16.255 50.0002H45.0619C47.7893 50.0002 50.0002 47.7893 50.0002 45.0619V16.255C50.0002 13.5277 47.7893 11.3167 45.0619 11.3167H38.6833V9.97968ZM3.29197 10.4939C3.29197 9.58482 2.55498 8.84783 1.64586 8.84783C0.736743 8.84783 -0.000244141 9.58482 -0.000244141 10.4939V16.3925C-0.000244141 17.3016 0.736743 18.0386 1.64586 18.0386C2.55498 18.0386 3.29197 17.3016 3.29197 16.3925V10.4939ZM3.29197 22.291C3.29197 21.3819 2.55498 20.6449 1.64586 20.6449C0.736743 20.6449 -0.000244141 21.3819 -0.000244141 22.291V28.1896C-0.000244141 29.0987 0.736743 29.8357 1.64586 29.8357C2.55498 29.8357 3.29197 29.0987 3.29197 28.1896V22.291ZM3.29197 34.0881C3.29197 33.179 2.55498 32.442 1.64586 32.442C0.736743 32.442 -0.000244141 33.179 -0.000244141 34.0881V37.0374C-0.000244141 37.9465 0.736743 38.6835 1.64586 38.6835H4.44939C5.35851 38.6835 6.0955 37.9465 6.0955 37.0374C6.0955 36.1283 5.35851 35.3913 4.44939 35.3913H3.29197V34.0881ZM14.6089 16.255C14.6089 15.3459 15.3459 14.6089 16.255 14.6089H45.0619C45.971 14.6089 46.708 15.3459 46.708 16.255V45.0619C46.708 45.971 45.971 46.708 45.0619 46.708H16.255C15.3459 46.708 14.6089 45.971 14.6089 45.0619V16.255Z" fill="#3E3E3E"></path>
+    //             </svg></div>
+    //     </div>
+    //     <h2 class="sc-dkaWxM fyJEKv">Adicione ou arraste uma foto pra cá</h2><span class="sc-idOhPF isZjgk sc-cVkrFx hhbVN">Você pode buscar no seu dispositivo ou arrastar a foto até aqui pra carregar automaticamente.</span>
+    // </div>`,
+    //     url: `/${link_site}/admin/upload`,
+    //     paramName: "uploadme",
+    //     fileName: true,
+    //     transformFile: function(file, done) {
+    //       var myDropZone = this;
+    //       // Create the image editor overlay
+    //       var editor = document.createElement('div');
+    //       editor.style.position = 'fixed';
+    //       editor.style.left = 0;
+    //       editor.style.right = 0;
+    //       editor.style.top = 0;
+    //       editor.style.bottom = 0;
+    //       editor.style.zIndex = 9999;
+    //       editor.style.backgroundColor = '#000';
+    //       document.body.appendChild(editor);
+      
+    //       // Create the confirm button
+    //       var confirm = document.createElement('button');
+    //       confirm.style.position = 'absolute';
+    //       confirm.style.left = '10px';
+    //       confirm.style.top = '10px';
+    //       confirm.style.zIndex = 9999;
+    //       confirm.textContent = 'Confirmar';
+    //       confirm.addEventListener('click', function() {
+      
+    //         // Get the output file data from Croppie
+    //         croppie.result({
+    //           type:'blob',
+    //           size: {
+    //             width: 500,
+    //             height: 500
+    //           }
+    //         }).then(function(blob) {
+      
+    //           // Update the image thumbnail with the new image data
+    //           myDropZone.createThumbnail(
+    //             blob,
+    //             myDropZone.options.thumbnailWidth,
+    //             myDropZone.options.thumbnailHeight,
+    //             myDropZone.options.thumbnailMethod,
+    //             false, 
+    //             function(dataURL) {
+      
+    //               // Update the Dropzone file thumbnail
+    //               myDropZone.emit('thumbnail', file, dataURL);
+      
+    //               // Return modified file to dropzone
+    //               done(blob);
+    //             }
+    //           );
+      
+    //         });
+      
+    //         // Remove the editor from view
+    //         editor.parentNode.removeChild(editor);
+      
+    //       });
+    //       editor.appendChild(confirm);
+      
+    //       // Create the croppie editor
+    //       var croppie = new Croppie(editor, {
+    //         enableResize: true
+    //       });
+      
+    //       // Load the image to Croppie
+    //       croppie.bind({
+    //         url: URL.createObjectURL(file)
+    //       });
+      
+    //     },
+    //     renameFile: function (file) {
+    //       let newName = new Date().getTime() + '_' + file.name;
+    //       return newName;
+    //     },
+    //     autoProcessQueue: true,
+    //     uploadMultiple: true,
+    //     parallelUploads: 10,
+    //     maxFiles: 10,
+    //     acceptedFiles: "image/*",
+    //     maxFilesize: 10,
+    //     init: function () {
+    //       this.processQueue();
 
-    }
+    //       // this.on("sending", function (file) {
+    //       //   console.log('enviando '+ file)
+    //       // });
+          
+    //       this.on("success", function (file) {
+    //         console.log('success ' + file)
+    //       });
+    //       // this.on("complete", function (dd) {
+    //       //   console.log(dd)
+    //       // });
+
+    //     },
+    //     thumbnailWidth: 300,
+    //     previewTemplate: '<div class="dz-preview dz-file-preview mb-3"><div class="d-flex flex-row "><div class="p-0 w-30 position-relative"><div class="dz-error-mark"><span><i></i></span></div><div class="dz-success-mark"><span><i></i></span></div><div class="preview-container"><img data-dz-thumbnail class="img-thumbnail border-0" /><i class="simple-icon-doc preview-icon" ></i></div></div><div class="pl-3 pt-2 pr-2 pb-1 w-70 dz-details position-relative"><div><span data-dz-name></span></div><div class="text-primary text-extra-small" data-dz-size /><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div></div><a href="#/" class="remove" data-dz-remove><i class="glyph-icon simple-icon-trash"></i></a></div>'
+    //   });
+
+    // }
 
 
 
     /* 03.21. Cropperjs */
-    var Cropper = window.Cropper;
-    if (typeof Cropper !== "undefined") {
-      function each(arr, callback) {
-        var length = arr.length;
-        var i;
+    // var Cropper = window.Cropper;
+    // if (typeof Cropper !== "undefined") {
+    //   function each(arr, callback) {
+    //     var length = arr.length;
+    //     var i;
 
-        for (i = 0; i < length; i++) {
-          callback.call(arr, arr[i], i, arr);
-        }
+    //     for (i = 0; i < length; i++) {
+    //       callback.call(arr, arr[i], i, arr);
+    //     }
 
-        return arr;
-      }
-      var previews = document.querySelectorAll(".cropper-preview");
-      var options = {
-        aspectRatio: 4 / 3,
-        preview: ".img-preview",
-        ready: function () {
-          var clone = this.cloneNode();
+    //     return arr;
+    //   }
+    //   var previews = document.querySelectorAll(".cropper-preview");
+    //   var options = {
+    //     aspectRatio: 4 / 3,
+    //     preview: ".img-preview",
+    //     ready: function () {
+    //       var clone = this.cloneNode();
 
-          clone.className = "";
-          clone.style.cssText =
-            "display: block;" +
-            "width: 100%;" +
-            "min-width: 0;" +
-            "min-height: 0;" +
-            "max-width: none;" +
-            "max-height: none;";
-          each(previews, function (elem) {
-            elem.appendChild(clone.cloneNode());
-          });
-        },
-        crop: function (e) {
-          var data = e.detail;
-          var cropper = this.cropper;
-          var imageData = cropper.getImageData();
-          var previewAspectRatio = data.width / data.height;
+    //       clone.className = "";
+    //       clone.style.cssText =
+    //         "display: block;" +
+    //         "width: 100%;" +
+    //         "min-width: 0;" +
+    //         "min-height: 0;" +
+    //         "max-width: none;" +
+    //         "max-height: none;";
+    //       each(previews, function (elem) {
+    //         elem.appendChild(clone.cloneNode());
+    //       });
+    //     },
+    //     crop: function (e) {
+    //       var data = e.detail;
+    //       var cropper = this.cropper;
+    //       var imageData = cropper.getImageData();
+    //       var previewAspectRatio = data.width / data.height;
 
-          each(previews, function (elem) {
-            var previewImage = elem.getElementsByTagName("img").item(0);
-            var previewWidth = elem.offsetWidth;
-            var previewHeight = previewWidth / previewAspectRatio;
-            var imageScaledRatio = data.width / previewWidth;
-            elem.style.height = previewHeight + "px";
-            if (previewImage) {
-              previewImage.style.width =
-                imageData.naturalWidth / imageScaledRatio + "px";
-              previewImage.style.height =
-                imageData.naturalHeight / imageScaledRatio + "px";
-              previewImage.style.marginLeft = -data.x / imageScaledRatio + "px";
-              previewImage.style.marginTop = -data.y / imageScaledRatio + "px";
-            }
-          });
-        },
-        zoom: function (e) { }
-      };
+    //       each(previews, function (elem) {
+    //         var previewImage = elem.getElementsByTagName("img").item(0);
+    //         var previewWidth = elem.offsetWidth;
+    //         var previewHeight = previewWidth / previewAspectRatio;
+    //         var imageScaledRatio = data.width / previewWidth;
+    //         elem.style.height = previewHeight + "px";
+    //         if (previewImage) {
+    //           previewImage.style.width =
+    //             imageData.naturalWidth / imageScaledRatio + "px";
+    //           previewImage.style.height =
+    //             imageData.naturalHeight / imageScaledRatio + "px";
+    //           previewImage.style.marginLeft = -data.x / imageScaledRatio + "px";
+    //           previewImage.style.marginTop = -data.y / imageScaledRatio + "px";
+    //         }
+    //       });
+    //     },
+    //     zoom: function (e) { }
+    //   };
 
-      if ($("#inputImage").length > 0) {
-        var inputImage = $("#inputImage")[0];
-        var image = $("#cropperImage")[0];
+    //   if ($("#inputImage").length > 0) {
+    //     var inputImage = $("#inputImage")[0];
+    //     var image = $("#cropperImage")[0];
 
 
 
-        var cropper;
-        inputImage.onchange = function () {
-          var files = this.files;
-          var file;
+    //     var cropper;
+    //     inputImage.onchange = function () {
+    //       var files = this.files;
+    //       var file;
 
-          if (files && files.length) {
-            file = files[0];
-            $("#cropperContainer").css("display", "block");
+    //       if (files && files.length) {
+    //         file = files[0];
+    //         $("#cropperContainer").css("display", "block");
 
-            if (/^image\/\w+/.test(file.type)) {
-              uploadedImageType = file.type;
-              uploadedImageName = file.name;
+    //         if (/^image\/\w+/.test(file.type)) {
+    //           uploadedImageType = file.type;
+    //           uploadedImageName = file.name;
 
-              image.src = uploadedImageURL = URL.createObjectURL(file);
-              if (cropper) {
-                cropper.destroy();
-              }
-              cropper = new Cropper(image, options);
-              inputImage.value = null;
-            } else {
-              window.alert("Please choose an image file.");
-            }
-          }
-        };
-      }
-    }
+    //           image.src = uploadedImageURL = URL.createObjectURL(file);
+    //           if (cropper) {
+    //             cropper.destroy();
+    //           }
+    //           cropper = new Cropper(image, options);
+    //           inputImage.value = null;
+    //         } else {
+    //           window.alert("Please choose an image file.");
+    //         }
+    //       }
+    //     };
+    //   }
+    // }
 
     /* 03.22. Range Slider */
     if (typeof noUiSlider !== "undefined") {

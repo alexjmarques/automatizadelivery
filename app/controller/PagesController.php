@@ -142,7 +142,11 @@ class PagesController extends Controller
             $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
             $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
             $produtoQtd = $this->acoes->counts('produtos', 'id_empresa', $empresa->id);
+
             $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+            $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+            $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
+
             $dias = $this->acoes->getFind('dias');
             $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
 
@@ -187,6 +191,8 @@ class PagesController extends Controller
             'moeda' => $moeda,
             'delivery' => $delivery,
             'categoria' => $categoria,
+            'tamanhosCategoria' => $tamanhosCategoria,
+            'tamanhos' => $tamanhos,
             'produto' => $produto,
             'produtoTop5' => $produtoTop5,
             'dias' => $dias,

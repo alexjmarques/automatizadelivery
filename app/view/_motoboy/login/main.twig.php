@@ -24,10 +24,15 @@
                 <div class="btn_acao">
                     <div class="carrega"></div>
                     <button class="btn btn-primary btn-lg btn-block acaoBtnLogin">Login</button>
+
+                    <p class="text-center text-white mt-4">Não tem conta? Cadastre-se</p>
+            <div class="py-2 mt-3">
+                <a href="{{BASE}}{{empresa.link_site}}/motoboy/cadastro" class="btn btn-lg btn-outline-primary btn-block"><i class="feather-mail"></i> Cadastrar</a>
+            </div>
+
                 </div>
         </form>
     </div>
-
 </div>
 {% include 'partials/modalAlertSite.twig.php' %}
 {% if empresa.capa is null %}

@@ -22,7 +22,7 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Nome</label>
+                            <label>Nome do Produto</label>
                             <input type="text" class="form-control" id="nome" name="nome" value="" required>
                         </div>
 
@@ -93,24 +93,14 @@
                 </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                        <h5>Imagem de Capa do produto</h5>
-                        <p class="mb-4">Após clicar no botão <strong>"Selecionar Imagem"</strong> e carregar a imagem de capa, ajuste a mesmo no angulo de corte e clique em <strong>"Cortar Imagem"</strong></p>
-                        
-                            <div class="form-group col-md-12" style="float: left;">
-                                <div class="image_area">
-                                    <label for="upload_image">
-                                        <img src="{{BASE}}uploads/no-image.png" id="uploaded_image" class="img-responsive img-circle" />
-                                        <div class="overlay">
-                                            <div class="text">Selecione uma imagem</div>
-                                        </div>
-                                        <input type="file" name="image" class="image" id="upload_image" style="display:none" />
-                                    </label>
-                                </div>
-                            </div>
+                        <h5 class="mb-3">Imagem de Capa do produto</h5>
+                        <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX dz-clickable" id="myDropzone"></div>
+                        {# Formatos: JPEG, JPG, PNG e HEIC
+            Peso máximo: 5 MB
+            Resolução mínima: 300x300 #}
                         </div>
                     </div>
 
-                    
                     <div class="card mb-4">
                         <div class="card-body">
 
@@ -176,8 +166,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {% endif %}
-                                
+                            {% endif %}  
                             <input type="hidden" id="imagemNome" name="imagemNome" value="">
                             <input type="hidden" id="vendas" name="vendas" value="0">
                             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">     
