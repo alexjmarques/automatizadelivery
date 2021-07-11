@@ -9,8 +9,8 @@
 <div class="osahan-home-page">
     <div class="bg-light">
         {% include 'home/mobile/promocao.twig.php' %}
-        {% include 'home/mobile/maisVendidos.twig.php' %}
         {% include 'home/mobile/categoria.twig.php' %}
+        {% include 'home/mobile/maisVendidos.twig.php' %}
     </div>
 </div>
 {% if delivery.status == 0 %}

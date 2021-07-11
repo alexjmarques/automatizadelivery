@@ -9,50 +9,51 @@
         {% endfor %}
     </ul>
 </div>
-{% set id_categoria = 0 %}
-{% set id_tamanhos = 0 %}
+{% set idCategoria = 0 %}
+{% set idTamanhos = 0 %}
 {% for c in categoria %}
-
 {% for tc in tamanhosCategoria %}
 {% if c.id == tc.id_categoria %}
-{% set id_categoria = c.id %}
-
+{% set idCategoria = c.id %}
+{% set idTamanhos = tc.id_tamanhos %}
 {% endif %}
 {% endfor %}
-    {% if c.id == id_categoria %}
+    {% if c.id == idCategoria %}
     {% if c.produtos > 0 %}
     <div class="px-3 pt-3 title d-flex bg-white">
         <h5 id="{{ c.slug }}" name="{{ c.slug }}" class="mt-1">{{ c.nome }}</h5>
 </div>
     <div class="px-3 pt-3 title bg-white">
-    {% for tamCat in tamanhosCategoria %}
-        {% for tam in tamanhos %}
-            {% if c.id == tamCat.id_categoria %}
-            {% for i in range(1, tam.qtd_sabores) %}
-            <div class="osahan-slider-item py-3 px-1 col-6 float-left">
-                <div class="list-card bg-white h-100 rounded overflow-hidden position-relative">
-                    <div class="p-2 position-relative">
-                        <div class="list-card-body">
-                            <h6 class="mb-1">
-                                <a href="{{BASE}}{{empresa.link_site}}/{{c.slug}}/produto/{{tamCat.id}}/{{tam.id}}/{{i}}" class="text-black text-uppercase">
-                                    {{tam.nome}} {% if i == 1 %}{{i}} SABOR {% else %}{{i}} SABORES {% endif %}({{tam.qtd_pedacos}} PEDAÇOS)
-                                    </a>
-                            </h6>
-                            <p class="text-gray mb-0 pb-0">Escolha {% if i == 1 %}{{i}} sabor {% else %} {{i}} sabores{% endif %}</p>
-                        </div>
-                    </div>
+    {% for tc in tamanhosCategoria %}
+    {% if c.id == tc.id_categoria %}
+    {% for tam in tamanhos %}
+    {% if c.id == tc.id_categoria and tam.id == tc.id_tamanhos %}
+
+    {% for i in range(1, tam.qtd_sabores) %}
+    <div class="osahan-slider-item py-3 px-1 col-6 float-left">
+        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative">
+            <div class="p-1 position-relative">
+                <div class="list-card-body">
+                    <h6 class="mb-1">
+                        <a href="{{BASE}}{{empresa.link_site}}/{{c.slug}}/produto/{{tamCat.id}}/{{tam.id}}/{{i}}" class="text-black text-uppercase">
+                            {{tam.nome}} {% if i == 1 %}{{i}} SABOR {% else %}1/{{i}} SABORES {% endif %}({{tam.qtd_pedacos}} PEDAÇOS)
+                            </a>
+                    </h6>
+                    <p class="text-gray mb-0 pb-0">Escolha {% if i == 1 %}{{i}} sabor {% else %} {{i}} sabores{% endif %}</p>
                 </div>
             </div>
-            {% endfor %}
-
-            
-            {% endif %}
-        {% endfor %}
-        {% endfor %}
-        <div class="clearfix"></div>
-
+        </div>
     </div>
+    {% endfor %}
 
+
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+  
+    <div class="clearfix"></div>
+    </div>
     {% endif %}
 
     {% else %}
