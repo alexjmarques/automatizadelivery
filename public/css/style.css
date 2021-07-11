@@ -14834,7 +14834,8 @@ textarea.form-control {
     -webkit-box-align: center;
     align-items: center;
     white-space: nowrap;
-    background-color: #fff
+    background-color: #fff;
+    box-shadow: 10px -1px 10px rgb(0 0 0 / 8%);
 }
 
 .fjHKJw>div {
@@ -14869,7 +14870,8 @@ textarea.form-control {
 .row-scroll {
     overflow: auto;
     white-space: nowrap;
-    padding-top: 10px
+    padding-top: 10px;
+    height: 70px;
 }
 
 .row-scroll .col-xl-1 {
