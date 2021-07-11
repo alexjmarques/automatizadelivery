@@ -30,7 +30,7 @@
     {% if c.id == tc.id_categoria and tam.id == tc.id_tamanhos %}
 
     {% for i in range(1, tam.qtd_sabores) %}
-    <div class="osahan-slider-item py-3 px-1 pb-0 col-6 float-left">
+    <div class="osahan-slider-item py-3 px-1 col-6 float-left pb-0 pl-0">
         <div class="list-card bg-white h-100 rounded overflow-hidden position-relative">
             <div class="p-1 position-relative">
                 <div class="list-card-body">
