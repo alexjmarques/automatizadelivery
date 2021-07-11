@@ -160,7 +160,7 @@
             <input type="hidden" class="form-control" id="valor_promocional" placeholder="Insira o Valor " name="valor_promocional" value="0">
             <div class="btn_acao">
                 <div class="carrega"></div>
-                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+                <button class="btn btn-info d-block mt-0 acaoBtn acaoBtnCadastro">Cadastrar</button>
             </div>
         </div>
     </div>

@@ -198,7 +198,7 @@
 
             <div class="btn_acao">
                 <div class="carrega"></div>
-                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+                <button class="btn btn-info d-block mt-0 acaoBtn acaoBtnAtualizar">Atualizar</button>
             </div>
         </div>
     </div>

@@ -1110,6 +1110,18 @@ switch (active_link) {
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
     break;
+
+    case `/${link_site}/admin/produto-pizza/novo`:
+    $('#collapseProdutos').addClass('show')
+    $('#menuProdutos .primaryMenu').removeClass('collapsed')
+    $('#subProd').addClass('active')
+    break;
+  case `/${link_site}/admin/produto-pizza/editar/${activeId}`:
+    $('#collapseProdutos').addClass('show')
+    $('#menuProdutos .primaryMenu').removeClass('collapsed')
+    $('#subProd').addClass('active')
+    break;
+
   case `/${link_site}/admin/tipo-adicionais`:
     $('#collapseProdutos').addClass('show')
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
