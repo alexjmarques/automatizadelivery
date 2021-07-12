@@ -351,11 +351,13 @@ $router->post('/{linkSite}/admin/tamanho/i', 'AdminTamanhos:insert');
 $router->post('/{linkSite}/admin/tamanho/u/{id}', 'AdminTamanhos:update');
 $router->post('/{linkSite}/admin/tamanho/u/item', 'AdminTamanhos:updateItem');
 
+
 $router->get('/{linkSite}/admin/massas', 'AdminMassas:index');
 $router->get('/{linkSite}/admin/massa/nova', 'AdminMassas:novo');
 $router->get('/{linkSite}/admin/massa/editar/{id}', 'AdminMassas:editar');
 $router->post('/{linkSite}/admin/massa/i', 'AdminMassas:insert');
 $router->post('/{linkSite}/admin/massa/u/{id}', 'AdminMassas:update');
+$router->post('/{linkSite}/admin/massas/u/item', 'AdminMassas:updateItem');
 
 $router->get('/{linkSite}/admin/tipo-adicionais', 'AdminTipoAdicional:index');
 $router->get('/{linkSite}/admin/tipo-adicional/nova', 'AdminTipoAdicional:novo');

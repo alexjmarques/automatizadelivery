@@ -26,16 +26,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for p in massas %}
+                        {% for m in massas %}
                         <tr>
                             <td>
-                                <p class="list-item-heading"><a href="{{BASE}}{{empresa.link_site}}/admin/massa/editar/{{ p.id }}">{{ p.nome }}</a></p>
+                                <p class="list-item-heading"><a href="{{BASE}}{{empresa.link_site}}/admin/massa/editar/{{ m.id }}">{{ m.nome }}</a></p>
                             </td>
                             <td>
                             {{moeda.simbolo}} {{ p.valor|number_format(2, ',', '.') }}
                             </td>
                             <td>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/massa/editar/{{ p.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i> Editar</a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/massa/editar/{{ m.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i> Editar</a>
                             </td>
                         </tr>
                         {% endfor %}

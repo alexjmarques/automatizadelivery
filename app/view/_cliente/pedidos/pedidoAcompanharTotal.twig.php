@@ -32,7 +32,6 @@
 </div>
 </div>
 <div class="bg-white shadow mb-3 ">
-
 {% for c in carrinho %}
 {% if c.numero_pedido == venda.numero_pedido %}
 {% for p in produto %}
@@ -42,7 +41,7 @@
     <div class="media full-width">
         <div class="mr-2 text-success">&middot;</div>
         <div class="media-body">
-            <p class="m-0 small-mais">{{c.quantidade}}x {{ p.nome }}
+            <p class="m-0 small-mais">{{c.quantidade}}x {% if c.variacao is not null %}{% set foo = c.variacao|split(' - ') %}{{ foo[0] }}<br/>{% else %}{{ p.nome }}{% endif %}
                 <span class="text-gray mb-0 right">{{ moeda.simbolo }} {{ (c.quantidade * c.valor)|number_format(2, ',', '.') }}</span>
             </p>
             {% for cartAd in carrinhoAdicional %}
@@ -57,6 +56,19 @@
             {% endfor %}
             {% endif %}
             {% endfor %}
+
+            {% if c.variacao is not null %}
+                                <p class="mb-0 mt-0"><strong>Massa: </strong>
+                                    {{ foo[1] }}<br/>
+                                </p>
+                                
+                                <p class="mb-0 mt-0"><strong>Sabor: </strong>
+                                    {% if foo[2] %}{{ foo[2] }}{% endif %}
+                                    {% if foo[3] %} - {{ foo[3] }}{% endif %}
+                                    {% if foo[4] %} - {{ foo[4] }}{% endif %}
+                                    {% if foo[5] %} - {{ foo[5] }}{% endif %}
+                                </p>
+                                {% endif %}
 
             {% for s in sabores %}
             {% if s.id == c.id_sabores %}

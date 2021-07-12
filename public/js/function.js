@@ -302,6 +302,9 @@ $('#add_itenPizza input[type=radio]').on('change', function (e1) {
     $('#id_produto').val(id);
     $("#btn_pedido").show()
 
+    $('#saborCounts').addClass('greens');
+    $('#pizza_choice').html(`<span class="statusCart">Pronto <i class="feather-check"></i></span>`);
+
 });
 
 $('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
@@ -313,7 +316,7 @@ $('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
     let totalMassa = $('#totalMassa').val()
 
     var total = 0;var qtd = 0;
-    $('#add_itenPizza input[type=checkbox]:checked').each(function (i, ele) {var valor = parseFloat($(this).attr('data-valor'));total += valor;qtd = i + 1;});
+    $('#add_itenPizza input[type=checkbox]:checked').each(function (i, ele) {var valor = parseFloat($(this).attr('data-valor'));total += valor;qtd = i + 1;$('#saborCount').text(qtd)});
 
     $('#totalPizza').val(total);
     $('#valor').val(parseFloat(total) + parseFloat(totalMassa));
@@ -1015,11 +1018,9 @@ $("#formFinish").submit(function () {
 function produtosModal(id_produto, id_carrinho) {
     $.get(`/${link_site}/carrinho/pedido/acao/${id_produto}/${id_carrinho}`, function (dd) {
         let retorno = `
-        <p id="mensagem" class="mb-3 text-center">O que deseja fazer com o item <strong>${dd}</strong>?<p>
+        <p id="mensagem" class="mb-3 text-center">Deseja remover este item <strong>${dd}</strong> do seu pedido?<p>
         <div class="mt-3 text-center">
-            <a href="/${link_site}/carrinho/${id_produto}/d/${id_carrinho}" class="text-danger removerItem">Remover item</a><br/><br/>
-            ou <br/><br/>
-            <a href="/${link_site}/produto/${id_produto}/e/${id_carrinho}" class="text-success">Editar item</a><br/>
+            <a href="/${link_site}/carrinho/${id_produto}/d/${id_carrinho}" class="p-3 text-danger removerItem">REMOVER</a><br/><br/>
         </div>
         <div class="mt-3">
             <a href="#" class="mt-3 btn btn-primary btn-lg btn-block" data-dismiss="modal" aria-label="Close">Fechar e continuar</a>

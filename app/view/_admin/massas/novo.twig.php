@@ -26,7 +26,22 @@
                     <label>Valor</label>
                     <input type="text" class="form-control" id="valor" name="valor" value="{{retorno.valor}}" required autocomplete="off">
                 </div>
+            </div>
 
+            <div class="form-row mb-4">
+                <div class="col-md-12">
+                    <label class="bold">Tamanhos</label>
+                </div>
+                <div class="row col-md-12">
+                    {% for cat in tamanhos %}
+                    <div class="col-md-4 mt-2">
+                        <div class="p-2 colAdc">
+                            <input checked type="checkbox" id="tamanhos{{ cat.id }}" name="tamanhos[]" value="{{ cat.id }}" class="mp2">
+                            <label class="form-check-label" for="tamanhos{{ cat.id }}"> {{ cat.nome }}</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             
             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">

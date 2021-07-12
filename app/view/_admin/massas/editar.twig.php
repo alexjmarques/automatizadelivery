@@ -29,6 +29,25 @@
                 </div>
 
             </div>
+
+            <div class="form-row mb-4 mt-4">
+                <div class="col-md-12">
+                    <h6 id="titleBy bold">Tamanhos</h6>
+                </div>
+
+                <div class="row col-md-12">
+                    {% for tam in tamanhos %}
+                    <div class="col-md-4 mt-2">
+                        <div class="p-2 colAdc">
+                            <input {% for tamcat in massasTamanhos %}{% if tamcat.id_tamanhos == tam.id %}checked data-idcat="{{tamcat.id}}"{% endif %}{% endfor %} onclick="updateItemMassa({{empresa.id}}, {{ tam.id }}, {{retorno.id}})" type="checkbox" id="tamanhos{{ tam.id }}" name="tamanhos[]" value="{{ tam.id }}" class="mp2">
+                            <label class="form-check-label" for="tamanhos{{ tam.id }}"> {{ tam.nome }}</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+            </div>
             
             <input type="hidden" id="id" name="id" value="{{retorno.id}}">
             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">

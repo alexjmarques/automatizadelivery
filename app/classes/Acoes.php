@@ -33,6 +33,7 @@ use app\Models\CupomDescontoUtilizadores;
 use app\Models\Categorias;
 use app\Models\PizzaTamanhos;
 use app\Models\PizzaMassas;
+use app\Models\pizzaMassasTamanhos;
 use app\Models\PizzaProdutoValor;
 use app\Models\PizzaTamanhosCategoria;
 use app\Models\CupomDesconto;
@@ -80,6 +81,7 @@ class Acoes
     private $categorias;
     private $pizzaMassas;
     private $pizzaTamanhos;
+    private $pizzaMassasTamanhos;
     private $pizzaProdutoValor;
     private $pizzaTamanhosCategoria;
     private $cupomDesconto;
@@ -136,6 +138,7 @@ class Acoes
         $this->categorias = new Categorias();
         $this->pizzaMassas = new PizzaMassas();
         $this->pizzaTamanhos = new PizzaTamanhos();
+        $this->pizzaMassasTamanhos = new PizzaMassasTamanhos();
         $this->pizzaProdutoValor = new PizzaProdutoValor();
         $this->pizzaTamanhosCategoria = new PizzaTamanhosCategoria();
         $this->cupomDesconto = new CupomDesconto();

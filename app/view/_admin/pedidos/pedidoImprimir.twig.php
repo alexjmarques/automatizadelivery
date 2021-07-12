@@ -172,7 +172,6 @@ $btnPrint.addEventListener("click", () => {
         {% for car in  carrinho %}
             {% for prod in  produtos %}
                 {% if car[':id_produto'] == prod[':id'] %}
-
                 <li class="odd"><strong>{{ car[':quantidade']}}x - {{ prod[':nome }}</strong>
                 <span class="moeda_valor right rtt">{{ moeda[':simbolo }} {{ (car[':valor'] * car[':quantidade'])|number_format(2, ',', '.') }}</span>
                 {% if car[':observacao'] != "" %}

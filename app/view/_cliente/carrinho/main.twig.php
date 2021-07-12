@@ -20,12 +20,24 @@
                     <div class="media full-width">
                         <div class="media-body">
                             <a href="#acaoPedido" data-toggle="modal" data-target="#acaoPedido" id="btMod{{c.id}}" onclick="produtosModal({{ p.id}}, {{c.id}})">
-                                <p class="m-0 small-mais"><strong>{{c.quantidade}}x {{ p.nome }}</strong>
+                                <p class="m-0 small-mais text-uppercase"><strong>{{c.quantidade}}x</strong> {% if c.variacao is not null %}
+                                    {% set foo = c.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br/>{% else %}<strong>{{ p.nome }}</strong>{% endif %}
                                     <span class="text-gray mb-0 float-right ml-2 text-muted text-bold-18"><strong>{{
                                             moeda.simbolo }} {{ (c.quantidade * c.valor)|number_format(2,
                                             ',', '.') }}</strong></span>
                                 </p>
-
+                                {% if c.variacao is not null %}
+                                <p class="mb-0 mt-0"><strong>Massa: </strong>
+                                    {{ foo[1] }}<br/>
+                                </p>
+                                
+                                <p class="mb-0 mt-0"><strong>Sabor: </strong>
+                                    {% if foo[2] %}{{ foo[2] }}{% endif %}
+                                    {% if foo[3] %} - {{ foo[3] }}{% endif %}
+                                    {% if foo[4] %} - {{ foo[4] }}{% endif %}
+                                    {% if foo[5] %} - {{ foo[5] }}{% endif %}
+                                </p>
+                                {% endif %}
                                 {% if c.id_sabores != '' %}
                                 <p class="m-0 mt-0"><strong>Sabor: </strong>
                                     {{c.id_sabores|length}}
@@ -241,8 +253,6 @@
                             <input type="hidden" name="numero_pedido" id="numero_pedido" value="{{ numero_pedido }}">
                             <input type="hidden" name="troco" id="troco" value="0">
 
-
-                            <input type="hidden" name="id_caixa" id="id_caixa" value="{{idCaixa}}">
                             <input type="hidden" name="chave" id="chave" value="{{chave}}">
                             <input type="hidden" name="km" id="km" value="{{km}}">
                             {% if cupomVerifica == 0 %}

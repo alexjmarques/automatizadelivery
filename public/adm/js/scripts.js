@@ -629,6 +629,25 @@ function updateItem(id_empresa, id_categoria, id_tamanhos) {
   })
 }
 
+function updateItemMassa(id_empresa, id_tamanhos, id_massas) {
+  let tamanhos_categoria = $(`#tamanhos${id_tamanhos}`).attr('data-idcat');
+  if (tamanhos_categoria) {
+    var valores = { id_empresa, id_massas, id_tamanhos, tamanhos_categoria }
+  } else {
+    var valores = { id_empresa, id_massas, id_tamanhos }
+  }
+  console.log(valores);
+  $.ajax({
+    url: `/${link_site}/admin/massas/u/item`,
+    method: "POST",
+    data: valores,
+    dataType: "text",
+    success: function (dd) {
+      console.log(dd);
+    },
+  })
+}
+
 
 
 function mudarStatusEntrega(id, status, id_caixa) {

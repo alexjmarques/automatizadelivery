@@ -753,7 +753,15 @@ class CarrinhoController extends Controller
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $data['id_empresa'], 1, 'id', 'DESC');
         $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
-
+        if(!$user){
+            $userNovo = new UsuariosEmpresa();
+            $userNovo->id_usuario = $this->sessao->getUser();
+            $userNovo->id_empresa = $data['id_empresa'];
+            $userNovo->nivel = $this->sessao->getNivel();
+            $userNovo->pedidos = 0;
+            $userNovo->save();
+        }
+        $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
         if ($carrinho) {
             foreach ($carrinho as $cart) {
                 $cartAdicional = (new Carrinho())->findById($cart->id);

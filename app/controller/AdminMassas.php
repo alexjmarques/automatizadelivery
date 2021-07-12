@@ -13,6 +13,7 @@ use function JBZoo\Data\json;
 use app\classes\Preferencias;
 use app\Models\PizzaMassas;
 use app\classes\Sessao;
+use app\Models\PizzaMassasTamanhos;
 
 class AdminMassas extends Controller
 {
@@ -83,6 +84,7 @@ class AdminMassas extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $categorias = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
@@ -100,6 +102,7 @@ class AdminMassas extends Controller
             'moeda' => $moeda,
             'empresa' => $empresa,
             'categorias' => $categorias,
+            'tamanhos' => $tamanhos,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -116,7 +119,10 @@ class AdminMassas extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $categorias = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $massasTamanhos = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
@@ -132,6 +138,8 @@ class AdminMassas extends Controller
             'retorno' => $retorno,
             'planoAtivo' => $planoAtivo,
             'categorias' => $categorias,
+            'tamanhos' => $tamanhos,
+            'massasTamanhos' => $massasTamanhos,
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
@@ -143,16 +151,33 @@ class AdminMassas extends Controller
 
     public function insert($data)
     {
+        
         $massas = new PizzaMassas();
         $massas->nome = $data['nome'];
         $massas->valor = $this->geral->brl2decimal($data['valor']);
         $massas->id_empresa = $data['id_empresa'];
         $massas->save();
 
-        header('Content-Type: application/json');
-        $json = json_encode(['id' => $massas->id, 'resp' => 'insert', 'mensagem' => 'Massa cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a massa', 'code' => 2,  'url' => 'admin/massas',]);
-        exit($json);
+
+        if ($massas->id > 0) {
+            foreach ($data['categorias'] as $res) {
+                $tamanhoCat = new PizzaMassasTamanhos();
+                $tamanhoCat->id_tamanhos = $res;
+                $tamanhoCat->id_massas = $massas->id;
+                $tamanhoCat->id_empresa = $data['id_empresa'];
+                $tamanhoCat->save();
+            }
+
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => $massas->id, 'resp' => 'insert', 'mensagem' => 'Massa cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a massa', 'code' => 2,  'url' => 'admin/massas',]);
+            exit($json);
+        } else {
+            dd("Erro no Tamanho: " . $massas);
+        }
+
+        
     }
+
 
     public function update($data)
     {
@@ -164,5 +189,20 @@ class AdminMassas extends Controller
         header('Content-Type: application/json');
         $json = json_encode(['id' => $massas->id, 'resp' => 'update', 'mensagem' => 'Massa atualizada com sucesso', 'error' => 'Não foi posível atualizada a massa', 'code' => 2,  'url' => 'admin/massas',]);
         exit($json);
+    }
+
+    public function updateItem($data)
+    {
+        //dd($data);
+        if ($data['tamanhos_categoria']) {
+            $valor = (new PizzaMassasTamanhos())->findById($data['tamanhos_categoria']);
+            $valor->destroy();
+        } else {
+            $tamanhoCat = new PizzaMassasTamanhos();
+            $tamanhoCat->id_tamanhos = $data['id_tamanhos'];
+            $tamanhoCat->id_massas = $data['id_massas'];
+            $tamanhoCat->id_empresa = $data['id_empresa'];
+            $tamanhoCat->save();
+        }
     }
 }
