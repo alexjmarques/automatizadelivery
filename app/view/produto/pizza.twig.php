@@ -24,7 +24,7 @@
                         <p class="garnish-choices__title" data-test-id="Escolha 1 opção.">Escolha a sua Preferência
                             <span class="garnish-choices__title-desc">Escolha 1 opção.</span>
                         </p>
-                        <span class="garnish-choices__tags">
+                        <span id="massa_choice" class="garnish-choices__tags">
                             <span class="marmita-minitag marmita-minitag--black marmita-minitag--small">OBRIGATÓRIO</span>
                         </span>
                     </span>
@@ -48,20 +48,22 @@
                         <p class="garnish-choices__title" data-test-id="Escolha 1 opção.">Escolha um sabor
                             <span class="garnish-choices__title-desc">Escolha 2 opção.</span>
                         </p>
-                        <span class="garnish-choices__tags"><span class="marmita-minitag marmita-minitag--black marmita-minitag--small"><span id="saborCount">0</span>/{{ii}}</span><span class="marmita-minitag marmita-minitag--black marmita-minitag--small">OBRIGATÓRIO</span></span>
+                        <span class="garnish-choices__tags">
+                            <span id="pizza_choice"><span class="marmita-minitag marmita-minitag--black marmita-minitag--small">OBRIGATÓRIO</span></span>
+                            <span id="saborCounts" class="marmita-minitag marmita-minitag--black marmita-minitag--small">
+                                <span id="saborCount">0</span>/<span id="iCount">{{ii}}</span>
+                            </span>
+                        </span>
                     </span>
                 </div>
                 <div class="col-md-12">
-                    <div class="mdc-card" id="add_itenPizza">
-
+                    <div class="mdc-cards" id="add_itenPizza">
                         <div>
-                            
                             {% for prod in produtos %}
                             {% if ii == 1 %}
                             <div class="custom-control custom-radio border-bottom py-2">
                                 <input class="custom-control-input" type="radio" id="id_pizza_prod{{prod.id}}" {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %} data-valor="{{ prodVal.valor }}"{% endif %}{% endfor %}  name="pizza_prod" value="{{prod.id}}">
-                                <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">Pizza {{prod.nome}} 
-                                    {{prod.descricao}} {{prod.observacao}}
+                                <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">PIZZA {{prod.nome}} - {{prod.descricao}} {% if prod.observacao is not null %} <strong class="size10">({{prod.observacao}})</strong>{% endif %}
                                     <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
                                     {% for prodVal in produtoValor %}
                                     {% if prodVal.id_produto == prod.id %}
@@ -72,13 +74,10 @@
                             </div>
                             {% else %}
                             <div class="custom-control border-bottom py-3">
-                                <input class="custom-control-input" type="checkbox" data-tipoSlug="{{ ta.slug}}"
-                                    id="id_pizza_prod{{prod.id}}" name="pizza_prod[]" value="{{prod.id}}"
-                                    valor="{% if prod.valor is null %}0.00{% else %}{{prod.valor}}{% endif %}">
+                                <input class="custom-control-input" type="checkbox" {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %}data-valor="{{ (prodVal.valor / ii)}}"{% endif %}{% endfor %}
+                                    id="id_pizza_prod{{prod.id}}" name="pizza_prod[]" value="{{prod.id}}">
                                 <label class="custom-control-label"
-                                    for="id_pizza_prod{{prod.id}}">+ {{moeda.simbolo}} 1/{{ii}}  PIZZA {{prod.nome}}
-                                    {{prod.descricao}}
-                                    {{prod.observacao}}
+                                    for="id_pizza_prod{{prod.id}}">1/{{ii}} PIZZA {{prod.nome}} - {{prod.descricao}} {% if prod.observacao is not null %} <strong class="size10">({{prod.observacao}})</strong>{% endif %}
                                     <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
 
                                         {% for prodVal in produtoValor %}
@@ -88,30 +87,12 @@
                                         {% endfor %}
                                     
                                 </label>
-
-                                <div class="input-group plus-minus-input id_pizza_prod{{prod.id}}"
-                                    style="display:none;">
-                                    <div class="input-group-button">
-                                        <button type="button" class="btn btn-danger btn-number minuss"
-                                            id-select="{{prod.id}}" data-quantity="minus"
-                                            data-field="qtd_ad{{prod.id}}">
-                                            <i class="feather-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="number" id="qtd_ad{{prod.id}}" min="1"
-                                        name="qtd_ad{{prod.id}}"
-                                        class="input-group-field qtd-control id_pizza_prod{{prod.id}}" value="1">
-                                    <div class="input-group-button">
-                                        <button type="button" class="btn btn-success btn-number"
-                                            id-select="{{prod.id}}" data-quantity="plus"
-                                            data-field="qtd_ad{{prod.id}}">
-                                            <i class="feather-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                             {% endif %}
                             {% endfor %}
+
+
+                            
 
 
                         </div>
@@ -128,8 +109,8 @@
                     <textarea name="observacao" id="observacao" placeholder="Alguma observação no pedido?" aria-label="With textarea" class="form-control"></textarea>
                 </div>
             </div>
-            {% endif%}
-            {% endif%}
+            {% endif %}
+            {% endif %}
 
             <input type="hidden" name="totalMassa" id="totalMassa" value="0">
             <input type="hidden" name="massa" id="massa" value="">

@@ -68,7 +68,7 @@ $("#emailOurTel").on('blur touchleave touchcancel', function () {
     let valor = $(this).val();
     if (valor.match(regra)) {
         $(this).mask('(00) 00000-0000');
-    } else {}
+    } else { }
 });
 
 
@@ -252,7 +252,7 @@ var vi = $("#add_itens").length;
 var qb = $("#add_itens #itens_value").text();
 var iqba = $("#add_itens #itens_value").text();
 
-(qb === "0") ? $('.adicional_item, .adicional_item_ok').hide(): $('.adicional_item').show();
+(qb === "0") ? $('.adicional_item, .adicional_item_ok').hide() : $('.adicional_item').show();
 
 $('#add_itenSabores input[type=radio]').on('change', function (e) {
     if ($(this).is(":checked")) {
@@ -266,22 +266,27 @@ $('#add_itenSabores input[type=radio]').on('change', function (e) {
 //Pizza Massa
 
 $("#btn_pedido").hide()
+$("#add_itenPizza input[type=checkbox]").prop("disabled", true);
 $('#add_itenMassa input[type=checkbox], #add_itenMassa input[type=radio]').on('change', function (e1) {
     let valor = $(this).attr('data-valor')
+    let iCount = $('#iCount').text()
+
     let id = $(this).val()
     let totalMassa = $('#totalMassa').val()
-    let totalPizza = $('#totalPizza').val()
+    let totalPizza = $(`#totalPizza`).val()
 
     $('#massa').val(id);
-    if(parseFloat(totalMassa) === 0){
-        console.log(valor)
+    if (parseFloat(totalMassa) === 0) {
         $('#total').text(formatter.format(valor));
         $('#totalMassa').val(valor);
-    }else{
+    } else {
         $('#totalMassa').val(valor);
         $('#total').text(formatter.format(parseFloat(totalPizza) + parseFloat(totalMassa)));
         $('#valor').val(parseFloat(totalPizza) + parseFloat(totalMassa));
     }
+    
+    $('#massa_choice').html(`<span class="statusCart">Pronto <i class="feather-check"></i></span>`)
+    $("#add_itenPizza input[type=checkbox]").prop("disabled", false);
 });
 
 $('#add_itenPizza input[type=radio]').on('change', function (e1) {
@@ -289,13 +294,45 @@ $('#add_itenPizza input[type=radio]').on('change', function (e1) {
     let id = $(this).val()
     let valor = $(this).attr('data-valor')
     let totalMassa = $('#totalMassa').val()
-    
+    let iCount = $('#iCount').text()
+
     $('#total').text(formatter.format(parseFloat(valor) + parseFloat(totalMassa)));
-    $('#totalPizza').val(valor);
+    $(`#totalPizza`).val(valor);
     $('#valor').val(parseFloat(valor) + parseFloat(totalMassa));
     $('#id_produto').val(id);
     $("#btn_pedido").show()
-    
+
+});
+
+$('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
+    $('#saborCount').text(1)
+    let iCount = parseInt($('#iCount').text())
+    let id = $(this).val()
+    let totalPizza = parseFloat($(`#totalPizza`).val())
+    let valor = $(this).attr('data-valor')
+    let totalMassa = $('#totalMassa').val()
+
+    var total = 0;var qtd = 0;
+    $('#add_itenPizza input[type=checkbox]:checked').each(function (i, ele) {var valor = parseFloat($(this).attr('data-valor'));total += valor;qtd = i + 1;});
+
+    $('#totalPizza').val(total);
+    $('#valor').val(parseFloat(total) + parseFloat(totalMassa));
+    $('#total').text(formatter.format(parseFloat(total) + parseFloat(totalMassa)));
+
+    if (qtd === iCount) {
+        $("#saborCount").text(qtd);
+        $('#saborCounts').addClass('greens');
+        $('#pizza_choice').html(`<span class="statusCart">Pronto <i class="feather-check"></i></span>`);
+        $("input[type=checkbox]").prop("disabled", true);
+        $("input[type=checkbox]:checked").prop("disabled", false);
+        $("#btn_pedido").show()
+    }else{
+        $("input[type=checkbox]").prop("disabled", false);
+    }
+
+    $('#id_produto').val(id);
+
+
 });
 //Produto Adicional
 $('.mdc-card input[type=checkbox]').on('change', function (e1) {
@@ -402,7 +439,7 @@ $('.mdc-card input[type=checkbox]').on('change', function (e1) {
                 $('#total').text(formatter.format(novoValor));
                 $('#valorFinal').val(novoValor);
             },
-            error: function (xhr) {}
+            error: function (xhr) { }
         });
     } else {
         $(`.${adv_att}`).hide();
@@ -432,7 +469,7 @@ $('.mdc-card input[type=checkbox]').on('change', function (e1) {
                 }
                 $(`#qtd_ad${adv}`).val(1);
             },
-            error: function (xhr) {}
+            error: function (xhr) { }
         });
         $(".addStyle").show()
     }
@@ -541,7 +578,7 @@ $('.addFavorito').click(function (e) {
                     break;
             }
         },
-        error: function (xhr) {}
+        error: function (xhr) { }
     });
 });
 
@@ -610,7 +647,7 @@ $('[data-quantity="minus"]').click(function (e) {
                 $('#total').text(formatter.format(novoValor));
                 $('#valorFinal').val(novoValor);
             },
-            error: function (xhr) {}
+            error: function (xhr) { }
         });
     }
 
@@ -644,7 +681,7 @@ $('[data-quantity="minus"]').click(function (e) {
             $('#total').text(formatter.format(novoValor));
             $('#valorFinal').val(novoValor);
         },
-        error: function (xhr) {}
+        error: function (xhr) { }
     });
 
 });
@@ -775,7 +812,7 @@ function mudarEndereco(id) {
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
-                myXhr.upload.addEventListener('progress', function () {}, false);
+                myXhr.upload.addEventListener('progress', function () { }, false);
             }
             return myXhr;
         }
@@ -908,7 +945,7 @@ $("#form").submit(function (e) {
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
-                myXhr.upload.addEventListener('progress', function () {}, false);
+                myXhr.upload.addEventListener('progress', function () { }, false);
             }
             return myXhr;
         }
@@ -966,7 +1003,7 @@ $("#formFinish").submit(function () {
             xhr: function () {
                 var myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', function () {}, false);
+                    myXhr.upload.addEventListener('progress', function () { }, false);
                 }
                 return myXhr;
             }
@@ -1139,24 +1176,24 @@ $(document).ready(function () {
         })
 
         if (localStorage.getItem("u") && localStorage.getItem("n")) {
-            
+
             let u = localStorage.getItem("u");
             let n = localStorage.getItem("n");
             let valores = {
                 u,
                 n
             }
-            if(localStorage.getItem("u") !== null){
-            $.ajax({
-                url: `/${link_site}/u/l/val`,
-                method: "POST",
-                data: valores,
-                dataType: "text",
-                success: function (dd) {
-                    //console.log(dd);
-                },
-            })
-        }
+            if (localStorage.getItem("u") !== null) {
+                $.ajax({
+                    url: `/${link_site}/u/l/val`,
+                    method: "POST",
+                    data: valores,
+                    dataType: "text",
+                    success: function (dd) {
+                        //console.log(dd);
+                    },
+                })
+            }
         } else {
             $.get(`/${link_site}/u/valid`, function (dd) {
                 console.log(dd);
