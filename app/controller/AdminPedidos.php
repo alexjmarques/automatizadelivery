@@ -419,7 +419,8 @@ class AdminPedidos extends Controller
         //dd($print);
 
         try {
-        $connector = new CupsPrintConnector("{$print->code}");
+        //$connector = new CupsPrintConnector("{$print->code}");
+        $connector = new NetworkPrintConnector("159.65.220.187", 9100);
         //$connector = new FilePrintConnector("php://stdout");
         //$connector = new FilePrintConnector("/dev/usb/lp1");
         $printer = new Printer($connector);
