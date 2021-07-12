@@ -106,10 +106,8 @@ class CarrinhoPizzaController extends Controller
 
     public function insert($data)
     {
-        $quantidade = $data['quantidade'];
-        $massa = $data['massa'];
-
-        if($quantidade == 1){
+        $quantidade = 0;
+        if($data['quantidade'] == 1){
             $quantidade == "INTEIRA";
         }else{
             $quantidade == "{$quantidade} SABORES";
@@ -117,18 +115,17 @@ class CarrinhoPizzaController extends Controller
 
         $tamanho = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanhoId']);
         $sabor = $this->acoes->getByField('produtos', 'id', $data['id_produto']);
+        $massa = $this->acoes->getByField('pizzaMassas', 'id', $data['massa']);
 
         $valor = new Carrinho();
         $valor->id_produto = $data['id_produto'];
         $valor->id_cliente = $this->sessao->getUser();
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = 1;
-        $valor->variacao = "PIZZA {$tamanho->nome} {$quantidade} - {$massa} - {$sabor->nome}";
+        $valor->variacao = "PIZZA {$tamanho->nome} {$quantidade} - {$massa->nome} - {$sabor->nome}";
         $valor->observacao = $data['observacao'];
         $valor->valor = $data['valor'];
         $valor->save();
-
-        dd($valor);
 
         if ($valor->id > 0) {
             header('Content-Type: application/json');
