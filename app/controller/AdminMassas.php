@@ -151,16 +151,17 @@ class AdminMassas extends Controller
 
     public function insert($data)
     {
-        
+    
         $massas = new PizzaMassas();
         $massas->nome = $data['nome'];
         $massas->valor = $this->geral->brl2decimal($data['valor']);
         $massas->id_empresa = $data['id_empresa'];
         $massas->save();
 
+        //dd($massas);
 
         if ($massas->id > 0) {
-            foreach ($data['categorias'] as $res) {
+            foreach ($data['tamanhos'] as $res) {
                 $tamanhoCat = new PizzaMassasTamanhos();
                 $tamanhoCat->id_tamanhos = $res;
                 $tamanhoCat->id_massas = $massas->id;

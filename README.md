@@ -109,3 +109,9 @@ SELECT setval('produto_sabor_id_seq', (SELECT MAX(id) FROM produto_sabor)+1);
 SELECT setval('produtos_id_seq', (SELECT MAX(id) FROM produtos)+1);
 SELECT setval('usuarios_id_seq', (SELECT MAX(id) FROM usuarios)+1);
 SELECT setval('usuarios_empresa_id_seq1', (SELECT MAX(id) FROM usuarios_empresa)+1);
+SELECT setval('massas_id_seq', (SELECT MAX(id) FROM pizza_massas)+1);
+SELECT setval('pizza_massas_tamanhos_id_seq', (SELECT MAX(id) FROM pizza_massas_tamanhos)+1);
+SELECT setval('produtos_valor_id_seq', (SELECT MAX(id) FROM pizza_produtos_valor)+1);
+SELECT setval('tamanho_id_seq', (SELECT MAX(id) FROM pizza_tamanhos)+1);
+SELECT setval('tamanhos_categoria_id_seq', (SELECT MAX(id) FROM pizza_tamanhos_categoria)+1);
+
