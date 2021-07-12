@@ -76,7 +76,9 @@
                             {% if ii == 1 %}
                             <div class="custom-control custom-radio border-bottom py-2">
                                 <input class="custom-control-input" type="radio" id="id_pizza_prod{{prod.id}}" name="pizza_prod" value="{{prod.id}}">
-                                <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">{{prod.nome}} <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
+                                <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">Pizza {{prod.nome}} 
+                                    {{prod.descricao}} {{prod.observacao}}
+                                    <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
                                     {% for prodVal in produtoValor %}
                                         {% if prodVal.id_produto == prod.id %}
                                     {{ prodVal.valor|number_format(2, ',', '.')}}
@@ -90,7 +92,7 @@
                                     id="id_pizza_prod{{prod.id}}" name="pizza_prod[]" value="{{prod.id}}"
                                     valor="{% if prod.valor is null %}0.00{% else %}{{prod.valor}}{% endif %}">
                                 <label class="custom-control-label"
-                                    for="id_pizza_prod{{prod.id}}">+ {{moeda.simbolo}} 1/{{ii}}  {{prod.nome}}
+                                    for="id_pizza_prod{{prod.id}}">+ {{moeda.simbolo}} 1/{{ii}}  Pizza {{prod.nome}}
                                     {{prod.descricao}}
                                     {{prod.observacao}}
                                     <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
