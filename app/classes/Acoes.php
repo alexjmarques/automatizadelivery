@@ -197,6 +197,11 @@ class Acoes
         return $this->{$table}->find("{$field} = {$valor}")->fetch(true);
     }
 
+    public function getByFieldAllOrder(string $table, string $field, string $valor, string $order)
+    {
+        return $this->{$table}->find("{$field} = {$valor}")->order("{$order}")->fetch(true);
+    }
+
     public function getByFieldAllLoop(string $table, string $field, string $valor, string $field2, string $valor2)
     {
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND numero_pedido is null")->fetch(true);

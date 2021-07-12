@@ -15393,3 +15393,10 @@ h6.d-inline {
     display: block;
     color: #717171;
 }
+.garnish-choices__option-price {
+    margin: 0;
+    display: block;
+    color: #880a1f;
+    font-size: 0.875rem;
+    font-weight: 500;
+}

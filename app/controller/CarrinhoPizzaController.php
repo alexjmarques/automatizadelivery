@@ -48,14 +48,17 @@ class CarrinhoPizzaController extends Controller
     }
 
     public function index($data)
-    {        
+    {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $categoria = $this->acoes->getByField('categorias', 'slug', $data['categoriaSlug']);
         $tamanhos = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanhoId']);
         $tamanhosCategoria = $this->acoes->getByField('pizzaTamanhosCategoria', 'id', $data['tamanhoCatId']);
 
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $produtos = $this->acoes->getByFieldTwoAll('produtos', 'id_empresa', $empresa->id, 'id_categoria', $categoria->id);
+        $produtoValor = $this->acoes->getByFieldTwoAll('pizzaProdutoValor', 'id_empresa', $empresa->id, 'id_tamanho', $data['tamanhoId']);
+        $massas = $this->acoes->getByFieldAll('pizzaMassas', 'id_empresa', $empresa->id);
+        
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         $quantidade = $data['quantidade'];
@@ -76,15 +79,18 @@ class CarrinhoPizzaController extends Controller
         }
 
         $this->load('produto/pizza', [
-            'empresa' => $empresa,
             'moeda' => $moeda,
-            'produto' => $produto,
+            'massas' => $massas,
+            'produtos' => $produtos,
+            'produtoValor' => $produtoValor,
+            'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
             'delivery' => $delivery,
             'categoria' => $categoria,
             'ii' => $quantidade,
             'tamanhosCategoria' => $tamanhosCategoria,
             'tamanho' => $tamanhos,
+            'categoria' => $categoria,
             'chave' => $resultchave,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'trans' => $this->trans,

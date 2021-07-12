@@ -18,7 +18,7 @@
                 </div>
             </div>
             {% if isLogin != 0 %}
-            <div class="bg-white rounded shadow mb-3 py-2 pt-0">
+            <div class="bg-white rounded-top shadow mb-0 py-2 pt-0 pb-0">
                 <div class="garnish-choices__header">
                     <span class="garnish-choices__header-content">
                         <p class="garnish-choices__title" data-test-id="Escolha 1 opção.">Escolha a sua Preferência
@@ -34,7 +34,7 @@
                         {% for mass in massas %}
                         <div class="custom-control custom-radio border-bottom py-2">
                             <input class="custom-control-input" type="radio" id="id_massa{{mass.id}}" name="massa" value="{{mass.id}}">
-                            <label class="custom-control-label" for="id_sabor{{padici.id}}">{{mass.nome}}</label>
+                            <label class="custom-control-label" for="id_massa{{mass.id}}">{{mass.nome}} <span class="garnish-choices__option-price">{% if mass.valor != 0.00 %}+ {{moeda.simbolo}} {{ mass.valor|number_format(2, ',', '.')}}{% endif %}</span></label> 
                         </div>
                         {% endfor %}
                     </div>
@@ -52,16 +52,84 @@
                     </span>
                 </div>
                 <div class="col-md-12">
-                    <div class="mdc-card" id="add_itenSabores">
+                    <div class="mdc-card" id="add_itemPizza">
 
-                        {% for padici in produtoSabores %}
-                        {% if padici.id in produto.sabores %}
-                        <div class="custom-control custom-radio border-bottom py-2">
-                            <input class="custom-control-input" type="radio" id="id_sabor{{padici.id}}" name="sabores[]" value="{{padici.id}}">
-                            <label class="custom-control-label" for="id_sabor{{padici.id}}">{{padici.nome}}</label>
+                        <div id="{{ ta.slug }}" data-tipo="{{ ta.slug }}"
+                            data-tipo_escolha="{{ ta.tipo_escolha}}" data-qtd="{{ ta.qtd }}">
+                            <h6 class="clearfix mt-3 bold">{{ ta.tipo}}
+                                {% if ta.tipo_escolha == 2 %}
+                                {% if ta.qtd == 1 %}
+                                <span class="pizza_prod_item"> ({{ta.qtd}} item Obrigatório) </span> <span
+                                    class="pizza_prod_item_ok"> {{ta.qtd}} selecionado </span>
+                                {% else %}
+                                <span class="pizza_prod_item"> ({{ta.qtd}} itens Obrigatórios) </span> <span
+                                    class="pizza_prod_item_ok"> {{ta.qtd}} selecionados </span>
+                                {% endif %}
+                                {% endif %}
+                                {% if ta.tipo_escolha == 3 %}
+                                <span class="pizza_prod_item"> (escolha até {{ta.qtd}} itens) </span> <span
+                                    class="pizza_prod_item_ok"></span>
+                                {% endif%}
+                            </h6>
+
+                            {% for prod in produtos %}
+                            {% if ii == 1 %}
+                            <div class="custom-control custom-radio border-bottom py-2">
+                                <input class="custom-control-input" type="radio" id="id_pizza_prod{{prod.id}}" name="pizza_prod" value="{{prod.id}}">
+                                <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">{{prod.nome}} <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
+                                    {% for prodVal in produtoValor %}
+                                        {% if prodVal.id_produto == prod.id %}
+                                    {{ prodVal.valor|number_format(2, ',', '.')}}
+                                    {% endif %}
+                                    {% endfor %}
+                                </span></label> 
+                            </div>
+                            {% else %}
+                            <div class="custom-control border-bottom py-3">
+                                <input class="custom-control-input" type="checkbox" data-tipoSlug="{{ ta.slug}}"
+                                    id="id_pizza_prod{{prod.id}}" name="pizza_prod[]" value="{{prod.id}}"
+                                    valor="{% if prod.valor is null %}0.00{% else %}{{prod.valor}}{% endif %}">
+                                <label class="custom-control-label"
+                                    for="id_pizza_prod{{prod.id}}">+ {{moeda.simbolo}} 1/{{ii}}  {{prod.nome}}
+                                    {{prod.descricao}}
+                                    {{prod.observacao}}
+                                    <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
+
+                                        {% for prodVal in produtoValor %}
+                                        {% if prodVal.id_produto == prod.id %}
+                                            {{ (prodVal.valor / ii)|number_format(2, ',', '.')}}</span>
+                                        {% endif %}
+                                        {% endfor %}
+                                    
+                                </label>
+
+                                <div class="input-group plus-minus-input id_pizza_prod{{prod.id}}"
+                                    style="display:none;">
+                                    <div class="input-group-button">
+                                        <button type="button" class="btn btn-danger btn-number minuss"
+                                            id-select="{{prod.id}}" data-quantity="minus"
+                                            data-field="qtd_ad{{prod.id}}">
+                                            <i class="feather-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="number" id="qtd_ad{{prod.id}}" min="1"
+                                        name="qtd_ad{{prod.id}}"
+                                        class="input-group-field qtd-control id_pizza_prod{{prod.id}}" value="1">
+                                    <div class="input-group-button">
+                                        <button type="button" class="btn btn-success btn-number"
+                                            id-select="{{prod.id}}" data-quantity="plus"
+                                            data-field="qtd_ad{{prod.id}}">
+                                            <i class="feather-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+
+
                         </div>
-                        {% endif%}
-                        {% endfor%}
+
                     </div>
                 </div>
             </div>
@@ -204,11 +272,11 @@
                                             <div class="col-md-12">
                                                 <div class="mdc-card" id="add_itenSabores">
                                                     <h4>Sabores</h4>
-                                                    {% for padici in produtoSabores %}
-                                                    {% if padici.id in produto.sabores %}
+                                                    {% for prod in produtoSabores %}
+                                                    {% if prod.id in produto.sabores %}
                                                     <div class="custom-control custom-radio border-bottom py-2">
-                                                        <input class="custom-control-input" type="radio" id="id_sabor{{padici.id}}" name="sabores[]" value="{{padici.id}}">
-                                                        <label class="custom-control-label" for="id_sabor{{padici.id}}">{{padici.nome}}</label>
+                                                        <input class="custom-control-input" type="radio" id="id_sabor{{prod.id}}" name="sabores[]" value="{{prod.id}}">
+                                                        <label class="custom-control-label" for="id_sabor{{prod.id}}">{{prod.nome}}</label>
                                                     </div>
                                                     {% endif%}
                                                     {% endfor%}

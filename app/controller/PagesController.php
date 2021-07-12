@@ -143,7 +143,7 @@ class PagesController extends Controller
             $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
             $produtoQtd = $this->acoes->counts('produtos', 'id_empresa', $empresa->id);
 
-            $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+            $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id,'posicao ASC');
             $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
             $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
