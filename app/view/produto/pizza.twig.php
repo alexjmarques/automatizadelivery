@@ -31,12 +31,16 @@
                 </div>
                 <div class="col-md-12 pt-3">
                     <div class="mdc-card" id="add_itenMassa">
+                        {% for mas in massasTamanho %}
                         {% for mass in massas %}
-                        <div class="custom-control custom-radio border-bottom py-2 {% if mass.id == massaTamanho %} show {% else %} hide {% endif %}">
+                        {% if mas.id_massas == massaTamanho %}
+                        <div class="custom-control custom-radio border-bottom py-2">
                             <input class="custom-control-input" type="radio" id="id_massa{{mass.id}}" data-valor="{{ mass.valor }}" name="massa" value="{{mass.id}}">
                             <label class="custom-control-label" for="id_massa{{mass.id}}">{{mass.nome}} <span class="garnish-choices__option-price">{% if mass.valor != 0.00 %}+ {{moeda.simbolo}} {{ mass.valor|number_format(2, ',', '.')}}{% endif %}</span></label> 
                         </div>
-                        
+
+                        {% endif %}
+                        {% endfor %}
                         {% endfor %}
                     </div>
                 </div>

@@ -210,7 +210,6 @@
                     <p class="mb-1">Subtotal<span class="float-right text-dark">{{ moeda.simbolo }} {{
                         valorPedido|number_format(2, ',', '.') }}</span></p>
 
-
                     {% if km < deliveryEntregaExcedente %}
                     {% if calculoFrete == 0 %}
                     <p class="mb-1 text-success" id="freteCal">Taxa de Entrega<span class="float-right text-success">

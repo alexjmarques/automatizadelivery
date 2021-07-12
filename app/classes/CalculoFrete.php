@@ -83,6 +83,7 @@ class CalculoFrete extends Controller
             $text = $road->distance->text;
             $distance += $road->distance->value;
         }
+        //dd($data);
         return $distance;
     }
 

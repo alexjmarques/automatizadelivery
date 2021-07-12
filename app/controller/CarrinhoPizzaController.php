@@ -57,7 +57,11 @@ class CarrinhoPizzaController extends Controller
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produtos = $this->acoes->getByFieldTwoAll('produtos', 'id_empresa', $empresa->id, 'id_categoria', $categoria->id);
         $produtoValor = $this->acoes->getByFieldTwoAll('pizzaProdutoValor', 'id_empresa', $empresa->id, 'id_tamanho', $data['tamanhoId']);
-        $massasTamanho = $this->acoes->getByField('pizzaMassasTamanhos', 'id_tamanhos', $data['tamanhoId']);
+        $massaTamanho = $this->acoes->getByField('pizzaMassasTamanhos', 'id_tamanhos', $data['tamanhoId']);
+
+
+        $massasTamanho = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
+
         $massas = $this->acoes->getByFieldAll('pizzaMassas', 'id_empresa', $empresa->id);
 
 
@@ -84,7 +88,8 @@ class CarrinhoPizzaController extends Controller
         $this->load('produto/pizza', [
             'moeda' => $moeda,
             'massas' => $massas,
-            'massaTamanho' => $massasTamanho->id_massas,
+            'massaTamanho' => $massaTamanho->id_massas,
+            'massasTamanho' => $massasTamanho,
             'produtos' => $produtos,
             'produtoValor' => $produtoValor,
             'empresa' => $empresa,

@@ -250,6 +250,7 @@ class CarrinhoController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
+
         $usu = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
@@ -285,6 +286,8 @@ class CarrinhoController extends Controller
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             
+            //dd($cFrete);
+
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega * 1000;
 
