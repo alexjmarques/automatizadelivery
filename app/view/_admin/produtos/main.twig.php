@@ -46,7 +46,7 @@
                         <tr style="width: 100px;">
                             <td>
                                 {% if p.imagem is not empty %}
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}"><img src="/uploads/{{p.imagem}}" width="80px" /></a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}"><img src="{{BASE}}uploads{{p.imagem}}" width="80px" /></a>
                                 {% endif %}
                             </td>
                             <td>
