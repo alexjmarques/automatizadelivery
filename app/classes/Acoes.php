@@ -33,7 +33,7 @@ use app\Models\CupomDescontoUtilizadores;
 use app\Models\Categorias;
 use app\Models\PizzaTamanhos;
 use app\Models\PizzaMassas;
-use app\Models\pizzaMassasTamanhos;
+use app\Models\PizzaMassasTamanhos;
 use app\Models\PizzaProdutoValor;
 use app\Models\PizzaTamanhosCategoria;
 use app\Models\CupomDesconto;
