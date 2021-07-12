@@ -96,34 +96,46 @@ class CarrinhoPizzaController extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'detect' => new Mobile_Detect()
+            'detect' => new Mobile_Detect(),
+            'categoriaSlug' => $data['categoriaSlug'],
+            'tamanhoId' => $data['tamanhoId'],
+            'tamanhoCatId' => $data['tamanhoCatId']
+
         ]);
     }
 
     public function insert($data)
     {
-        dd($data);
-        $id_sabores = $data['sabores'][0] ? $data['sabores'][0] : null;
-        $id_adicional = $data['adicional'] ? $data['adicional'] : null;
+        $quantidade = $data['quantidade'];
+        $massa = $data['massa'];
+
+        if($quantidade == 1){
+            $quantidade == "INTEIRA";
+        }else{
+            $quantidade == "{$quantidade} SABORES";
+        }
+
+        $tamanho = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanhoId']);
+        $sabor = $this->acoes->getByField('produtos', 'id', $data['id_produto']);
 
         $valor = new Carrinho();
         $valor->id_produto = $data['id_produto'];
         $valor->id_cliente = $this->sessao->getUser();
         $valor->id_empresa = $data['id_empresa'];
-        $valor->quantidade = $data['quantity'];
-        $valor->id_sabores = $id_sabores;
-        $valor->id_adicional = $id_adicional;
+        $valor->quantidade = 1;
+        $valor->variacao = "PIZZA {$tamanho->nome} {$quantidade} - {$massa} - {$sabor->nome}";
         $valor->observacao = $data['observacao'];
         $valor->valor = $data['valor'];
         $valor->save();
 
-        header('Content-Type: application/json');
-        if ($valor->id_adicional != null) {
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'var' => $valor->id_adicional, 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.','code' => 2 ,  'url' => 'produto/adicional']);
-        } else {
+        dd($valor);
+
+        if ($valor->id > 0) {
+            header('Content-Type: application/json');
             $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.','code' => 2 ,  'url' => 'carrinho',]);
+            exit($json);
         }
-        exit($json);
+       
     }
 
 

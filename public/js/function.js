@@ -268,12 +268,11 @@ $('#add_itenSabores input[type=radio]').on('change', function (e) {
 $("#btn_pedido").hide()
 $('#add_itenMassa input[type=checkbox], #add_itenMassa input[type=radio]').on('change', function (e1) {
     let valor = $(this).attr('data-valor')
-    
+    let id = $(this).val()
     let totalMassa = $('#totalMassa').val()
     let totalPizza = $('#totalPizza').val()
 
-    console.log(totalMassa)
-
+    $('#massa').val(id);
     if(parseFloat(totalMassa) === 0){
         console.log(valor)
         $('#total').text(formatter.format(valor));
@@ -281,6 +280,7 @@ $('#add_itenMassa input[type=checkbox], #add_itenMassa input[type=radio]').on('c
     }else{
         $('#totalMassa').val(valor);
         $('#total').text(formatter.format(parseFloat(totalPizza) + parseFloat(totalMassa)));
+        $('#valor').val(parseFloat(totalPizza) + parseFloat(totalMassa));
     }
 });
 
@@ -292,6 +292,7 @@ $('#add_itenPizza input[type=radio]').on('change', function (e1) {
     
     $('#total').text(formatter.format(parseFloat(valor) + parseFloat(totalMassa)));
     $('#totalPizza').val(valor);
+    $('#valor').val(parseFloat(valor) + parseFloat(totalMassa));
     $('#id_produto').val(id);
     $("#btn_pedido").show()
     
