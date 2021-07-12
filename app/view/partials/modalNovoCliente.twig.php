@@ -53,7 +53,7 @@
 
             <div class="form-group">
               <label for="telefone" class="text-dark">Complemento ou referência <span style="color:red;">*</span></label>
-              <input type="tel" class="form-control" id="complemento" name="complemento" required autocomplete="off">
+              <input type="text" class="form-control" id="complemento" name="complemento" required autocomplete="off">
             </div>
           </div>
 
