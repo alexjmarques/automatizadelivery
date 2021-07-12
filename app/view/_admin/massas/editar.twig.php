@@ -39,7 +39,7 @@
                     {% for tam in tamanhos %}
                     <div class="col-md-4 mt-2">
                         <div class="p-2 colAdc">
-                            <input {% for tamcat in massasTamanhos %}{% if tamcat.id_tamanhos == tam.id %}checked data-idcat="{{tamcat.id}}"{% endif %}{% endfor %} onclick="updateItemMassa({{empresa.id}}, {{ tam.id }}, {{retorno.id}})" type="checkbox" id="tamanhos{{ tam.id }}" name="tamanhos[]" value="{{ tam.id }}" class="mp2">
+                            <input {% for tamcat in massasTamanhos %}{% if tamcat.id_massas == retorno.id %}{% if tamcat.id_tamanhos == tam.id %}checked data-idcat="{{tamcat.id}}"{% endif %}{% endif %}{% endfor %} onclick="updateItemMassa({{empresa.id}}, {{ tam.id }}, {{retorno.id}})" type="checkbox" id="tamanhos{{ tam.id }}" name="tamanhos[]" value="{{ tam.id }}" class="mp2">
                             <label class="form-check-label" for="tamanhos{{ tam.id }}"> {{ tam.nome }}</label>
                         </div>
                     </div>
