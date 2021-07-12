@@ -11,9 +11,9 @@
     </div>
     <div class="p-3 osahan-cart-item osahan-home-page">
         <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/produto/addCarrinho/{{produto.id}}">
-            <div class="d-flex mb-3 osahan-cart-item-profile bg-white shadow rounded p-3 mt-n5">
+            <div class="d-flex mb-0 osahan-cart-item-profile bg-white shadow rounded-top p-3 mt-n5">
                 <div class="">
-                    <h6 class="mb-1 font-weight-bold text-uppercase">{{tamanho.nome}} {% if ii == 1 %}{{ii}} SABOR {% else %}{{ ii }} SABORES {% endif %}({{tamanho.qtd_pedacos}} PEDAÇOS)</h6>
+                    <h6 class="mb-1 font-weight-bold text-uppercase">Pizza {{tamanho.nome}} {% if ii == 1 %}{{ii}} SABOR {% else %}{{ ii }} SABORES {% endif %}({{tamanho.qtd_pedacos}} PEDAÇOS)</h6>
                     <p class="mb-0">Escolha {% if ii == 1 %}{{ ii }} sabor {% else %} {{ ii }} sabores{% endif %}</p>
                 </div>
             </div>
