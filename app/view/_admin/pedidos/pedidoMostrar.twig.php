@@ -103,11 +103,10 @@
             {% endif %}
 
             <div class="env subtotal"><strong>Subtotal:</strong><span>{{ moeda.simbolo }} {{ pedido.total|number_format(2, ',', '.') }}</span></div>
-            {% if cupomVerifica == 0 %}
-            {% else %}
+            
             <div class="env subtotal cupomLoad"><strong>Cupom Desconto:</strong><span> - {{ moeda.simbolo }} {{ cupomValor|number_format(2, ',', '.') }}</span></div>
 
-            {% endif %}
+            
 
             {% if pedido.tipo_frete == 2 %}
             <div class="env subtotal"><strong>Taxa de Entrega:</strong><span>{{ moeda.simbolo }} {{ pedido.valor_frete|number_format(2, ',', '.') }}</span></div>

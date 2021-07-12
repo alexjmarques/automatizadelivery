@@ -26,7 +26,6 @@
                                             <option value="2">Desconto em Dinheiro</option>
                                         </select>
                                 </div>
-
                                   <div class="form-group col-md-5 catProds">
                                        <label>Nome do cupom</label>
                                       <input type="text" class="form-control" id="nome_cupom" name="nome_cupom" value="" required>

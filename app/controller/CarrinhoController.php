@@ -286,7 +286,7 @@ class CarrinhoController extends Controller
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             
-            //dd(round($infoKm));
+            //dd((int)round($infoKm));
 
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega * 1000;
