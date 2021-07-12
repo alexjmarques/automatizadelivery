@@ -406,12 +406,21 @@ class AdminPedidos extends Controller
     }
     public function pedidoTestImprimir($data)
     {
+        // $connector = new FilePrintConnector("php://stdout");
+        // $printer   = new Printer($connector);
+        // $printer->text("Hello World!\n");
+        // $printer->cut();
+        // $printer->close();
+
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
         //$connector = new CupsPrintConnector("{$print->code}");
 
+        //dd($print);
+
         try {
         $connector = new CupsPrintConnector("{$print->code}");
+        //$connector = new FilePrintConnector("php://stdout");
         //$connector = new FilePrintConnector("/dev/usb/lp1");
         $printer = new Printer($connector);
 
@@ -427,6 +436,7 @@ class AdminPedidos extends Controller
         $printer -> setJustification(Printer::JUSTIFY_CENTER);
         $printer->text(">>> PEDIDO DE VENDA TESTE <<<");
         $printer -> cut();
+        $printer->close();
         }catch (Exception $e) {
             echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
         }
