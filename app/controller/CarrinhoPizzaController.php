@@ -102,6 +102,7 @@ class CarrinhoPizzaController extends Controller
 
     public function insert($data)
     {
+        dd($data);
         $id_sabores = $data['sabores'][0] ? $data['sabores'][0] : null;
         $id_adicional = $data['adicional'] ? $data['adicional'] : null;
 

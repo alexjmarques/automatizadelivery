@@ -29,11 +29,11 @@
                         </span>
                     </span>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 pt-3">
                     <div class="mdc-card" id="add_itenMassa">
                         {% for mass in massas %}
                         <div class="custom-control custom-radio border-bottom py-2">
-                            <input class="custom-control-input" type="radio" id="id_massa{{mass.id}}" name="massa" value="{{mass.id}}">
+                            <input class="custom-control-input" type="radio" id="id_massa{{mass.id}}" data-valor="{{ mass.valor }}" name="massa" value="{{mass.id}}">
                             <label class="custom-control-label" for="id_massa{{mass.id}}">{{mass.nome}} <span class="garnish-choices__option-price">{% if mass.valor != 0.00 %}+ {{moeda.simbolo}} {{ mass.valor|number_format(2, ',', '.')}}{% endif %}</span></label> 
                         </div>
                         {% endfor %}
@@ -52,35 +52,19 @@
                     </span>
                 </div>
                 <div class="col-md-12">
-                    <div class="mdc-card" id="add_itemPizza">
+                    <div class="mdc-card" id="add_itenPizza">
 
-                        <div id="{{ ta.slug }}" data-tipo="{{ ta.slug }}"
-                            data-tipo_escolha="{{ ta.tipo_escolha}}" data-qtd="{{ ta.qtd }}">
-                            <h6 class="clearfix mt-3 bold">{{ ta.tipo}}
-                                {% if ta.tipo_escolha == 2 %}
-                                {% if ta.qtd == 1 %}
-                                <span class="pizza_prod_item"> ({{ta.qtd}} item Obrigatório) </span> <span
-                                    class="pizza_prod_item_ok"> {{ta.qtd}} selecionado </span>
-                                {% else %}
-                                <span class="pizza_prod_item"> ({{ta.qtd}} itens Obrigatórios) </span> <span
-                                    class="pizza_prod_item_ok"> {{ta.qtd}} selecionados </span>
-                                {% endif %}
-                                {% endif %}
-                                {% if ta.tipo_escolha == 3 %}
-                                <span class="pizza_prod_item"> (escolha até {{ta.qtd}} itens) </span> <span
-                                    class="pizza_prod_item_ok"></span>
-                                {% endif%}
-                            </h6>
-
+                        <div>
+                            
                             {% for prod in produtos %}
                             {% if ii == 1 %}
                             <div class="custom-control custom-radio border-bottom py-2">
-                                <input class="custom-control-input" type="radio" id="id_pizza_prod{{prod.id}}" name="pizza_prod" value="{{prod.id}}">
+                                <input class="custom-control-input" type="radio" id="id_pizza_prod{{prod.id}}" {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %} data-valor="{{ prodVal.valor }}"{% endif %}{% endfor %}  name="pizza_prod" value="{{prod.id}}">
                                 <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">Pizza {{prod.nome}} 
                                     {{prod.descricao}} {{prod.observacao}}
                                     <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
                                     {% for prodVal in produtoValor %}
-                                        {% if prodVal.id_produto == prod.id %}
+                                    {% if prodVal.id_produto == prod.id %}
                                     {{ prodVal.valor|number_format(2, ',', '.')}}
                                     {% endif %}
                                     {% endfor %}
@@ -92,7 +76,7 @@
                                     id="id_pizza_prod{{prod.id}}" name="pizza_prod[]" value="{{prod.id}}"
                                     valor="{% if prod.valor is null %}0.00{% else %}{{prod.valor}}{% endif %}">
                                 <label class="custom-control-label"
-                                    for="id_pizza_prod{{prod.id}}">+ {{moeda.simbolo}} 1/{{ii}}  Pizza {{prod.nome}}
+                                    for="id_pizza_prod{{prod.id}}">+ {{moeda.simbolo}} 1/{{ii}}  PIZZA {{prod.nome}}
                                     {{prod.descricao}}
                                     {{prod.observacao}}
                                     <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
@@ -147,43 +131,30 @@
             {% endif%}
             {% endif%}
 
-            {% if produto.sabores is null %}
-            <input type="hidden" name="id_adicional" id="id_adicional" value="0">
-            {% else %}
-            <input type="hidden" name="id_adicional" id="id_adicional" value="1">
-            {% endif %}
+            <input type="hidden" name="totalMassa" id="totalMassa" value="0">
+            <input type="hidden" name="totalPizza" id="totalPizza" value="0">
+
             <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
             <input type="hidden" name="id_produto" id="id_produto" value="{{produto.id}}">
-            <input type="hidden" name="adicional" id="adicional" value="{{produto.adicional}}">
+
             <input type="hidden" name="valor" id="valor" value="{% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
             <div class="shadow bg-white rounded p-3 clearfix">
-                <p class="mb-1">Valor unitário <span class="float-right text-dark">{{ moeda.simbolo }}
-                        {% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional|number_format(2,
-                        ',', '.') }}{% else %}{{ produto.valor|number_format(2, ',', '.') }}{% endif %}</span></p>
-                <hr>
-                <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span id="total">{{ moeda.simbolo
-                            }} {% if produto.valor_promocional != '0.00' %}{{
-                            produto.valor_promocional|number_format(2, ',', '.') }}{% else %}{{
-                            produto.valor|number_format(2, ',', '.') }}{% endif %}</span></span></h6>
+              
+                <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span id="total">{{ moeda.simbolo}} 0,00</span></span></h6>
             </div>
 
             {% if delivery.status == 1 %}
-            {% if produto.status == 1 %}
+
             {% if isLogin == 0 %}
             <div class="alert alert-warning text-center mt-3" role="alert">Para efetuar um pedido você precisa informar seus dados, tais como <strong>Nome</strong>, <strong>Telefone</strong> e <strong>Endereço de entrega</strong>!
                 <a href="{{BASE}}{{empresa.link_site}}/login" class="btn btn-success btn-block btn-lg addStyleMod mt-3">Informar meus Dados</a>
             </div>
             {% else %}
 
-            {% if produto.adicional is null %}
-            <button class="btn btn-success btn-block btn-lg addStyle">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
-            {% else %}
-            <button class="btn btn-info btn-block btn-lg addStyle">PROSSEGUIR <i class="feather-next"></i></button>
-            {% endif %}
+            <button id="btn_pedido" class="btn btn-success btn-block btn-lg addStyle">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
 
             {% endif %}
 
-            {% endif %}
             {% endif %}
 
             {% if delivery.status == 0 %}
@@ -231,7 +202,7 @@
 
                         <div class="card-body p-0">
                             <div class="modal-content-page osahan-item-detail-pop">
-                                <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/produto/addCarrinho/{{produto.id}}">
+                                <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/{{categoriaSlug}}/produto/{{tamanhoCatId}}/{{tamanhoId}}/{{quantidade}}/addCarrinho">
                                     <div class="modal-body px-3 pt-0 pb-3">
                                         <div class="pb-3 position-relative">
                                             <div class="position-absolute heart-fav">
@@ -298,23 +269,16 @@
                                         </div>
                                         {% endif%}
 
-                                        {% if produto.sabores is null %}
-                                        <input type="hidden" name="id_adicional" id="id_adicional" value="0">
-                                        {% else %}
-                                        <input type="hidden" name="id_adicional" id="id_adicional" value="1">
-                                        {% endif %}
+
+                                        <input type="hidden" name="totalMassa" id="totalMassa" value="0">
+                                        <input type="hidden" name="totalPizza" id="totalPizza" value="0">
+                                    
                                         <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
                                         <input type="hidden" name="id_produto" id="id_produto" value="{{produto.id}}">
-                                        <input type="hidden" name="adicional" id="adicional" value="{{produto.adicional}}">
+                                        
                                         <input type="hidden" name="valor" id="valor" value="{% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
                                         <div class="shadow bg-white rounded p-3 clearfix">
-                                            <p class="mb-1">Valor unitário <span class="float-right text-dark">{{
-                                                moeda.simbolo }}
-                                                    {% if produto.valor_promocional != '0.00' %}{{
-                                                produto.valor_promocional|number_format(2,
-                                                ',', '.') }}{% else %}{{ produto.valor|number_format(2, ',', '.') }}{%
-                                                endif %}</span></p>
-                                            <hr>
+                                        
                                             <h6 class="font-weight-bold mb-0">Total <span class="float-right"> <span id="total">{{ moeda.simbolo
                                                     }} {% if produto.valor_promocional != '0.00' %}{{
                                                     produto.valor_promocional|number_format(2, ',', '.') }}{% else %}{{

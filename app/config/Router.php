@@ -123,8 +123,8 @@ $router->post('/{linkSite}/produto/addCarrinho/{id}', 'CarrinhoController:insert
 $router->post('/{linkSite}/produto/updateCarrinho/{id}', 'CarrinhoController:carrinhoCheckoutUpdate');
 
 $router->get('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}', 'CarrinhoPizzaController:index');
-$router->post('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}/addCarrinho/{id}', 'CarrinhoPizzaController:insert');
-$router->post('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}/updateCarrinho/{id}', 'CarrinhoPizzaController:carrinhoCheckoutUpdate');
+$router->post('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}/addCarrinho', 'CarrinhoPizzaController:insert');
+$router->post('/{linkSite}/{categoriaSlug}/produto/{tamanhoCatId}/{tamanhoId}/{quantidade}/updateCarrinho/{chave}', 'CarrinhoPizzaController:carrinhoCheckoutUpdate');
 
 $router->get('/{linkSite}/produto/adicional/{id}', 'CarrinhoController:carrinhoAdicional');
 $router->get('/{linkSite}/produto/adicional/atualiza/{id}', 'CarrinhoController:carrinhoCheckoutAdicionalUpdate');
@@ -320,6 +320,7 @@ $router->get('/{linkSite}/admin/produto/editar/{id}', 'AdminProdutos:editar');
 
 $router->get('/{linkSite}/admin/produto-pizza/novo', 'AdminProdutos:novoVariavel');
 $router->get('/{linkSite}/admin/produto-pizza/editar/{id}', 'AdminProdutos:editarVariavel');
+
 
 $router->post('/{linkSite}/admin/produto/i', 'AdminProdutos:insert');
 $router->post('/{linkSite}/admin/produto/u/{id}', 'AdminProdutos:update');

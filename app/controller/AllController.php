@@ -232,7 +232,7 @@ class AllController extends Controller
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $planoAtivo = $this->verificaPlano($empresa->id);
 
-        if ($planoAtivo == 4) {
+        if ($planoAtivo == 5) {
             $resulifood = $this->marketplace->getById(1);
             $conecao = $this->ifood->gerarToken();
         }

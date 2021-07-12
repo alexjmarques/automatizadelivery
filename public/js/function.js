@@ -263,6 +263,39 @@ $('#add_itenSabores input[type=radio]').on('change', function (e) {
     $(this).closest('.hovereffect').toggleClass('clic');
 });
 
+//Pizza Massa
+
+$("#btn_pedido").hide()
+$('#add_itenMassa input[type=checkbox], #add_itenMassa input[type=radio]').on('change', function (e1) {
+    let valor = $(this).attr('data-valor')
+    
+    let totalMassa = $('#totalMassa').val()
+    let totalPizza = $('#totalPizza').val()
+
+    console.log(totalMassa)
+
+    if(parseFloat(totalMassa) === 0){
+        console.log(valor)
+        $('#total').text(formatter.format(valor));
+        $('#totalMassa').val(valor);
+    }else{
+        $('#totalMassa').val(valor);
+        $('#total').text(formatter.format(parseFloat(totalPizza) + parseFloat(totalMassa)));
+    }
+});
+
+$('#add_itenPizza input[type=radio]').on('change', function (e1) {
+    $('#saborCount').text(1)
+    let id = $(this).val()
+    let valor = $(this).attr('data-valor')
+    let totalMassa = $('#totalMassa').val()
+    
+    $('#total').text(formatter.format(parseFloat(valor) + parseFloat(totalMassa)));
+    $('#totalPizza').val(valor);
+    $('#id_produto').val(id);
+    $("#btn_pedido").show()
+    
+});
 //Produto Adicional
 $('.mdc-card input[type=checkbox]').on('change', function (e1) {
     //loadTeachers($(e1.target).val());
