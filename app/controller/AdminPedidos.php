@@ -415,6 +415,8 @@ class AdminPedidos extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
         //$connector = new CupsPrintConnector("{$print->code}");
+        $connector = new CupsPrintConnector("EPSON_TM_T88V");
+        
 
         //dd($print);
 
@@ -422,7 +424,7 @@ class AdminPedidos extends Controller
         //$connector = new CupsPrintConnector("{$print->code}");
         //$connector = new NetworkPrintConnector("127.0.0.1", 9100);
         //$connector = new FilePrintConnector("php://stdout");
-        $connector = new FilePrintConnector("/dev/usb/lp1");
+        //$connector = new FilePrintConnector("/dev/usb/lp1");
         $printer = new Printer($connector);
 
         /* Print some bold text */

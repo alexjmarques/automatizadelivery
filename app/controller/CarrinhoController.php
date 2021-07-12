@@ -286,6 +286,7 @@ class CarrinhoController extends Controller
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             
+            dd($cFrete);
 
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega * 1000;
@@ -318,7 +319,7 @@ class CarrinhoController extends Controller
                     $total = $taxa_entrega2;
                 }
 
-                if ((int)$cFrete > (int)$km_entrega2 && (int)$cFrete <= (int)$km_entrega_excedente) {
+                if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
                     $kmACalcular = (round($infoKm) - $delivery->km_entrega2);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
@@ -335,7 +336,7 @@ class CarrinhoController extends Controller
                     $total = $taxa_entrega3;
                 }
 
-                if ((int)$cFrete > (int)$km_entrega3 && (int)$cFrete <= (int)$km_entrega_excedente) {
+                if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
                     $kmACalcular = (round($infoKm) - $delivery->km_entrega3);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
