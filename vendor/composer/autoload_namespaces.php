@@ -8,6 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Imagick' => array($vendorDir . '/calcinai/php-imagick/src'),
     'HTTP_Request2' => array($vendorDir . '/pear/http_request2'),
-    'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
     'Detection' => array($vendorDir . '/mobiledetect/mobiledetectlib/namespaced'),
 );

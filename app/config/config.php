@@ -8,7 +8,7 @@ define('DEBUG_URI', true);
 
 $live = false;
 if($live){
-    define('UPLOADS_BASE', '/var/www/automatizadelivery.com.br/public_html/public/uploads/');
+    define('UPLOADS_BASE', '/var/www/automatizadelivery.com.br/public_html/public/uploads');
     define("DATA_LAYER_CONFIG", [
         "driver" => "pgsql",
         "host" => "localhost",
@@ -27,14 +27,14 @@ if($live){
     define('pagarme_api_key', 'ak_live_kYgEGMeWd702Qx1xsXXBip43F5MANs');
 
 }else{
-    define('UPLOADS_BASE', '/Users/alexmarques/Localhost/automatiza/public/uploads/');
+    define('UPLOADS_BASE', '/Volumes/Localhost/automatizadelivery/public/uploads');
     define("DATA_LAYER_CONFIG", [
         "driver" => "pgsql",
         "host" => "localhost",
         "port" => "5432",
         "dbname" => "automatiza_homologacao",
         "username" => "postgres",
-        "passwd" => "02W@9889forev",
+        "passwd" => "",
         "options" => [
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
