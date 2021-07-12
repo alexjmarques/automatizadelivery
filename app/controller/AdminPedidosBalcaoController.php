@@ -311,7 +311,7 @@ class AdminPedidosBalcaoController extends Controller
                 $total = $taxa_entrega;
 
                 if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
-                    $kmACalcular = (round($infoKm) - $delivery->km_entrega);
+                    $kmACalcular = (round(5) - $delivery->km_entrega);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega + $freteVezes;
                     $total = $taxa_entregaNova;
@@ -324,7 +324,7 @@ class AdminPedidosBalcaoController extends Controller
                 }
 
                 if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
-                    $kmACalcular = (round($infoKm) - $delivery->km_entrega2);
+                    $kmACalcular = (round(5) - $delivery->km_entrega2);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
                     $total = $taxa_entregaNova;
@@ -337,7 +337,7 @@ class AdminPedidosBalcaoController extends Controller
                 }
 
                 if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
-                    $kmACalcular = (round($infoKm) - $delivery->km_entrega3);
+                    $kmACalcular = (round(5) - $delivery->km_entrega3);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
                     $total = $taxa_entregaNova;
