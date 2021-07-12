@@ -11,7 +11,7 @@ use app\Models\PizzaTamanhos;
  * Class Tamanhos
  * @package app\Models
  */
-class pizzaMassasTamanhos extends DataLayer
+class PizzaMassasTamanhos extends DataLayer
 {
     public function __construct()
     {
