@@ -51,7 +51,6 @@
                             </td>
                             <td>
                                 <p><a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}">{{ p.nome }}</a></p>
-
                             </td>
 
                             <td>

@@ -80,7 +80,6 @@ class AdminPedidosBalcaoController extends Controller
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-
         $usuario = $this->acoes->getFind('usuarios');
         $count = $this->acoes->counts('motoboy', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
@@ -691,9 +690,42 @@ class AdminPedidosBalcaoController extends Controller
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
         if ($getTelefone->id > 0) {
+            $usuario = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $getTelefone->id,'id_empresa', $empresa->id);
+
+            if($usuario){
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Cliente já possuí conta cadastrada no sistema']);
+                exit($json);
+            }else{
+                $valorEmp = new UsuariosEmpresa();
+                $valorEmp->id_usuario = $getTelefone->id;
+                $valorEmp->id_empresa = $empresa->id;
+                $valorEmp->nivel = 3;
+                $valorEmp->save();
+            
+                if ($valorEmp->id > 0) {
+            if ($data['entrega'] == 1) {
+                $valorEnd = new UsuariosEnderecos();
+                $valorEnd->id_usuario = $getTelefone->id;
+                $valorEnd->nome_endereco = "Padrão";
+                $valorEnd->rua = $data['rua'];
+                $valorEnd->numero = $data['numero'];
+                $valorEnd->complemento = $data['complemento'];
+                $valorEnd->bairro = $data['bairro'];
+                $valorEnd->cidade = $data['cidade'];
+                $valorEnd->estado = $data['estado'];
+                $valorEnd->cep = $data['cep'];
+                $valorEnd->principal = 1;
+                $valorEnd->save();
+            }
+            $this->sessao->sessaoNew('id_cliente', $getTelefone->id);
+
             header('Content-Type: application/json');
-            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Cliente já possuí conta cadastrada no sistema']);
+            $json = json_encode(['id' => $valorEmp->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso', 'code' => 5,  'url' => 'admin/pedido/novo/produtos']);
             exit($json);
+        }
+        }
+            
         } else {
             $getSenha = preg_replace('/[^0-9]/', '', $data['telefone']);
             $senha = $this->bcrypt->encrypt($getSenha, '2a');
