@@ -105,7 +105,7 @@
                                         <div class="col-md-6 float-left pl-0 bold text-left text-uppercase">Tamanho <input type="text" value="{{ tam.nome }}" class="p-2" disabled> </div>
                                         <div class="col-md-6 float-left pl-0 bold  text-left text-uppercase">Valor 
                                         <input class="p-2 valor" type="text" id="valor{{ tam.id }}" name="preco[valor][]" value="{% for valorProd in valorProduto %}{% if valorProd.id_tamanho == tam.id %}{{valorProd.valor|number_format(2, ',','.')}}{% endif %}{% endfor %}">
-                                        <input class="p-2 valor" type="hidden" id="id{{ tam.id }}" {% for valorProd in valorProduto %}{% if valorProd.id_tamanho == tam.id %}name="preco[id_valor][]" value="{{ valorProd.id }}"{% endif %}{% endfor %}>
+                                        <input class="p-2 valor" type="hidden" id="id{{ tam.id }}" {% for valorProd in valorProduto %}{% if valorProd.id_tamanho == tam.id %}name="preco[id_valor][]" value="{% for valorProd in valorProduto %}{% if valorProd.id_tamanho == tam.id %}{{valorProd.id}}{% endif %}{% endfor %}"{% endif %}{% endfor %}>
                                         </div>
                                     </div>
                                 </div>
