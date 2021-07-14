@@ -1,7 +1,7 @@
 {% extends 'partials/bodyAdmin.twig.php'  %}
 {% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
-<h1>Editar produto adicional</h1>
+<h1 id="titleBy" data-id="{{ catProdAdi }}">Editar produto adicional</h1>
 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
     <ol class="breadcrumb pt-0">
         <li class="breadcrumb-item">
@@ -31,19 +31,6 @@
                     <input type="text" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="{{retorno.valor}}" required>
                 </div>
 
-                <div class="form-group col-md-4 mb-0">
-                    <div class="form-group position-relative">
-                        <label for="tipoSabor">Categoria do Adicional</label>
-                        <select class="form-control select2-single" id="tipo_adicional" name="tipo_adicional">
-                            
-                            {% for ta in tipoAdicional %}
-                            <option value="{{ta.id}}" {% if retorno.tipo_adicional == ta.id  %}selected{% endif %}>{{ta.tipo}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-
                 <div class="form-group col-md-6">
                     <strong class="pt-4 float">Obs.: Caso queira atrelar a algum produto. Após criação vá para a Página de Produto > Editar e adiciona ao produto selecionado.</strong>
                 </div>
@@ -52,6 +39,7 @@
                 <div class="clearfix"></div>
             </div>
             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
+            <input type="hidden" id="tipo_adicional" name="tipo_adicional" value="{{catProdAdi}}">
             <div class="btn_acao"><div class="carrega"></div>
                 <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
                 </div>

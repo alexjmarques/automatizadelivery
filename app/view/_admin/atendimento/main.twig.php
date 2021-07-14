@@ -48,8 +48,8 @@
                                 <p class="text-muted">{{ p.fechamento|date('H:i') }}</p>
                             </td>
                             <td>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/editar/{{ p.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i> Editar</a>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/deletar{{ p.id }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i> Deletar</a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/editar/{{ p.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i></a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/deletar{{ p.id }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i></a>
                             </td>
                         </tr>
                         {% endfor %}

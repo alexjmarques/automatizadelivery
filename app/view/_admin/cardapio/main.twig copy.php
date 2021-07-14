@@ -11,20 +11,7 @@
     </ol>
 </nav>
 
-{% if categoriaQtd == 0 %}
-<div class="alert alert-warning" role="alert">
-    Para cadastrar um novo produdo cadastre as Categorias! <a href="{{BASE}}{{empresa.link_site}}/admin/categoria/nova">Clique aqui</a> para Cadastrar.
-</div>
-{% else %}
-<div class="top-right-button-container"><a href="{{BASE}}{{empresa.link_site}}/admin/produto/novo" class="btn btn-info btn-sm"><i class="simple-icon-plus"></i> Novo produto</a>
-    {% if empresa.id_categoria == 6 %}
-    {% if qtdTamanho > 0 %}
-    <a href="{{BASE}}{{empresa.link_site}}/admin/produto-pizza/novo" class="btn btn-info btn-sm ml-2"> <i class="simple-icon-plus"></i>
-        Nova Pizza</a>
-    {% endif %}
-    {% endif %}
-</div>
-{% endif %}
+<a href="{{BASE}}{{empresa.link_site}}/admin/categoria/nova" class="btn btn-info btn-sm ml-2"> <i class="simple-icon-plus"></i> Adicionar categoria</a>
 <div class="separator mb-5"></div>
 <div class="row mb-4">
     <div class="col-12 data-tables-hide-filter">

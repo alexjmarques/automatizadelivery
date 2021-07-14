@@ -35,6 +35,8 @@
                             <label>Valor Promocional</label>
                             <input type="text" class="form-control" id="valor_promocional" placeholder="Insira o Valor " name="valor_promocional" value="">
                         </div>
+                
+                        
                         <div class="form-group row mb-1 pl-3 col-md-2">
                             <div class="col-12">
                                 <label class="col-12 col-form-label" style="padding-left: 0;">Status</label>
@@ -157,7 +159,6 @@
                             {% endif %}  
                             <input type="hidden" id="imagemNome" name="imagemNome" value="">
                             <input type="hidden" id="vendas" name="vendas" value="0">
-                            <input type="hidden" id="categoria" name="categoria" value="{{ catId }}">
                             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">     
                             <div class="btn_acao"><div class="carrega"></div>
                 <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>

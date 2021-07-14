@@ -131,6 +131,7 @@ class AdminProdutos extends Controller
             'tipoAdicional' => $tipoAdicional,
             'diaSelecao' => $diaSelecao,
             'qtdSabores' => $qtdSabores,
+            'catId' => $data['catId'],
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
@@ -154,6 +155,7 @@ class AdminProdutos extends Controller
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+        $tamanhoCategoria = $this->acoes->getByFieldTwoAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id, 'id_categoria', $data['catId']);
         $diaSelecao = $this->acoes->getFind('dias');
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
@@ -176,12 +178,14 @@ class AdminProdutos extends Controller
             'categoriaLista' => $categoriaLista,
             'qtdProdutosAdicionais' => $qtdProdutosAdicionais,
             'tamanhos' => $tamanhos,
+            'tamanhoCategoria' => $tamanhoCategoria,
             'produtosSabores' => $produtosSabores,
             'produtosAdicionais' => $produtosAdicionais,
             'tipoAdicional' => $tipoAdicional,
             'diaSelecao' => $diaSelecao,
             'qtdSabores' => $qtdSabores,
             'qtdTamanho' => $qtdTamanho,
+            'catId' => $data['catId'],
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,

@@ -39,7 +39,7 @@
                                 data-placement="top" title="Produto Desativado"><i class="simple-icon-close"></i></span>{% endif %}</p>
                             </td>
                             <td>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/formas-pagamento/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i> Editar</a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/formas-pagamento/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
                                 
                             </td>
                         </tr>

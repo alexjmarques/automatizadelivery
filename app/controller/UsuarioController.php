@@ -64,7 +64,8 @@ class UsuarioController extends Controller
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('login/main', [
             'empresa' => $empresa,
@@ -119,7 +120,8 @@ class UsuarioController extends Controller
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/login/main', [
             'trans' => $this->trans,
@@ -164,25 +166,25 @@ class UsuarioController extends Controller
         $email = $data['email'];
         $senha = $data['senha'];
         $usuario = $this->acoes->getByField('usuarios', 'email', $email);
-        
+
         if ($usuario->id <= 0) {
             echo 'Email não encontrado em nossa plataforma! Cadastre-se.';
         } else {
             if ($this->bcrypt->verify($senha, $usuario->senha)) {
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
-                if($data['idEmpresa']){
+                if ($data['idEmpresa']) {
                     $usuId = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $usuario->id, 'id_empresa', $data['idEmpresa']);
-                    if($usuId->id > 0){
-                            $empresa = $this->acoes->getByField('empresa', 'id', $data['idEmpresa']);
-                            header('Content-Type: application/json');
-                            $json = json_encode(['id' => 1, 'code' => 4,'url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
-                        }else{
-                            header('Content-Type: application/json');
-                            $json = json_encode(['id' => 1, 'code' => 4,'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
-                        }
-                }else{
+                    if ($usuId->id > 0) {
+                        $empresa = $this->acoes->getByField('empresa', 'id', $data['idEmpresa']);
+                        header('Content-Type: application/json');
+                        $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    } else {
+                        header('Content-Type: application/json');
+                        $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    }
+                } else {
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => 1, 'code' => 4,'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                 }
             } else {
                 header('Content-Type: application/json');
@@ -259,37 +261,14 @@ class UsuarioController extends Controller
         }
     }
 
-    // public function usuarioLogin($data)
-    // {
-    //     $session = $this->sessionFactory->newInstance($_COOKIE);
-    //     $segment = $session->getSegment('Vendor\Aura\Segment');
-    //     $codeValida = $segment->get('codeValida');
-
-    //     $resultUp = $this->usuarioModel->getById($data['u']);
-    //     $session = $this->sessionFactory->newInstance($_COOKIE);
-    //     $segment = $session->getSegment('Vendor\Aura\Segment');
-    //     $SessionIdUsuario = $segment->get('id_usuario');
-
-    //     if (!$this->sessao->getUser()) {
-    //         $session->setCookieParams(array('lifetime' => '2592000'));
-    //         $_SESSION = array(
-    //             'Vendor\Aura\Segment' => array(
-    //                 'id_usuario' => $resultUp[':id'],
-    //                 'usuario' => $resultUp[':email'],
-    //                 'nivel' => $resultUp[':nivel'],
-    //                 'numero_pedido' => substr(number_format(time() * Rand(), 0, '', ''), 0, 6),
-    //             ),
-    //         );
-    //     }
-    // }
-
 
     public function atendentes($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -300,8 +279,8 @@ class UsuarioController extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
-        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
-        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 2);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 2);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
@@ -327,7 +306,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -356,7 +336,8 @@ class UsuarioController extends Controller
         $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -387,7 +368,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -417,7 +399,7 @@ class UsuarioController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'detect' => new Mobile_Detect(),
-            'caixa' => $estabelecimento[0]->data_inicio
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -426,7 +408,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -455,7 +438,8 @@ class UsuarioController extends Controller
         $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -485,7 +469,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -523,7 +508,8 @@ class UsuarioController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -552,7 +538,8 @@ class UsuarioController extends Controller
         $retorno = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $estabelecimento = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -593,7 +580,7 @@ class UsuarioController extends Controller
             $senha = $this->bcrypt->encrypt($data['senha'], '2a');
         }
 
-        if($senha && $email){
+        if ($senha && $email) {
 
             $valor = new Usuarios();
             $valor->nome = $data['nome'];
@@ -603,17 +590,17 @@ class UsuarioController extends Controller
             $valor->nivel = $data['nivel'];
             $valor->save();
 
-            if($valor->id > 0){
+            if ($valor->id > 0) {
                 $valorEmp = new UsuariosEmpresa();
                 $valorEmp->id_usuario = $valor->id;
                 $valorEmp->id_empresa = $data['id_empresa'];
                 $valorEmp->nivel = $data['nivel'];
                 $valorEmp->save();
 
-                if($valorEmp->id > 0){
-                header('Content-Type: application/json');
-                $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => $data['mensagemSuccess'], 'error' => $data['mensagemError'], 'url' => $data['url']]);
-                exit($json);
+                if ($valorEmp->id > 0) {
+                    header('Content-Type: application/json');
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => $data['mensagemSuccess'], 'error' => $data['mensagemError'], 'url' => $data['url']]);
+                    exit($json);
                 }
             }
             header('Content-Type: application/json');
@@ -652,10 +639,10 @@ class UsuarioController extends Controller
                 $url_dell = 'admin/administradores';
                 break;
             case 1:
-                $url_dell = 'admin/atendentes';
+                $url_dell = 'admin/motoboys';
                 break;
             case 2:
-                $url_dell = 'admin/motoboys';
+                $url_dell = 'admin/atendentes';
                 break;
             case 3:
                 $url_dell = 'admin/clientes';
@@ -790,7 +777,7 @@ class UsuarioController extends Controller
                 $valor->senha = $senha;
                 $valor->nivel = 3;
                 $valor->save();
-                
+
                 if ($valor->id > 0) {
                     $valorEnd = new UsuariosEnderecos();
                     $valorEnd->id_usuario = $valor->id;

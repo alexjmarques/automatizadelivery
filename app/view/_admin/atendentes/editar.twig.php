@@ -35,7 +35,7 @@
                   </div>
                 </div>
                 <input type="hidden" id="id" name="id" value="{{retorno.id}}">
-                <input type="hidden" id="nivel" name="nivel" value="1">
+                <input type="hidden" id="nivel" name="nivel" value="2">
                 <input type="hidden" id="mensagemSuccess" name="mensagemSuccess" value="Atendente atualizado com sucesso!">
                 <input type="hidden" id="mensagemError" name="mensagemError" value="Não foi possível atualizado o atendente no sistema!">
                 <input type="hidden" id="url" name="url" value="admin/atendentes">

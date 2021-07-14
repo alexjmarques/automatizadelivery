@@ -8,7 +8,7 @@
             <a href="{{BASE}}{{empresa.link_site}}/admin">Painel</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicionais">Categoria Adicional</a>
+            <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-adicionais">Adicional</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">Novo Categoria Adicional</li>
     </ol>

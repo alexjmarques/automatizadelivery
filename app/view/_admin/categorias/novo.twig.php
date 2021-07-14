@@ -1,4 +1,3 @@
-
 {% extends 'partials/bodyAdmin.twig.php'  %}
 {% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
@@ -15,38 +14,38 @@
     </ol>
 </nav>
 <div class="separator mb-5"></div>
-                <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/categoria/i" enctype="multipart/form-data">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5>Categia dos produtos</h5>
-                                <div class="form-row">
-                                  <div class="form-group col-md-8 catProds">
-                                       <label>Nome da Categoria</label>
-                                      <input type="text" class="form-control" id="nome" name="nome" value="" required>
-                                  </div>
-                                  <div class="form-group col-md-4 hidden">
-                                      <label>Slug</label>
-                                      <input type="hidden" class="form-control" id="slug" placeholder="Slug" name="slug" value="" required>
-                                  </div>
-                                  <div class="form-group col-md-4">
-                                      <label>Posição no Site</label>
-                                      <input type="text" class="form-control" id="posicao" placeholder="Posição" name="posicao" value="" required>
-                                  </div>
-                                  <div class="form-group col-md-12">
-                                    <label>Descrição</label>
-                                    <textarea class="form-control" id="descricao" name="descricao"></textarea>
-                                  </div> 
-                                </div>
-                            <input type="hidden" id="produtos" name="produtos" value="0">
-                            <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
-                            <div class="btn_acao"><div class="carrega"></div>
-                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnCadastro">Cadastrar</button>
+<form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/categoria/i" enctype="multipart/form-data">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Categoria dos produtos</h5>
+            <div class="form-row">
+                <div class="form-group col-md-8 catProds">
+                    <label>Nome da Categoria</label>
+                    <input type="text" class="form-control" id="nome" name="nome" value="" required>
                 </div>
-                            
-                        </div>
-                    </div>
-                    </form>
+                <div class="form-group col-md-4 hidden">
+                    <label>Slug</label>
+                    <input type="hidden" class="form-control" id="slug" placeholder="Slug" name="slug" value="" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Posição no Site</label>
+                    <input type="text" class="form-control" id="posicao" placeholder="Posição" name="posicao" value="" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Descrição</label>
+                    <textarea class="form-control" id="descricao" name="descricao"></textarea>
+                </div>
+            </div>
+            <input type="hidden" id="produtos" name="produtos" value="0">
+            <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
+            <div class="btn_acao">
+                <div class="carrega"></div>
+                <button class="btn btn-info d-block acaoBtn acaoBtnCadastro">Cadastrar Categoria</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</form>
 
 {% endblock %}
-
-

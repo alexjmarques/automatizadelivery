@@ -165,7 +165,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cupom Desconto cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Cupom de Desconto','code' => 2 ,  'url' => 'cupons',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cupom Desconto cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Cupom de Desconto','code' => 2 ,  'url' => 'admin/cupons',]);
         exit($json);
     }
 
@@ -189,7 +189,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Cupom Desconto atualizado com sucesso', 'error' => 'Não foi posível atualizar o Cupom de desconto','code' => 2 ,  'url' => 'cupons',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Cupom Desconto atualizado com sucesso', 'error' => 'Não foi posível atualizar o Cupom de desconto','code' => 2 ,  'url' => 'admin/cupons',]);
         exit($json);
     }
 

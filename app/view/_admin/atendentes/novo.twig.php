@@ -32,7 +32,7 @@
                         <input type="text" class="form-control" id="telefone" name="telefone" value="" required>
                     </div>
                 </div>
-                <input type="hidden" id="nivel" name="nivel" value="1">
+                <input type="hidden" id="nivel" name="nivel" value="2">
                 <input type="hidden" id="mensagemSuccess" name="mensagemSuccess" value="Atendente Cadastrado com sucesso!">
                 <input type="hidden" id="mensagemError" name="mensagemError" value="Não foi possível cadastrar o atendente no sistema!">
                 <input type="hidden" id="url" name="url" value="admin/atendentes">

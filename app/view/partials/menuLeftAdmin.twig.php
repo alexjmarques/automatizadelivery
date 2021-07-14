@@ -130,15 +130,15 @@
                 {% endif %}
                 <li id="menuProdutos">
                     <a href="#" data-toggle="collapse" data-target="#collapseProdutos" aria-expanded="true" aria-controls="collapseProdutos" class="primaryMenu rotate-arrow-icon collapsed">
-                        <span class="iconsminds-cash-register-2 iconeMenu"></span> <span class="d-inline-block">Produtos</span>
+                        <span class="iconsminds-cash-register-2 iconeMenu"></span> <span class="d-inline-block">Cardápios</span>
                         <i class="simple-icon-arrow-down iconAcao"></i>
                     </a>
                     <div id="collapseProdutos" class="collapse rounded-left cianColor" data-parent="#menuTypes">
                         <span class="triangulo-top"></span>
                         <ul class="list-unstyled inner-level-menu">
                             <li id="subProd">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/produtos">
-                                    <span class="d-inline-block"><strong>Todos os Produtos</strong></span>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/cardapio">
+                                    <span class="d-inline-block"><strong>Categoria e Produtos</strong></span>
                                 </a>
                             </li>
                             {% if empresa.id_categoria == 6 %}
@@ -149,15 +149,10 @@
                             </li>
                             <li id="subMass">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/massas">
-                                    <span class="d-inline-block"><strong>Massas de Pizza</strong></span>
+                                    <span class="d-inline-block"><strong>Borda de Pizza</strong></span>
                                 </a>
                             </li>
                             {% endif %}
-                            <li id="subCat">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/categorias">
-                                    <span class="d-inline-block"><strong>Categorias</strong></span>
-                                </a>
-                            </li>
                             
                             <li id="subSabores">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-sabores">
@@ -167,11 +162,6 @@
                             <li id="subProdA">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produtos-adicionais">
                                     <span class="d-inline-block"><strong>Adicionais</strong></span>
-                                </a>
-                            </li>
-                            <li id="subTipoA">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/tipo-adicionais">
-                                    <span class="d-inline-block"><strong>Categorias dos Adicionais</strong></span>
                                 </a>
                             </li>
                         </ul>

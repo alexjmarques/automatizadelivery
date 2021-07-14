@@ -1,23 +1,23 @@
 {% extends 'partials/bodyAdmin.twig.php' %}
 {% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
-<h1>Editar Massa de Pizzas</h1>
+<h1>Editar Borda de Pizzas</h1>
 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
     <ol class="breadcrumb pt-0">
         <li class="breadcrumb-item">
             <a href="{{BASE}}{{empresa.link_site}}/admin">Painel</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{BASE}}{{empresa.link_site}}/admin/massas">Massa de Pizzas</a>
+            <a href="{{BASE}}{{empresa.link_site}}/admin/massas">Borda de Pizzas</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">Editar Tamanho</li>
+        <li class="breadcrumb-item active" aria-current="page">Editar Borda</li>
     </ol>
 </nav>
 <div class="separator mb-5"></div>
 <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/massa/u/{{retorno.id}}" enctype="multipart/form-data">
     <div class="card mb-4">
         <div class="card-body">
-            <h5 id="titleBy" data-id="{{retorno.id}}">Massa de pizza</h5>
+            <h5 id="titleBy" data-id="{{retorno.id}}">Borda de pizza</h5>
             <div class="form-row">
                 <div class="form-group col-md-6 catProds">
                     <label>Nome</label>

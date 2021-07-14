@@ -25,6 +25,7 @@
                     <input type="text" class="form-control" id="nome" name="nome" value="" required>
                 </div>
 
+
                 <div class="form-group row mb-1 pl-3 col-md-3">
                     <div class="col-12">
                         <label class="col-12 col-form-label" style="padding-left: 0;">Status</label>
@@ -146,7 +147,6 @@
         <div class="card-body">
             <input type="hidden" id="imagemNome" name="imagemNome" value="">
             <input type="hidden" id="vendas" name="vendas" value="0">
-            <input type="hidden" id="categoria" name="categoria" value="{{ catId }}">
             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
             <input type="hidden" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="0" required>
             <input type="hidden" class="form-control" id="valor_promocional" placeholder="Insira o Valor " name="valor_promocional" value="0">

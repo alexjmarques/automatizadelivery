@@ -1,7 +1,7 @@
 {% extends 'partials/bodyAdmin.twig.php' %}
 {% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
-<h1>Novo produto adicional</h1>
+<h1 id="titleBy" data-id="{{ catProdAdi }}">Novo produto adicional</h1>
 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
     <ol class="breadcrumb pt-0">
         <li class="breadcrumb-item">
@@ -33,24 +33,14 @@
                     <input type="text" class="form-control" id="valor" placeholder="Insira o Valor " name="valor"
                         value="" required>
                 </div>
-                <div class="form-group col-md-4 mb-0">
-                    <div class="form-group position-relative">
-                        <label for="tipoSabor">Categoria do Adicional</label>
-                        <select class="form-control select2-single" id="tipo_adicional" name="tipo_adicional">
-                            <option value="sem-tipo" selected>Selecione</option>
-                            {% for ta in tipoAdicional %}
-                                <option value="{{ta.id}}">{{ ta.tipo }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
 
-                <div class="form-group col-md-12 pt-0 mt-0">
+                <div class="form-group col-md-12 pt-2 mt-0">
                     <strong class=" float">Obs.: Caso queira atrelar a algum produto. Após criação vá para a Página
-                        de Produto > Editar e adiciona ao produto selecionado.</strong>
+                        de Cardápios selecione o produto expecífico e adicione ao produto.</strong>
                 </div>
                 <div class="clearfix"></div>
                 <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
+                <input type="hidden" id="tipo_adicional" name="tipo_adicional" value="{{catProdAdi}}">
 
             </div>
             <button type="submit" name="cadastrar" id="cadastrar" class="btn btn-info d-block">Cadastrar</button>

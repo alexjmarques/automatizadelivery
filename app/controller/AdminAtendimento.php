@@ -42,13 +42,12 @@ class AdminAtendimento extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        
-        
+
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -84,8 +83,8 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -103,7 +102,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $caixa->status
         ]);
     }
@@ -111,14 +110,14 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function editar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $retorno = $this->acoes->getByField('empresaFuncionamento','id', $data['id']);
+        $retorno = $this->acoes->getByField('empresaFuncionamento', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id,$this->sessao->getUser());
+            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() == 3) {
                 redirect(BASE . $empresa->link_site);
@@ -134,7 +133,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'empresa' => $empresa,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'isLogin' => $this->sessao->getUser(),
             'caixa' => $caixa->status
         ]);
@@ -150,7 +149,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Horário de Funcionamento cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Horário de Funcionamento','code' => 2 ,  'url' => 'admin/conf/atendimento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Horário de Funcionamento cadastrado com sucesso', 'error' => 'Não foi posível cadastrar o Horário de Funcionamento', 'code' => 2,  'url' => 'admin/conf/atendimento',]);
         exit($json);
     }
 
@@ -163,7 +162,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Horário de Funcionamento atualizado com sucesso', 'error' => 'Não foi posível atualizar o Horário de Funcionamento','code' => 2 ,  'url' => 'admin/conf/atendimento',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Horário de Funcionamento atualizado com sucesso', 'error' => 'Não foi posível atualizar o Horário de Funcionamento', 'code' => 2,  'url' => 'admin/conf/atendimento',]);
         exit($json);
     }
 

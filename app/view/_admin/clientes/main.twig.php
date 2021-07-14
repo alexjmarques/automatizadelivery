@@ -23,8 +23,8 @@
                     <thead class="linhaTop">
                         <tr>
                             <th>Nome</th>
-                            <th>Email</th>
                             <th>Telefone</th>
+                            <th>Data Cadastro</th>
                             <th style="width: 200px !important;">Ações</th>
                         </tr>
                     </thead>
@@ -36,14 +36,15 @@
                             <td>
                                <p class="text-muted">{{ user.nome }}</p>
                             </td>
-                            <td>
-                                <p class="text-muted">{{ user.email }}</p>
-                            </td>
+                            
                             <td>
                                 <p class="text-muted">({{ user.telefone[:2] }}) {{ user.telefone|slice(2, 5) }}-{{ user.telefone|slice(7, 9) }}</p>
                             </td>
                             <td>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/cliente/editar/{{ user.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i> Editar</a>
+                               <p class="text-muted">{{ user.created_at|date('d/m/Y') }}</p>
+                            </td>
+                            <td>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/cliente/editar/{{ user.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
                                 {% if nivelUsuario == 0 %}
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/cliente/d/{{ user.id }}/{{ user.nivel }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i> Excluir</a>
                                 {% endif%}

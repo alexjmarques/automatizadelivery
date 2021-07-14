@@ -47,8 +47,9 @@ class AdminTipoAdicional extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -84,8 +85,8 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -120,8 +121,8 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -146,17 +147,23 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
     public function insert($data)
     {
+        if ($data['qtd']) {
+            $qtd = $data['qtd'];
+        } else {
+            $qtd = 0;
+        }
         $valor = new CategoriaTipoAdicional();
         $valor->tipo = $data['tipo'];
         $valor->slug = $data['slug'];
         $valor->tipo_escolha = $data['tipo_escolha'];
-        $valor->qtd = $data['qtd'];
+        $valor->qtd = $qtd;
         $valor->status = $data['switch'];
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
+        //dd($valor);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria Adicional cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria adicional','code' => 2 ,  'url' => 'admin/tipo-adicionais',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria Adicional cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria adicional', 'code' => 2,  'url' => 'admin/produtos-adicionais',]);
         exit($json);
     }
 
@@ -172,7 +179,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria Adicional atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria adicional','code' => 2 ,  'url' => 'admin/tipo-adicionais',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria Adicional atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria adicional', 'code' => 2,  'url' => 'admin/produtos-adicionais',]);
         exit($json);
     }
 
@@ -181,6 +188,6 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor = (new CategoriaTipoAdicional())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE . "{$data['linkSite']}/admin/tipo-adicionais");
+        redirect(BASE . "{$data['linkSite']}/admin/produtos-adicionais");
     }
 }

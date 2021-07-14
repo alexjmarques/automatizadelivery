@@ -15,6 +15,7 @@ require "../app/controller/AdminMassas.php";
 require "../app/controller/AdminPedidos.php";
 require "../app/controller/AdminTamanhos.php";
 require "../app/controller/AllController.php";
+require "../app/controller/AdminCardapio.php";
 require "../app/controller/AdminMotoboys.php";
 require "../app/controller/AdminProdutos.php";
 require "../app/controller/AdminDashboard.php";
@@ -314,11 +315,13 @@ $router->post('/{linkSite}/admin/carrinho/finaliza', 'AdminPedidosBalcaoControll
 $router->get('/{linkSite}/admin/carrinho/pedido/acao/{id_produto}/{id_carrinho}', 'CarrinhoController:carrinhoProdutoAcao');
 
 
+$router->get('/{linkSite}/admin/cardapio', 'AdminCardapio:index');
+
 $router->get('/{linkSite}/admin/produtos', 'AdminProdutos:index');
-$router->get('/{linkSite}/admin/produto/novo', 'AdminProdutos:novo');
+$router->get('/{linkSite}/admin/produto/novo/{catId}', 'AdminProdutos:novo');
 $router->get('/{linkSite}/admin/produto/editar/{id}', 'AdminProdutos:editar');
 
-$router->get('/{linkSite}/admin/produto-pizza/novo', 'AdminProdutos:novoVariavel');
+$router->get('/{linkSite}/admin/produto-pizza/novo/{catId}', 'AdminProdutos:novoVariavel');
 $router->get('/{linkSite}/admin/produto-pizza/editar/{id}', 'AdminProdutos:editarVariavel');
 
 
@@ -327,7 +330,7 @@ $router->post('/{linkSite}/admin/produto/u/{id}', 'AdminProdutos:update');
 $router->get('/{linkSite}/admin/produto/d/{id}', 'AdminProdutos:deletar');
 $router->post('/{linkSite}/admin/upload', 'AdminProdutos:uploadImagem');
 $router->get('/{linkSite}/admin/produtos-adicionais', 'AdminProdutosAdicionais:index');
-$router->get('/{linkSite}/admin/produto-adicional/novo', 'AdminProdutosAdicionais:novo');
+$router->get('/{linkSite}/admin/produto-adicional/novo/{catProdAdi}', 'AdminProdutosAdicionais:novo');
 $router->get('/{linkSite}/admin/produto-adicional/editar/{id}', 'AdminProdutosAdicionais:editar');
 $router->post('/{linkSite}/admin/produto-adicional/i', 'AdminProdutosAdicionais:insert');
 $router->post('/{linkSite}/admin/produto-adicional/u/{id}', 'AdminProdutosAdicionais:update');

@@ -35,13 +35,17 @@ class AdminProdutosAdicionais extends Controller
 
     public function index($data)
     {
-
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $categoriaTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
+        $tipoAdicional = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+
+
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -58,11 +62,12 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
         $resultCategorias = $this->acoes->pagination('produtoAdicional', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
-        $categoriaTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
+        //$categoriaTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
 
         $this->load('_admin/produtoAdicional/main', [
             'produtoAdicional' => $resultCategorias,
-            'categoriaTipoAdicional' => $categoriaTipoAdicional,
+            'adicionalTipoAdicional' => $categoriaTipoAdicional,
+            'tipoAdicional' => $tipoAdicional,
             'paginacao' => $pager->render('mt-4 pagin'),
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
@@ -81,11 +86,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
 
-        //dd($tipoAdicional);
-        
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -101,6 +104,8 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'moeda' => $moeda,
             'empresa' => $empresa,
             'trans' => $this->trans,
+            'catProdAdi' => $data['catProdAdi'],
+
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'tipoAdicional' => $tipoAdicional,
@@ -116,9 +121,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
-        
+
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -153,7 +158,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicional cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o produto adicional','code' => 2 ,  'url' => 'admin/produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicional cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o produto adicional', 'code' => 2,  'url' => 'admin/produtos-adicionais']);
         exit($json);
     }
 
@@ -167,7 +172,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto Adicional atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto adicional','code' => 2 ,  'url' => 'admin/produtos-adicionais']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto Adicional atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto adicional', 'code' => 2,  'url' => 'admin/produtos-adicionais']);
         exit($json);
     }
 

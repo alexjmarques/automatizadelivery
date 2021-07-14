@@ -1119,7 +1119,13 @@ switch (active_link) {
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
     break;
-  case `/${link_site}/admin/produto/novo`:
+    case `/${link_site}/admin/cardapio`:
+      $('#collapseProdutos').addClass('show')
+      $('#menuProdutos .primaryMenu').removeClass('collapsed')
+      $('#subProd').addClass('active')
+      break;
+    
+  case `/${link_site}/admin/produto/novo/${activeId}`:
     $('#collapseProdutos').addClass('show')
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
@@ -1129,7 +1135,7 @@ switch (active_link) {
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
     break;
-    case `/${link_site}/admin/produto-pizza/novo`:
+    case `/${link_site}/admin/produto-pizza/novo/${activeId}`:
     $('#collapseProdutos').addClass('show')
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
@@ -1165,7 +1171,7 @@ switch (active_link) {
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProdA').addClass('active')
     break;
-  case `/${link_site}/admin/produto-adicional/novo`:
+  case `/${link_site}/admin/produto-adicional/novo/${activeId}`:
     $('#collapseProdutos').addClass('show')
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProdA').addClass('active')
@@ -1497,6 +1503,17 @@ $('#calcularTroco').on('click', function () {
   }
 });
 
+
+// $('.buton-collapse').on('toggle', function () {
+//   let cats = $(this).attr('id');
+//   if ($(this).is(".show")) {
+//     $(`#${cats} i`).removeClass('fa-chevron-up').addClass('fa-chevron-down')
+//   }else{
+//     $(`#${cats} i`).addClass('fa-chevron-up').removeClass('fa-chevron-down')
+//   }
+
+  
+// });
 
 $('#tipo_frete').on('change', function () {
   if (parseInt($(this).val()) === 2) {
