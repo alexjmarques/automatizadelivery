@@ -1805,10 +1805,12 @@ table.dataTable td {
   float: left;
 }
 
-.excluir_prod {
+
+.excluir_prod{
   padding: 0 0 0 20px !important;
   float: right;
   font-size: 22px;
+  color: #880a1f;
 }
 
 .btnFPedido {
@@ -5351,9 +5353,24 @@ button.position-relative h6{
   font-size: 40px !important;
   border-radius: 15px;
   border: none !important;
+  position: relative;
+}
+.btn-categoria:before{
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 15px;
+  left: 0;
+  background: rgba(0, 0, 0, .5);
 }
 .btn-categoria h6{
   font-size: 34px !important;
+  z-index: 2;
+  position: relative;
 }
 .pizza{
     background: url('/uploads/pizza.jpg') !important;
@@ -5364,4 +5381,27 @@ button.position-relative h6{
     background: url('/uploads/calzone.jpg') !important;
     background-size: cover !important;
     background-position: bottom center !important;
+}
+
+.select2-container .select2-selection--single {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  height: 45px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.select2-container--classic .select2-selection--single .select2-selection__rendered {
+  color: #444;
+  line-height: 44px;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+.select2-container--classic .select2-selection--single {
+  padding-left: 10px;
+}
+
+.select2-container--classic .select2-selection--single .select2-selection__arrow {
+  height: 43px;
+  width: 40px;
 }

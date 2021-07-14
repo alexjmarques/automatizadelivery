@@ -299,13 +299,12 @@ $router->post('/{linkSite}/admin/novo/cliente', 'AdminPedidosBalcaoController:ca
 $router->get('/{linkSite}/admin/pedido/novo/produtos', 'AdminPedidosBalcaoController:produtos');
 
 $router->post('/{linkSite}/admin/produto/addCarrinho/produto/{id}', 'AdminPedidosBalcaoController:carrinhoAddProduto');
-
 $router->get('/{linkSite}/admin/carrinho/qtd', 'AdminPedidosBalcaoController:carrinhoQtd');
 
 
 $router->post('/{linkSite}/admin/pedido/novo/start', 'AdminPedidosBalcaoController:start');
 $router->get('/{linkSite}/admin/produto/novo/mostrar/{id}', 'AdminPedidosBalcaoController:produtoMostrar');
-$router->get('/{linkSite}/admin/produto/novo/mostrar-pizza/{tipo}', 'AdminPedidosBalcaoController:produtoPizzaMostrar');
+$router->get('/{linkSite}/admin/produto/novo/mostrar-pizza/{tamanho}', 'AdminPedidosBalcaoController:produtoPizzaMostrar');
 $router->get('/{linkSite}/admin/pedido/novo/produtos/detalhes', 'AdminPedidosBalcaoController:carrinhoFinalizar');
 $router->get('/{linkSite}/admin/produto/adicional/atualiza/{chave}/{id}', 'AdminPedidosBalcaoController:carrinhoCheckoutAdicionalUpdate');
 $router->get('/{linkSite}/admin/produto/addCarrinho/{id}', 'AdminPedidosBalcaoController:carrinhoCheckout');

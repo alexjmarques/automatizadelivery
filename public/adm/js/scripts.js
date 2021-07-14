@@ -1474,13 +1474,13 @@ function produtoModal(id) {
   })
 }
 
-function produtoPizzaModal(tipo) {
+function produtoPizzaModal(tamanho) {
   console.log('aqui');
   $.ajax({
-    url: `/${link_site}/admin/produto/novo/mostrar-pizza/${tipo}`,
+    url: `/${link_site}/admin/produto/novo/mostrar-pizza/${tamanho}`,
     method: "get",
     data: {
-      tipo
+      tamanho
     },
     dataType: "html",
     beforeSend: function () {
@@ -1614,7 +1614,7 @@ jQuery.fn.shake = function (interval, distance, times) {
     left: 0
   }, interval);
 }
-$('.select2-single').select2();
+$('.select2-single, .select2-multiple').select2();
 $(".selectMes").select2({
   minimumResultsForSearch: -1
 });

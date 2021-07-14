@@ -1,88 +1,50 @@
 <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto/addCarrinho/produto/{{produto.id}}" novalidate>
     <div class="bg-primary border-bottom px-3 pt-3  d-flex ">
-        <div class="col-md-12 float-left pl-0">
-            <h3 class="font-weight-bold m-0 text-white">{{tipo}}</h3>
+        <div class="col-md-12 float-left pl-0 pb-2">
+            <h3 class="font-weight-bold m-0 text-white text-uppercase pb-2 ">{{tamanho.nome}}</h3>
         </div>
     </div>
 
     <div class="col-md-12 pt-3 pb-3">
         <div class="col-md-12 pl-0">
-            <div class="mdc-card">
-
-                <div class="bg-white mb-0 py-2 pt-0 pb-0">
-                    <div class="garnish-choices__header">
-                        <span class="garnish-choices__header-content">
-                            <p class="garnish-choices__title" data-test-id="Escolha 1 opção.">Escolha a sua Preferência
-                                <span class="garnish-choices__title-desc">Escolha 1 opção.</span>
-                            </p>
-                            <span id="massa_choice" class="garnish-choices__tags">
-                                <span class="marmita-minitag marmita-minitag--black marmita-minitag--small">OBRIGATÓRIO</span>
-                            </span>
-                        </span>
-                    </div>
-                    <div class="col-md-12 pt-3">
-                        <div class="mdc-card" id="add_itenMassa">
-                            {% for mass in pizzaMassas %}
-                            <div class="custom-control custom-radio border-bottom py-2">
-                                <input class="custom-control-input" type="radio" id="id_massa{{mass.id}}" data-valor="{{ mass.valor }}" name="massa" value="{{mass.id}}">
-                                <label class="custom-control-label" for="id_massa{{mass.id}}">{{mass.nome}} <span class="garnish-choices__option-price">{% if mass.valor != 0.00 %}+ {{moeda.simbolo}} {{ mass.valor|number_format(2, ',', '.')}}{% endif %}</span></label>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group col-md-12 col-pedido">
+                <label for="borda">Tipo</label>
+                <select class="form-control select2-single select-box" id="tipo" name="tipo">
+                    <option value="1">Inteira</option>
+                    <option value="2">Meio a Meio</option>
+                    <option value="3">1/3</option>
+                    <option value="4">1/4</option>
+                </select>
+            </div>
+            <div class="form-group col-md-12 col-pedido">
+                <label for="borda">Borda</label>
+                <select class="form-control select2-single select-box" id="borda" name="borda">
+                    {% for mass in pizzaMassas %}
+                    <option value="{{mass.id}}" data-valor="{{ mass.valor }}">{{mass.nome}} {% if mass.valor != 0.00 %}+ {{moeda.simbolo}} {{ mass.valor|number_format(2, ',', '.')}}{% endif %}</option>
+                    {% endfor %}
+                </select>
             </div>
 
-
-            <div class="mdc-card">
-            <div class="bg-white mb-3 py-2 pt-0">
-                <div class="garnish-choices__header">
-                    <span class="garnish-choices__header-content">
-                        <p class="garnish-choices__title" data-test-id="Escolha 1 opção.">Escolha um sabor
-                            <span class="garnish-choices__title-desc">Escolha 2 opção.</span>
-                        </p>
-                        <span class="garnish-choices__tags">
-                            <span id="pizza_choice"><span class="marmita-minitag marmita-minitag--black marmita-minitag--small">OBRIGATÓRIO</span></span>
-                            <span id="saborCounts" class="marmita-minitag marmita-minitag--black marmita-minitag--small">
-                                <span id="saborCount">0</span>/<span id="iCount">{{ii}}</span>
-                            </span>
-                        </span>
-                    </span>
-                </div>
-                <div class="col-md-12">
-                    <div class="mdc-cards" id="add_itenPizza">
-                            {% for prod in produtos %}
-                            {% if prod.code is not null %}
-                            <div class="custom-control border-bottom py-3">
-                                <input class="custom-control-input" type="checkbox" {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %}data-valor="{{ (prodVal.valor / ii)}}"{% endif %}{% endfor %}
-                                    id="id_pizza_prod{{prod.id}}" name="pizza_prod[]" value="{{prod.id}}">
-                                <label class="custom-control-label"
-                                    for="id_pizza_prod{{prod.id}}"> PIZZA {{prod.nome}} - {{prod.descricao}} {% if prod.observacao is not null %} <strong class="size10">({{prod.observacao}})</strong>{% endif %}
-                                    <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
-
-                                        {% for prodVal in produtoValor %}
-                                        {% if prodVal.id_produto == prod.id %}
-                                            {{ (prodVal.valor / ii)|number_format(2, ',', '.')}}</span>
-                                        {% endif %}
-                                        {% endfor %}
-                                    
-                                </label>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-
-                    </div>
-                </div>
-            </div>
+            <div class="form-group col-md-12 col-pedido">
+                <label for="borda">Pizzas</label>
+                <select class="form-control select2-single select-box" id="borda" name="borda" multiple="multiple">
+                    {% for p in produtos %}
+                    {% if p.code is not null %}
+                    <option value="{{p.id}}" data-valor="{% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id %}{{ prodVal.valor }}</span>{% endif %}{% endfor %}">{{ p.code }} - {{ p.nome }} - {% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id %}{{ (prodVal.valor)|number_format(2, ',', '.')}}</span>{% endif %}{% endfor %}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
             </div>
 
 
             <div class="clearfix"></div>
+            <div class="form-group col-md-12 col-pedido">
             <label for="observacao">Alguma observação no pedido?</label>
             <div class="mb-0 input-group full-width">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="simple-icon-info"></i></span></div>
                 <textarea name="observacao" id="observacao" placeholder="" aria-label="With textarea" class="form-control"></textarea>
             </div>
+        </div>
 
             <hr>
             <div class="clearfix"></div>
@@ -102,6 +64,10 @@
 
 <script>
     $(document).ready(function() {
+        $('.select2-single').select2({
+            theme: "classic"
+        });
+
         if ($(document).find(`[data-tipo_escolha='2']`).length > 0) {
             $(`.addStyleMod, .addStyleModT, .addStyle`).hide();
         }

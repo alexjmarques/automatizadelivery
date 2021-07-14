@@ -28,31 +28,20 @@
         <div class="card-body">
             <div id="step-1" class="tab-pane step-content" style="display: block;">
 
-            <div class="px-3 pt-3 title bg-white">                                                                                           
-                    <div class="osahan-slider-item col-6 float-left pb-4 pl-0 px-1">
+            <div class="px-3 pt-3 title bg-white"> 
+                {% for tam in tamanhos %}
+                    <div class="osahan-slider-item col-3 float-left pb-4 pl-0 px-1">
                         <div class=" bg-white h-100 overflow-hidden position-relative">
-                            <button class="p-2 position-relative btn-categoria pizza" data-toggle="modal" data-target="#modProduto" onclick="produtoPizzaModal('pizza')">
+                            <button class="p-2 position-relative btn-categoria pizza" data-toggle="modal" data-target="#modProduto" onclick="produtoPizzaModal({{ tam.id }})">
                                 <div class="list-card-body">
                                     <h6 class="mb-1">
-
-                                        PIZZA
+                                        {{ tam.nome }}
                                     </h6>
                                 </div>
                             </button>
                         </div>
-                    </div>
-
-                    <div class="osahan-slider-item col-6 float-left pb-4 pl-0 px-1">
-                        <div class=" bg-white h-100 overflow-hidden position-relative">
-                            <button class="p-2 position-relative btn-categoria calzone" data-toggle="modal" data-target="#modProduto" onclick="produtoPizzaModal('calzone')">
-                                <div class="list-card-body">
-                                    <h6 class="mb-1">
-                                        CALZONE 
-                                    </h6>
-                                </div>
-                            </button>
-                        </div>
-                    </div>                                                                                                                                                              <div class="clearfix"></div>
+                    </div>  
+                    {% endfor %}                                                                                                                                                         <div class="clearfix"></div>
                 </div>
 
                 {% set idCategoria = 0 %}
@@ -155,7 +144,7 @@
 
 <button class="btn shadow cartFlut {% if carrinhoqtd == 0 %}hide{% endif %}" data-toggle="modal" data-target="#modProduto" id="modProdutoCarrinho">
     <!-- <i class="iconsminds-shopping-basket"></i> <span class="qtd">{{carrinhoqtd }}</span> iten(s) -->
-    <strong>Carrinho</strong>
+    <strong>Itens do Pedido</strong>
 </button>
 <div class="modal fade modal-right" id="modProduto" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" role="document">

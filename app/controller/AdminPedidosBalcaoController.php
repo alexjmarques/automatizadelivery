@@ -274,19 +274,16 @@ class AdminPedidosBalcaoController extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+        $tamanho = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanho']);
         $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
-        $produtoValor = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_empresa', $empresa->id);
+        $produtoValor = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_empresa', $empresa->id, 'id_tamanho', $data['tamanho']);
         $massaTamanho = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
         
         $pizzaMassasTamanhos = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
         $pizzaMassas = $this->acoes->getByFieldAll('pizzaMassas', 'id_empresa', $empresa->id);
-
-        $tipo = $data['tipo'];
-
 
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $resultProdutosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
@@ -305,8 +302,6 @@ class AdminPedidosBalcaoController extends Controller
             $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'));
         }
 
-
-
         $this->load('_admin/pedidos/produtoPizzaMostrar', [
             'empresa' => $empresa,
             'pizzaMassas' => $pizzaMassas,
@@ -315,12 +310,10 @@ class AdminPedidosBalcaoController extends Controller
             'produtos' => $produtos,
             'produtoValor' => $produtoValor,
             'empresa' => $empresa,
-            //'enderecoAtivo' => $enderecoAtivo,
             'delivery' => $delivery,
             'categoria' => $categoria,
-            'tipo' => $tipo,
             'tamanhosCategoria' => $tamanhosCategoria,
-            'tamanho' => $tamanhos,
+            'tamanho' => $tamanho,
             'categoria' => $categoria,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
