@@ -469,13 +469,14 @@ class AdminProdutos extends Controller
                         $newArray[$key][$fieldKey] = $value;
                     }
                 }
-                dd($newArray);
+                
                 foreach ($newArray as $res) {
-                    $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);
-                    $prodValor->valor = $this->geral->brl2decimal($res['valor']);
-                    $prodValor->save();
-                    dd($prodValor);
+                    print_r((int)$res['id_valor']);
+                    // $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);
+                    // $prodValor->valor = $this->geral->brl2decimal($res['valor']);
+                    // $prodValor->save();
                 }
+                dd('');
             }
         }
 
