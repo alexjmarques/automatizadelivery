@@ -66,6 +66,7 @@
 									<table class="data-table data-table-simple responsive pt-2 pb-2 linha-top" data-order='[[ 2, "asc" ]]'>
 										<thead class="linhaTop">
 											<tr>
+											<th style="width: 100px;">Cód. PDV</th>
 												<th style="width: 100px;">Imagem</th>
 												<th>Nome</th>
 												<th style="width: 100px !important;">Valor</th>
@@ -77,6 +78,7 @@
 											{% for p in produto %}
 												{% if c.id == p.id_categoria %}
 													<tr style="width: 100px;">
+													<td><p>{{ p.cod }}</p></td>
 														<td>
 															{% if p.imagem is not empty %}
 															{% if c.id == idCategoria %}
