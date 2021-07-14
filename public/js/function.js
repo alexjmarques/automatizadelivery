@@ -1150,7 +1150,7 @@ $(document).ready(function () {
         let dataPedido = $('#acompanharStatusPedido').attr('data-pedido')
         if (dataPedido != undefined) {
             $.get(`/${link_site}/meu-pedido/acompanharStatusPedido/${dataPedido}`, function (dd) {
-
+                console.log('oi')
                 if (parseInt($(dd).attr('data-status')) === 1) {
                     localStorage.setItem("sttInit", $(dd).attr('data-status'));
                 }

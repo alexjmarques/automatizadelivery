@@ -25,7 +25,7 @@
             <div id="step-2">
                 <div class="osahan-checkout">
 
-
+                
                     <div class="p-0 osahan-cart-item osahan-home-page flex">
                         <form method="post" autocomplete="off" id="formFinish"
                             action="{{BASE}}{{empresa.link_site}}/admin/carrinho/finaliza" novalidate>
