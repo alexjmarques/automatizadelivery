@@ -97,6 +97,7 @@ class AdminPedidosBalcaoController extends Controller
             'planoAtivo' => $planoAtivo,
             'clientes' => $resultClientes,
             'clientesEmpresa' => $clientesEmpresa,
+            'caixa' => $caixa->status,
             'motoboy' => $resultMotoboy
         ]);
     }
@@ -168,6 +169,7 @@ class AdminPedidosBalcaoController extends Controller
             'planoAtivo' => $planoAtivo,
             'carrinhoqtd' => $resultCarrinhoQtd,
             'produto' => $produto,
+            'caixa' => $caixa->status,
             'categoria' => $categoria
         ]);
     }
@@ -259,7 +261,8 @@ class AdminPedidosBalcaoController extends Controller
             'produtoSabores' => $resultSabores,
             'produtoSabores' => $resultSabores,
             'carrinhoqtd' => $verificaVendaAtiva,
-            'chave' => md5(uniqid(rand(), true))
+            'chave' => md5(uniqid(rand(), true)),
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -330,7 +333,8 @@ class AdminPedidosBalcaoController extends Controller
             'produtoSabores' => $resultSabores,
             'produtoSabores' => $resultSabores,
             'carrinhoqtd' => $verificaVendaAtiva,
-            'chave' => md5(uniqid(rand(), true))
+            'chave' => md5(uniqid(rand(), true)),
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -484,6 +488,7 @@ class AdminPedidosBalcaoController extends Controller
             'nivelUsuario' => $this->sessao->getNivel(),
             'valorPedido' => $valorCarrinho,
             'carrinhoQtd' => $resultCarrinhoQtd,
+            'caixa' => $caixa->status
         ]);
     }
 
@@ -662,7 +667,8 @@ class AdminPedidosBalcaoController extends Controller
             'endereco' => $endereco,
             'km' => $cFrete,
             'km_entrega_excedente' => $km_entrega_excedente,
-            'km_entrega' => $km_entrega
+            'km_entrega' => $km_entrega,
+            'caixa' => $caixa->status
         ]);
     }
 
