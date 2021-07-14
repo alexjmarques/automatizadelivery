@@ -468,7 +468,7 @@ class AdminProdutos extends Controller
                     }
                 }
                 foreach ($newArray as $res) {
-                    $prodValor = (new PizzaProdutoValor())->findById($res['id_valor']);
+                    $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);
                     $prodValor->valor = $this->geral->brl2decimal($res['valor']);
                     $prodValor->save();
                 }

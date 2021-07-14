@@ -125,6 +125,7 @@
             <div class="card-body">
                 <h5 class="mb-3">Imagem do produto</h5>
                 <img id="IMG_toll" src="{{BASE}}uploads{{retorno.imagem}}" />
+                <div class="clearfix"></div>
             <button id="remove_img" class="btn btn-outline-danger mb-1">Remover Imagem</button>
                 <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX {% if retorno.imagem is not null %}hide{% endif %}" id="myDropzone">
                 {# Formatos: JPEG, JPG, PNG e HEIC
