@@ -27,6 +27,34 @@
 
         <div class="card-body">
             <div id="step-1" class="tab-pane step-content" style="display: block;">
+
+            <div class="px-3 pt-3 title bg-white">                                                                                           
+                    <div class="osahan-slider-item col-6 float-left pb-4 pl-0 px-1">
+                        <div class=" bg-white h-100 overflow-hidden position-relative">
+                            <button class="p-2 position-relative btn-categoria pizza" data-toggle="modal" data-target="#modProduto" onclick="produtoPizzaModal('pizza')">
+                                <div class="list-card-body">
+                                    <h6 class="mb-1">
+
+                                        PIZZA
+                                    </h6>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="osahan-slider-item col-6 float-left pb-4 pl-0 px-1">
+                        <div class=" bg-white h-100 overflow-hidden position-relative">
+                            <button class="p-2 position-relative btn-categoria calzone" data-toggle="modal" data-target="#modProduto" onclick="produtoPizzaModal('calzone')">
+                                <div class="list-card-body">
+                                    <h6 class="mb-1">
+                                        CALZONE 
+                                    </h6>
+                                </div>
+                            </button>
+                        </div>
+                    </div>                                                                                                                                                              <div class="clearfix"></div>
+                </div>
+
                 {% set idCategoria = 0 %}
                 {% set idTamanhos = 0 %}
                 {% for c in categoria %}
@@ -37,7 +65,8 @@
                 {% endif %}
                 {% endfor %}
                 {% if c.id == idCategoria %}
-                {% if c.produtos > 0 %}
+
+                {# {% if c.produtos > 0 %}
                 <div class="px-3 pt-3 title d-flex bg-white">
                     <h5 id="{{ c.slug }}" name="{{ c.slug }}" class="mt-1 bold">{{ c.nome }}</h5>
                     
@@ -51,7 +80,7 @@
                     {% for i in range(1, tam.qtd_sabores) %}
                     <div class="osahan-slider-item col-3 float-left pb-4 pl-0 px-1">
                         <div class="list-card bg-white h-100 overflow-hidden position-relative">
-                            <button class="p-2 position-relative" data-toggle="modal" data-target="#modProduto" onclick="produtoPizzaModal({{c.slug}}, {{tc.id}}, {{tam.id}}, {{i}})">
+                            <button class="p-2 position-relative" data-toggle="modal" data-target="#modProduto" onclick="produtoPizzaModal('{{c.slug}}', {{tc.id}}, {{tam.id}}, {{i}})">
                                 <div class="list-card-body">
                                     <h6 class="mb-1">
 
@@ -71,7 +100,7 @@
                     {% endfor %}
                     <div class="clearfix"></div>
                 </div>
-                {% endif %}
+                {% endif %} #}
 
                 {% else %}
 

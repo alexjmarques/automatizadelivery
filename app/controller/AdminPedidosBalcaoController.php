@@ -263,6 +263,77 @@ class AdminPedidosBalcaoController extends Controller
         ]);
     }
 
+    public function produtoPizzaMostrar($data)
+    {
+        //dd($data);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+        $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
+
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $produtoValor = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_empresa', $empresa->id);
+        $massaTamanho = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
+        
+        $pizzaMassasTamanhos = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
+        $pizzaMassas = $this->acoes->getByFieldAll('pizzaMassas', 'id_empresa', $empresa->id);
+
+        $tipo = $data['tipo'];
+
+
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $resultProdutosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
+
+        $resultProdutoAdicional = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+        $resulTipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
+
+        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'));
+        }
+
+
+
+        $this->load('_admin/pedidos/produtoPizzaMostrar', [
+            'empresa' => $empresa,
+            'pizzaMassas' => $pizzaMassas,
+            'massasTamanho' => $massaTamanho,
+            'pizzaMassasTamanhos' => $pizzaMassasTamanhos,
+            'produtos' => $produtos,
+            'produtoValor' => $produtoValor,
+            'empresa' => $empresa,
+            //'enderecoAtivo' => $enderecoAtivo,
+            'delivery' => $delivery,
+            'categoria' => $categoria,
+            'tipo' => $tipo,
+            'tamanhosCategoria' => $tamanhosCategoria,
+            'tamanho' => $tamanhos,
+            'categoria' => $categoria,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'moeda' => $moeda,
+            'planoAtivo' => $planoAtivo,
+            'produtoAdicional' => $resultProdutoAdicional,
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'tipoAdicional' => $resulTipoAdicional,
+            'produtoSabores' => $resultSabores,
+            'produtoSabores' => $resultSabores,
+            'carrinhoqtd' => $verificaVendaAtiva,
+            'chave' => md5(uniqid(rand(), true))
+        ]);
+    }
+
     public function carrinho($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);

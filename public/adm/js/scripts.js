@@ -1474,14 +1474,13 @@ function produtoModal(id) {
   })
 }
 
-function produtoPizzaModal(id) {
-  $("#id").text(id);
-  console.log('dd');
+function produtoPizzaModal(tipo) {
+  console.log('aqui');
   $.ajax({
-    url: `/${link_site}/admin/produto/novo/mostrar-pizza/${slug}/${tcid}/${tamid}/${i}`,
+    url: `/${link_site}/admin/produto/novo/mostrar-pizza/${tipo}`,
     method: "get",
     data: {
-      id
+      tipo
     },
     dataType: "html",
     beforeSend: function () {

@@ -41,10 +41,6 @@
                                 {% for c in carrinho %}
                                 {% for p in produtos %}
                                 {% if p.id == c.id_produto %}
-
-                                
-                    
-                        
                             <tr>
                                 <td>
                                     <div class="media full-width">

@@ -214,6 +214,7 @@ class Acoes
     {
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2}")->fetch(true);
     }
+    
 
     public function getByFieldAllTwoInt(string $table, string $field, int $valor, string $field2, int $valor2)
     {

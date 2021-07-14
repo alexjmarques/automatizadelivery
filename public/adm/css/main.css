@@ -5340,3 +5340,28 @@ button.position-relative{
 button.position-relative h6{
   font-weight: bold;
 }
+.garnish-choices__header {
+  background: #f2f2f2;
+}
+
+.btn-categoria{
+  color: #fff;
+  min-height: 150px;
+  background-size: cover !important;
+  font-size: 40px !important;
+  border-radius: 15px;
+  border: none !important;
+}
+.btn-categoria h6{
+  font-size: 34px !important;
+}
+.pizza{
+    background: url('/uploads/pizza.jpg') !important;
+    background-size: cover !important;
+    background-position: bottom center !important;
+}
+.calzone{
+    background: url('/uploads/calzone.jpg') !important;
+    background-size: cover !important;
+    background-position: bottom center !important;
+}

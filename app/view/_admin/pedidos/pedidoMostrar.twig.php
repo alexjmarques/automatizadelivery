@@ -203,7 +203,7 @@
         <span><strong>Hora:</strong> {{ entrega.updated_at|date('H:i') }}</span>
         {% endif %}
         {% if pedido.status == 6 %}
-        <span>Pedido Cancelado pelo Cliente</span>
+        <span class="bg-secondary white-color p-1 full_id">Pedido Cancelado</span>
         {% endif %}
         {% endif %}
 
