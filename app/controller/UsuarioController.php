@@ -224,7 +224,7 @@ class UsuarioController extends Controller
             exit($json);
         } else {
             header('Content-Type: application/json');
-            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Você precisa fazer um pedido para poder ver os pedidos', 'url' => '/']);
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Você precisa precisa se cadastrar antes de fazer um pedido', 'url' => '/']);
             exit($json);
         }
     }

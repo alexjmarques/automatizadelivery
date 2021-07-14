@@ -189,16 +189,18 @@ $('#tipo_pagamento').on('change', function () {
     } else {
         $('#dinMod').hide();
     }
-
 });
 
 $('#calcularTroco').on('click', function () {
     let valor = parseFloat($('#trocoCli').val());
     let total_pago = parseFloat($('#total_pago').val());
     let totalFinal = valor - total_pago
-
-    if ($('#trocoCli').val() === "") {
-        alert('O seu troco precisa ser maior que o total do seu pedido')
+    console.log(valor);
+    if (valor === "" || valor < total_pago) {
+        $('#mensagem').html('O seu troco precisa ser maior que o total do seu pedido!');
+        $('.errorSup, .buttonAlert').show();
+        $('.successSup').hide();
+        $('#alertGeralSite').modal("show");
         return false
     } else {
         $('#troco').val(valor)
@@ -931,7 +933,6 @@ $("#form").submit(function (e) {
             } else {
                 $(".btn_acao a, .btn_acao button").removeClass('hide');
                 $('.btn_acao .carrega').html('')
-
                 $('.errorSup').show();
                 $('.successSup').hide();
                 $('#alertGeralSite').modal("show");

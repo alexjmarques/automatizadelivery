@@ -27,7 +27,7 @@
                                             ',', '.') }}</strong></span>
                                 </p>
                                 {% if c.variacao is not null %}
-                                <p class="mb-0 mt-0"><strong>Massa: </strong>
+                                <p class="mb-0 mt-0"><strong>Borda:</strong>
                                     {{ foo[1] }}<br/>
                                 </p>
                                 

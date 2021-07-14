@@ -1488,8 +1488,11 @@ $('#calcularTroco').on('click', function () {
   let total_pago = parseFloat($('#total_pago').val());
   let totalFinal = valor - total_pago
 
-  if ($('#trocoCli').val() === "") {
-    alert('O seu troco precisa ser maior que o total do seu pedido')
+  if (valor === "" || valor < total_pago) {
+      $('#mensagem').html('O seu troco precisa ser maior que o total do seu pedido!');
+      $('.errorSup, .buttonAlert').show();
+      $('.successSup').hide();
+      $('#alertGeralSite').modal("show");
     return false
   } else {
     $('#troco').val(valor)

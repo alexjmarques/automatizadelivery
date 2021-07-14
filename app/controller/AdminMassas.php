@@ -170,7 +170,7 @@ class AdminMassas extends Controller
             }
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $massas->id, 'resp' => 'insert', 'mensagem' => 'Massa cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a massa', 'code' => 2,  'url' => 'admin/massas',]);
+            $json = json_encode(['id' => $massas->id, 'resp' => 'insert', 'mensagem' => 'Borda cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a borda', 'code' => 2,  'url' => 'admin/massas',]);
             exit($json);
         } else {
             dd("Erro no Tamanho: " . $massas);
@@ -188,7 +188,7 @@ class AdminMassas extends Controller
         $massas->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $massas->id, 'resp' => 'update', 'mensagem' => 'Massa atualizada com sucesso', 'error' => 'Não foi posível atualizada a massa', 'code' => 2,  'url' => 'admin/massas',]);
+        $json = json_encode(['id' => $massas->id, 'resp' => 'update', 'mensagem' => 'Borda atualizada com sucesso', 'error' => 'Não foi posível atualizada a borda', 'code' => 2,  'url' => 'admin/massas',]);
         exit($json);
     }
 
