@@ -302,7 +302,6 @@ $router->post('/{linkSite}/admin/produto/addCarrinho/produto/{id}', 'AdminPedido
 $router->post('/{linkSite}/admin/produto/addCarrinho/produto-pizza/{tamanho}', 'AdminPedidosBalcaoController:carrinhoAddProdutoPizza');
 $router->get('/{linkSite}/admin/carrinho/qtd', 'AdminPedidosBalcaoController:carrinhoQtd');
 
-
 $router->post('/{linkSite}/admin/pedido/novo/start', 'AdminPedidosBalcaoController:start');
 $router->get('/{linkSite}/admin/produto/novo/mostrar/{id}', 'AdminPedidosBalcaoController:produtoMostrar');
 $router->get('/{linkSite}/admin/produto/novo/mostrar-pizza/{tamanho}', 'AdminPedidosBalcaoController:produtoPizzaMostrar');
