@@ -587,6 +587,8 @@ class AdminPedidosBalcaoController extends Controller
 
             $km_entrega_excedente = $delivery->km_entrega_excedente * 1000;
             $valor_excedente = $delivery->valor_excedente;
+
+            dd((int)floor($infoKm));
             
 
             if ($cFrete <= $km_entrega) {
