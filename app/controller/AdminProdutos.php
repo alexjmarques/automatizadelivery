@@ -462,7 +462,7 @@ class AdminProdutos extends Controller
             if ($valor->id >  0) {
 
                 $array = $data['preco'];
-                dd($array);
+                //dd($array);
                 $newArray = array();
                 foreach (array_keys($array) as $fieldKey) {
                     foreach ($array[$fieldKey] as $key => $value) {
@@ -471,12 +471,12 @@ class AdminProdutos extends Controller
                 }
                 
                 foreach ($newArray as $res) {
-                    print_r((int)$res['id_valor']);
-                    // $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);
-                    // $prodValor->valor = $this->geral->brl2decimal($res['valor']);
-                    // $prodValor->save();
+                    //print_r((int)$res['id_valor']);
+                    $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);
+                    $prodValor->valor = $this->geral->brl2decimal($res['valor']);
+                    $prodValor->save();
                 }
-                dd('');
+                //dd('');
             }
         }
 
