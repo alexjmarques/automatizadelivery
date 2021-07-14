@@ -1,19 +1,27 @@
 {% if pedido.tipo_frete == 1 %}
-<span class="bg-{{status.class}} white-color full_id p-1">{{status.retirada}}</span>
 <span class="bg-warning white-color codB">Cliente vai {{tipoFrete.tipo}}</span>
 {% else %}
-<span class="bg-{{status.class}} white-color full_id p-1">{{status.delivery}}</span>
 <span class="bg-success white-color codB">Pedido para {{tipoFrete.tipo}}</span>
 {% endif %}
-
-
 <div class="modal-header">
 
-    <h5 class="modal-title"><strong>Pedido #{{pedido.numero_pedido}}</strong>
-        <br><span class="horas">Recebido {{pedido.data_pedido|date('d/m/Y')}} ás: {{pedido.hora|date('H:i')}}<span>
-
+    <h5 class="modal-title"><strong>Pedido #{{pedido.numero_pedido}}</strong> 
+    <br><span class="horas">Recebido {{pedido.data_pedido|date('d/m/Y')}} ás: {{pedido.hora|date('H:i')}}<span>
+    {% if pedido.tipo_frete == 1 %}
+    <br>Status: <span class="bg-{{status.class}} white-color p-1 ml-2">Pedido {{status.retirada}}</span>
+{% else %}
+<br>Status:<span class="bg-{{status.class}} white-color p-1 ml-2">Pedido {{status.delivery}}</span>
+{% endif %}
     </h5>
-    <button id="close-modal" type="button" class="closes" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div class="dropdown">
+  <button class="dropdown-toggles" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12%208C13.1046%208%2014%207.10457%2014%206C14%204.89543%2013.1046%204%2012%204C10.8954%204%2010%204.89543%2010%206C10%207.10457%2010.8954%208%2012%208Z%22%20fill%3D%22%233E3E3E%22%2F%3E%3Cpath%20d%3D%22M12%2014C13.1046%2014%2014%2013.1046%2014%2012C14%2010.8954%2013.1046%2010%2012%2010C10.8954%2010%2010%2010.8954%2010%2012C10%2013.1046%2010.8954%2014%2012%2014Z%22%20fill%3D%22%233E3E3E%22%2F%3E%3Cpath%20d%3D%22M12%2020C13.1046%2020%2014%2019.1046%2014%2018C14%2016.8954%2013.1046%2016%2012%2016C10.8954%2016%2010%2016.8954%2010%2018C10%2019.1046%2010.8954%2020%2012%2020Z%22%20fill%3D%22%233E3E3E%22%2F%3E%3C%2Fsvg%3E" alt="">
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#">Editar Pedido</a>
+    <a class="dropdown-item" href="#" onclick="cancelarPedido({{ pedido.id }})">Cancelar Pedido</a>
+    <a class="dropdown-item" href="#" id="close-modal" type="button" class="closes" data-dismiss="modal" aria-label="Close">Fechar</a>
+  </div>
+</div>
 </div>
 <div class="modal-body">
     <content>

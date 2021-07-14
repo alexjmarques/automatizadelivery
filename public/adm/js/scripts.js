@@ -566,6 +566,21 @@ $("#inpFiltro").on("keyup", function () {
 });
 
 
+function cancelarPedido(id) {
+  let valores = {id}
+  $.ajax({
+    url: `/${link_site}/admin/pedido/cancelar`,
+    method: "POST",
+    data: valores,
+    dataType: "text",
+    success: function (dd) {
+      //console.log(dd);
+        $("#modPedido").modal('hide');
+        atualizar();
+    },
+  })
+}
+
 
 function mudarStatus(id, status, id_caixa) {
   var id_motoboy = 0

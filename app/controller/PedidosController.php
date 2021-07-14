@@ -164,12 +164,12 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     {
         $venda = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
 
-        $valor = (new CarrinhoPedidos())->findById($venda->id);
+        $valor = (new CarrinhoPedidos())->findById($data->id);
         $valor->status = 6;
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Pedido cancelado com sucesso!', 'error' => 'Erro ao cancelar seu pedido']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Pedido cancelado com sucesso!', 'error' => 'Erro ao cancelar seu pedido', 'url' => 'meus-pedidos']);
         exit($json);
     }
 }

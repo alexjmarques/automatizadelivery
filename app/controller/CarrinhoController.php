@@ -436,17 +436,28 @@ class CarrinhoController extends Controller
 
         if (!isset($cupomValidaCount->id)) {
             echo 'Cupom de desconto inválido';
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0, 'resp' => 'apply', 'mensagem' => 'Cupom de desconto inválido']);
+            exit($json);
         } else {
             //Verifica se pode utilizar esse cupom novamente
             $cupomValida = $this->acoes->getByField('cupomDesconto', 'nome_cupom', $data['cupomDesconto'], 'id_empresa', $empresa->id);
-            $cupomValidaUtil = $this->acoes->countsTwo('cupomDescontoUtilizadores', 'id_cupom', $cupomValida->id, 'id_empresa', $empresa->id);
-
-            if ($cupomValidaUtil != 0) {
-                if ($cupomValida->qtd_utilizacoes >= $$cupomValidaUtil) {
-                    echo 'Você excedeu o número de vezes para utilização deste Cupom';
-                    exit;
+            $cupomValidaCliente = $this->acoes->getByFieldTree('cupomDescontoUtilizadores', 'id_cupom', $cupomValida->id, 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+            if($cupomValidaCliente){
+                $cupomValidaUtil = $this->acoes->countsTree('cupomDescontoUtilizadores', 'id_cupom', $cupomValida->id, 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+                if ($cupomValidaUtil != 0) {
+                    if($cupomValidaCliente->id_cliente == $this->sessao->getUser()){
+                        //dd($cupomValidaUtil);
+                        if ($cupomValidaUtil == $cupomValida->qtd_utilizacoes) {
+                            header('Content-Type: application/json');
+                            $json = json_encode(['id' => 0, 'resp' => 'apply', 'mensagem' => 'Você excedeu o número de vezes para utilização deste Cupom']);
+                            exit($json);
+                            exit;
+                        }
+                    }
                 }
             }
+            
 
             $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
             $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');

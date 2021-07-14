@@ -123,9 +123,12 @@ class AdminPedidosBalcaoController extends Controller
 
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
-        $categoria = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
         $dias = $this->acoes->getFind('dias');
         $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
+
+        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id,'posicao ASC');
+            $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+            $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
 
@@ -157,6 +160,8 @@ class AdminPedidosBalcaoController extends Controller
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
             'nivelUsuario' => $this->sessao->getNivel(),
+            'tamanhos' => $tamanhos,
+            'tamanhosCategoria' => $tamanhosCategoria,
             'moeda' => $moeda,
             'estabelecimento' => $estabelecimento,
             'produtoSabores' => $resultSabores,
@@ -264,6 +269,10 @@ class AdminPedidosBalcaoController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+
+        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id,'posicao ASC');
+            $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+            $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
 
         if ($this->sessao->getSessao('id_cliente')) {
@@ -392,6 +401,8 @@ class AdminPedidosBalcaoController extends Controller
             'estados' => $estados,
             'carrinho' => $carrinho,
             'carrinhoAdicional' => $carrinhoAdicional,
+            'tamanhosCategoria' => $tamanhosCategoria,
+            'tamanhos' => $tamanhos,
             'produtos' => $produtos,
             'adicionais' => $adicionais,
             'sabores' => $sabores,

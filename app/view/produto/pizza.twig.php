@@ -121,7 +121,6 @@
             <input type="hidden" name="totalMassa" id="totalMassa" value="0">
             <input type="hidden" name="massa" id="massa" value="">
             <input type="hidden" name="totalPizza" id="totalPizza" value="0">
-
             <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
             <input type="hidden" name="id_produto" id="id_produto" value="{{produto.id}}">
 

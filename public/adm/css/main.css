@@ -1032,9 +1032,16 @@ table.dataTable td {
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
-    width: 70%;
-    margin: 10px auto 0 auto;
-    border-radius: 15px;
+    width: 100%;
+    margin: 0px auto 0 auto;
+    border-radius: 0px;
+}
+.dropdown-toggles{
+  border: 1px solid #4e4e4e;
+    background: transparent;
+    border-radius: 5px;
+    padding-left: 0;
+    padding-right: 0;
 }
 .bg-warning.codB {
   color: #000;
@@ -5323,4 +5330,13 @@ main {
 }
 .buton-collapse.collapsed i{
   transform: rotate(180deg) !important;
+}
+button.position-relative{
+  width: 100%;
+  background: transparent;
+  border: none;
+
+}
+button.position-relative h6{
+  font-weight: bold;
 }

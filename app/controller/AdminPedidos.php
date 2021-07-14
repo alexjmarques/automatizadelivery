@@ -237,7 +237,8 @@ class AdminPedidos extends Controller
 
         if ($cupomVerifica > 0 && $cupomVerificaUtilizadores) {
             $cupomUtilizado = $this->acoes->getByField('cupomDescontoUtilizadores', 'numero_pedido', $pedido->numero_pedido);
-            $cupomValida = $this->acoes->getByField('cupomDesconto', 'id_cupom', $cupomUtilizado->id);
+            if($cupomUtilizado){
+                $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizado->id_cupom);
 
             if ((int)$cupomValida->tipo_cupom == 1) {
                 $valor = $pedido->total;
@@ -247,7 +248,9 @@ class AdminPedidos extends Controller
             } else {
                 $resultado = $cupomValida->valor_cupom;
             }
+            }
         }
+        //dd($resultado);
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
@@ -614,5 +617,17 @@ class AdminPedidos extends Controller
         } catch (Exception $e) {
             echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
         }
+    }
+
+    public function cancelarPedido($data)
+    {
+
+        $valor = (new CarrinhoPedidos())->findById($data['id']);
+        $valor->status = 6;
+        $valor->save();
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Pedido cancelado com sucesso!', 'error' => 'Erro ao cancelar seu pedido']);
+        exit($json);
     }
 }

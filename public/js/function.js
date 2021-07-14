@@ -916,7 +916,8 @@ $("#form").submit(function (e) {
                         }
                         break;
                     case 'Pedido cancelado com sucesso!':
-                        $('#cancelarPedido').modal("show");
+                        $('#cancelarPedido').modal("hide");
+                        window.location = `/${link_site}/${dd.url}`;
                         break;
                     default:
                         $('#mensagem').html(dd.mensagem);
@@ -1297,12 +1298,14 @@ $("#button-addon2").on('click', function () {
             $('.button-addon2').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         },
         success: function (dd) {
+            //console.log(dd);
             let retorno = parseFloat(dd.id)
-            if (isNaN(retorno)) {
+            if (retorno === 0) {
                 $('.mensagemID').html(dd.mensagem);
                 $('.successSup').hide();
                 $('.errorSup').show();
                 $('#alertGeralSite').modal("show");
+                //console.log(dd);
             } else {
                 $('#itemCupom, .errorSup').hide();
                 $('#cupomCal, .successSup').show();

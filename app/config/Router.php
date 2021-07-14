@@ -269,6 +269,8 @@ $router->get('/{linkSite}/admin/pedidos-finalizados', 'AdminPedidos:pedidosFinal
 $router->get('/{linkSite}/admin/pedidos-cancelados', 'AdminPedidos:pedidosCancelados');
 $router->get('/{linkSite}/admin/todas-entregas', 'AdminPedidos:todasEntregas');
 
+$router->post('/{linkSite}/admin/pedido/cancelar', 'AdminPedidos:cancelarPedido');
+
 $router->get('/{linkSite}/admin/entregas', 'AdminMotoboys:entregas');
 $router->get('/{linkSite}/admin/entregas-finalizadas', 'AdminMotoboys:entregasFinalizados');
 
@@ -303,6 +305,7 @@ $router->get('/{linkSite}/admin/carrinho/qtd', 'AdminPedidosBalcaoController:car
 
 $router->post('/{linkSite}/admin/pedido/novo/start', 'AdminPedidosBalcaoController:start');
 $router->get('/{linkSite}/admin/produto/novo/mostrar/{id}', 'AdminPedidosBalcaoController:produtoMostrar');
+$router->get('/{linkSite}/admin/produto/novo/mostrar-pizza/{slug}/{{tcid}}/{{tamid}}/{{i}}', 'AdminPedidosBalcaoController:produtoMostrarPizza');
 $router->get('/{linkSite}/admin/pedido/novo/produtos/detalhes', 'AdminPedidosBalcaoController:carrinhoFinalizar');
 $router->get('/{linkSite}/admin/produto/adicional/atualiza/{chave}/{id}', 'AdminPedidosBalcaoController:carrinhoCheckoutAdicionalUpdate');
 $router->get('/{linkSite}/admin/produto/addCarrinho/{id}', 'AdminPedidosBalcaoController:carrinhoCheckout');
