@@ -83,8 +83,9 @@ class CalculoFrete extends Controller
             $text = $road->distance->text;
             $distance += $road->distance->value;
         }
-        //dd($data);
-        return $distance;
+        
+        return $this->number_format_short($distance);
+        //return $distance;
     }
 
     public function infoKm(string $rua, string $numero, string $bairro, string $cep, int $id_empresa)
