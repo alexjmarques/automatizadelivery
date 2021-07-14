@@ -18,7 +18,6 @@
     <div class="card mb-4">
         <div class="card-body">
             <h5 class="mb-4">Sobre a pizza</h5>
-
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Nome da Pizza</label>
@@ -27,7 +26,7 @@
 
                 <div class="form-group col-md-3">
                     <label>Cód. PDV</label>
-                    <input type="hidden" class="form-control" id="cod" name="cod" value="{{ retorno.cod }}">
+                    <input type="text" class="form-control" id="cod" name="cod" value="{{ retorno.cod }}">
                 </div>
 
                 <div class="form-group row mb-1 pl-3 col-md-3">
