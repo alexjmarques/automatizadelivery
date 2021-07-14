@@ -789,8 +789,8 @@ function syncIfood(id, tipo) {
 
   $("#remove_img").on("click", function (event) {
     event.preventDefault();
-    $('#Nova_capa').removeClass('hide');
-    $('#IMG_toll').addClass('hide');
+    $('#Nova_capa, #myDropzone').removeClass('hide');
+    $('#IMG_toll, #remove_img').addClass('hide');
     $('#IMG_tollw').addClass('hide');
     $('#inputImagem').val('');
   });

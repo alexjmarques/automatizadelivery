@@ -130,9 +130,9 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="mb-3">Imagem do produto</h5>
-                <img src="{{BASE}}uploads{{retorno.imagem}}" />
-
-                <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX" id="myDropzone">
+                <img id="IMG_toll" src="{{BASE}}uploads{{retorno.imagem}}" />
+            <button id="remove_img" class="btn btn-outline-danger mb-1">Remover Imagem</button>
+                <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX {% if retorno.imagem is not null %}hide{% endif %}" id="myDropzone">
                 {# Formatos: JPEG, JPG, PNG e HEIC
                 Peso máximo: 5 MB
                 Resolução mínima: 300x300 #}
