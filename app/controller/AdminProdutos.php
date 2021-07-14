@@ -407,7 +407,6 @@ class AdminProdutos extends Controller
 
     public function update($data)
     {
-        dd($data);
 
         $adicionalSt = $_POST['adicional'];
         if ($adicionalSt != null) {
