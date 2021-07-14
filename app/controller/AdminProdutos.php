@@ -457,7 +457,6 @@ class AdminProdutos extends Controller
         $valor->vendas = $data['vendas'];
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
-        dd($valor);
 
         if ($data['valor'] ==  0) {
             if ($valor->id >  0) {
