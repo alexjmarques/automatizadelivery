@@ -127,9 +127,9 @@ class AdminPedidosBalcaoController extends Controller
         $dias = $this->acoes->getFind('dias');
         $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
 
-        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id,'posicao ASC');
-            $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
-            $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
+        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id, 'posicao ASC');
+        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+        $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
 
@@ -181,6 +181,48 @@ class AdminPedidosBalcaoController extends Controller
             echo $contagem;
         }
     }
+
+    public function carrinhoAddProdutoPizza($data)
+    {
+        dd($data);
+        $sabores = null;
+        if ($data['sabores']) {
+            $sabores = $data['sabores'][0];
+        }
+
+        $valor = new Carrinho();
+        $valor->id_produto = $data['id'];
+        $valor->id_cliente = $this->sessao->getSessao('id_cliente');
+        $valor->id_empresa = $data['id_empresa'];
+        $valor->quantidade = $data['quantity'];
+        $valor->observacao = $data['observacao'];
+        $valor->id_sabores = $sabores;
+        $valor->id_adicional = $data['id_adicional'];
+        $valor->valor = $data['valor'];
+        $valor->save();
+
+        if ($data['adicional']) {
+            foreach ($data['adicional'] as $res) {
+                if ($data["valor{$res}"]) {
+                    $valor_adicional = $data["valor{$res}"];
+                    $qtd_adicional = $data["qtd_ad{$res}"];
+                }
+                $cartAdic = new CarrinhoAdicional();
+                $cartAdic->id_carrinho = $valor->id;
+                $cartAdic->id_cliente = $this->sessao->getSessao('id_cliente');
+                $cartAdic->id_produto = $data['id'];
+                $cartAdic->id_adicional = $res;
+                $cartAdic->valor = $valor_adicional;
+                $cartAdic->quantidade = $qtd_adicional;
+                $cartAdic->id_empresa = $data['id_empresa'];
+                $cartAdic->save();
+            }
+        }
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao carrinho', 'error' => 'Não foi posível adicionar o produto ao carrinho', 'code' => 520]);
+        exit($json);
+    }
+
     public function carrinhoAddProduto($data)
     {
         $sabores = null;
@@ -281,7 +323,7 @@ class AdminPedidosBalcaoController extends Controller
         $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
         $produtoValor = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_empresa', $empresa->id, 'id_tamanho', $data['tamanho']);
         $massaTamanho = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
-        
+
         $pizzaMassasTamanhos = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
         $pizzaMassas = $this->acoes->getByFieldAll('pizzaMassas', 'id_empresa', $empresa->id);
 
@@ -338,9 +380,9 @@ class AdminPedidosBalcaoController extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
-        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id,'posicao ASC');
-            $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
-            $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
+        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id, 'posicao ASC');
+        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+        $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
 
         if ($this->sessao->getSessao('id_cliente')) {
@@ -557,9 +599,9 @@ class AdminPedidosBalcaoController extends Controller
                 }
             }
 
-            if($delivery->km_entrega_excedente != 0){
+            if ($delivery->km_entrega_excedente != 0) {
                 $deliveryEntregaExcedente = $delivery->km_entrega_excedente * 1000;
-             }
+            }
 
             if ($km_entrega2 != 0.00) {
                 if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
@@ -573,11 +615,11 @@ class AdminPedidosBalcaoController extends Controller
                     $total = $taxa_entregaNova;
                 }
 
-                if($delivery->km_entrega_excedente == 0){
+                if ($delivery->km_entrega_excedente == 0) {
                     $deliveryEntregaExcedente = $delivery->km_entrega2 * 1000;
-                 }
+                }
             }
-            
+
             if ($km_entrega3 != 0.00) {
                 if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
                     $total = $taxa_entrega3;
@@ -590,12 +632,12 @@ class AdminPedidosBalcaoController extends Controller
                     $total = $taxa_entregaNova;
                 }
 
-                if($delivery->km_entrega_excedente == 0){
-                   $deliveryEntregaExcedente = $delivery->km_entrega3 * 1000;
+                if ($delivery->km_entrega_excedente == 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega3 * 1000;
                 }
             }
-            
-            
+
+
             if ($delivery->frete_status == 1) {
                 if ($delivery->valor <= $valorCarrinho) {
                     $total = 0;
@@ -784,42 +826,41 @@ class AdminPedidosBalcaoController extends Controller
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
         if ($getTelefone->id > 0) {
-            $usuario = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $getTelefone->id,'id_empresa', $empresa->id);
+            $usuario = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $getTelefone->id, 'id_empresa', $empresa->id);
 
-            if($usuario){
+            if ($usuario) {
                 header('Content-Type: application/json');
                 $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Cliente já possuí conta cadastrada no sistema']);
                 exit($json);
-            }else{
+            } else {
                 $valorEmp = new UsuariosEmpresa();
                 $valorEmp->id_usuario = $getTelefone->id;
                 $valorEmp->id_empresa = $empresa->id;
                 $valorEmp->nivel = 3;
                 $valorEmp->save();
-            
-                if ($valorEmp->id > 0) {
-            if ($data['entrega'] == 1) {
-                $valorEnd = new UsuariosEnderecos();
-                $valorEnd->id_usuario = $getTelefone->id;
-                $valorEnd->nome_endereco = "Padrão";
-                $valorEnd->rua = $data['rua'];
-                $valorEnd->numero = $data['numero'];
-                $valorEnd->complemento = $data['complemento'];
-                $valorEnd->bairro = $data['bairro'];
-                $valorEnd->cidade = $data['cidade'];
-                $valorEnd->estado = $data['estado'];
-                $valorEnd->cep = $data['cep'];
-                $valorEnd->principal = 1;
-                $valorEnd->save();
-            }
-            $this->sessao->sessaoNew('id_cliente', $getTelefone->id);
 
-            header('Content-Type: application/json');
-            $json = json_encode(['id' => $valorEmp->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso', 'code' => 5,  'url' => 'admin/pedido/novo/produtos']);
-            exit($json);
-        }
-        }
-            
+                if ($valorEmp->id > 0) {
+                    if ($data['entrega'] == 1) {
+                        $valorEnd = new UsuariosEnderecos();
+                        $valorEnd->id_usuario = $getTelefone->id;
+                        $valorEnd->nome_endereco = "Padrão";
+                        $valorEnd->rua = $data['rua'];
+                        $valorEnd->numero = $data['numero'];
+                        $valorEnd->complemento = $data['complemento'];
+                        $valorEnd->bairro = $data['bairro'];
+                        $valorEnd->cidade = $data['cidade'];
+                        $valorEnd->estado = $data['estado'];
+                        $valorEnd->cep = $data['cep'];
+                        $valorEnd->principal = 1;
+                        $valorEnd->save();
+                    }
+                    $this->sessao->sessaoNew('id_cliente', $getTelefone->id);
+
+                    header('Content-Type: application/json');
+                    $json = json_encode(['id' => $valorEmp->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso', 'code' => 5,  'url' => 'admin/pedido/novo/produtos']);
+                    exit($json);
+                }
+            }
         } else {
             $getSenha = preg_replace('/[^0-9]/', '', $data['telefone']);
             $senha = $this->bcrypt->encrypt($getSenha, '2a');
@@ -862,6 +903,5 @@ class AdminPedidosBalcaoController extends Controller
             $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso', 'code' => 5,  'url' => 'admin/pedido/novo/produtos']);
             exit($json);
         }
-        
     }
 }

@@ -1,4 +1,4 @@
-<form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto/addCarrinho/produto/{{produto.id}}" novalidate>
+<form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto/addCarrinho/produto-pizza/{{tamanho.id}}" novalidate>
     <div class="bg-primary border-bottom px-3 pt-3  d-flex ">
         <div class="col-md-12 float-left pl-0 pb-2">
             <h3 class="font-weight-bold m-0 text-white text-uppercase pb-2 ">{{tamanho.nome}}</h3>
@@ -8,7 +8,7 @@
     <div class="col-md-12 pt-3 pb-3">
         <div class="col-md-12 pl-0">
             <div class="form-group col-md-12 col-pedido">
-                <label for="borda">Tipo</label>
+                <label for="tipo">Tipo</label>
                 <select class="form-control select2-single select-box" id="tipo" name="tipo">
                     <option value="1">Inteira</option>
                     <option value="2">Meio a Meio</option>
@@ -26,8 +26,8 @@
             </div>
 
             <div class="form-group col-md-12 col-pedido">
-                <label for="borda">Pizzas</label>
-                <select class="form-control select2-single select-box" id="borda" name="borda" multiple="multiple">
+                <label for="pizza">Pizzas</label>
+                <select class="form-control select2-single select-box" id="pizza" name="pizza[]" multiple="multiple">
                     {% for p in produtos %}
                     {% if p.cod is not null %}
                     <option value="{{p.id}}" data-valor="{% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id and prodVal.id_tamanho == tamanho.id %}{{ prodVal.valor }}</span>{% endif %}{% endfor %}">{{ p.cod }} - {{ p.nome }} - 

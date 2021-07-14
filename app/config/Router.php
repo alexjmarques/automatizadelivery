@@ -299,6 +299,7 @@ $router->post('/{linkSite}/admin/novo/cliente', 'AdminPedidosBalcaoController:ca
 $router->get('/{linkSite}/admin/pedido/novo/produtos', 'AdminPedidosBalcaoController:produtos');
 
 $router->post('/{linkSite}/admin/produto/addCarrinho/produto/{id}', 'AdminPedidosBalcaoController:carrinhoAddProduto');
+$router->post('/{linkSite}/admin/produto/addCarrinho/produto-pizza/{tamanho}', 'AdminPedidosBalcaoController:carrinhoAddProdutoPizza');
 $router->get('/{linkSite}/admin/carrinho/qtd', 'AdminPedidosBalcaoController:carrinhoQtd');
 
 
