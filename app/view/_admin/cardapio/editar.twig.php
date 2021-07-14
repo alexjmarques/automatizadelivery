@@ -96,7 +96,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <h5 class="mb-3">Imagem de Capa do produto</h5>
-            <img src="/uploads/{{ retorno.imagem }}" alt="">
+            <img src="{{BASE}}uploads{{retorno.imagem}}" />
             <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX dz-clickable" id="myDropzone"></div>
             {# Formatos: JPEG, JPG, PNG e HEIC
             Peso máximo: 5 MB
