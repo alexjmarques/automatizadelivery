@@ -184,40 +184,51 @@ class AdminPedidosBalcaoController extends Controller
 
     public function carrinhoAddProdutoPizza($data)
     {
-        dd($data);
-        $sabores = null;
-        if ($data['sabores']) {
-            $sabores = $data['sabores'][0];
+        $tamanho = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanho']);
+        $massa = $this->acoes->getByField('pizzaMassas', 'id', $data['borda']);
+
+        $quantidade = "";
+        if($data['tipo'] == 1){
+            $quantidade == "INTEIRA";
+        }else if($data['tipo'] == 2){
+            $quantidade == "MEIO A MEIO";
+        }else{
+            $quantidade == $data['tipo']." SABORES";
         }
 
+        //dd($data);
+        $idProduto = 0;
+        $valor = 0;
+        if(is_array($data['pizza'])){
+            $i = 1;
+            $sabor = "";
+            foreach ($data['pizza'] as $key => $cart) {
+                $idProduto = $cart;              
+                $pizzaValor = $this->acoes->getByFieldTwo('pizzaProdutoValor', 'id_produto', $cart,'id_tamanho', $data['tamanho']);
+                $pizzaNome = $this->acoes->getByField('produtos', 'id', $cart);
+                $sabor .= $i++.'/'.$data['tipo'].' '.$pizzaNome->nome.' - ';
+                $valor += ($pizzaValor->valor / $data['tipo']);
+            }
+            $saborfinal = rtrim($sabor, ' - ');
+            $nomePizza = "PIZZA {$tamanho->nome} {$data['tipo']} SABORES - {$massa->nome} - {$saborfinal}";
+            //dd($sabor);
+        }
+
+        $valorFinal = $massa->valor + $valor;
+
+        //dd($valor);
+
+
         $valor = new Carrinho();
-        $valor->id_produto = $data['id'];
+        $valor->id_produto = $idProduto;
         $valor->id_cliente = $this->sessao->getSessao('id_cliente');
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = $data['quantity'];
         $valor->observacao = $data['observacao'];
-        $valor->id_sabores = $sabores;
-        $valor->id_adicional = $data['id_adicional'];
-        $valor->valor = $data['valor'];
+        $valor->valor = $valorFinal;
+        $valor->variacao = $nomePizza;
         $valor->save();
 
-        if ($data['adicional']) {
-            foreach ($data['adicional'] as $res) {
-                if ($data["valor{$res}"]) {
-                    $valor_adicional = $data["valor{$res}"];
-                    $qtd_adicional = $data["qtd_ad{$res}"];
-                }
-                $cartAdic = new CarrinhoAdicional();
-                $cartAdic->id_carrinho = $valor->id;
-                $cartAdic->id_cliente = $this->sessao->getSessao('id_cliente');
-                $cartAdic->id_produto = $data['id'];
-                $cartAdic->id_adicional = $res;
-                $cartAdic->valor = $valor_adicional;
-                $cartAdic->quantidade = $qtd_adicional;
-                $cartAdic->id_empresa = $data['id_empresa'];
-                $cartAdic->save();
-            }
-        }
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao carrinho', 'error' => 'Não foi posível adicionar o produto ao carrinho', 'code' => 520]);
         exit($json);
@@ -325,7 +336,7 @@ class AdminPedidosBalcaoController extends Controller
         $massaTamanho = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
 
         $pizzaMassasTamanhos = $this->acoes->getByFieldAll('pizzaMassasTamanhos', 'id_empresa', $empresa->id);
-        $pizzaMassas = $this->acoes->getByFieldAll('pizzaMassas', 'id_empresa', $empresa->id);
+        $pizzaMassas = $this->acoes->getByFieldAllOrder('pizzaMassas', 'id_empresa', $empresa->id, 'nome DESC');
 
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $resultProdutosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
@@ -379,6 +390,7 @@ class AdminPedidosBalcaoController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
         $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id, 'posicao ASC');
         $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
@@ -534,6 +546,7 @@ class AdminPedidosBalcaoController extends Controller
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
 
         if ($this->sessao->getSessao('id_cliente')) {

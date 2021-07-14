@@ -46,7 +46,25 @@
                                     <div class="media full-width">
                                         <div class="media-body">
 
-                                            <p class="m-0 small-mais"><strong>{{c.quantidade}}x {{ p.nome }}</strong> 
+                                            <p class="m-0 small-mais"><strong>{{c.quantidade}}x 
+                                                
+                                            {% if c.variacao is not null %}
+                                    {% set foo = c.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br/>{% else %}<strong>{{ p.nome }}</strong>{% endif %}
+                                    
+                                </p>
+                                {% if c.variacao is not null %}
+                                <p class="mb-0 mt-0"><strong>Borda:</strong>
+                                    {{ foo[1] }}<br/>
+                                </p>
+                                
+                                <p class="mb-0 mt-0"><strong>Sabor: </strong>
+                                    {% if foo[2] %}{{ foo[2] }}{% endif %}
+                                    {% if foo[3] %} - {{ foo[3] }}{% endif %}
+                                    {% if foo[4] %} - {{ foo[4] }}{% endif %}
+                                    {% if foo[5] %} - {{ foo[5] }}{% endif %}
+                                </p>
+                                {% endif %}
+
                                             {% if c.id_sabores != '' %}
                                                 {% for s in sabores %}
                                                 {% if s.id in c.id_sabores %}
@@ -168,7 +186,7 @@
                                     <select id="tipo_pagamento" name="tipo_pagamento" class="form-control" required>
                                         <option value="">Forma de Pagamento</option>
                                         {% for pag in pagamento %}
-                                        <option value="{{pag.id}}">{{pag.tipo}}</option>
+                                        <option value="{{pag.code}}">{{pag.tipo}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

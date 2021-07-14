@@ -1817,7 +1817,7 @@ table.dataTable td {
   position: absolute;
   right: 15px;
   top: 15px;
-  padding: 15px;
+  padding: 15px !important;
   width: 200px;
 }
 

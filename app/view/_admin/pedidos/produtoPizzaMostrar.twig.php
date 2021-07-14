@@ -1,7 +1,21 @@
 <form method="post" id="form" action="{{BASE}}{{empresa.link_site}}/admin/produto/addCarrinho/produto-pizza/{{tamanho.id}}" novalidate>
-    <div class="bg-primary border-bottom px-3 pt-3  d-flex ">
-        <div class="col-md-12 float-left pl-0 pb-2">
+    <div class="bg-primary border-bottom px-3 pt-3 pb-3 d-flex ">
+        <div class="col-md-8 float-left pl-0 pt-2">
             <h3 class="font-weight-bold m-0 text-white text-uppercase pb-2 ">{{tamanho.nome}}</h3>
+        </div>
+        <div class="col-md-4 float-left pr-0">
+            <div class="quantidade">
+                <div class="input-group" style="width: 127px;">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger btn-number quantity-left-minus"  data-type="minus" data-field=""><span class="fa fa-minus"></span></button>
+                    </span>
+                        <input type="text" id="quantity" name="quantity" class="count-number-input input-number" value="1" min="1" max="100">
+                        
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-success btn-number quantity-right-plus" data-type="plus" data-field=""><span class="fa fa-plus"></span></button>
+                    </span>
+                </div>
+           </div>
         </div>
     </div>
 
@@ -58,7 +72,7 @@
             <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
             <input type="hidden" name="valor" id="valor" value="{% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
 
-            <button class="btn btn-success btn-block btn-lg addStyle mt-4">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
+            <button class="btn btn-success btn-block btn-lg addStyle mt-4 p-4">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
 
         </div>
 </form>

@@ -1537,10 +1537,10 @@ $('#calcularTroco').on('click', function () {
   let totalFinal = valor - total_pago
 
   if (valor === "" || valor < total_pago) {
-      $('#mensagem').html('O seu troco precisa ser maior que o total do seu pedido!');
+      $('#mensagem').html('O troco do cliente precisa ser maior que o total do pedido!');
       $('.errorSup, .buttonAlert').show();
       $('.successSup').hide();
-      $('#alertGeralSite').modal("show");
+      $('#alerta').modal("show");
     return false
   } else {
     $('#troco').val(valor)
