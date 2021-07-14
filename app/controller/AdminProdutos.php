@@ -462,7 +462,7 @@ class AdminProdutos extends Controller
             if ($valor->id >  0) {
 
                 $array = $data['preco'];
-                
+                dd($array);
                 $newArray = array();
                 foreach (array_keys($array) as $fieldKey) {
                     foreach ($array[$fieldKey] as $key => $value) {
