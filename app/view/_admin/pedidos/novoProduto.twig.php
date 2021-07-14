@@ -27,7 +27,7 @@
 
         <div class="card-body">
             <div id="step-1" class="tab-pane step-content" style="display: block;">
-
+            {% if empresa.id_categoria == 6 %}
             <div class="px-3 pt-3 title bg-white"> 
                 {% for tam in tamanhos %}
                     <div class="osahan-slider-item col-3 float-left pb-4 pl-0 px-1">
@@ -43,7 +43,7 @@
                     </div>  
                     {% endfor %}                                                                                                                                                         <div class="clearfix"></div>
                 </div>
-
+                {% endif %}  
                 {% set idCategoria = 0 %}
                 {% set idTamanhos = 0 %}
                 {% for c in categoria %}
