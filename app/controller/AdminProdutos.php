@@ -471,6 +471,7 @@ class AdminProdutos extends Controller
                     $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);
                     $prodValor->valor = $this->geral->brl2decimal($res['valor']);
                     $prodValor->save();
+                    dd($prodValor);
                 }
             }
         }
