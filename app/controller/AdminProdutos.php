@@ -343,6 +343,12 @@ class AdminProdutos extends Controller
             $valor_promocional = 0;
         }
 
+        if ($data['valor']) {
+            $preco = $this->geral->brl2decimal($data['valor']);
+        } else {
+            $preco = 0;
+        }
+
         if ($data['switch']) {
             $status = $data['switch'];
         } else {
@@ -354,7 +360,7 @@ class AdminProdutos extends Controller
         $valor->cod = $data['cod'];
         $valor->descricao = $data['descricao'];
         $valor->observacao = $data['observacao'];
-        $valor->valor = $this->geral->brl2decimal($data['valor']);
+        $valor->valor = $preco;
         $valor->valor_promocional = $valor_promocional;
         $valor->id_categoria = $data['categoria'];
         $valor->imagem = $data['imagemNome'];
@@ -401,6 +407,7 @@ class AdminProdutos extends Controller
 
     public function update($data)
     {
+        dd($data);
 
         $adicionalSt = $_POST['adicional'];
         if ($adicionalSt != null) {
@@ -423,6 +430,12 @@ class AdminProdutos extends Controller
             $valor_promocional = 0;
         }
 
+        if ($data['valor']) {
+            $preco = $this->geral->brl2decimal($data['valor']);
+        } else {
+            $preco = 0;
+        }
+
         if ($data['switch']) {
             $status = $data['switch'];
         } else {
@@ -434,7 +447,7 @@ class AdminProdutos extends Controller
         $valor->cod = $data['cod'];
         $valor->descricao = $data['descricao'];
         $valor->observacao = $data['observacao'];
-        $valor->valor = $this->geral->brl2decimal($data['valor']);
+        $valor->valor = $preco;
         $valor->valor_promocional = $valor_promocional;
         $valor->id_categoria = $data['categoria'];
         $valor->imagem = $data['imagemNome'];
@@ -445,6 +458,7 @@ class AdminProdutos extends Controller
         $valor->vendas = $data['vendas'];
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
+        dd($valor);
 
         if ($data['valor'] ==  0) {
             if ($valor->id >  0) {

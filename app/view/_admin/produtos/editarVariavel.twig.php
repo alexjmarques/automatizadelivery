@@ -28,12 +28,6 @@
                     <label>Cód. PDV</label>
                     <input type="text" class="form-control" id="cod" name="cod" value="{{ retorno.cod }}">
                 </div>
-
-                <div class="form-group col-md-3 hide">
-                    <label>Valor Promocional</label>
-                    <input type="hidden" class="form-control" id="valor_promocional" placeholder="Insira o Valor " name="valor_promocional" value="{% if(retorno.valor_promocional != 0.00) %}{{ retorno.valor_promocional|number_format(2, ',', '.') }}{% endif %}">
-                </div>
-            
               
 
                 <div class="form-group row mb-1 pl-3 col-md-3">
