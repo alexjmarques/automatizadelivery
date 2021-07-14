@@ -351,6 +351,7 @@ class AdminProdutos extends Controller
 
         $valor = new Produtos();
         $valor->nome = $data['nome'];
+        $valor->cod = $data['cod'];
         $valor->descricao = $data['descricao'];
         $valor->observacao = $data['observacao'];
         $valor->valor = $this->geral->brl2decimal($data['valor']);
@@ -430,6 +431,7 @@ class AdminProdutos extends Controller
 
         $valor = (new Produtos())->findById($data['id']);
         $valor->nome = $data['nome'];
+        $valor->cod = $data['cod'];
         $valor->descricao = $data['descricao'];
         $valor->observacao = $data['observacao'];
         $valor->valor = $this->geral->brl2decimal($data['valor']);

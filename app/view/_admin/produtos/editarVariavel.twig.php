@@ -24,9 +24,9 @@
                     <input type="text" class="form-control" id="nome" name="nome" value="{{ retorno.nome }}" required>
                 </div>
 
-                <div class="form-group col-md-3 hide">
-                    <label>Valor</label>
-                    <input type="hidden" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="{{ retorno.valor|number_format(2, ',', '.') }}" required>
+                <div class="form-group col-md-3">
+                    <label>Cód. PDV</label>
+                    <input type="hidden" class="form-control" id="cod" name="cod" value="{{ retorno.cod }}">
                 </div>
 
                 <div class="form-group col-md-3 hide">

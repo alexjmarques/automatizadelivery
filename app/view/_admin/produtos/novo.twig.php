@@ -27,6 +27,11 @@
                         </div>
 
                         <div class="form-group col-md-3">
+                    <label>Cód. PDV</label>
+                    <input type="hidden" class="form-control" id="cod" name="cod" value="{{ retorno.cod }}">
+                </div>
+
+                        <div class="form-group col-md-3">
                             <label>Valor</label>
                             <input type="text" class="form-control" id="valor" placeholder="Insira o Valor " name="valor" value="" required>
                         </div>

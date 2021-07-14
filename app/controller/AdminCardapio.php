@@ -85,10 +85,7 @@ class AdminCardapio extends Controller
                     $diahoje = date('d');
                 }
                 // $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresa->id);
-            }
-           
-
-            
+            }   
         }
 
         $this->load('_admin/cardapio/main', [

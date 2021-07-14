@@ -16,11 +16,12 @@ class Produtos extends DataLayer
         parent::__construct("produtos", []);
     }
 
-    public function add(Categorias $categoria, Empresa $empresa, $nome, $descricao, $observacao, $valor, $valor_promocional, $imagem, $sabores, $dias_disponiveis, $status, $vendas )
+    public function add(Categorias $categoria, Empresa $empresa, $nome, $cod, $descricao, $observacao, $valor, $valor_promocional, $imagem, $sabores, $dias_disponiveis, $status, $vendas )
     {
         $this->id_categoria = $categoria->id;
         $this->id_empresa = $empresa->id;
         $this->nome = $nome;
+        $this->cod = $cod;
         $this->descricao = $descricao;
         $this->observacao = $observacao;
         $this->valor = $valor;

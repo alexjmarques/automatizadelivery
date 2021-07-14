@@ -25,6 +25,11 @@
                     <input type="text" class="form-control" id="nome" name="nome" value="" required>
                 </div>
 
+                <div class="form-group col-md-3">
+                    <label>Cód. PDV</label>
+                    <input type="hidden" class="form-control" id="cod" name="cod" value="{{ retorno.cod }}">
+                </div>
+
                 <div class="form-group row mb-1 pl-3 col-md-3">
                     <div class="col-12">
                         <label class="col-12 col-form-label" style="padding-left: 0;">Status</label>
