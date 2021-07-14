@@ -79,12 +79,21 @@
 													<tr style="width: 100px;">
 														<td>
 															{% if p.imagem is not empty %}
-																<a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}"><img src="{{BASE}}uploads{{p.imagem}}" width="80px"/></a>
+															{% if c.id == idCategoria %}
+																<a href="{{BASE}}{{empresa.link_site}}/admin/produto-pizza/editar/{{ p.id }}">
+																{% else %}
+																<a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}">
+															{% endif %}
+																<img src="{{BASE}}uploads{{p.imagem}}" width="80px"/></a>
 															{% endif %}
 														</td>
 														<td>
 															<p>
-																<a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}">{{ p.nome }}</a>
+															{% if c.id == idCategoria %}
+																<a href="{{BASE}}{{empresa.link_site}}/admin/produto-pizza/editar/{{ p.id }}">
+																{% else %}
+																<a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}">
+															{% endif %}{{ p.nome }}</a>
 															</p>
 														</td>
 
@@ -112,14 +121,10 @@
 															</p>
 														</td>
 														<td>
-															{% if p.valor == 0.00 %}
-																<a href="{{BASE}}{{empresa.link_site}}/admin/produto-pizza/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal">
-																	<i class="simple-icon-note"></i>
-																	Editar</a>
+															{% if c.id == idCategoria %}
+																<a href="{{BASE}}{{empresa.link_site}}/admin/produto-pizza/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
 															{% else %}
-																<a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal">
-																	<i class="simple-icon-note"></i>
-																	Editar</a>
+																<a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
 															{% endif %}
 														</td>
 													</tr>

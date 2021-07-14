@@ -261,6 +261,7 @@ class AdminProdutos extends Controller
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+        $tamanhosCategorias = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_categoria', $retorno->id_categoria);
         $valorProduto = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_produto', $retorno->id);
 
         $diaSelecao = $this->acoes->getFind('dias');
@@ -285,6 +286,7 @@ class AdminProdutos extends Controller
             'planoAtivo' => $planoAtivo,
             'categoriaLista' => $categoriaLista,
             'tamanhos' => $tamanhos,
+            'tamanhosCategorias' => $tamanhosCategorias,
             'valorProduto' => $valorProduto,
             'qtdProdutosAdicionais' => $qtdProdutosAdicionais,
             'produtosSabores' => $produtosSabores,

@@ -1,7 +1,7 @@
 {% extends 'partials/bodyAdmin.twig.php' %}
 {% block title %}Admin Automatiza Delivery{% endblock %}
 {% block body %}
-<h1>Atualizar Produto: <strong>{{ retorno.nome }}</strong></h1>
+<h1 id="titleBy" data-id="{{ catId }}">Atualizar Produto: <strong>{{ retorno.nome }}</strong></h1>
 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
     <ol class="breadcrumb pt-0">
         <li class="breadcrumb-item">
@@ -34,18 +34,7 @@
                     <input type="hidden" class="form-control" id="valor_promocional" placeholder="Insira o Valor " name="valor_promocional" value="{% if(retorno.valor_promocional != 0.00) %}{{ retorno.valor_promocional|number_format(2, ',', '.') }}{% endif %}">
                 </div>
             
-                <div class="form-group col-md-3">
-                    <label for="exampleFormControlSelect1">Categoria</label>
-                    <select class="form-control select2-single" id="categoria" name="categoria">
-                        {% for e in categoriaLista %}
-                        {% if(retorno.id_categoria == e.id ) %}
-                        <option selected value="{{ e.id }}">{{ e.nome }}</option>
-                        {% else %}
-                        <option value="{{ e.id }}">{{ e.nome }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
+              
 
                 <div class="form-group row mb-1 pl-3 col-md-3">
 
@@ -114,6 +103,9 @@
                     <div class="form-group col-md-12">
                             <div class="form-row">
                                 {% for tam in tamanhos %}
+                                {% for tamC in tamanhosCategorias %}
+                                {% if tamC.id_categoria == retorno.id_categoria %}
+                                {% if tam.id == tamC.id_tamanhos %}
                                 <div class="col-md-12 linhaFooter pb-2">
                                     <div class="pt-2 pb-2 pl-0">
                                         <div class="col-md-6 float-left pl-0 bold text-left text-uppercase">Tamanho <input type="text" value="{{ tam.nome }}" class="p-2" disabled> </div>
@@ -123,6 +115,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
+                                {% endif %}
+
+                                {% endfor %}
                                 {% endfor %}
                             </div>
                     </div>
@@ -192,6 +188,7 @@
         <div class="card-body">
             <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
             <input type="hidden" id="categoriaCad" name="categoriaCad" value="{{retorno.id_categoria}}">
+            <input type="hidden" id="categoria" name="categoria" value="{{retorno.id_categoria}}">
             <input type="hidden" id="imagemNome" name="imagemNome" value="{{retorno.imagem}}">
             <input type="hidden" id="id" name="id" value="{{ retorno.id }}">
             <input type="hidden" id="vendas" name="vendas" value="0">
