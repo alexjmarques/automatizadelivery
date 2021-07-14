@@ -460,13 +460,16 @@ class AdminProdutos extends Controller
 
         if ($data['valor'] ==  0) {
             if ($valor->id >  0) {
+
                 $array = $data['preco'];
+                
                 $newArray = array();
                 foreach (array_keys($array) as $fieldKey) {
                     foreach ($array[$fieldKey] as $key => $value) {
                         $newArray[$key][$fieldKey] = $value;
                     }
                 }
+                dd($newArray);
                 foreach ($newArray as $res) {
                     $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);
                     $prodValor->valor = $this->geral->brl2decimal($res['valor']);
