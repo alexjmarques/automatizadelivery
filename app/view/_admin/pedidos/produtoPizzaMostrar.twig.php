@@ -30,9 +30,9 @@
                 <select class="form-control select2-single select-box" id="borda" name="borda" multiple="multiple">
                     {% for p in produtos %}
                     {% if p.cod is not null %}
-                    <option value="{{p.id}}" data-valor="{% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id && prodVal.id_tamanho == tamanho.id %}{{ prodVal.valor }}</span>{% endif %}{% endfor %}">{{ p.cod }} - {{ p.nome }} - 
+                    <option value="{{p.id}}" data-valor="{% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id and prodVal.id_tamanho == tamanho.id %}{{ prodVal.valor }}</span>{% endif %}{% endfor %}">{{ p.cod }} - {{ p.nome }} - 
                         {% for prodVal in produtoValor %}
-                        {% if prodVal.id_produto == p.id && prodVal.id_tamanho == tamanho.id %}
+                        {% if prodVal.id_produto == p.id and prodVal.id_tamanho == tamanho.id %}
                         {{ (prodVal.valor)|number_format(2, ',', '.')}}</span>
                         {% endif %}{% endfor %}</option>
                     {% endif %}
@@ -58,9 +58,7 @@
             <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
             <input type="hidden" name="valor" id="valor" value="{% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
 
-            {% if produto.status == 1 %}
             <button class="btn btn-success btn-block btn-lg addStyle mt-4">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>
-            {% endif %}
 
         </div>
 </form>
