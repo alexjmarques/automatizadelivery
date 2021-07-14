@@ -183,7 +183,7 @@ class PagesController extends Controller
                 redirect(BASE . "{$empresa->link_site}/novo-por-aqui");
             }
         }
-
+        
         $this->load('home/main', [
             'empresa' => $empresa,
             'endereco' => $empresaEndereco,

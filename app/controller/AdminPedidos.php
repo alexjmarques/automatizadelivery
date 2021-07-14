@@ -214,6 +214,10 @@ class AdminPedidos extends Controller
         $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
         $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $pedido->id_cliente);
 
+        if($pedido->status > 3){
+            $entrega = $this->acoes->getByField('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido);
+        }
+        
         $tipoPagamento = $this->acoes->getByField('formasPagamento', 'id', $pedido->tipo_pagamento);
         $tipoFrete = $this->acoes->getByField('tipoDelivery', 'id', $pedido->tipo_frete);
         $status = $this->acoes->getByField('status', 'id', $pedido->status);
@@ -267,6 +271,7 @@ class AdminPedidos extends Controller
             'caixa' => $caixa->status,
             'estabelecimento' => $estabelecimento[0]->id,
             'pedido' => $pedido,
+            'entrega' => $entrega,
             'cliente' => $cliente,
             'usuarios' => $usuarios,
             'pagamento' => $tipoPagamento,

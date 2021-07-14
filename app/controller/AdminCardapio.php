@@ -107,7 +107,8 @@ class AdminCardapio extends Controller
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'detect' => new Mobile_Detect()
+            'detect' => new Mobile_Detect(),
+            'caixa' => $caixa->status
 
         ]);
     }

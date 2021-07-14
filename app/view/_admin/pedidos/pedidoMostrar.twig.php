@@ -199,8 +199,8 @@
         {% if pedido.status >= 3 %}
         {% if pedido.status == 5 %}
         <span>Pedido Recusado</span><br />
-        <span><strong>Motivo:</strong> {{ pedido.observacao }}</span><br />
-        <span><strong>Hora:</strong> {{ pedido.hora|date('H:i') }}</span>
+        <span><strong>Motivo:</strong> {{ entrega.observacao }}</span><br />
+        <span><strong>Hora:</strong> {{ entrega.updated_at|date('H:i') }}</span>
         {% endif %}
         {% if pedido.status == 6 %}
         <span>Pedido Cancelado pelo Cliente</span>
