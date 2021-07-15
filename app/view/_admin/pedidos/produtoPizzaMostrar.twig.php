@@ -44,11 +44,7 @@
                 <select class="form-control select2-single select-box" id="pizza" name="pizza[]" multiple="multiple">
                     {% for p in produtos %}
                     {% if p.cod is not null %}
-                    <option value="{{p.id}}" data-valor="{% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id and prodVal.id_tamanho == tamanho.id %}{{ prodVal.valor }}</span>{% endif %}{% endfor %}">{{ p.cod }} - {{ p.nome }} - 
-                        {% for prodVal in produtoValor %}
-                        {% if prodVal.id_produto == p.id and prodVal.id_tamanho == tamanho.id %}
-                        {{ (prodVal.valor)|number_format(2, ',', '.')}}</span>
-                        {% endif %}{% endfor %}</option>
+                    <option value="{{p.id}}" data-valor="{% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id and prodVal.id_tamanho == tamanho.id %}{{ prodVal.valor }}</span>{% endif %}{% endfor %}">{{ p.cod }} - {{ p.nome }} - {% for prodVal in produtoValor %}{% if prodVal.id_produto == p.id and prodVal.id_tamanho == tamanho.id %}{{moeda.simbolo}} {{ (prodVal.valor)|number_format(2, ',', '.')}}{% endif %}{% endfor %}</option>
                     {% endif %}
                     {% endfor %}
                 </select>

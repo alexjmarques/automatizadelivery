@@ -196,27 +196,47 @@ class AdminPedidosBalcaoController extends Controller
             $quantidade == $data['tipo']." SABORES";
         }
 
-        //dd($data);
+         /**
+         * Soma dos valores pegando pelo valor da pizza maior
+         */
         $idProduto = 0;
         $valor = 0;
         if(is_array($data['pizza'])){
             $i = 1;
             $sabor = "";
+            $arrValor = array();
             foreach ($data['pizza'] as $key => $cart) {
                 $idProduto = $cart;              
                 $pizzaValor = $this->acoes->getByFieldTwo('pizzaProdutoValor', 'id_produto', $cart,'id_tamanho', $data['tamanho']);
                 $pizzaNome = $this->acoes->getByField('produtos', 'id', $cart);
                 $sabor .= $i++.'/'.$data['tipo'].' '.$pizzaNome->nome.' - ';
-                $valor += ($pizzaValor->valor / $data['tipo']);
+                array_push($arrValor, $pizzaValor->valor);
             }
             $saborfinal = rtrim($sabor, ' - ');
             $nomePizza = "PIZZA {$tamanho->nome} {$data['tipo']} SABORES - {$massa->nome} - {$saborfinal}";
-            //dd($sabor);
         }
+        $valorFinal = $massa->valor + $this->geral->max_key($arrValor);
 
-        $valorFinal = $massa->valor + $valor;
 
-        //dd($valor);
+        /**
+         * Soma dos valores dividindo pelo tipo de pizza
+         * 
+         * if(is_array($data['pizza'])){
+         *  $i = 1;
+         *   $sabor = "";
+         *   foreach ($data['pizza'] as $key => $cart) {
+         *       $idProduto = $cart;              
+         *        $pizzaValor = $this->acoes->getByFieldTwo('pizzaProdutoValor', 'id_produto', $cart,'id_tamanho', $data['tamanho']);
+         *        $pizzaNome = $this->acoes->getByField('produtos', 'id', $cart);
+         *        $sabor .= $i++.'/'.$data['tipo'].' '.$pizzaNome->nome.' - ';
+         *        $valor += ($pizzaValor->valor / $data['tipo']);
+         *    }
+         *    $saborfinal = rtrim($sabor, ' - ');
+         *    $nomePizza = "PIZZA {$tamanho->nome} {$data['tipo']} SABORES - {$massa->nome} - {$saborfinal}";
+         *    //dd($sabor);
+         * }
+         */
+
 
 
         $valor = new Carrinho();
@@ -795,7 +815,7 @@ class AdminPedidosBalcaoController extends Controller
         $userUp->save();
 
         $cliente = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
-        $mensagem =  "Você acaba de efetuar um pedido no {$empresa->nome_fantasia} esse é seu número de pedido: {$data['numero_pedido']}. Para acompanhar acesse o link: https://www.automatizadelivery.com.br/{$empresa->link_site}/meu-pedido/{$chave}";
+        $mensagem =  "Você acaba de efetuar um pedido no {$empresa->nome_fantasia} esse é seu número de pedido: {$data['numero_pedido']}. Para acompanhar seu pedido acesse nosso site, faça o login usando o número de Telefone informado no momento do pedido. Para acompanhar acesse o link: https://www.automatizadelivery.com.br/{$empresa->link_site}/login";
         $ddi = '+55';
         $numerofinal = $ddi . $cliente->telefone;
 

@@ -12,6 +12,7 @@ require "../app/controller/AdminStatus.php";
 require "../app/controller/AdminPlanos.php";
 require "../app/controller/AdminRating.php";
 require "../app/controller/AdminMassas.php";
+require "../app/controller/AdminSuporte.php";
 require "../app/controller/AdminPedidos.php";
 require "../app/controller/AdminTamanhos.php";
 require "../app/controller/AllController.php";
@@ -356,6 +357,8 @@ $router->post('/{linkSite}/admin/tamanho/i', 'AdminTamanhos:insert');
 $router->post('/{linkSite}/admin/tamanho/u/{id}', 'AdminTamanhos:update');
 $router->post('/{linkSite}/admin/tamanho/u/item', 'AdminTamanhos:updateItem');
 
+
+$router->get('/{linkSite}/admin/suporte', 'AdminSuporte:index');
 
 $router->get('/{linkSite}/admin/massas', 'AdminMassas:index');
 $router->get('/{linkSite}/admin/massa/nova', 'AdminMassas:novo');

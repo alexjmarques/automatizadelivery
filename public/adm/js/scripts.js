@@ -567,7 +567,7 @@ $("#inpFiltro").on("keyup", function () {
 
 
 function cancelarPedido(id) {
-  let valores = {id}
+  let valores = { id }
   $.ajax({
     url: `/${link_site}/admin/pedido/cancelar`,
     method: "POST",
@@ -575,8 +575,8 @@ function cancelarPedido(id) {
     dataType: "text",
     success: function (dd) {
       //console.log(dd);
-        $("#modPedido").modal('hide');
-        atualizar();
+      $("#modPedido").modal('hide');
+      atualizar();
     },
   })
 }
@@ -1094,6 +1094,9 @@ switch (active_link) {
   case `/${link_site}/admin/avaliacao`:
     $('#menuAvaliacao').addClass('active')
     break;
+  case `/${link_site}/admin/suporte`:
+    $('#menuChat').addClass('active')
+    break;
   case `/${link_site}/admin/caixa/relatorio`:
     $('#collapseCaixaTypes').addClass('show')
     $('#menuCaixa .primaryMenu').removeClass('collapsed')
@@ -1134,12 +1137,12 @@ switch (active_link) {
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
     break;
-    case `/${link_site}/admin/cardapio`:
-      $('#collapseProdutos').addClass('show')
-      $('#menuProdutos .primaryMenu').removeClass('collapsed')
-      $('#subProd').addClass('active')
-      break;
-    
+  case `/${link_site}/admin/cardapio`:
+    $('#collapseProdutos').addClass('show')
+    $('#menuProdutos .primaryMenu').removeClass('collapsed')
+    $('#subProd').addClass('active')
+    break;
+
   case `/${link_site}/admin/produto/novo/${activeId}`:
     $('#collapseProdutos').addClass('show')
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
@@ -1150,7 +1153,7 @@ switch (active_link) {
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
     break;
-    case `/${link_site}/admin/produto-pizza/novo/${activeId}`:
+  case `/${link_site}/admin/produto-pizza/novo/${activeId}`:
     $('#collapseProdutos').addClass('show')
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subProd').addClass('active')
@@ -1226,7 +1229,7 @@ switch (active_link) {
     break;
 
 
-    case `/${link_site}/admin/massas`:
+  case `/${link_site}/admin/massas`:
     $('#collapseProdutos').addClass('show')
     $('#menuProdutos .primaryMenu').removeClass('collapsed')
     $('#subMass').addClass('active')
@@ -1537,10 +1540,10 @@ $('#calcularTroco').on('click', function () {
   let totalFinal = valor - total_pago
 
   if (valor === "" || valor < total_pago) {
-      $('#mensagem').html('O troco do cliente precisa ser maior que o total do pedido!');
-      $('.errorSup, .buttonAlert').show();
-      $('.successSup').hide();
-      $('#alerta').modal("show");
+    $('#mensagem').html('O troco do cliente precisa ser maior que o total do pedido!');
+    $('.errorSup, .buttonAlert').show();
+    $('.successSup').hide();
+    $('#alerta').modal("show");
     return false
   } else {
     $('#troco').val(valor)
@@ -1563,7 +1566,7 @@ $('#calcularTroco').on('click', function () {
 //     $(`#${cats} i`).addClass('fa-chevron-up').removeClass('fa-chevron-down')
 //   }
 
-  
+
 // });
 
 $('#tipo_frete').on('change', function () {
@@ -1831,7 +1834,7 @@ Dropzone.options.myDropzone = {
     croppie.bind({
       url: URL.createObjectURL(file)
     });
-  },init: function () {
+  }, init: function () {
     this.on("success", function (file, response) {
       //console.log("Response :" + response);
       $('#imagemNome').val(response);

@@ -48,7 +48,7 @@ class PedidosController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         $empresas = $this->acoes->getFind('empresa');
         $status = $this->acoes->getFind('status');
@@ -87,12 +87,17 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $venda = $this->acoes->getByField('carrinhoPedidos', 'chave', $data['chave']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        }
+
         $this->load('_cliente/pedidos/view', [
             'empresa' => $empresa,
             'moeda' => $moeda,
             'venda' => $venda,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
+            'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser()
         ]);
     }
@@ -115,12 +120,13 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            $avaliacao = $this->acoes->countsTree('avaliacao', 'id_cliente', $this->sessao->getUser(), 'numero_pedido', $data['numero_pedido'], 'id_empresa', $empresa->id);
+            $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
 
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-        $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         $estados = $this->acoes->getFind('estados');
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
@@ -128,7 +134,6 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
         $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
-        $avaliacao = $this->acoes->countsTree('avaliacao', 'id_cliente', $this->sessao->getUser(), 'numero_pedido', $data['numero_pedido'], 'id_empresa', $empresa->id);
 
         $this->load('_cliente/pedidos/pedidoAcompanharTotal', [
             'empresa' => $empresa,
@@ -142,7 +147,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'delivery' => $delivery,
             'tipo' => $tipo,
             'agamento' => $pagamento,
-            'deliveryEntregaExcedente' => $delivery->km_entrega_excedente * 1000,
+            'deliveryEntregaExcedente' => $delivery->km_entrega_excedente,
             'carrinho' => $carrinho,
             'carrinhoAdicional' => $carrinhoAdicional,
             'produto' => $produto,

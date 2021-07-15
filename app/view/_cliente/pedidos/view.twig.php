@@ -4,8 +4,12 @@
 <div class="osahan-checkout">
     <div class="bg-primary border-bottom px-3 pt-3 pb-5 d-flex ">
         <a class="toggle" href="#"><span></span></a>
+        {% if usuarioLogado.id > 0 %}
         <h5 class="font-weight-bold m-0 text-white">Meu Pedido</h5>
         <a class="text-white font-weight-bold ml-auto" href="{{BASE}}{{empresa.link_site}}/meus-pedidos"> Voltar</a>
+        {% else %}
+        <h5 class="font-weight-bold m-0 text-white">{{empresa.nome_fantasia }}</h5>
+        {% endif %}
     </div>
     <div class="mb-3 osahan-cart-item osahan-home-page">
         <div class="p-3 osahan-profile">
@@ -16,7 +20,7 @@
     </div>
 </div>
 {% include 'partials/modalCancelPedido.twig.php' %}
-
+{% if usuarioLogado.id > 0 %}
 {% include 'partials/footer.twig.php' %}
-
+{% endif %}
 {% endblock %}

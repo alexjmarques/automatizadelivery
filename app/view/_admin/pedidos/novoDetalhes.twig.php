@@ -33,6 +33,7 @@
                             <table class="data-table data-table-simple responsive nowrap">
                     <thead class="linhaTop">
                         <tr>
+                            <th style="width: 30px;">#</th>
                             <th>Item</th>
                             <th style="width: 50px !important;">Valor</th>
                         </tr>
@@ -42,6 +43,9 @@
                                 {% for p in produtos %}
                                 {% if p.id == c.id_produto %}
                             <tr>
+                            <td>
+                            <a href="{{BASE}}{{empresa.link_site}}/admin/carrinho/deletar/{{c.id_produto}}/{{c.id}}" class="btn excluir_prod"><i class="simple-icon-close"></i></a>
+                                </td>
                                 <td>
                                     <div class="media full-width">
                                         <div class="media-body">
@@ -106,9 +110,6 @@
                                 </td>
                             </tr>
                             
-                    
-
-                                
                                 {% endif %}
                                 {% endfor %}
                                 {% endfor %}

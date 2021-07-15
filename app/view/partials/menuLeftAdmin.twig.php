@@ -344,12 +344,6 @@
                 {% endif %}
 
                 {% if planoAtivo > 3 %}
-                <li id="menuChat">
-                    <a href="{{BASE}}{{empresa.link_site}}/admin/mensagens" class="primaryMenu">
-                        <span class="simple-icon-earphones-alt iconeMenu"></span>
-                        <span class="d-inline-block">Mensagens</span>
-                    </a>
-                </li>
                 <li id="menuAvaliacao">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/avaliacao" class="primaryMenu">
                         <span class="simple-icon-star iconeMenu"></span>
@@ -370,6 +364,14 @@
                     </a>
                 </li>
                 {% endif %}
+                {% endif %}
+                {% if planoAtivo > 2 %}
+                <li id="menuChat">
+                    <a href="{{BASE}}{{empresa.link_site}}/admin/suporte" class="primaryMenu">
+                        <span class="simple-icon-earphones-alt iconeMenu"></span>
+                        <span class="d-inline-block">Suporte</span>
+                    </a>
+                </li>
                 {% endif %}
                 <li id="menuDocs">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/docs" class="primaryMenu">

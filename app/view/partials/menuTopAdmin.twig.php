@@ -131,9 +131,10 @@
                 <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/meu-perfil">Minha conta</a>
                 <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/conf/e">Configuração da Empresa</a>
                     <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/pedidos">Pedidos Delivery</a>
-                    {% if planoAtivo != 1 %}
-                    <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/docs">Ajuda</a>
+                    {% if planoAtivo > 2 %}
+                    <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/suporte">Suporte</a>
                     {% endif %}
+                    <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/docs">Ajuda</a>
                     <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/sair">Sair</a>
             </div>
         </div>

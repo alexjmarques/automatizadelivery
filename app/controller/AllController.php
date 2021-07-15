@@ -40,6 +40,12 @@ class AllController extends Controller
         $this->acoes = new Acoes();
     }
 
+    public function max_key($array) {
+        foreach ($array as $key => $val) {
+            if ($val == max($array)) return $val; 
+        }
+    }
+
     public function verificaPlano($data)
     {
         $assinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid', 'id_empresa', $data);

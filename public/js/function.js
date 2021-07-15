@@ -317,8 +317,18 @@ $('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
     let valor = $(this).attr('data-valor')
     let totalMassa = $('#totalMassa').val()
 
-    var total = 0;var qtd = 0;
-    $('#add_itenPizza input[type=checkbox]:checked').each(function (i, ele) {var valor = parseFloat($(this).attr('data-valor'));total += valor;qtd = i + 1;$('#saborCount').text(qtd)});
+    var total = 0;var qtd = 0; var a = [];
+
+    $('#add_itenPizza input[type=checkbox]:checked').each(function (i, ele) {
+        var valor = parseFloat($(this).attr('data-valor'));
+        a.push(valor);
+        qtd = i + 1;
+        $('#saborCount').text(qtd)}
+        //total += valor;
+    );
+    //console.log(a);
+    var total = Math.max.apply(null, a );
+    //console.log(total);
 
     $('#totalPizza').val(total);
     $('#valor').val(parseFloat(total) + parseFloat(totalMassa));
@@ -1020,8 +1030,8 @@ $("#formFinish").submit(function () {
 function produtosModal(id_produto, id_carrinho) {
     $.get(`/${link_site}/carrinho/pedido/acao/${id_produto}/${id_carrinho}`, function (dd) {
         let retorno = `
-        <p id="mensagem" class="mb-3 text-center">Deseja remover este item <strong>${dd}</strong> do seu pedido?<p>
-        <div class="mt-3 text-center">
+        <p id="mensagem" class="mb-4 text-center">Deseja remover este item <strong>${dd}</strong> do seu pedido?<p>
+        <div class="mt-4 text-center">
             <a href="/${link_site}/carrinho/${id_produto}/d/${id_carrinho}" class="p-3 text-danger removerItem">REMOVER</a><br/><br/>
         </div>
         <div class="mt-3">

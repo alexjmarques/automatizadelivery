@@ -13,7 +13,7 @@
         <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/{{categoriaSlug}}/produto/{{tamanhoCatId}}/{{tamanhoId}}/{{ii}}/addCarrinho">
             <div class="d-flex mb-0 osahan-cart-item-profile bg-white shadow rounded-top p-3 mt-n5">
                 <div class="">
-                    <h6 class="mb-1 font-weight-bold text-uppercase">Pizza {{tamanho.nome}} {% if ii == 1 %}{{ii}} SABOR {% else %}{{ ii }} SABORES {% endif %}({{tamanho.qtd_pedacos}} PEDAÇOS)</h6>
+                    <h6 class="mb-1 font-weight-bold text-uppercase">{{tamanho.nome}} {% if ii == 1 %}{{ii}} SABOR {% else %}{{ ii }} SABORES {% endif %}({{tamanho.qtd_pedacos}} PEDAÇOS)</h6>
                     <p class="mb-0">Escolha {% if ii == 1 %}{{ ii }} sabor {% else %} {{ ii }} sabores{% endif %}</p>
                 </div>
             </div>
@@ -35,11 +35,10 @@
                         {% for mas in massasTamanho %}
                         {% for mass in pizzaMassas %}
                         {% if mass.id == mas.id_massas %}
-                        <div class="custom-control custom-radio border-bottom py-2">
+                        <div class="custom-control custom-radio border-bottom py-2 text-uppercase">
                             <input class="custom-control-input" type="radio" id="id_massa{{mass.id}}" data-valor="{{ mass.valor }}" name="massa" value="{{mass.id}}">
                             <label class="custom-control-label" for="id_massa{{mass.id}}">{{mass.nome}} <span class="garnish-choices__option-price">{% if mass.valor != 0.00 %}+ {{moeda.simbolo}} {{ mass.valor|number_format(2, ',', '.')}}{% endif %}</span></label> 
                         </div>
-
                         {% endif %}
                         {% endfor %}
                         {% endfor %}
@@ -51,8 +50,8 @@
             <div class="bg-white rounded shadow mb-3 py-2 pt-0">
                 <div class="garnish-choices__header">
                     <span class="garnish-choices__header-content">
-                        <p class="garnish-choices__title" data-test-id="Escolha 1 opção.">Escolha um sabor
-                            <span class="garnish-choices__title-desc">Escolha 2 opção.</span>
+                        <p class="garnish-choices__title" data-test-id="Escolha 1 opção.">Escolha uma Pizza
+                            <span class="garnish-choices__title-desc">Escolha 2 opção. (Prevalece o maior Valor)</span>
                         </p>
                         <span class="garnish-choices__tags">
                             <span id="pizza_choice"><span class="marmita-minitag marmita-minitag--black marmita-minitag--small">OBRIGATÓRIO</span></span>
@@ -69,44 +68,25 @@
                             {% if ii == 1 %}
                             <div class="custom-control custom-radio border-bottom py-2">
                                 <input class="custom-control-input" type="radio" id="id_pizza_prod{{prod.id}}" {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %} data-valor="{{ prodVal.valor }}"{% endif %}{% endfor %}  name="pizza_prod" value="{{prod.id}}">
-                                <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">PIZZA {{prod.nome}} - {{prod.descricao}} {% if prod.observacao is not null %} <strong class="size10">({{prod.observacao}})</strong>{% endif %}
-                                    <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
-                                    {% for prodVal in produtoValor %}
-                                    {% if prodVal.id_produto == prod.id %}
-                                    {{ prodVal.valor|number_format(2, ',', '.')}}
-                                    {% endif %}
-                                    {% endfor %}
+                                <label class="custom-control-label" for="id_pizza_prod{{prod.id}}">{{prod.nome}} - {{prod.descricao}} {% if prod.observacao is not null %} <strong class="size10">({{prod.observacao}})</strong>{% endif %}
+                                    <span class="garnish-choices__option-price">{{moeda.simbolo}} {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %}{{ prodVal.valor|number_format(2, ',', '.')}}{% endif %}{% endfor %}
                                 </span></label> 
                             </div>
                             {% else %}
                             <div class="custom-control border-bottom py-3">
-                                <input class="custom-control-input" type="checkbox" {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %}data-valor="{{ (prodVal.valor / ii)}}"{% endif %}{% endfor %}
+                                <input class="custom-control-input" type="checkbox" {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %}data-valor="{{ prodVal.valor }}"{% endif %}{% endfor %}
                                     id="id_pizza_prod{{prod.id}}" name="pizza_prod[]" value="{{prod.id}}">
                                 <label class="custom-control-label"
                                     for="id_pizza_prod{{prod.id}}">1/{{ii}} PIZZA {{prod.nome}} - {{prod.descricao}} {% if prod.observacao is not null %} <strong class="size10">({{prod.observacao}})</strong>{% endif %}
-                                    <span class="garnish-choices__option-price">+ {{moeda.simbolo}} 
-
-                                        {% for prodVal in produtoValor %}
-                                        {% if prodVal.id_produto == prod.id %}
-                                            {{ (prodVal.valor / ii)|number_format(2, ',', '.')}}</span>
-                                        {% endif %}
-                                        {% endfor %}
-                                    
+                                    <span class="garnish-choices__option-price">{{moeda.simbolo}} {% for prodVal in produtoValor %}{% if prodVal.id_produto == prod.id %}{{ prodVal.valor|number_format(2, ',', '.')}}{% endif %}{% endfor %}</span>
                                 </label>
                             </div>
                             {% endif %}
                             {% endfor %}
-
-
-                            
-
-
                         </div>
-
                     </div>
                 </div>
             </div>
- 
 
             {% if delivery.status == 1 %}
             <div class="mb-3 shadow bg-white rounded p-3 py-3 mt-3 clearfix">
