@@ -351,12 +351,6 @@
                     </a>
                 </li>
                 {% else %}
-                <li id="menuChat" class="indisponivel">
-                    <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
-                        <span class="simple-icon-earphones-alt iconeMenu"></span>
-                        <span class="d-inline-block">Mensagens <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível no Plano Essencial">!</span></span>
-                    </a>
-                </li>
                 <li id="menuAvaliacao" class="indisponivel">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
                         <span class="simple-icon-star iconeMenu"></span>
