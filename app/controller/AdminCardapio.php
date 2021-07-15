@@ -59,7 +59,6 @@ class AdminCardapio extends Controller
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
-
         if ($empresa) {
             $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
             $atendimento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);

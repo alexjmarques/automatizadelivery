@@ -16,5 +16,7 @@
     </div>
 </div>
 {% include 'partials/modalCancelPedido.twig.php' %}
+
 {% include 'partials/footer.twig.php' %}
+
 {% endblock %}
