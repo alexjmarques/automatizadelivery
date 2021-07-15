@@ -431,7 +431,8 @@ class AdminPedidosBalcaoController extends Controller
 
     public function carrinhoEditarProdutoPizza($data)
     {
-        //dd($data);
+        $pedido = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido'], 'id_empresa', $data['id_empresa']);
+
         $tamanho = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanho']);
         $massa = $this->acoes->getByField('pizzaMassas', 'id', $data['borda']);
 
@@ -485,11 +486,9 @@ class AdminPedidosBalcaoController extends Controller
          * }
          */
 
-
-
         $valor = new Carrinho();
         $valor->id_produto = $idProduto;
-        $valor->id_cliente = $this->sessao->getSessao('id_cliente');
+        $valor->id_cliente = $pedido->id_cliente;
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = $data['quantity'];
         $valor->observacao = $data['observacao'];
@@ -498,8 +497,9 @@ class AdminPedidosBalcaoController extends Controller
         $valor->variacao = $nomePizza;
         $valor->save();
 
+
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao pedido', 'error' => 'Não foi posível adicionar o produto ao pedido', 'code' => 520]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao pedido', 'error' => 'Não foi posível adicionar o produto ao pedido', 'code' => 520, 'url' => "pedido/editar/produtos/{$pedido->id}"]);
         exit($json);
     }
 
@@ -545,6 +545,7 @@ class AdminPedidosBalcaoController extends Controller
 
     public function carrinhoEditarProduto($data)
     {
+        $pedido = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido'], 'id_empresa', $data['id_empresa']);
         //dd($data);
         $sabores = null;
         if ($data['sabores']) {
@@ -553,7 +554,7 @@ class AdminPedidosBalcaoController extends Controller
 
         $valor = new Carrinho();
         $valor->id_produto = $data['id'];
-        $valor->id_cliente = $this->sessao->getSessao('id_cliente');
+        $valor->id_cliente = $pedido->id_cliente;
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = $data['quantity'];
         $valor->numero_pedido = $data['numero_pedido'];
@@ -581,7 +582,7 @@ class AdminPedidosBalcaoController extends Controller
             }
         }
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao pedido', 'error' => 'Não foi posível adicionar o produto ao pedido', 'code' => 520]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao pedido', 'error' => 'Não foi posível adicionar o produto ao pedido', 'code' => 520, 'url' => "pedido/editar/produtos/{$pedido->id}"]);
         exit($json);
     }
 
@@ -1253,12 +1254,12 @@ class AdminPedidosBalcaoController extends Controller
         $pedido->total_pago = $data['total_pago'];
         $pedido->troco = $data['troco'];
         $pedido->tipo_pagamento = $data['tipo_pagamento'];
-        $pedido->observacao = $data['observacao'];
+        $pedido->observacao = $data['observacao_final'];
         $pedido->valor_frete = $data['valor_frete'];
         $pedido->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido Editado com sucesso', 'code' => 2,  'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);
+        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido editado com sucesso', 'code' => 2,  'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);
         exit($json);
     }
 
@@ -1277,6 +1278,23 @@ class AdminPedidosBalcaoController extends Controller
             redirect(BASE . "{$data['linkSite']}/admin/pedido/novo/produtos");
         }
         redirect(BASE . "{$data['linkSite']}/admin/pedido/novo/produtos");
+    }
+
+    public function deletarItemCarrinhoEditar($data)
+    {
+        $resultProduto = $this->acoes->getByFieldAll('carrinhoAdicional', 'id_carrinho', $data['id_carrinho']);
+
+        $valor = (new Carrinho())->findById($data['id_carrinho']);
+        $valor->destroy();
+
+        if ($resultProduto) {
+            foreach ($resultProduto as $res) {
+                $valorAd = (new CarrinhoAdicional())->findById($res->id);
+                $valorAd->destroy();
+            }
+            redirect(BASE . "{$data['linkSite']}/admin/pedido/editar/produtos/{$data['pedido']}");
+        }
+        redirect(BASE . "{$data['linkSite']}/admin/pedido/editar/produtos/{$data['pedido']}");
     }
 
     public function carrinhoCadastroValida($data)

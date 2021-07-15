@@ -863,7 +863,6 @@ $("#form").submit(function (e) {
                     case 'Seu produto foi adicionado a Sacola!':
                         $('#FinalizarPedido').modal("show");
                         break;
-
                     case 'Pedido finalizado com sucesso':
                         $('#FinalizarPedidoOK').modal("show");
                         break;

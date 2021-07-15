@@ -146,7 +146,7 @@
                                         <td>
                                             
                                             <div class="media full-width">
-                                                <a href="{{BASE}}{{empresa.link_site}}/admin/carrinho/deletar/{{c.id_produto}}/{{c.id}}" class="btn excluir_prod"><i class="simple-icon-close"></i></a>
+                                                <a href="{{BASE}}{{empresa.link_site}}/admin/carrinho/deletar/{{c.id_produto}}/{{c.id}}/{{ pedido.id }}" class="btn excluir_prod"><i class="simple-icon-close"></i></a>
                                                 <div class="media-body">
 
                                                     <p class="m-0 small-mais"><strong>{{c.quantidade}}x
@@ -206,7 +206,6 @@
                                             <span class="text-gray mb-0 float-right ml-2 text-muted text-bold-18"><strong>{{ moeda.simbolo }} {{ (c.quantidade * c.valor)|number_format(2,',', '.') }}</strong></span>
                                         </td>
                                     </tr>
-
                                     {% endif %}
                                     {% endfor %}
                                     {% endfor %}
@@ -216,7 +215,7 @@
 
                         <div class="mb-3 col-md-12 p-3 float-left cinza">
                                 <div class="mb-0 input-group full-width mt-2">
-                                    <h5 class="full-width pb-0">Formas de Pagamento</h5>
+                                    <h5 class="full-width pb-0 bold">Formas de Pagamento</h5>
                                     <select id="tipo_pagamento" name="tipo_pagamento" class="form-control" required>
                                         <option value="">Forma de Pagamento</option>
                                         {% for pag in pagamento %}
@@ -236,16 +235,14 @@
                                 </div>
                                 <hr>
                                 <div class="mb-0 input-group full-width mt-0">
-                                    <h5 class="full-width pb-0">Observações do pedido</h5>
+                                    <h5 class="full-width pb-0 bold">Observações do pedido</h5>
                                     <div class="clearfix"></div>
-                                    <textarea name="observacao" id="observacao" placeholder="" aria-label="With textarea" class="form-control"></textarea>
+                                    <textarea name="observacao_final" id="observacao_final" placeholder="" aria-label="With textarea" class="form-control"></textarea>
                                 </div>
 
-
                                 {% if empresa.nfPaulista is not null %}
-
                                 <div class="mb-0 input-group full-width mt-0">
-                                    <h5 class="full-width pb-0">CPF na nota?</h5>
+                                    <h5 class="full-width pb-0 bold">CPF na nota?</h5>
                                     <p class="full-width mb-1">Informe no campo a baixo!</p>
                                     <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF">
                                 </div>
@@ -253,7 +250,6 @@
                                 {% endif %}
                                 <div class="full-width pt-4 pb-4">
                                     <input type="hidden" name="valorProduto" id="valorProduto" value="{% if p.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
-
                                     <p class="mb-1">Subtotal<span class="float-right text-dark">{{ moeda.simbolo }} {{
                                             valorPedido|number_format(2, ',', '.') }}</span></p>
                                     {% if km <= km_entrega_excedente %} <p class="mb-1" id="freteCal">Taxa de

@@ -181,7 +181,7 @@
 
                                     <div class="mb-0 input-group full-width mt-2">
                                         <hr>
-                                        <h5 class="full-width pb-0">Formas de Pagamento</h5>
+                                        <h5 class="full-width pb-0 bold">Formas de Pagamento</h5>
                                         <select id="tipo_pagamento" name="tipo_pagamento" class="form-control" required>
                                             <option value="">Forma de Pagamento</option>
                                             {% for pag in pagamento %}
@@ -200,7 +200,7 @@
                                     </div>
                                     <hr>
                                     <div class="mb-0 input-group full-width mt-0">
-                                        <h5 class="full-width pb-0">Observações do pedido</h5>
+                                        <h5 class="full-width pb-0 bold">Observações do pedido</h5>
                                         <div class="clearfix"></div>
                                         <textarea name="observacao" id="observacao" placeholder="" aria-label="With textarea" class="form-control"></textarea>
                                     </div>
@@ -209,7 +209,7 @@
                                     {% if empresa.nfPaulista is not null %}
 
                                     <div class="mb-0 input-group full-width mt-0">
-                                        <h5 class="full-width pb-0">CPF na nota?</h5>
+                                        <h5 class="full-width pb-0 bold">CPF na nota?</h5>
                                         <p class="full-width mb-1">Informe no campo a baixo!</p>
                                         <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF">
                                     </div>

@@ -323,6 +323,8 @@ $router->get('/{linkSite}/admin/produto/removeCarrinho/adicionalis/{chave}', 'Ad
 
 $router->get('/{linkSite}/admin/carrinho', 'AdminPedidosBalcaoController:carrinho');
 $router->get('/{linkSite}/admin/carrinho/deletar/{id_produto}/{id_carrinho}', 'AdminPedidosBalcaoController:deletarItemCarrinho');
+$router->get('/{linkSite}/admin/carrinho/deletar/{id_produto}/{id_carrinho}/{pedido}', 'AdminPedidosBalcaoController:deletarItemCarrinhoEditar');
+
 $router->post('/{linkSite}/admin/carrinho/finaliza', 'AdminPedidosBalcaoController:carrinhoFinalizarPedido');
 $router->post('/{linkSite}/admin/carrinho/finaliza-update', 'AdminPedidosBalcaoController:carrinhoFinalizarPedidoEditar');
 $router->get('/{linkSite}/admin/carrinho/pedido/acao/{id_produto}/{id_carrinho}', 'CarrinhoController:carrinhoProdutoAcao');

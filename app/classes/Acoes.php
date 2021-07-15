@@ -268,7 +268,6 @@ class Acoes
     {
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} < {$valor2}", null, "SUM($linha) AS total")->fetch();
     }
-    
 
     public function sumFielsTree(string $table, string $field,string $valor, string $field2,string $valor2,string $field3,string $valor3, string $linha)
     {

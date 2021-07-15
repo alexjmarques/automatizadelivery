@@ -1617,9 +1617,9 @@ $('#calcularTroco').on('click', function () {
     $('.btnValida').show()
     $('#trocoCliente').show();
     $('#trocoCliente span').text(formatter.format(totalFinal))
-    $("html, body").animate({
-      scrollTop: $(document).height()
-    }, "slow");
+    // $("html, body").animate({
+    //   scrollTop: $('.acaoBtn').height()
+    // }, "slow");
     return false
   }
 });
@@ -1729,6 +1729,17 @@ $("#formFinish").submit(function () {
         switch (dd.mensagem) {
           case 'Pedido finalizado com sucesso':
             $('#mensagem').html(`Pedido Finalizado! Número do pedido: ${dd.pedido}`);
+            $('.successSup').show();
+            $('.errorSup').hide();
+            $('#alerta').modal("show");
+            if (dd.url) {
+              $(".buttonAlert").on('click', function () {
+                window.location = `/${link_site}/${dd.url}`;
+              });
+            }
+            break;
+            case 'Pedido editado com sucesso':
+            $('#mensagem').html(`Pedido editado com sucesso`);
             $('.successSup').show();
             $('.errorSup').hide();
             $('#alerta').modal("show");
