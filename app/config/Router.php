@@ -298,14 +298,23 @@ $router->get('/{linkSite}/admin/pedido/novo', 'AdminPedidosBalcaoController:inde
 $router->post('/{linkSite}/admin/novo/cliente', 'AdminPedidosBalcaoController:carrinhoCadastroValida');
 
 $router->get('/{linkSite}/admin/pedido/novo/produtos', 'AdminPedidosBalcaoController:produtos');
-
 $router->post('/{linkSite}/admin/produto/addCarrinho/produto/{id}', 'AdminPedidosBalcaoController:carrinhoAddProduto');
 $router->post('/{linkSite}/admin/produto/addCarrinho/produto-pizza/{tamanho}', 'AdminPedidosBalcaoController:carrinhoAddProdutoPizza');
 $router->get('/{linkSite}/admin/carrinho/qtd', 'AdminPedidosBalcaoController:carrinhoQtd');
 
+
+$router->get('/{linkSite}/admin/pedido/editar/produtos/{id}', 'AdminPedidosBalcaoController:pedidoEditar');
+$router->post('/{linkSite}/admin/produto/editCarrinho/produto/{id}', 'AdminPedidosBalcaoController:carrinhoEditarProduto');
+$router->post('/{linkSite}/admin/produto/editCarrinho/produto-pizza/{tamanho}', 'AdminPedidosBalcaoController:carrinhoEditarProdutoPizza');
+
+
 $router->post('/{linkSite}/admin/pedido/novo/start', 'AdminPedidosBalcaoController:start');
 $router->get('/{linkSite}/admin/produto/novo/mostrar/{id}', 'AdminPedidosBalcaoController:produtoMostrar');
 $router->get('/{linkSite}/admin/produto/novo/mostrar-pizza/{tamanho}', 'AdminPedidosBalcaoController:produtoPizzaMostrar');
+
+$router->get('/{linkSite}/admin/produto/editar/mostrar/{id}/{numero_pedido}', 'AdminPedidosBalcaoController:produtoMostrarEditar');
+$router->get('/{linkSite}/admin/produto/editar/mostrar-pizza/{tamanho}/{numero_pedido}', 'AdminPedidosBalcaoController:produtoPizzaMostrarEditar');
+
 $router->get('/{linkSite}/admin/pedido/novo/produtos/detalhes', 'AdminPedidosBalcaoController:carrinhoFinalizar');
 $router->get('/{linkSite}/admin/produto/adicional/atualiza/{chave}/{id}', 'AdminPedidosBalcaoController:carrinhoCheckoutAdicionalUpdate');
 $router->get('/{linkSite}/admin/produto/addCarrinho/{id}', 'AdminPedidosBalcaoController:carrinhoCheckout');
@@ -315,6 +324,7 @@ $router->get('/{linkSite}/admin/produto/removeCarrinho/adicionalis/{chave}', 'Ad
 $router->get('/{linkSite}/admin/carrinho', 'AdminPedidosBalcaoController:carrinho');
 $router->get('/{linkSite}/admin/carrinho/deletar/{id_produto}/{id_carrinho}', 'AdminPedidosBalcaoController:deletarItemCarrinho');
 $router->post('/{linkSite}/admin/carrinho/finaliza', 'AdminPedidosBalcaoController:carrinhoFinalizarPedido');
+$router->post('/{linkSite}/admin/carrinho/finaliza-update', 'AdminPedidosBalcaoController:carrinhoFinalizarPedidoEditar');
 $router->get('/{linkSite}/admin/carrinho/pedido/acao/{id_produto}/{id_carrinho}', 'CarrinhoController:carrinhoProdutoAcao');
 
 

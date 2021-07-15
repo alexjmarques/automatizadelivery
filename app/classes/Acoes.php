@@ -180,6 +180,11 @@ class Acoes
         return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} = {$valor3}", "{$field}={$valor}")->fetch(false);
     }
 
+    public function getByFieldTreeAll(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
+    {
+        return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} = {$valor3}", "{$field}={$valor}")->fetch(true);
+    }
+
     public function getByFieldTreeMenor(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
     {
         return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} < {$valor3}", "{$field}={$valor}")->order("id DESC")->fetch(false);
@@ -273,6 +278,11 @@ class Acoes
     public function sumFielsTreeNull(string $table, string $field,string $valor, string $field2,string $valor2,string $field3,string $valor3, string $linha)
     {
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} is {$valor3}", null, "SUM($linha) AS total")->fetch();
+    }
+
+    public function sumFielsTreeNotNull(string $table, string $field,string $valor, string $field2,string $valor2,string $field3,string $valor3, string $linha)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND {$field3} = {$valor3}", null, "SUM($linha) AS total")->fetch();
     }
 
     public function sumFielsTreeM(string $table, string $field,string $valor, string $field2,string $valor2,string $field3,string $valor3, string $linha)

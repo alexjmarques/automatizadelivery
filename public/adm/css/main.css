@@ -1812,7 +1812,10 @@ table.dataTable td {
   font-size: 22px;
   color: #880a1f;
 }
-
+.produtosEditar .excluir_prod{
+  padding: 0 5px !important;
+  margin-top: -3px;
+}
 .btnFPedido {
   position: absolute;
   right: 15px;
@@ -5414,4 +5417,10 @@ button.position-relative h6{
 .select2-container--classic .select2-selection--single .select2-selection__arrow {
   height: 38px;
   width: 40px;
+}
+.acaoBtn.btnValida.p-4{
+  padding: 12px !important;
+  font-size: 18px !important;
+}
+.produtosEditar{
 }
