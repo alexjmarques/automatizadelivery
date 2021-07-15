@@ -44,13 +44,19 @@ class RatingController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $pedido = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+
+        if($pedido->id_motoboy){
+            $id_motoboy = $pedido->id_motoboy;
+        }else{
+            $id_motoboy = 0;
+        }
 
         $this->load('_geral/rating/main', [
             'estabelecimento' => $estabelecimento,
             'pedido' => $pedido->numero_pedido,
-            'id_motoboy' => $pedido->id_motoboy,
+            'id_motoboy' => $id_motoboy,
             'id_cliente' => $this->sessao->getUser(),
             'data_compra' => $pedido->created_at,
             'empresa' => $empresa,
@@ -66,6 +72,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
+        dd($data);
         $valor = new Avaliacao();
         $valor->numero_pedido = $data['numero_pedido'];
         $valor->id_cliente = $data['id_cliente'];
@@ -76,6 +83,8 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valor->data_compra = $data['data_compra'];
         $valor->id_empresa = $empresa->id;
         $valor->save();
+
+        dd($valor);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Agradecemos pela sua avaliação!', 'error' => 'Não foi posível avaliar o pedido','code' => 2 ,  'url' => 'meus-pedidos',]);

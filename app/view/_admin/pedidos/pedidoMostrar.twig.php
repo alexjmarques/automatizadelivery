@@ -122,20 +122,18 @@
 
 
             <div class="env total"><strong>Total:</strong><span>{{ moeda.simbolo }} {{ pedido.total_pago|number_format(2, ',', '.') }}</span></div>
-            <hr />
 
 
             {% if pagamento.code == 7 %}
-            Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|number_format(2, ',', '.')}}</strong> em Dinheiro e <strong>{{ moeda.simbolo }} {{clientePagamento.pag_cartao|number_format(2, ',', '.')}} no Cartão</strong>
-
             <hr />
+            Cliente vai pagar <strong>{{ moeda.simbolo }} {{clientePagamento.pag_dinheiro|number_format(2, ',', '.')}}</strong> em Dinheiro e <strong>{{ moeda.simbolo }} {{clientePagamento.pag_cartao|number_format(2, ',', '.')}} no Cartão</strong>
             {% endif %}
 
 
             {% if nf_paulista.numero_pedido is not null %}
+            <hr />
             <div class="env subtotal">Cliente Pediu Nota Fiscal Paulista no CPF <strong>{{nf_paulista.cpf}}</strong></div>
             {% endif %}
-            <hr />
 
             {% if pedido.status == 2 %}
             {% if pedido.tipo_frete == 1 %}
@@ -170,7 +168,7 @@
 
 
     </content>
-    <footer>
+    <footer class="float-left full-width mt-3">
         {% if pedido.status == 1 %}
         {% set count = pedido.status %}
         {% set count = count + 1 %}

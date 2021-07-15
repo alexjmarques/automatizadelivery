@@ -73,10 +73,13 @@ class AdminDashboard extends Controller
         $resultProdutosEsgotados = $this->acoes->countStatusCompany('produtos', 'id_empresa', $empresa->id, 0);
         $resultProdutosAtivos = $this->acoes->countStatusCompany('produtos', 'id_empresa', $empresa->id, 1);
 
+        //dd($estabelecimento);
+
         /**
          * Contagem dos Itens da Empresa do Dia Atual
          */
-        if ($estabelecimento) {
+        //dd($estabelecimento);
+        if ($estabelecimento[0]->data_final == null) {
             $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
             $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
             $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
@@ -88,6 +91,7 @@ class AdminDashboard extends Controller
             $cancelados = 0;
         }
 
+        //dd($pedidos);
         $resultMaisVendidos = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
         $pedidosAll = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id);
 

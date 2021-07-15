@@ -87,7 +87,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="col-7 center-block text-center float-ceter">{{paginacao|raw}}</div>
+                <div class="col-12 center-block text-center float-ceter">{{paginacao|raw}}</div>
             </div>
         </div>
     </div>
