@@ -71,8 +71,7 @@ class RatingController extends Controller
     public function rating($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-
-        dd($data);
+        
         $valor = new Avaliacao();
         $valor->numero_pedido = $data['numero_pedido'];
         $valor->id_cliente = $data['id_cliente'];
@@ -83,8 +82,6 @@ class RatingController extends Controller
         $valor->data_compra = $data['data_compra'];
         $valor->id_empresa = $empresa->id;
         $valor->save();
-
-        dd($valor);
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Agradecemos pela sua avaliação!', 'error' => 'Não foi posível avaliar o pedido','code' => 2 ,  'url' => 'meus-pedidos',]);

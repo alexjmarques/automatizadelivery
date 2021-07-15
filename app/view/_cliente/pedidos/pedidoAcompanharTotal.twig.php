@@ -136,7 +136,7 @@
                 horaImprimivel = 'Você será direcionado em <strong>' + seg + '</strong> para avaliar nossos serviços';
                 $("#sessao").html(horaImprimivel);
 
-                setTimeout('startCountdown()', 1000);
+                setTimeout('startCountdown()', 900);
 
                 tempo--;
 
