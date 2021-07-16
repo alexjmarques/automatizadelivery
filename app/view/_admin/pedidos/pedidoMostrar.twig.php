@@ -181,6 +181,9 @@
         <button class="col-meio btn-processo bg-warning" onclick="mudarStatusEntrega({{pedido.id}}, {{count}}, {{estabelecimento}})" id="btn-carrinho">
             {% if pedido.tipo_frete == 1 %}
             Pronto para retirada
+            <select class="form-control select2-single hidden" id="motoboy-{{pedido.id}}" name="motoboy-{{pedido.id}}">
+            <option value="0" selected>0</option>
+        </select>
             {% else %}
             Entregar ao motoboy{% endif %}<i class="simple-icon-arrow-right"></i></button>
         {% endif %}

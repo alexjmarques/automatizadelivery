@@ -718,8 +718,6 @@ function updateItemMassa(id_empresa, id_tamanhos, id_massas) {
   })
 }
 
-
-
 function mudarStatusEntrega(id, status, id_caixa) {
   var id_motoboy = $(`#motoboy-${id} option:selected`).val();
   if (id_motoboy === "Selecione") {
