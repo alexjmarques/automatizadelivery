@@ -6,12 +6,12 @@
 </head>
 <body>
 <script>
-        // window.onload = function() {
-        //     window.print();
-        // }
-        // window.onafterprint = function() {
-        //     window.close();
-        // }
+        window.onload = function() {
+            window.print();
+        }
+        window.onafterprint = function() {
+            window.close();
+        }
     </script>
 <div style="width: 260px; font-size: sans-serif; font-size: 16px;">
     <h4 style="text-align:center;"><span style="text-transform: uppercase;">PEDIDO DE VENDA</span></h4>
