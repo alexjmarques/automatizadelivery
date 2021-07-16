@@ -659,8 +659,8 @@ function mudarStatus(id, status, id_caixa) {
       $('.btn_acao .carrega').html('')
       if (dd == 'Status alterado com sucesso') {
         atualizar();
-        varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
         $('#close-modal').trigger('click');
+        varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
       } else { }
 
     },
