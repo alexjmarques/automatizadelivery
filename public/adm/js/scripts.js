@@ -638,13 +638,6 @@ function mudarStatus(id, status, id_caixa) {
     id_empresa,
     id_motoboy
   }
-  //console.log('Imprimiu');
-  if (parseInt(status) === 2) {
-    varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir/${id}`, 'popup')
-    $.getJSON(`/${link_site}/admin/pedido/imprimir-local/${id}`, function (dd) {
-      console.log('Imprimiu');
-    })
-  }
 
   $.ajax({
     url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${id_motoboy}`,
@@ -666,6 +659,7 @@ function mudarStatus(id, status, id_caixa) {
       $('.btn_acao .carrega').html('')
       if (dd == 'Status alterado com sucesso') {
         atualizar();
+        varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
         $('#close-modal').trigger('click');
       } else { }
 
