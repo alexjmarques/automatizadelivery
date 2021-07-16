@@ -153,6 +153,27 @@
 
         <table style="width:100%;  margin-top:10px; border-top: 2px double #000; font-family: sans-serif; font-size: 14px;">
             <tr>
+                <td align="left" style="padding-top:10px;"><strong>TIPO PAGAMENTO</strong></td>
+            </tr>
+        </table>
+
+        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 13px;">
+        {% if pedido.tipo_pagamento == 1 %}
+            <tr>
+                <td align="left">Pagamento em {{pagamento.tipo}} levar troco de: {{ moeda.simbolo }} {{ (pedido.troco - pedido.total_pago)|number_format(2, ',', '.') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td align="left">Pagamento em {{pagamento.tipo}}</td>
+
+            </tr>
+            {% endif %}
+        </table>
+            
+
+
+        <table style="width:100%;  margin-top:10px; border-top: 2px double #000; font-family: sans-serif; font-size: 14px;">
+            <tr>
                 <td align="left" style="padding-top:10px;"><strong>DADOS CLIENTE</strong></td>
             </tr>
 
