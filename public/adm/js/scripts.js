@@ -669,14 +669,15 @@ function mudarStatus(id, status, id_caixa) {
   var newWin = window.open();
 $.ajax({
     type: "GET", url: `https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, data: {},
-    beforeSend: function (data) {
+    complete: function (data) {
       newWin.document.write(data);
         newWin.document.close();
         newWin.focus();
         newWin.print();
+        
     },
-    success: function(data){
-        newWin.close();
+    success: function(){ 
+      newWin.close();  
     }
     ,error: function() {
     }
