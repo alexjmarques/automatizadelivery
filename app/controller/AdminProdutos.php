@@ -436,15 +436,15 @@ class AdminProdutos extends Controller
             $status = 0;
         }
 
-        if ($data['cod']) {
-            $cod = $data['cod'];
-        } else {
-            $cod = 0;
-        }
+        // if ($data['cod']) {
+        //     $cod = $data['cod'];
+        // } else {
+        //     $cod = 0;
+        // }
 
         $valor = (new Produtos())->findById($data['id']);
         $valor->nome = $data['nome'];
-        $valor->cod = $cod;
+        $valor->cod = $data['cod'];
         $valor->descricao = $data['descricao'];
         $valor->observacao = $data['observacao'];
         $valor->valor = $this->geral->brl2decimal($data['valor']);
