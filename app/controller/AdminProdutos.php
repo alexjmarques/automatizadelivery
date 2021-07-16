@@ -407,6 +407,7 @@ class AdminProdutos extends Controller
 
     public function update($data)
     {
+        //dd($data);
 
         $adicionalSt = $_POST['adicional'];
         if ($adicionalSt != null) {
@@ -429,12 +430,6 @@ class AdminProdutos extends Controller
             $valor_promocional = 0;
         }
 
-        if ($data['valor']) {
-            $preco = $this->geral->brl2decimal($data['valor']);
-        } else {
-            $preco = 0;
-        }
-
         if ($data['switch']) {
             $status = $data['switch'];
         } else {
@@ -452,38 +447,15 @@ class AdminProdutos extends Controller
         $valor->cod = $cod;
         $valor->descricao = $data['descricao'];
         $valor->observacao = $data['observacao'];
-        $valor->valor = $preco;
+        $valor->valor = $this->geral->brl2decimal($data['valor']);
         $valor->valor_promocional = $valor_promocional;
-        $valor->id_categoria = $data['categoria'];
         $valor->imagem = $data['imagemNome'];
         $valor->adicional = $adicionalSelecionados;
         $valor->sabores = $saborSelecionados;
         $valor->status = $status;
         $valor->dias_disponiveis = $dias_disponiveis;
-        $valor->vendas = $data['vendas'];
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
-
-        dd($valor);
-
-        // if ($data['categoriaCad'] != $data['categoria']) {
-        //     $cat = $this->acoes->getByField('categorias', 'id', $data['categoriaCad']);
-        //     $novaQtd = $cat->produtos - 1;
-
-        //     $valorCat = (new Categorias())->findById($data['categoriaCad']);
-        //     $valorCat->produtos = $novaQtd;
-        //     $valorCat->id_empresa = $data['id_empresa'];
-        //     $valorCat->save();
-
-
-        //     $catNe = $this->acoes->getByField('categorias', 'id', $data['categoria']);
-        //     $novaQtdN = $catNe->produtos + 1;
-
-        //     $valorNCat = (new Categorias())->findById($data['categoria']);
-        //     $valorNCat->produtos = $novaQtdN;
-        //     $valorNCat->id_empresa = $data['id_empresa'];
-        //     $valorNCat->save();
-        // }
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto', 'code' => 2,  'url' => 'admin/cardapio',]);
@@ -533,7 +505,6 @@ class AdminProdutos extends Controller
         $valor->observacao = $data['observacao'];
         $valor->valor = $preco;
         $valor->valor_promocional = $valor_promocional;
-        $valor->id_categoria = $data['categoria'];
         $valor->imagem = $data['imagemNome'];
         $valor->adicional = $adicionalSelecionados;
         $valor->sabores = $saborSelecionados;
