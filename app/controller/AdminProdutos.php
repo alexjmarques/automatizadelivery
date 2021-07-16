@@ -458,18 +458,93 @@ class AdminProdutos extends Controller
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
+        if ($data['categoriaCad'] != $data['categoria']) {
+            $cat = $this->acoes->getByField('categorias', 'id', $data['categoriaCad']);
+            $novaQtd = $cat->produtos - 1;
+
+            $valorCat = (new Categorias())->findById($data['categoriaCad']);
+            $valorCat->produtos = $novaQtd;
+            $valorCat->id_empresa = $data['id_empresa'];
+            $valorCat->save();
+
+
+            $catNe = $this->acoes->getByField('categorias', 'id', $data['categoria']);
+            $novaQtdN = $catNe->produtos + 1;
+
+            $valorNCat = (new Categorias())->findById($data['categoria']);
+            $valorNCat->produtos = $novaQtdN;
+            $valorNCat->id_empresa = $data['id_empresa'];
+            $valorNCat->save();
+        }
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto', 'code' => 2,  'url' => 'admin/cardapio',]);
+        exit($json);
+    }
+
+    public function updatePizza($data)
+    {
+
+        $adicionalSt = $_POST['adicional'];
+        if ($adicionalSt != null) {
+            $adicionalSelecionados = implode(',', $adicionalSt);
+        }
+
+        $saborSt = $_POST['sabor'];
+        if ($saborSt != null) {
+            $saborSelecionados = implode(',', $saborSt);
+        }
+
+        $diasDD = $_POST['dias_disponiveis'];
+        if ($diasDD != null) {
+            $dias_disponiveis = implode(',', $diasDD);
+        }
+
+        if ($data['valor_promocional']) {
+            $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
+        } else {
+            $valor_promocional = 0;
+        }
+
+        if ($data['valor']) {
+            $preco = $this->geral->brl2decimal($data['valor']);
+        } else {
+            $preco = 0;
+        }
+
+        if ($data['switch']) {
+            $status = $data['switch'];
+        } else {
+            $status = 0;
+        }
+
+        $valor = (new Produtos())->findById($data['id']);
+        $valor->nome = $data['nome'];
+        $valor->cod = $data['cod'];
+        $valor->descricao = $data['descricao'];
+        $valor->observacao = $data['observacao'];
+        $valor->valor = $preco;
+        $valor->valor_promocional = $valor_promocional;
+        $valor->id_categoria = $data['categoria'];
+        $valor->imagem = $data['imagemNome'];
+        $valor->adicional = $adicionalSelecionados;
+        $valor->sabores = $saborSelecionados;
+        $valor->status = $status;
+        $valor->dias_disponiveis = $dias_disponiveis;
+        $valor->vendas = $data['vendas'];
+        $valor->id_empresa = $data['id_empresa'];
+        $valor->save();
+
         if ($data['valor'] ==  0) {
-            if ($valor->id >  0) {
+            if ($valor->id > 0) {
 
                 $array = $data['preco'];
-                //dd($array);
                 $newArray = array();
                 foreach (array_keys($array) as $fieldKey) {
                     foreach ($array[$fieldKey] as $key => $value) {
                         $newArray[$key][$fieldKey] = $value;
                     }
                 }
-                
                 foreach ($newArray as $res) {
                     //print_r((int)$res['id_valor']);
                     $prodValor = (new PizzaProdutoValor())->findById((int)$res['id_valor']);

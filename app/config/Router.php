@@ -343,6 +343,7 @@ $router->get('/{linkSite}/admin/produto-pizza/editar/{id}', 'AdminProdutos:edita
 
 $router->post('/{linkSite}/admin/produto/i', 'AdminProdutos:insert');
 $router->post('/{linkSite}/admin/produto/u/{id}', 'AdminProdutos:update');
+$router->post('/{linkSite}/admin/produto-pizza/u/{id}', 'AdminProdutos:updatePizza');
 $router->get('/{linkSite}/admin/produto/d/{id}', 'AdminProdutos:deletar');
 $router->post('/{linkSite}/admin/upload', 'AdminProdutos:uploadImagem');
 $router->get('/{linkSite}/admin/produtos-adicionais', 'AdminProdutosAdicionais:index');
