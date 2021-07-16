@@ -130,12 +130,12 @@ class CarrinhoPizzaController extends Controller
             $sabor = "";
             foreach ($data['pizza_prod'] as $cart) {
                 $pizzaSabor = $this->acoes->getByField('produtos', 'id', $cart);
-                $sabor .= $i++.'/'.$data['quantidade'].' '.$pizzaSabor->nome.' - ';
+                $sabor .= $i++.'/'.$data['quantidade'].' '.$pizzaSabor->cod.' '.$pizzaSabor->nome.' - ';
             }
             $saborfinal = rtrim($sabor, ' - ');
             $nomePizza = "PIZZA {$tamanho->nome} {$data['quantidade']} SABORES - {$massa->nome} - {$saborfinal}";
         }else{
-            $nomePizza = "PIZZA {$tamanho->nome} {$quantidade} - {$massa->nome} - {$sabor->nome}";
+            $nomePizza = "PIZZA {$tamanho->nome} {$quantidade} - {$massa->nome} - {$sabor->cod} {$sabor->nome}";
             //dd($nomePizza);
         }
         //dd('passou');
