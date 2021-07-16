@@ -441,9 +441,15 @@ class AdminProdutos extends Controller
             $status = 0;
         }
 
+        if ($data['cod']) {
+            $cod = $data['cod'];
+        } else {
+            $cod = 0;
+        }
+
         $valor = (new Produtos())->findById($data['id']);
         $valor->nome = $data['nome'];
-        $valor->cod = $data['cod'];
+        $valor->cod = $cod;
         $valor->descricao = $data['descricao'];
         $valor->observacao = $data['observacao'];
         $valor->valor = $preco;
