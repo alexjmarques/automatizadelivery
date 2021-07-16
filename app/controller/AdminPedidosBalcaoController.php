@@ -399,7 +399,7 @@ class AdminPedidosBalcaoController extends Controller
                 $idProduto = $cart;
                 $pizzaValor = $this->acoes->getByFieldTwo('pizzaProdutoValor', 'id_produto', $cart, 'id_tamanho', $data['tamanho']);
                 $pizzaNome = $this->acoes->getByField('produtos', 'id', $cart);
-                $sabor .= $i++ . '/' . $data['tipo'] . ' ' .$pizzaNome->cod.' '.$pizzaNome->nome. ' - ';
+                $sabor .= $i++ . '/' . $data['tipo'] . ' [' .$pizzaNome->cod.'] '.$pizzaNome->nome. ' - ';
                 array_push($arrValor, $pizzaValor->valor);
             }
             $saborfinal = rtrim($sabor, ' - ');

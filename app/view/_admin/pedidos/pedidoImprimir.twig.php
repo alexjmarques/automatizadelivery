@@ -60,7 +60,7 @@
             {% if pedido.numero_pedido == car.numero_pedido %}
             {% if car.id_produto == prod.id %}
             <tr>
-                <td style="border-bottom: 1px dotted #000; padding-top:5px; padding-bottom:5px; font-family: sans-serif; font-size: 11px;"><strong>{{ car.quantidade}}x </strong>- {% if car.variacao is not null %}{% set foo = car.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br />{% else %}<strong>{{ prod.nome }}</strong>{% endif %}
+                <td style="border-bottom: 1px dotted #000; padding-top:5px; padding-bottom:5px; font-family: sans-serif; font-size: 13px;"><strong>{{ car.quantidade}}x </strong>- {% if car.variacao is not null %}{% set foo = car.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br />{% else %}<strong>{{ prod.nome }}</strong>{% endif %}
                     <span>{{ moeda.simbolo }} {{ (car.valor * car.quantidade)|number_format(2, ',', '.') }}</span>
                     {% if car.observacao != "" %}
                     <span>(<strong>Obs.:</strong> {{car.observacao}})</span>
@@ -73,9 +73,9 @@
 
                     <p class="mb-0 mt-0"><strong>Sabor: </strong>
                         {% if foo[2] %}{{ foo[2] }}{% endif %}
-                        {% if foo[3] %} - {{ foo[3] }}{% endif %}
-                        {% if foo[4] %} - {{ foo[4] }}{% endif %}
-                        {% if foo[5] %} - {{ foo[5] }}{% endif %}
+                        {% if foo[3] %}<br> - {{ foo[3] }}{% endif %}
+                        {% if foo[4] %}<br> - {{ foo[4] }}{% endif %}
+                        {% if foo[5] %}<br> - {{ foo[5] }}{% endif %}
                     </p>
                     {% endif %}
 
@@ -105,7 +105,7 @@
             {% endfor %}
             {% endfor %}
         </table>
-        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 11px;">
+        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 13px;">
             {% if pedido.tipo_pagamento == 1 %}
             <tr>
                 <td><strong class="color-money-off">Pagamento em {{pagamento.tipo}} levar troco de:</strong></td>
@@ -157,7 +157,7 @@
             </tr>
 
         </table>
-        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 11px;">
+        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 13px;">
             <tr>
                 <td align="left">Cliente: {{cliente.nome}}</td>
 
@@ -167,7 +167,7 @@
             </tr>
 
             <tr>
-                <td align="left" style="border-top: 1px dotted #000; border-bottom: 1px solid #ccc; padding-bottom: 10px; font-family: sans-serif; font-size: 11px;">
+                <td align="left" style="border-top: 1px dotted #000; border-bottom: 1px solid #ccc; padding-bottom: 10px; font-family: sans-serif; font-size: 13px;">
                     {% if pedido.tipo_frete == 1 %}
                     <h4 style="margin: 15px 0 3px 0; padding:0;">Cliente vai retirar</h4>
                     {% else %}
