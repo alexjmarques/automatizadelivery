@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Automatiza Delivery</title>
+</head>
+<body>
 <script>
         window.onload = function() {
             window.print();
@@ -183,3 +190,6 @@
         </tr>
     </table>
 </div>
+</body>
+
+</html>
