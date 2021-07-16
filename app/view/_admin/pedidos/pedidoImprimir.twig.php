@@ -21,14 +21,14 @@
             window.close();
         }
     </script>
-    <div style="width: 100%; font-family: sans-serif; font-size: 16px;">
+    <div style="width: 100%; font-family: sans-serif; font-size: 14px;">
         <table style="width:100%;">
             <tr align="center">
                 <td style="text-align:center;"><span style="text-transform: uppercase;">PEDIDO DE VENDA</span></td>
             </tr>
         </table>
 
-        <table style="width:100%; font-family: sans-serif; font-size: 16px;">
+        <table style="width:100%; font-family: sans-serif; font-size: 14px;">
             <tr>
                 <td align="center">{% if pedido.tipo_frete == 1 %}
                     <span style="text-transform: uppercase;">Cliente vai {{tipoFrete.tipo}}</span>
@@ -47,7 +47,7 @@
         </table>
 
 
-        <table style="width:100%; font-family: sans-serif; font-size: 16px;">
+        <table style="width:100%; font-family: sans-serif; font-size: 14px;">
             <tr>
                 <td align="center">>>> ITENS DO PEDIDO <<< </td>
             </tr>
@@ -60,7 +60,7 @@
             {% if pedido.numero_pedido == car.numero_pedido %}
             {% if car.id_produto == prod.id %}
             <tr>
-                <td style="border-bottom: 1px dotted #000; padding-top:5px; padding-bottom:5px; font-family: sans-serif; font-size: 14px;"><strong>{{ car.quantidade}}x </strong>- {% if car.variacao is not null %}{% set foo = car.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br />{% else %}<strong>{{ prod.nome }}</strong>{% endif %}
+                <td style="border-bottom: 1px dotted #000; padding-top:5px; padding-bottom:5px; font-family: sans-serif; font-size: 11px;"><strong>{{ car.quantidade}}x </strong>- {% if car.variacao is not null %}{% set foo = car.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br />{% else %}<strong>{{ prod.nome }}</strong>{% endif %}
                     <span>{{ moeda.simbolo }} {{ (car.valor * car.quantidade)|number_format(2, ',', '.') }}</span>
                     {% if car.observacao != "" %}
                     <span>(<strong>Obs.:</strong> {{car.observacao}})</span>
@@ -105,7 +105,7 @@
             {% endfor %}
             {% endfor %}
         </table>
-        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 14px;">
+        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 11px;">
             {% if pedido.tipo_pagamento == 1 %}
             <tr>
                 <td><strong class="color-money-off">Pagamento em {{pagamento.tipo}} levar troco de:</strong></td>
@@ -151,13 +151,13 @@
             {% endif %}
         </table>
 
-        <table style="width:100%;  margin-top:10px; border-top: 2px double #000; font-family: sans-serif; font-size: 18px;">
+        <table style="width:100%;  margin-top:10px; border-top: 2px double #000; font-family: sans-serif; font-size: 14px;">
             <tr>
                 <td align="left" style="padding-top:10px;"><strong>DADOS CLIENTE</strong></td>
             </tr>
 
         </table>
-        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 14px;">
+        <table style="width:100%;  margin-top:5px; font-family: sans-serif; font-size: 11px;">
             <tr>
                 <td align="left">Cliente: {{cliente.nome}}</td>
 
@@ -167,7 +167,7 @@
             </tr>
 
             <tr>
-                <td align="left" style="border-top: 1px dotted #000; border-bottom: 1px solid #ccc; padding-bottom: 10px; font-family: sans-serif; font-size: 14px;">
+                <td align="left" style="border-top: 1px dotted #000; border-bottom: 1px solid #ccc; padding-bottom: 10px; font-family: sans-serif; font-size: 11px;">
                     {% if pedido.tipo_frete == 1 %}
                     <h4 style="margin: 15px 0 3px 0; padding:0;">Cliente vai retirar</h4>
                     {% else %}
@@ -183,7 +183,7 @@
                 </td>
             </tr>
         </table>
-        <table style="width:100%;margin-top:5px; text-align:center; font-family: sans-serif; font-size: 13px;">
+        <table style="width:100%;margin-top:5px; text-align:center; font-family: sans-serif; font-size: 9px;">
             <tr>
                 <td align="center">{{empresa.nome_fantasia}}</td>
             </tr>
@@ -192,7 +192,7 @@
             </tr>
         </table>
 
-        <table style="width:100%;margin-top:5px; text-align:center; font-family: sans-serif; font-size: 11px;">
+        <table style="width:100%;margin-top:5px; text-align:center; font-family: sans-serif; font-size: 8px;">
             <tr>
                 <td align="center">Automatiza Delivery</td>
             </tr>
