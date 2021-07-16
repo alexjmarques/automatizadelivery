@@ -28,7 +28,7 @@
             </tr>
         </table>
 
-        <table style="width:100%; font-family: sans-serif; font-size: 14px;">
+        <table style="width:100%; font-family: sans-serif; font-size: 12px;">
             <tr>
                 <td align="center">{% if pedido.tipo_frete == 1 %}
                     <span style="text-transform: uppercase;">Cliente vai {{tipoFrete.tipo}}</span>
@@ -38,22 +38,22 @@
                 </td>
             </tr>
         </table>
-        <table style="width:100%; margin-top:5px;">
+        <table style="width:100%; margin-top:0px;">
             <tr>
                 <td align="center">
-                    <h4 style="font-family: sans-serif; font-size: 20px;">Pedido #{{pedido.numero_pedido}}</h4>
+                    <h4 style="font-family: sans-serif; font-size: 22px;">Nº {{pedido.numero_pedido}}</h4>
                 </td>
             </tr>
         </table>
 
-
-        <table style="width:100%; font-family: sans-serif; font-size: 14px;">
+        <table style="width:100%;  margin-top:5px; border-top: 2px double #000; font-family: sans-serif; font-size: 14px;">
             <tr>
-                <td align="center">>>> ITENS DO PEDIDO <<< </td>
+                <td align="left" style="padding-top:10px;"><strong>ITENS DO PEDIDO</strong></td>
             </tr>
+
         </table>
 
-        <table style="width:100%; margin-top:20px;">
+        <table style="width:100%; margin-top:5px;">
 
             {% for car in carrinho %}
             {% for prod in  produtos %}

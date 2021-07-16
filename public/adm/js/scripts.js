@@ -660,11 +660,26 @@ function mudarStatus(id, status, id_caixa) {
       if (dd == 'Status alterado com sucesso') {
         atualizar();
         $('#close-modal').trigger('click');
-        varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
+        
+        //varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
       } else { }
 
     },
   })
+
+  var newWin = window.open();
+$.ajax({
+    type: "GET", url: `https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, data: {},
+    success: function(data){
+        newWin.document.write(data);
+        newWin.document.close();
+        newWin.focus();
+        newWin.print();
+        newWin.close();
+    }
+    ,error: function() {
+    }
+});
 }
 
 function updateItem(id_empresa, id_categoria, id_tamanhos) {
