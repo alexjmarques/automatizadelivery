@@ -340,7 +340,6 @@ $router->get('/{linkSite}/admin/produto/editar/{id}', 'AdminProdutos:editar');
 $router->get('/{linkSite}/admin/produto-pizza/novo/{catId}', 'AdminProdutos:novoVariavel');
 $router->get('/{linkSite}/admin/produto-pizza/editar/{id}', 'AdminProdutos:editarVariavel');
 
-
 $router->post('/{linkSite}/admin/produto/i', 'AdminProdutos:insert');
 $router->post('/{linkSite}/admin/produto/u/{id}', 'AdminProdutos:update');
 $router->post('/{linkSite}/admin/produto-pizza/u/{id}', 'AdminProdutos:updatePizza');

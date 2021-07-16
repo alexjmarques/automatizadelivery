@@ -233,7 +233,7 @@ class AdminPedidosBalcaoController extends Controller
         $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
         $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
 
-        
+        if($endereco){
 
         $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
 
@@ -313,7 +313,7 @@ class AdminPedidosBalcaoController extends Controller
                 $total = 0;
             }
         }
-    
+    }
 
         $ultimaVenda = null;
         if ($this->sessao->getUser()) {
@@ -865,7 +865,7 @@ class AdminPedidosBalcaoController extends Controller
             $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
             $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
 
-            
+            if($endereco){
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
 
@@ -945,7 +945,7 @@ class AdminPedidosBalcaoController extends Controller
                     $total = 0;
                 }
             }
-        
+        }
             $numeroPedido = $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
             $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
@@ -1033,7 +1033,7 @@ class AdminPedidosBalcaoController extends Controller
             $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
             $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
 
-            
+            if($endereco){
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
 
@@ -1048,9 +1048,6 @@ class AdminPedidosBalcaoController extends Controller
 
             $km_entrega_excedente = $delivery->km_entrega_excedente;
             $valor_excedente = $delivery->valor_excedente;
-
-
-
 
             if ($cFrete <= $km_entrega) {
                 $total = $taxa_entrega;
@@ -1113,7 +1110,7 @@ class AdminPedidosBalcaoController extends Controller
                     $total = 0;
                 }
             }
-        
+        }
 
             $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
 
@@ -1271,8 +1268,8 @@ class AdminPedidosBalcaoController extends Controller
         $ddi = '+55';
         $numerofinal = $ddi . $cliente->telefone;
 
-        $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
-        $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
+        //$client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
+        //$client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'code' => 2,  'url' => 'admin/pedidos', 'pedido' => $data['numero_pedido']]);
