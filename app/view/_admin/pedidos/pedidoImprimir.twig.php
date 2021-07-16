@@ -1,3 +1,11 @@
+<script>
+        window.onload = function() {
+            window.print();
+        }
+        window.onafterprint = function() {
+            window.close();
+        }
+    </script>
 <div style="width: 260px; font-size: sans-serif; font-size: 16px;">
     <table style="width:100%;">
         <tr align="center">
