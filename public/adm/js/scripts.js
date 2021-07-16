@@ -51,41 +51,41 @@ $('.valor, #valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_en
 
 $("#buscarCli").on('click blur touchleave touchcancel', function () {
   let telefone = $('#telefone').val();
-  let formData = {telefone}
+  let formData = { telefone }
   //console.log(telefone);
   $.ajax({
     url: `/${link_site}/admin/pedido/pesquisa`,
     type: 'post',
-    data: formData ,
+    data: formData,
     beforeSend: function () {
-        $('.carregar').html(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><p class="small mb-0">Estamos processando a sua busca aguarde um momento.</p></div></div></div>`);
+      $('.carregar').html(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><p class="small mb-0">Estamos processando a sua busca aguarde um momento.</p></div></div></div>`);
     },
     complete: function (data) {
-        $('.carregar').html('');
+      $('.carregar').html('');
     },
     success: function (data) {
-        console.log(data.id);
-        if(data.id > 0){
-          $('#mostrarCliente').html(`<label for="cliente" class="mt-3 p-2 bloco-ops flex-container"><div class="p-2"><input type="radio" id="cliente" name="cliente" value="${data.id}"></div><div class="p-2">Nome: ${data.nome}<br/>Telefone: ${data.telefone}</div></label>`);
-        }else{
-          $('#mostrarCliente').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
-        }
-        
+      console.log(data.id);
+      if (data.id > 0) {
+        $('#mostrarCliente').html(`<label for="cliente" class="mt-3 p-2 bloco-ops flex-container"><div class="p-2"><input type="radio" id="cliente" name="cliente" value="${data.id}"></div><div class="p-2">Nome: ${data.nome}<br/>Telefone: ${data.telefone}</div></label>`);
+      } else {
+        $('#mostrarCliente').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
+      }
+
     },
     error: function (data) {
-        $('.carregar').html(`<div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><h4 class="text-primary">Nenhum pedido foi encontrado.</h4><p class="small mb-0">Verifique o número digitado ou tente novamente.</p></div></div></div>`);
+      $('.carregar').html(`<div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><h4 class="text-primary">Nenhum pedido foi encontrado.</h4><p class="small mb-0">Verifique o número digitado ou tente novamente.</p></div></div></div>`);
     }
-});
+  });
   // $.get(`/${link_site}/admin/pedido/pesquisa`, function (dd) {
   //   console.log(dd);
 
   //     var buscaCliente = $('#buscaCliente').val();
   //     var id_empresa = $(`#id_empresa`).val();
-      
+
   //     if (parseInt(numero_pedido) === 0) {
   //         $('#mensagem').html(`<div class="alert alert-danger" role="alert">Para efetuar informe o numero do pedido</div>`)
   //     } else {
-          
+
   //     }
   //     $('#pesquisaEntregasMotoboy').html(dd);
   //     $('#mensagem').html('')
@@ -660,25 +660,25 @@ function mudarStatus(id, status, id_caixa) {
       if (dd == 'Status alterado com sucesso') {
         atualizar();
         $('#close-modal').trigger('click');
-        
+
         //varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
       } else { }
 
     },
   })
   var newWin = window.open();
-$.ajax({
+  $.ajax({
     type: "GET", url: `https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, data: {},
     success: function (data) {
       newWin.document.write(data);
-        newWin.document.close();
-        newWin.focus();
-        newWin.print();
-        newWin.close();
+      newWin.document.close();
+      newWin.focus();
+      newWin.print();
+      newWin.close();
     },
-    ,error: function() {
+    error: function () {
     }
-});
+  });
 }
 
 function updateItem(id_empresa, id_categoria, id_tamanhos) {
@@ -1793,7 +1793,7 @@ $("#formFinish").submit(function () {
               });
             }
             break;
-            case 'Pedido editado com sucesso':
+          case 'Pedido editado com sucesso':
             $('#mensagem').html(`Pedido editado com sucesso`);
             $('.successSup').show();
             $('.errorSup').hide();
