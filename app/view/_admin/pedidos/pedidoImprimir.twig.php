@@ -14,17 +14,45 @@
         }
     </script>
 <div style="width: 100%; font-size: sans-serif; font-size: 16px;">
-    <h4 style="text-align:center; text-transform: uppercase;">PEDIDO DE VENDA</h4>
-    <h4 style="text-align:center;">{% if pedido.tipo_frete == 1 %}Cliente vai {{tipoFrete.tipo}}{% else %}Pedido para {{tipoFrete.tipo}}{% endif %}</h4>
-    <h2 style="text-align:center;">Pedido #{{pedido.numero_pedido}}</h2>
-    <h4 style="text-align:center; margin-top:15px;">>>> ITENS DO PEDIDO <<<</h4>
+    <table style="width:100%;">
+        <tr align="center">
+            <td style="text-align:center;"><span style="text-transform: uppercase;">PEDIDO DE VENDA</span></td>
+        </tr>
+    </table>
 
-    <ul style="width:100%; margin-top:20px; padding-left:0; list-style:none;">
+    <table style="width:100%;">
+        <tr>
+            <td align="center">{% if pedido.tipo_frete == 1 %}
+                <span style="text-transform: uppercase;">Cliente vai {{tipoFrete.tipo}}</span>
+                {% else %}
+                <span style="text-transform: uppercase;">Pedido para {{tipoFrete.tipo}}</span>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <table style="width:100%; margin-top:20px;">
+        <tr>
+            <td align="center"><h4 style="font-size: sans-serif; font-size: 20px;">Pedido #{{pedido.numero_pedido}}</h4></td>
+        </tr>
+    </table>
+
+
+    <table style="width:100%;  margin-top:20px;">
+        <tr>
+            <td align="center"><strong>>>> ITENS DO PEDIDO <<< </strong>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width:100%; margin-top:20px;">
+
         {% for car in carrinho %}
         {% for prod in  produtos %}
         {% if pedido.numero_pedido == car.numero_pedido %}
         {% if car.id_produto == prod.id %}
-            <li style="border-bottom: 1px dotted #000; padding-top:15px; padding-bottom:15px;"><strong>{{ car.quantidade}}x </strong>- {% if car.variacao is not null %}{% set foo = car.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br />{% else %}<strong>{{ prod.nome }}</strong>{% endif %}
+        <tr>
+            <td style="border-bottom: 1px dotted #000; padding-top:15px; padding-bottom:15px;"><strong>{{ car.quantidade}}x </strong>- {% if car.variacao is not null %}{% set foo = car.variacao|split(' - ') %}<strong>{{ foo[0] }}</strong><br />{% else %}<strong>{{ prod.nome }}</strong>{% endif %}
                 <span>{{ moeda.simbolo }} {{ (car.valor * car.quantidade)|number_format(2, ',', '.') }}</span>
                 {% if car.observacao != "" %}
                 <span>(<strong>Obs.:</strong> {{car.observacao}})</span>
@@ -62,12 +90,13 @@
 
                 {% endif %}
                 {% endfor %}
-        </li>
+            </td>
+        </tr>
         {% endif %}
         {% endif %}
         {% endfor %}
         {% endfor %}
-        </ul>
+    </table>
     <table style="width:100%;  margin-top:10px;">
         {% if pedido.tipo_pagamento == 1 %}
         <tr>
