@@ -233,6 +233,8 @@ class AdminPedidosBalcaoController extends Controller
         $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
         $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
 
+        if($endereco){
+
         $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
 
         $taxa_entrega = $delivery->taxa_entrega;
@@ -311,6 +313,7 @@ class AdminPedidosBalcaoController extends Controller
                 $total = 0;
             }
         }
+    }
 
         $ultimaVenda = null;
         if ($this->sessao->getUser()) {
