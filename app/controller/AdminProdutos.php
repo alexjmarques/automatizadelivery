@@ -571,6 +571,6 @@ class AdminProdutos extends Controller
         $valorCat->id_empresa = $data['id_empresa'];
         $valorCat->save();
 
-        redirect(BASE . "{$data['linkSite']}/admin/categorias");
+        redirect(BASE . "{$data['linkSite']}/admin/cardapio");
     }
 }

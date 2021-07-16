@@ -150,7 +150,7 @@ class AdminCategorias extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria', 'code' => 2,  'url' => 'admin/categorias',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Categoria cadastrada com sucesso', 'error' => 'Não foi posível cadastrar a categoria', 'code' => 2,  'url' => 'admin/cardapio',]);
         exit($json);
     }
 
@@ -166,7 +166,7 @@ class AdminCategorias extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria', 'code' => 2,  'url' => 'admin/categorias',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Categoria atualizada com sucesso', 'error' => 'Não foi posível atualizar a categoria', 'code' => 2,  'url' => 'admin/cardapio',]);
         exit($json);
     }
 
@@ -175,6 +175,6 @@ class AdminCategorias extends Controller
         $valor = (new Categorias())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE . "{$data['linkSite']}/admin/categorias");
+        redirect(BASE . "{$data['linkSite']}/admin/cardapio");
     }
 }
