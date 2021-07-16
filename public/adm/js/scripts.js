@@ -675,7 +675,6 @@ $.ajax({
         newWin.focus();
         newWin.print();
         newWin.close();
-        
     },
     ,error: function() {
     }
