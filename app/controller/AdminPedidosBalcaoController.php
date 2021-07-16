@@ -96,12 +96,27 @@ class AdminPedidosBalcaoController extends Controller
             'moeda' => $moeda,
             'planoAtivo' => $planoAtivo,
             'clientes' => $resultClientes,
-            'clientesEmpresa' => $clientesEmpresa,
             'caixa' => $caixa->status,
             'motoboy' => $resultMotoboy
         ]);
     }
 
+    public function pesquisaCliente($data)
+    {
+        $telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
+        $resultClientes = $this->acoes->getByFieldTwo('usuarios', 'telefone', $telefone, 'nivel', 3);
+        if($resultClientes){
+            //$resultEndereco = $this->acoes->getByField('enderecos', 'id_usuario', $resultClientes->id);
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => $resultClientes->id,'nome' => $resultClientes->nome, 'telefone' => $data['telefone']]);
+            exit($json);
+        }else{
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0 ,'mensagem' => 'Cliente não cadastrado, faça o cadastro antes de continuar']);
+            exit($json);
+        }
+        
+    }
 
 
     public function start($data)
@@ -1153,6 +1168,7 @@ class AdminPedidosBalcaoController extends Controller
     //Finaliza e fecha o pedido do cliente
     public function carrinhoFinalizarPedido($data)
     {
+
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -1229,9 +1245,19 @@ class AdminPedidosBalcaoController extends Controller
         $pedido->save();
 
         $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
-        $userUp = (new UsuariosEmpresa())->findById($user->id);
-        $userUp->pedidos = $user->pedidos + 1;
-        $userUp->save();
+
+        if($user){
+            $userUp = (new UsuariosEmpresa())->findById($user->id);
+            $userUp->pedidos = $user->pedidos + 1;
+            $userUp->save();
+        }else{
+            $userUp = new UsuariosEmpresa();
+            $userUp->id_empresa = $empresa->id;
+            $userUp->id_usuario = $this->sessao->getSessao('id_cliente');
+            $userUp->nivel = 3;
+            $userUp->pedidos = 1;
+            $userUp->save();
+        }        
 
         $cliente = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
         $mensagem =  "Você acaba de efetuar um pedido no {$empresa->nome_fantasia} esse é seu número de pedido: {$data['numero_pedido']}. Para acompanhar seu pedido acesse nosso site, faça o login usando o número de Telefone informado no momento do pedido. Para acompanhar acesse o link: https://www.automatizadelivery.com.br/{$empresa->link_site}/login";

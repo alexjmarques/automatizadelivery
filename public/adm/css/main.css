@@ -1798,14 +1798,38 @@ table.dataTable td {
   color: #fff;
   background-color: #520512 !important;
 }
-
+.flex-container {
+  display: flex;
+}
 .full-width,
 .media-body {
   width: 100%;
   float: left;
 }
+.mn-6{
+  margin-top: -85px;
+}
+.bloco-ops{
+  background: #f1f4f5;
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+}
 
 
+.btn_buscar{
+  margin-top: 8px;
+  color: #fff;
+  background-color: #520512 !important;
+  border: 1px solid #520512;
+}
+.p-0.mt-2.pr-2.left{
+  padding-top: 4px !important;
+  font-weight: bold;
+}
+.btn_buscar:hover{
+  color: #520512;
+  background-color: #fff !important;
+}
 .excluir_prod{
   padding: 0 0 0 20px !important;
   float: right;

@@ -64,7 +64,7 @@
 
     <link href="https://unpkg.com/dropzone/dist/dropzone.css" rel="stylesheet"/>
     <link href="https://unpkg.com/croppie/croppie.css" rel="stylesheet"/>
-
+    
     <script src="{{BASE}}adm/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/jquery.dataTables.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/bootstrap.bundle.min.js"></script>
@@ -94,6 +94,7 @@
 	<script src="https://unpkg.com/dropzone"></script>
     <script src="https://unpkg.com/croppie"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="{{BASE}}adm/js/scripts.js"></script>
 </body>
 

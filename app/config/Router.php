@@ -229,7 +229,6 @@ $router->delete('/admin/pagina/d', 'Admin:delete');
 
 $router->get('/admin/empresas', 'Admin:empresas');
 
-
 $router->get('/{linkSite}/admin', 'AdminDashboard:index');
 $router->get('/{linkSite}/admin/', 'AdminDashboard:index');
 $router->get('/{linkSite}/admin/sair', 'AllController:sairAdmin');
@@ -295,6 +294,7 @@ $router->post('/{linkSite}/admin/pedido/mudar/{id}/{status}/{id_caixa}/{motoboy}
 
 
 $router->get('/{linkSite}/admin/pedido/novo', 'AdminPedidosBalcaoController:index');
+$router->post('/{linkSite}/admin/pedido/pesquisa', 'AdminPedidosBalcaoController:pesquisaCliente');
 $router->post('/{linkSite}/admin/novo/cliente', 'AdminPedidosBalcaoController:carrinhoCadastroValida');
 
 $router->get('/{linkSite}/admin/pedido/novo/produtos', 'AdminPedidosBalcaoController:produtos');
