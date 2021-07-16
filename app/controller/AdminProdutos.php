@@ -458,24 +458,24 @@ class AdminProdutos extends Controller
         $valor->id_empresa = $data['id_empresa'];
         $valor->save();
 
-        if ($data['categoriaCad'] != $data['categoria']) {
-            $cat = $this->acoes->getByField('categorias', 'id', $data['categoriaCad']);
-            $novaQtd = $cat->produtos - 1;
+        // if ($data['categoriaCad'] != $data['categoria']) {
+        //     $cat = $this->acoes->getByField('categorias', 'id', $data['categoriaCad']);
+        //     $novaQtd = $cat->produtos - 1;
 
-            $valorCat = (new Categorias())->findById($data['categoriaCad']);
-            $valorCat->produtos = $novaQtd;
-            $valorCat->id_empresa = $data['id_empresa'];
-            $valorCat->save();
+        //     $valorCat = (new Categorias())->findById($data['categoriaCad']);
+        //     $valorCat->produtos = $novaQtd;
+        //     $valorCat->id_empresa = $data['id_empresa'];
+        //     $valorCat->save();
 
 
-            $catNe = $this->acoes->getByField('categorias', 'id', $data['categoria']);
-            $novaQtdN = $catNe->produtos + 1;
+        //     $catNe = $this->acoes->getByField('categorias', 'id', $data['categoria']);
+        //     $novaQtdN = $catNe->produtos + 1;
 
-            $valorNCat = (new Categorias())->findById($data['categoria']);
-            $valorNCat->produtos = $novaQtdN;
-            $valorNCat->id_empresa = $data['id_empresa'];
-            $valorNCat->save();
-        }
+        //     $valorNCat = (new Categorias())->findById($data['categoria']);
+        //     $valorNCat->produtos = $novaQtdN;
+        //     $valorNCat->id_empresa = $data['id_empresa'];
+        //     $valorNCat->save();
+        // }
 
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto', 'code' => 2,  'url' => 'admin/cardapio',]);
