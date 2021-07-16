@@ -13,11 +13,11 @@
             window.close();
         }
     </script>
-<div style="width: 260px; font-size: sans-serif; font-size: 16px;">
-    <h4 style="text-align:center;"><span style="text-transform: uppercase;">PEDIDO DE VENDA</span></h4>
-    <h4 style="text-align:center;">{% if pedido.tipo_frete == 1 %}<span style="text-transform: uppercase;">Cliente vai {{tipoFrete.tipo}}</span>{% else %}<span style="text-transform: uppercase;">Pedido para {{tipoFrete.tipo}}</span>{% endif %}</h4>
-    <h2 style="text-align:center;"><strong style="font-size: sans-serif;">Pedido #{{pedido.numero_pedido}}</strong></h2>
-    <h4 style="text-align:center; margin-top:15px;"><strong>>>> ITENS DO PEDIDO <<< </strong></h4>
+<div style="width: 100%; font-size: sans-serif; font-size: 16px;">
+    <h4 style="text-align:center; text-transform: uppercase;">PEDIDO DE VENDA</h4>
+    <h4 style="text-align:center;">{% if pedido.tipo_frete == 1 %}Cliente vai {{tipoFrete.tipo}}{% else %}Pedido para {{tipoFrete.tipo}}{% endif %}</h4>
+    <h2 style="text-align:center;">Pedido #{{pedido.numero_pedido}}</h2>
+    <h4 style="text-align:center; margin-top:15px;">>>> ITENS DO PEDIDO <<<</h4>
 
     <ul style="width:100%; margin-top:20px; padding-left:0; list-style:none;">
         {% for car in carrinho %}
