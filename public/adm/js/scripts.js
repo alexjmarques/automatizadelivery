@@ -638,9 +638,10 @@ function mudarStatus(id, status, id_caixa) {
     id_empresa,
     id_motoboy
   }
-  console.log('Imprimiu');
+  //console.log('Imprimiu');
   if (parseInt(status) === 2) {
-    $.getJSON(`/${link_site}/admin/pedido/imprimir/${id}`, function (dd) {
+    varWindow = window.open (`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir/${id}`, 'popup')
+    $.getJSON(`/${link_site}/admin/pedido/imprimir-local/${id}`, function (dd) {
       console.log('Imprimiu');
     })
   }

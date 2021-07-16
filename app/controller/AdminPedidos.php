@@ -291,6 +291,97 @@ class AdminPedidos extends Controller
         ]);
     }
 
+
+    public function pedidoMostrarImprimir($data)
+    {
+        //dd($data);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
+        $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
+        $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $pedido->id_cliente);
+
+        if($pedido->status > 3){
+            $entrega = $this->acoes->getByField('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido);
+        }
+        
+        $tipoPagamento = $this->acoes->getByField('formasPagamento', 'id', $pedido->tipo_pagamento);
+        $tipoFrete = $this->acoes->getByField('tipoDelivery', 'id', $pedido->tipo_frete);
+        $status = $this->acoes->getByField('status', 'id', $pedido->status);
+
+        $motoboys = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
+
+        $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'numero_pedido', $pedido->numero_pedido);
+        $clientePagamento = $this->acoes->getByFieldAll('carrinhoPedidoPagamento', 'numero_pedido', $pedido->numero_pedido);
+
+        if ($empresa->nf_paulista == 1) {
+            $nfPaulista = $this->acoes->getByFieldAll('carrinhoCPFNota', 'numero_pedido', $pedido->numero_pedido);
+        }
+        $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $carrinho = $this->acoes->getByFieldAllTwoInt('carrinho', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $empresa->id);
+
+        $cupomVerifica = $this->acoes->counts('cupomDesconto', 'id_empresa', $empresa->id);
+        $cupomVerificaUtilizadores = $this->acoes->counts('cupomDescontoUtilizadores', 'id_empresa', $empresa->id);
+
+        if ($cupomVerifica > 0 && $cupomVerificaUtilizadores) {
+            $cupomUtilizado = $this->acoes->getByField('cupomDescontoUtilizadores', 'numero_pedido', $pedido->numero_pedido);
+            if($cupomUtilizado){
+                $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizado->id_cupom);
+
+            if ((int)$cupomValida->tipo_cupom == 1) {
+                $valor = $pedido->total;
+                $porcentagem = floatval($cupomValida->valor_cupom);
+                $resul = $valor * ($porcentagem / 100);
+                $resultado = $resul;
+            } else {
+                $resultado = $cupomValida->valor_cupom;
+            }
+            }
+        }
+        //dd($resultado);
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        }
+
+        $this->load('_admin/pedidos/pedidoImprimir', [
+            'moeda' => $moeda,
+            'planoAtivo' => $planoAtivo,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'caixa' => $caixa->status,
+            'estabelecimento' => $estabelecimento[0]->id,
+            'pedido' => $pedido,
+            'entrega' => $entrega,
+            'cliente' => $cliente,
+            'usuarios' => $usuarios,
+            'pagamento' => $tipoPagamento,
+            'tipoFrete' => $tipoFrete,
+            'status' => $status,
+            'motoboys' => $motoboys,
+            'endereco' => $endereco,
+            'produtos' => $produtos,
+            'carrinho' => $carrinho,
+            'cupomValor' => $resultado,
+            'adicionais' => $produtosAdicionais,
+            'sabores' => $sabores,
+            'carrinhoAdicional' => $carrinhoAdicional,
+            'nfPaulista' => $nfPaulista,
+            'clientePagamento' => $clientePagamento
+
+        ]);
+    }
+
     public function pedidosFinalizados($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
@@ -432,7 +523,7 @@ class AdminPedidos extends Controller
         //$connector = new CupsPrintConnector("STMicroelectronics_POS58_Printer_USB");
         $connector = new NetworkPrintConnector("192.168.1.101", 9600);
         //$connector = new NetworkPrintConnector("159.65.220.187", 9100);
-        //$connector = new FilePrintConnector("php://stdout");
+        $connector = new FilePrintConnector("php://stdout");
         //$connector = new FilePrintConnector("/dev/usb/lp1");
         $printer = new Printer($connector);
 
