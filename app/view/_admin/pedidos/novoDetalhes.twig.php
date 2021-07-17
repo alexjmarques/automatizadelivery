@@ -115,6 +115,7 @@
                                 </table>
                             </div>
                             <div class="mb-3 p-3 py-3 col-md-5 float-left cinza">
+                            {% if endereco %}
                                 <h5 class="full-width pb-0 bold">Entrega ou Retirada?</h5>
                                 <div class="mb-0 input-group full-width mt-0">
                                     <select id="tipo_frete" name="tipo_frete" class="form-control" required>
@@ -134,6 +135,7 @@
                                         {% endif %}
                                     </select>
                                 </div>
+
                                 {% if km > km_entrega_excedente %}
                                 {% for t in tipo %}
                                 {% if t.status == 1 and t.code == 1 %}
@@ -177,9 +179,11 @@
                                         </div>
                                     </div>
                                     {% endif %}
+                                    <hr>
+                                    {% endif %}
 
                                     <div class="mb-0 input-group full-width mt-2">
-                                        <hr>
+                                        
                                         <h5 class="full-width pb-0 bold">Formas de Pagamento</h5>
                                         <select id="tipo_pagamento" name="tipo_pagamento" class="form-control" required>
                                             <option value="">Forma de Pagamento</option>
@@ -197,13 +201,6 @@
                                         <a class="btn btn-primary full-btn mt-2" href="#" id="calcularTroco"> Calcular Troco </a>
 
                                     </div>
-                                    <hr>
-                                    <div class="mb-0 input-group full-width mt-0">
-                                        <h5 class="full-width pb-0 bold">Observações do pedido</h5>
-                                        <div class="clearfix"></div>
-                                        <textarea name="observacao" id="observacao" placeholder="" aria-label="With textarea" class="form-control"></textarea>
-                                    </div>
-
                                     <div class="mb-0 input-group full-width mt-2 position-relative">
                                         <hr>
                                         <h5 class="full-width pb-0 bold">Desconto</h5>
@@ -213,9 +210,14 @@
                                                 <button id="button-desconto" type="button" class="btn btn-primary"> Aplicar Desconto</button>
                                             </div>
                                         </div>
-                                        
                                     </div>
 
+                                    <hr>
+                                    <div class="mb-0 input-group full-width mt-0">
+                                        <h5 class="full-width pb-0 bold">Observações do pedido</h5>
+                                        <div class="clearfix"></div>
+                                        <textarea name="observacao" id="observacao" placeholder="" aria-label="With textarea" class="form-control"></textarea>
+                                    </div>
 
                                     {% if empresa.nfPaulista is not null %}
 

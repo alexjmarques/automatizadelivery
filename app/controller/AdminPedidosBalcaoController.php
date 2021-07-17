@@ -1197,7 +1197,17 @@ class AdminPedidosBalcaoController extends Controller
     //Finaliza e fecha o pedido do cliente
     public function carrinhoFinalizarPedido($data)
     {
+        if($data['tipo_frete']){
+            $tipo_frete = $data['tipo_frete'];
+        }else{
+            $tipo_frete = 1;
+        }
 
+        if($data['valor_frete']){
+            $valor_frete = $data['valor_frete'];
+        }else{
+            $valor_frete = 0;
+        }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -1233,7 +1243,6 @@ class AdminPedidosBalcaoController extends Controller
 
 
         $pagamento = $data['tipo_pagamento'] == 7 ? $data['dinheiro'] : 0;
-
         if ($data['tipo_pagamento'] == 7) {
             $pagamento = $data['dinheiro'];
             $pagamentoCartão = $data['dinheiro'] - $data['total_pago'];
@@ -1251,8 +1260,6 @@ class AdminPedidosBalcaoController extends Controller
         $cpp->id_empresa = $empresa->id;
         $cpp->save();
 
-
-
         $pedido = new CarrinhoPedidos();
         $pedido->id_caixa = $estabelecimento[0]->id;
         $pedido->id_cliente = $this->sessao->getSessao('id_cliente');
@@ -1261,7 +1268,7 @@ class AdminPedidosBalcaoController extends Controller
         $pedido->total_pago = $data['total_pago'];
         $pedido->troco = $data['troco'];
         $pedido->tipo_pagamento = $data['tipo_pagamento'];
-        $pedido->tipo_frete = $data['tipo_frete'];
+        $pedido->tipo_frete = $tipo_frete;
         $pedido->data_pedido = date('Y-m-d');
         $pedido->hora = date('H:i:s');
         $pedido->status = 1;
@@ -1269,10 +1276,12 @@ class AdminPedidosBalcaoController extends Controller
         $pedido->desconto = $this->geral->brl2decimal($data['desconto']);
         $pedido->observacao = $data['observacao'];
         $pedido->numero_pedido = $data['numero_pedido'];
-        $pedido->valor_frete = $data['valor_frete'];
+        $pedido->valor_frete = $valor_frete;
         $pedido->km = $data['km'];
         $pedido->chave = $chave;
         $pedido->save();
+
+        //dd($pedido);
 
         $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
 
@@ -1289,10 +1298,10 @@ class AdminPedidosBalcaoController extends Controller
             $userUp->save();
         }
 
-        $cliente = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
-        $mensagem =  "Você acaba de efetuar um pedido no {$empresa->nome_fantasia} esse é seu número de pedido: {$data['numero_pedido']}. Para acompanhar seu pedido acesse nosso site, faça o login usando o número de Telefone informado no momento do pedido. Para acompanhar acesse o link: https://www.automatizadelivery.com.br/{$empresa->link_site}/login";
-        $ddi = '+55';
-        $numerofinal = $ddi . $cliente->telefone;
+        //$cliente = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
+        //$mensagem =  "Você acaba de efetuar um pedido no {$empresa->nome_fantasia} esse é seu número de pedido: {$data['numero_pedido']}. Para acompanhar seu pedido acesse nosso site, faça o login usando o número de Telefone informado no momento do pedido. Para acompanhar acesse o link: https://www.automatizadelivery.com.br/{$empresa->link_site}/login";
+        //$ddi = '+55';
+        //$numerofinal = $ddi . $cliente->telefone;
 
         //$client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
         //$client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
