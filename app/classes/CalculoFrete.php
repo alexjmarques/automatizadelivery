@@ -26,8 +26,11 @@ class CalculoFrete extends Controller
     }
 
     public function number_format_short( $n, $precision = 1 ) {
-        if ($n < 900) {
-            $n_format = number_format($n, $precision);
+        if ($n < 90) {
+            $n_format = number_format($n / 10, $precision);
+            $suffix = '';
+        } else if ($n < 900) {
+            $n_format = number_format($n / 100, $precision);
             $suffix = '';
         } else if ($n < 900000) {
             // 0.9k-850k
@@ -83,7 +86,7 @@ class CalculoFrete extends Controller
             $text = $road->distance->text;
             $distance += $road->distance->value;
         }
-        
+        //dd($distance);
         return $this->number_format_short($distance);
         //return $distance;
     }

@@ -129,7 +129,7 @@
                                         <option value="" {% if endereco is null %}selected{% endif %}>Tipo de Entrega
                                         </option>
                                         {% for t in tipo %}
-                                        <option value="{{t.code}}" {% if endereco is not null %}{% if t.code==2 %}selected{%
+                                        <option value="{{t.code}}" {% if endereco is not null %}{% if t.code== 2 %}selected{%
                                             endif %}{% endif %}>{{t.tipo}}</option>
                                         {% endfor %}
                                         {% endif %}

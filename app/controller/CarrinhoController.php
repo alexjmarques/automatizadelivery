@@ -342,7 +342,7 @@ class CarrinhoController extends Controller
                 }
 
                 if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
-                    $kmACalcular = ((int)floor($cFrete) - $delivery->km_entrega3);
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
                     $total = $taxa_entregaNova;
