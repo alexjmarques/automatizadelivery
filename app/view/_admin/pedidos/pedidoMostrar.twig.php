@@ -103,9 +103,7 @@
                 {% endfor %}
                 {% endfor %}
             </ul>
-
             <hr />
-
             {% if pedido.tipo_pagamento == 1 %}
             <div class="env subtotal"><strong class="color-money-off">Pagamento em {{pagamento.tipo}} levar troco de:</strong><span class="color-money-off">{{ moeda.simbolo }} {{ (pedido.troco - pedido.total_pago)|number_format(2, ',', '.') }}</span></div>
             {% endif %}
@@ -116,13 +114,15 @@
             <div class="env subtotal cupomLoad"><strong>Cupom Desconto:</strong><span> - {{ moeda.simbolo }} {{ cupomValor|number_format(2, ',', '.') }}</span></div>
             {% endif %}
 
+            {% if pedido.desconto %}
+            <div class="env subtotal cupomLoad"><strong>Desconto:</strong><span> - {{ moeda.simbolo }} {{ pedido.desconto|number_format(2, ',', '.') }}</span></div>
+            {% endif %}
+
             {% if pedido.tipo_frete == 2 %}
             <div class="env subtotal"><strong>Taxa de Entrega:</strong><span>{{ moeda.simbolo }} {{ pedido.valor_frete|number_format(2, ',', '.') }}</span></div>
             {% endif %}
 
-
             <div class="env total"><strong>Total:</strong><span>{{ moeda.simbolo }} {{ pedido.total_pago|number_format(2, ',', '.') }}</span></div>
-
 
             {% if pagamento.code == 7 %}
             <hr />

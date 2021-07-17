@@ -107,9 +107,9 @@ class CarrinhoController extends Controller
 
         header('Content-Type: application/json');
         if ($valor->id_adicional != null) {
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'var' => $valor->id_adicional, 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.','code' => 2 ,  'url' => 'produto/adicional']);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'var' => $valor->id_adicional, 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'code' => 2,  'url' => 'produto/adicional']);
         } else {
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.','code' => 2 ,  'url' => 'carrinho',]);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'code' => 2,  'url' => 'carrinho',]);
         }
         exit($json);
     }
@@ -243,7 +243,7 @@ class CarrinhoController extends Controller
         $verificaEnd = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
 
-        if(!$verificaEnd){
+        if (!$verificaEnd) {
             redirect(BASE . "{$empresa->link_site}/endereco/novo/cadastro");
         }
 
@@ -286,6 +286,14 @@ class CarrinhoController extends Controller
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
 
+            $termo = 'km';
+            $pattern = '/' . $termo . '/';
+            if (preg_match($pattern, $infoKm)) {
+                $cFrete = $cFrete;
+            } else {
+                $cFrete = 1;
+            }
+
             //dd($infoKm);
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega;
@@ -299,8 +307,8 @@ class CarrinhoController extends Controller
             $km_entrega_excedente = $delivery->km_entrega_excedente;
             $valor_excedente = $delivery->valor_excedente;
 
-            
-            
+
+
 
             if ($cFrete <= $km_entrega) {
                 $total = $taxa_entrega;
@@ -312,9 +320,9 @@ class CarrinhoController extends Controller
                 }
             }
 
-            if($delivery->km_entrega_excedente != 0){
+            if ($delivery->km_entrega_excedente != 0) {
                 $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
-             }
+            }
 
             if ($km_entrega2 != 0.00) {
                 if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
@@ -330,12 +338,11 @@ class CarrinhoController extends Controller
                     //dd($total);
                 }
 
-                if($delivery->km_entrega_excedente == 0){
+                if ($delivery->km_entrega_excedente == 0) {
                     $deliveryEntregaExcedente = $delivery->km_entrega2;
-                 }
-
+                }
             }
-            
+
             if ($km_entrega3 != 0.00) {
                 if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
                     $total = $taxa_entrega3;
@@ -348,11 +355,11 @@ class CarrinhoController extends Controller
                     $total = $taxa_entregaNova;
                 }
 
-                if($delivery->km_entrega_excedente == 0){
-                   $deliveryEntregaExcedente = $delivery->km_entrega3;
+                if ($delivery->km_entrega_excedente == 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega3;
                 }
             }
-            
+
             if ($delivery->frete_status == 1) {
                 if ($delivery->valor <= $valorCarrinho) {
                     $total = 0;
@@ -365,7 +372,7 @@ class CarrinhoController extends Controller
                 }
             }
             //dd($total);
-            
+
             $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
             $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
 
@@ -394,8 +401,8 @@ class CarrinhoController extends Controller
             redirect(BASE . "{$empresa->link_site}");
         }
 
-        
-        
+
+
 
         $this->load('_cliente/carrinho/main', [
             'empresa' => $empresa,
@@ -445,10 +452,10 @@ class CarrinhoController extends Controller
             //Verifica se pode utilizar esse cupom novamente
             $cupomValida = $this->acoes->getByField('cupomDesconto', 'nome_cupom', $data['cupomDesconto'], 'id_empresa', $empresa->id);
             $cupomValidaCliente = $this->acoes->getByFieldTree('cupomDescontoUtilizadores', 'id_cupom', $cupomValida->id, 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
-            if($cupomValidaCliente){
+            if ($cupomValidaCliente) {
                 $cupomValidaUtil = $this->acoes->countsTree('cupomDescontoUtilizadores', 'id_cupom', $cupomValida->id, 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
                 if ($cupomValidaUtil != 0) {
-                    if($cupomValidaCliente->id_cliente == $this->sessao->getUser()){
+                    if ($cupomValidaCliente->id_cliente == $this->sessao->getUser()) {
                         //dd($cupomValidaUtil);
                         if ($cupomValidaUtil == $cupomValida->qtd_utilizacoes) {
                             header('Content-Type: application/json');
@@ -459,7 +466,7 @@ class CarrinhoController extends Controller
                     }
                 }
             }
-            
+
 
             $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
             $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
@@ -516,7 +523,7 @@ class CarrinhoController extends Controller
 
         if ($getTelefone) {
             $getUsuario = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'id_usuario', $getTelefone->id);
-            if(!$getUsuario){
+            if (!$getUsuario) {
                 //dd($getUsuario);
                 $valorEmp = new UsuariosEmpresa();
                 $valorEmp->id_usuario = $getTelefone->id;
@@ -533,10 +540,10 @@ class CarrinhoController extends Controller
             $numerofinal = $ddi . $numeroTelefone;
 
             $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
-            $client->messages->create($numerofinal,array('from' => TWILIO['number'],'body' => $mensagem));
+            $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!','code' => 2 ,  'url' => "carrinho/valida/acesso/code/{$getTelefone->id}"]);
+            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!', 'code' => 2,  'url' => "carrinho/valida/acesso/code/{$getTelefone->id}"]);
             exit($json);
 
             $usuario = $this->acoes->getByField('usuarios', 'telefone', $data['telefone']);
@@ -554,13 +561,13 @@ class CarrinhoController extends Controller
             $valor->senha = $senha;
             $valor->nivel = 3;
             $valor->save();
-            
+
             $valoEmp = new UsuariosEmpresa();
             $valoEmp->id_usuario = $valor->id;
             $valoEmp->id_empresa = $empresa->id;
             $valoEmp->nivel = 3;
             $valoEmp->save();
-            
+
 
             $usuario = $this->acoes->getByField('usuarios', 'id', $valor->id);
             $carrinhoSessao = $this->sessao->getSessao('carrinho');
@@ -587,7 +594,7 @@ class CarrinhoController extends Controller
             }
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $cart->id, 'resp' => 'insert', 'mensagem' => 'Legal, agora preciso que me informe os dados para entrega!','code' => 2 ,  'url' => 'endereco/novo/cadastro']);
+            $json = json_encode(['id' => $cart->id, 'resp' => 'insert', 'mensagem' => 'Legal, agora preciso que me informe os dados para entrega!', 'code' => 2,  'url' => 'endereco/novo/cadastro']);
             exit($json);
         }
     }
@@ -596,7 +603,7 @@ class CarrinhoController extends Controller
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
-        $isLogin = $this->sessao->getUser() ? redirect(BASE ."{$empresa->link_site}") : null;
+        $isLogin = $this->sessao->getUser() ? redirect(BASE . "{$empresa->link_site}") : null;
 
         $this->load('_cliente/carrinho/validaAcesso', [
             'empresa' => $empresa,
@@ -613,23 +620,23 @@ class CarrinhoController extends Controller
         $codeValida = $this->sessao->getSessao('codeValida');
         if ($codeValida == $data['codeValida']) {
             $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
-            
-                $valor = (new Carrinho())->findById($this->sessao->getSessao('carrinho'));
-                $valor->id_cliente = $usuario->id;
-                $valor->save();
 
-                $cartAdicional = $this->acoes->counts('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'));
-                if ($cartAdicional > 0) {
-                    $cartAdicional = $this->acoes->getByField('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'));
-                    $adicional = (new CarrinhoAdicional())->findById($cartAdicional->id);
-                    $adicional->id_cliente = $usuario->id;
-                    $adicional->save();
-                }
-                $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
+            $valor = (new Carrinho())->findById($this->sessao->getSessao('carrinho'));
+            $valor->id_cliente = $usuario->id;
+            $valor->save();
+
+            $cartAdicional = $this->acoes->counts('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'));
+            if ($cartAdicional > 0) {
+                $cartAdicional = $this->acoes->getByField('carrinhoAdicional', 'id_carrinho', $this->sessao->getSessao('carrinho'));
+                $adicional = (new CarrinhoAdicional())->findById($cartAdicional->id);
+                $adicional->id_cliente = $usuario->id;
+                $adicional->save();
+            }
+            $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
 
             if ($this->sessao->getUser()) {
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os carrinho','code' => 2 ,  'url' => 'carrinho']);
+                $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os carrinho', 'code' => 2,  'url' => 'carrinho']);
                 exit($json);
             }
         }
@@ -666,7 +673,7 @@ class CarrinhoController extends Controller
                 }
                 $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $usuario->id, 'resp' => 'insert', 'mensagem' => 'OK Vai para o carrinho','code' => 2 ,  'url' => 'carrinho']);
+                $json = json_encode(['id' => $usuario->id, 'resp' => 'insert', 'mensagem' => 'OK Vai para o carrinho', 'code' => 2,  'url' => 'carrinho']);
                 exit($json);
             }
         }
@@ -762,7 +769,7 @@ class CarrinhoController extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!','code' => 2 ,  'url' => 'produto/adicional/atualiza']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Seu produto foi adicionado a sacola aguarde que tem mais!', 'code' => 2,  'url' => 'produto/adicional/atualiza']);
         exit($json);
     }
 
@@ -771,7 +778,7 @@ class CarrinhoController extends Controller
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $data['id_empresa'], 1, 'id', 'DESC');
         $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getUser(), 'id_empresa', $data['id_empresa']);
-        if(!$user){
+        if (!$user) {
             $userNovo = new UsuariosEmpresa();
             $userNovo->id_usuario = $this->sessao->getUser();
             $userNovo->id_empresa = $data['id_empresa'];
@@ -848,16 +855,16 @@ class CarrinhoController extends Controller
         $pedido->chave = $data['chave'];
         $pedido->save();
 
-        if($pedido->id > 0){
+        if ($pedido->id > 0) {
             $userUp = (new UsuariosEmpresa())->findById($user->id);
             $userUp->pedidos = $user->pedidos == null ? 1 : $user->pedidos + 1;
             $userUp->save();
-        }else{
+        } else {
             dd($pedido);
         }
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso','code' => 2 ,  'url' => 'admin/pedidos']);
+        $json = json_encode(['id' => $pedido->id, 'resp' => 'insert', 'mensagem' => 'Pedido finalizado com sucesso', 'code' => 2,  'url' => 'admin/pedidos']);
         exit($json);
     }
 }

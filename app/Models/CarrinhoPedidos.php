@@ -21,7 +21,7 @@ class CarrinhoPedidos extends DataLayer
         parent::__construct("carrinho_pedidos", ["id_caixa", "id_cliente","id_empresa", "status"]);
     }
 
-    public function add(Empresa $empresa,Motoboy $motoboy,Usuarios $usuario,EmpresaCaixa $caixa,FormasPagamento $formasPagamento,TipoDelivery $tipoEntrega, string $total, string $total_pago, string $troco, string $data, string $hora, string $pago, string $observacao, string $numero_pedido, string $valor_frete, string $km, string $chave, string $status)
+    public function add(Empresa $empresa,Motoboy $motoboy,Usuarios $usuario,EmpresaCaixa $caixa,FormasPagamento $formasPagamento,TipoDelivery $tipoEntrega, string $total, string $total_pago, string $troco, string $data, string $hora, string $pago, string $observacao, string $numero_pedido, string $valor_frete, string $km, string $chave, string $status, string $desconto)
     {
         $this->id_empresa = $empresa->id;
         $this->id_motoboy = $motoboy->id;
@@ -41,6 +41,7 @@ class CarrinhoPedidos extends DataLayer
         $this->total = $total;
         $this->total_pago = $total_pago;
         $this->troco = $troco;
+        $this->troco = $desconto;
 
         $this->save();
         return $this;

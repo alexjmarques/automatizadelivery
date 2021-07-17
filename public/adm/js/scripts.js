@@ -1676,6 +1676,28 @@ $('#calcularTroco').on('click', function () {
   }
 });
 
+$('#button-desconto').on('click', function () {
+  let troco = parseFloat($('#trocoCli').val());
+  let valor = parseFloat($('#desconto').val());
+  let total_pago = parseFloat($('#total_pago').val());
+  let totalFinal = total_pago - valor
+  let totalFinalDesconto = troco - total_pago
+
+  if (troco) {
+    $('#troco').val(troco)
+    $('.btnValida').show()
+    $('#trocoCliente').show();
+    $('#trocoCliente span').text(formatter.format(totalFinalDesconto))
+  }
+
+    $('#total_pago').val(totalFinal)
+    $('.btnValida').show()
+    $('#descontoCliente').show();
+    $('#descontoCliente span').text(formatter.format(valor))
+    $('#valorProdutoMostra').text(formatter.format(totalFinal))
+    return false
+});
+
 
 // $('.buton-collapse').on('toggle', function () {
 //   let cats = $(this).attr('id');

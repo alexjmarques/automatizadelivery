@@ -5446,5 +5446,17 @@ button.position-relative h6{
   padding: 12px !important;
   font-size: 18px !important;
 }
-.produtosEditar{
+.desconto_cli input{
+  height: 40px !important;
+}
+.moedaSimb{
+  bottom: 10px;
+    left: 13px;
+    z-index: 6;
+}
+#desconto{
+  padding-left: 38px !important;
+}
+#descontoCliente{
+  color: #dc3545 !important;
 }

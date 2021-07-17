@@ -114,9 +114,8 @@
                                     </tbody>
                                 </table>
                             </div>
-
                             <div class="mb-3 p-3 py-3 col-md-5 float-left cinza">
-                                <h5 class="full-width pb-0">Entrega ou Retirada?</h5>
+                                <h5 class="full-width pb-0 bold">Entrega ou Retirada?</h5>
                                 <div class="mb-0 input-group full-width mt-0">
                                     <select id="tipo_frete" name="tipo_frete" class="form-control" required>
                                         {% if km > km_entrega_excedente %}
@@ -195,7 +194,7 @@
                                         <span class="text-center mb-2">Ex.: 100,00</span>
                                         <input type="text" class="form-control" id="trocoCli" placeholder="Total em Dinheiro" name="trocoCli">
 
-                                        <a class="btn btn-primary full-btn" href="#" id="calcularTroco"> Calcular Troco </a>
+                                        <a class="btn btn-primary full-btn mt-2" href="#" id="calcularTroco"> Calcular Troco </a>
 
                                     </div>
                                     <hr>
@@ -203,6 +202,18 @@
                                         <h5 class="full-width pb-0 bold">Observações do pedido</h5>
                                         <div class="clearfix"></div>
                                         <textarea name="observacao" id="observacao" placeholder="" aria-label="With textarea" class="form-control"></textarea>
+                                    </div>
+
+                                    <div class="mb-0 input-group full-width mt-2 position-relative">
+                                        <hr>
+                                        <h5 class="full-width pb-0 bold">Desconto</h5>
+                                        <div class="input-group-sm mb-2 input-group full-width mt-0 desconto_cli">
+                                        <span class="moedaSimb position-absolute">{{ moeda.simbolo }}</span> <input type="text" class="form-control valor pl-4" id="desconto" name="desconto" value="">
+                                            <div class="input-group-append">
+                                                <button id="button-desconto" type="button" class="btn btn-primary"> Aplicar Desconto</button>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
 
 
@@ -225,8 +236,8 @@
                                             calculoFrete|number_format(2, ',', '.') }}</span></p>
                                         {% endif %}
                                         <!-- {% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional|number_format(2, ',', '.') }}{% else %}{{ produto.valor|number_format(2, ',', '.') }}{% endif %}</span></p> -->
-                                        <p class="mb-1 text-success" id="trocoCliente" style="display:none;">Seu
-                                            Troco<span class="float-right text-success"> </span></p>
+                                        <p class="mb-1 text-danger" id="descontoCliente" style="display:none;">Desconto<span class="float-right text-danger"> </span></p>
+                                        <p class="mb-1 text-success" id="trocoCliente" style="display:none;">Seu Troco<span class="float-right text-success"> </span></p>
                                         <hr>
                                         {% if km > km_entrega_excedente %}
                                         <input type="hidden" name="total_pago" id="total_pago" value="{{ valorPedido }}">
