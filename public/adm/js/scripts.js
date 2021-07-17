@@ -66,7 +66,7 @@ $("#buscarCli").on('click blur touchleave touchcancel', function () {
     success: function (data) {
       console.log(data.id);
       if (data.id > 0) {
-        $('#mostrarCliente').html(`<label for="cliente" class="mt-3 p-2 bloco-ops flex-container"><div class="p-2"><input type="radio" id="cliente" name="cliente" value="${data.id}"></div><div class="p-2">Nome: ${data.nome}<br/>Telefone: ${data.telefone}</div></label>`);
+        $('#mostrarCliente').html(`<div class="mt-3 p-2 bloco-ops flex-container"><div class="p-2"><input type="radio" id="cliente" name="cliente" checked value="${data.id}"></div><label for="cliente" class="p-2">Nome: ${data.nome}<br/>Telefone: ${data.telefone}</label></div>`);
       } else {
         $('#mostrarCliente').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
       }
