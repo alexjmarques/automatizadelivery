@@ -64,7 +64,9 @@ class AdminDashboard extends Controller
         /**
          * Contagem dos Itens da Empresa
          */
-        $resultCategorias = $this->acoes->countCompany('categorias', 'id_empresa', $empresa->id);
+
+
+        $resultCategorias  = $this->acoes->countCompany('categorias', 'id_empresa', $empresa->id);
         $resultProdutos = $this->acoes->countCompany('produtos', 'id_empresa', $empresa->id);
         $resultUsuarios = $this->acoes->countCompany('usuariosEmpresa', 'id_empresa', $empresa->id);
         $resultMotoboys = $this->acoes->countCompany('motoboy', 'id_empresa', $empresa->id);
@@ -80,11 +82,14 @@ class AdminDashboard extends Controller
          */
         //dd($estabelecimento);
         if ($estabelecimento[0]->data_final == null) {
+
+$rcat  = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
+if($rcat){
             $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
             $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
             $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
             $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
-        } else {
+       } } else {
             $pedidos = 0;
             $entregas = 0;
             $recusados = 0;
