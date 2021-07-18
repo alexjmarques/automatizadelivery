@@ -325,7 +325,7 @@ class AdminPedidosBalcaoController extends Controller
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $pedido->id_cliente, 'id_empresa', $empresa->id);
+            //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $pedido->id_cliente, 'id_empresa', $empresa->id);
             $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $pedido->id_cliente);
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
 
@@ -363,7 +363,7 @@ class AdminPedidosBalcaoController extends Controller
             'estabelecimento' => $estabelecimento,
             'produtoSabores' => $resultSabores,
             'planoAtivo' => $planoAtivo,
-            'carrinhoqtd' => $resultCarrinhoQtd,
+            //'carrinhoqtd' => $resultCarrinhoQtd,
             'produto' => $produto,
             'caixa' => $caixa->status,
             'carrinhoAdicional' => $carrinhoAdicional,
