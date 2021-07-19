@@ -77,7 +77,7 @@
 {% endif %}
 {% if ped.status == 6 %}
 {% if ped.data_pedido == domingo %}
-{{ped.total_pago}}
+
 {% set domingoValorC = domingoValorC + ped.total_pago %}
 {% endif %}
 {% if ped.data_pedido == segunda %}
