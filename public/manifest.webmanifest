@@ -1,0 +1,16 @@
+{
+    "short_name": "Automatiza Delivery",
+    "name": "AutDelivery",
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "theme-color": "#ffffff",
+    "background_color": "#fff",
+    "background-color": "#fff",
+    "description": "Automatiza Delivery",
+    "icons": [{
+        "src": "images/logo.png",
+        "type": "image/png",
+        "sizes": "2560x2560"
+    }]
+}

@@ -35,8 +35,6 @@ class AdminPedidosBalcaoController extends Controller
     private $acoes;
     private $geral;
     private $trans;
-
-
     /**
      * 
      * Metodo Construtor

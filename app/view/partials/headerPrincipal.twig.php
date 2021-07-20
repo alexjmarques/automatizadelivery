@@ -32,9 +32,9 @@
       <div class="clearfix"></div>
     </div>
 </div>
-{% if isLogin is empty %}
+<!-- {% if isLogin is empty %}
     <div class="busca-mt">
       <div class="input-group mt-3 rounded overflow-hidden ">
           <a class="border-0 btn btn-black text-dark btn-block" href="{{BASE}}{{empresa.link_site}}/intro"><i class="feather-info"></i> Veja como é fácil fazer seu pedido! </a>
     </div>
-{% endif %}
+{% endif %} -->

@@ -26,6 +26,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H85LB3TTM9"></script>
 
   {% if detect.isMobile() %}
+  <link rel="manifest" href="{{BASE}}manifest.webmanifest">
     <link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
