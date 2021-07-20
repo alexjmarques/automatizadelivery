@@ -207,6 +207,7 @@
   <script src="{{BASE}}js/rocket-loader.min.js" defer=""></script>
   <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
   <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
+  <script src="{{BASE}}index.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
   <script src="{{BASE}}js/function.js" type="text/javascript"></script>
 {% else %}
