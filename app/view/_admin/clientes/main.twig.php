@@ -30,8 +30,8 @@
                     </thead>
                     <tbody>
                     {% for user in usuarios %}
-                    {% for m in retorno %}
-                        {% if m.id_usuario == user.id %}
+                    {% for u in retorno %}
+                        {% if u.id_usuario == user.id %}
                         <tr>
                             <td>
                                <p class="text-muted">{{ user.nome }}</p>

@@ -381,7 +381,7 @@ class UsuarioController extends Controller
         }
 
         $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
-        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 3);
 
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
