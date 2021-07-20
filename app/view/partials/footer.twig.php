@@ -16,7 +16,7 @@
             </div>
         </div>
         <div id="favoritos" class="col">
-            <a href="{{BASE}}{{empresa.link_site}}/favoritos" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-heart"></i></p>Favoritos</a>
+            <a href="#" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-heart"></i></p>Favoritos</a>
         </div>
         <div id="perfil" class="col">
             <a href="{{BASE}}{{empresa.link_site}}/perfil" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-user"></i></p>Perfil</a>
