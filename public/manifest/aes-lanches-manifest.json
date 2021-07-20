@@ -1,0 +1,15 @@
+{
+    "short_name": "AesLanches",
+    "name": "Aes Lanches",
+    "display": "standalone",
+    "theme_color": "#ea1d2c",
+    "theme-color": "#ea1d2c",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "Aes Lanches",
+    "icons": [{
+        "src": "images/aes-lanches.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}

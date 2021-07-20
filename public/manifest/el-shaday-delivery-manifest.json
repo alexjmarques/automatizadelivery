@@ -1,0 +1,15 @@
+{
+    "short_name": "ElShaday",
+    "name": "El Shaday Delivery",
+    "display": "standalone",
+    "theme_color": "#ea1d2c",
+    "theme-color": "#ea1d2c",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "El Shaday Delivery",
+    "icons": [{
+        "src": "images/el-shaday-delivery.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}

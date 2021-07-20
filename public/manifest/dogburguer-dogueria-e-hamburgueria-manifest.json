@@ -1,0 +1,15 @@
+{
+    "short_name": "DogBurguer",
+    "name": "DogBurguer Dogueria e Hamburgueria",
+    "display": "standalone",
+    "theme_color": "#ea1d2c",
+    "theme-color": "#ea1d2c",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "DogBurguer Dogueria e Hamburgueria",
+    "icons": [{
+        "src": "images/dogburguer-dogueria-e-hamburgueria.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}

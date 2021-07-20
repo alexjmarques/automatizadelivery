@@ -1,0 +1,15 @@
+{
+    "short_name": "HobbyLanches",
+    "name": "Hobby Lanches",
+    "display": "standalone",
+    "theme_color": "#ea1d2c",
+    "theme-color": "#ea1d2c",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "Hobby Lanches",
+    "icons": [{
+        "src": "images/hobby-lanches.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}

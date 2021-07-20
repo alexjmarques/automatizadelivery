@@ -7,7 +7,7 @@
   <meta name="author" content="Automatiza App - Alex Marques">
   <link rel="apple-touch-icon" href="{{BASE}}uploads/{{empresa.logo}}">
   <link rel="icon" type="image/png" href="{{BASE}}uploads/{{empresa.logo}}">
-  <link rel="manifest" href="{{BASE}}{{empresa.link_site}}-manifest.json">
+  <link rel="manifest" href="{{BASE}}manifest/{{empresa.link_site}}-manifest.json">
   <meta name="msapplication-TileColor" content="#fff">
   <meta name="msapplication-TileImage" content="{{BASE}}icone/ms-icon-144x144.png">
   <meta name="theme-color" content="#741224">

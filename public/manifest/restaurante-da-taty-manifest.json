@@ -1,0 +1,15 @@
+{
+    "short_name": "RestTaty",
+    "name": "Restaurante da Taty",
+    "display": "standalone",
+    "theme_color": "#ea1d2c",
+    "theme-color": "#ea1d2c",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "Restaurante da Taty",
+    "icons": [{
+        "src": "images/restaurante-da-taty.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}

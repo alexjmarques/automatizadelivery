@@ -1,0 +1,15 @@
+{
+    "short_name": "DeliciasCasa",
+    "name": "Delicias da Casa",
+    "display": "standalone",
+    "theme_color": "#ea1d2c",
+    "theme-color": "#ea1d2c",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "Delicias da Casa",
+    "icons": [{
+        "src": "images/delicias-da-casa.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}
