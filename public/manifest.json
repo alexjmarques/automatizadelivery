@@ -1,15 +1,15 @@
 {
-    "short_name": "Automatiza Delivery",
-    "name": "AutDelivery",
+    "short_name": "AutDelivery",
+    "name": "Automatiza Delivery",
     "display": "standalone",
     "theme_color": "#ffffff",
     "theme-color": "#ffffff",
-    "background_color": "#fff",
-    "background-color": "#fff",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
     "description": "Automatiza Delivery",
     "icons": [{
-        "src": "images/logo.png",
+        "src": "images/ms-icon-310x310.png",
         "type": "image/png",
-        "sizes": "2560x2560"
+        "sizes": "310x310"
     }]
 }
