@@ -26,7 +26,6 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H85LB3TTM9"></script>
 
   {% if detect.isMobile() %}
-  <link rel="manifest" href="{{BASE}}manifest.webmanifest">
     <link href="{{BASE}}css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick.min.css" rel="stylesheet" type="text/css" />
     <link href="{{BASE}}css/slick-theme.min.css" rel="stylesheet" type="text/css" />
@@ -207,7 +206,6 @@
   <script src="{{BASE}}js/rocket-loader.min.js" defer=""></script>
   <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
   <script src="{{BASE}}js/jquery.select2.js" type="text/javascript"></script>
-  <script src="{{BASE}}index.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
   <script src="{{BASE}}js/function.js" type="text/javascript"></script>
 {% else %}
