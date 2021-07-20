@@ -18,7 +18,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="{{BASE}}icone/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="{{BASE}}icone/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="{{BASE}}icone/favicon-16x16.png">
-  <link rel="manifest" href="{{BASE}}manifest.json">
+  <link rel="manifest" href="{{BASE}}{{empresa.link_site}}-manifest.json">
   <meta name="msapplication-TileColor" content="#fff">
   <meta name="msapplication-TileImage" content="{{BASE}}icone/ms-icon-144x144.png">
   <meta name="theme-color" content="#741224">

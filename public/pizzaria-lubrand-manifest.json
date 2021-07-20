@@ -1,0 +1,15 @@
+{
+    "short_name": "Lubrand",
+    "name": "Pizzaria Lubrand",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "theme-color": "#ffffff",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "Pizzaria Lubrand",
+    "icons": [{
+        "src": "images/pizzaria-lubrand.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}

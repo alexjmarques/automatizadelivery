@@ -1,0 +1,15 @@
+{
+    "short_name": "TemCapão",
+    "name": "Temaki Capão",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "theme-color": "#ffffff",
+    "background_color": "#ea1d2c",
+    "background-color": "#ea1d2c",
+    "description": "Temaki Capão",
+    "icons": [{
+        "src": "images/temaki-capao.png",
+        "type": "image/png",
+        "sizes": "310x310"
+    }]
+}
