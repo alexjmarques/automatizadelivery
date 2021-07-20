@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="facebook-domain-verification" content="j35dpuvh7qnbwv0yx6zsedo37ufgq8" />
   <meta name="author" content="Automatiza App - Alex Marques">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{BASE}}icone/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="{{BASE}}icone/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{BASE}}icone/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="{{BASE}}uploads/{{empresa.logo}}">
+  <link rel="icon" type="image/png" href="{{BASE}}uploads/{{empresa.logo}}">
   <link rel="manifest" href="{{BASE}}{{empresa.link_site}}-manifest.json">
   <meta name="msapplication-TileColor" content="#fff">
   <meta name="msapplication-TileImage" content="{{BASE}}icone/ms-icon-144x144.png">
