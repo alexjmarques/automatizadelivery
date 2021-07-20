@@ -29,8 +29,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for m in retorno %}
                     {% for user in usuarios %}
+                    {% for m in retorno %}
                         {% if m.id_usuario == user.id %}
                         <tr>
                             <td>
