@@ -54,7 +54,6 @@
 {% if ped.data_pedido >= domingo %}
 {% if ped.data_pedido <= sabado %}
 {% if ped.data_pedido == domingo %}
-{{ped.total_pago}}
 {% set domingoValor = domingoValor + ped.total_pago %}
 {% endif %}
 {% if ped.data_pedido == segunda %}
