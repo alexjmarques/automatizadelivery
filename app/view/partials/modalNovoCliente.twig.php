@@ -28,10 +28,7 @@
               <option value="1" selected>Pedido para Entrega</option>
               <option value="0">Cliente vai Retirar</option>
             </select>
-
-
           </div>
-
 
           <div id="endereco" class="bg-white mb-3 border-top mt-1 pt-2 ">
 

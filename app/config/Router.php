@@ -405,6 +405,9 @@ $router->get('/{linkSite}/admin/motoboy/d/{id}/{url_dell}', 'AdminMotoboys:delet
 
 $router->get('/{linkSite}/admin/usuarios', 'UsuarioController:index');
 $router->get('/{linkSite}/admin/clientes', 'UsuarioController:clientes');
+
+$router->get('/{linkSite}/admin/endereco/{id}', 'UsuarioController:clienteEndereco');
+
 $router->get('/{linkSite}/admin/cliente/novo', 'UsuarioController:novoCliente');
 $router->post('/{linkSite}/admin/cliente/novo/i', 'UsuarioController:insertNovoCliente');
 $router->get('/{linkSite}/admin/cliente/d/{id}/{url_dell}', 'UsuarioController:deletar');

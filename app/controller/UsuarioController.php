@@ -386,7 +386,7 @@ class UsuarioController extends Controller
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
         $pager->pager((int)$count, 10, $page);
-        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id_usuario ASC');
 
         $this->load('_admin/clientes/main', [
             'paginacao' => $pager->render('mt-4 pagin'),
@@ -402,6 +402,27 @@ class UsuarioController extends Controller
             'caixa' => $caixa->status
         ]);
     }
+
+    public function clienteEndereco($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $enderecos = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $data['id'], 'principal', 1);
+
+        header('Content-Type: application/json');
+        $json = json_encode([
+            'nome' => $usuario->nome,
+            'telefone' => $usuario->telefone,
+            'rua' => $enderecos->rua,
+            'numero' => $enderecos->numero,
+            'complemento' => $enderecos->complemento,
+            'cep' => $enderecos->cep
+        ]);
+        exit($json);
+        
+    }
+
+    
 
     public function clienteNovo($data)
     {
