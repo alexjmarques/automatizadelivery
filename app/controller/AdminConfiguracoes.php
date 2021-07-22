@@ -82,11 +82,28 @@ class AdminConfiguracoesController extends Controller
 
     public function update($data)
     {
+        //dd($data);
         $nf_paulista = $data['switch'] ? $data['switch'] : 0;
         $diasSelecionados = $_POST['dias'] ? implode(',', $_POST['dias']) : null;
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $retorno = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+
+        
+        $upload = new \CoffeeCode\Uploader\Image(UPLOADS_BASE, "images");
+        $files = $_FILES;
+        if (!empty($files["capa"])) {
+            $file = $files["capa"];
+            try {
+                $uploaded = $upload->upload($file, $file["name"]);
+                $partes = explode("/uploads", $uploaded);
+                $capa = $partes[1];
+            } catch (\Exception $e) {
+                echo "<p>(!) {$e->getMessage()}</p>";
+            }
+        }else{
+            $capa = $data['imagemNomeCapa'];
+        }
 
         $valor = (new Empresa())->findById($empresa->id);
         $valor->nome_fantasia = $data['nomeFantasia'];
@@ -94,12 +111,13 @@ class AdminConfiguracoesController extends Controller
         $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
         $valor->sobre = $data['sobre'];
         $valor->logo = $data['imagemNome'];
-        $valor->capa = $data['imagemNomeCapa'];
+        $valor->capa = $capa;
         $valor->dias_atendimento = $diasSelecionados;
         $valor->email_contato = $data['email_contato'];
         $valor->nf_paulista = $nf_paulista;
         $valor->save();
 
+        if($valor->id > 0){
 
         $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
         $valorEnd->cep = $data['cep_end'];
@@ -115,5 +133,6 @@ class AdminConfiguracoesController extends Controller
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'code' => 2,  'url' => 'admin/conf/e',]);
         exit($json);
+        }
     }
 }

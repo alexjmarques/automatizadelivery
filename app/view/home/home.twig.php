@@ -209,8 +209,8 @@
                   </div>
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
-                        <div class="elementor-price-table__original-price elementor-typo-excluded">R$200</div>
-                        <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">129</span>
+                        {# <div class="elementor-price-table__original-price elementor-typo-excluded">R$200</div> #}
+                        <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">199</span>
                         <div class="elementor-price-table__after-price">
                            <span class="elementor-price-table__fractional-part">90</span>
                         </div>
@@ -238,8 +238,8 @@
                   </div>
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
-                        <div class="elementor-price-table__original-price elementor-typo-excluded">R$300</div>
-                        <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">199</span>
+                        {# <div class="elementor-price-table__original-price elementor-typo-excluded">R$300</div> #}
+                        <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">299</span>
                         <div class="elementor-price-table__after-price">
                            <span class="elementor-price-table__fractional-part">90</span>
                         </div>

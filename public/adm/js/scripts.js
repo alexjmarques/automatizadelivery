@@ -862,6 +862,14 @@ function syncIfood(id, tipo) {
         $('#imagemNome').val('');
     });
 
+    $("#remove_img2").on("click", function(event) {
+        event.preventDefault();
+        $('#NovaCapa').removeClass('hide');
+        $('#IMG_toll2, #remove_img2').addClass('hide');
+        $('#IMG_tollw2').addClass('hide');
+        $('#imagemNomeCapa').val('');
+    });
+
 
 
     $("input[name='directionRadio']").on("change", function(event) {
@@ -1966,7 +1974,7 @@ Dropzone.options.myDropzone = {
         confirm.style.left = '10px';
         confirm.style.top = '10px';
         confirm.style.zIndex = 9999;
-        confirm.textContent = 'Confirm';
+        confirm.textContent = 'Cortar Imagem';
         confirm.addEventListener('click', function() {
 
             // Get the output file data from Croppie
@@ -2008,7 +2016,7 @@ Dropzone.options.myDropzone = {
     },
     init: function() {
         this.on("success", function(file, response) {
-            //console.log("Response :" + response);
+            //console.log("Response :" + myDropZone);
             $('#imagemNome').val(response);
         });
         this.processQueue();

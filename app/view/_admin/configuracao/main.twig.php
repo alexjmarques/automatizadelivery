@@ -86,24 +86,27 @@
             {% if empresa.logo == null or empresa.logo == "" %}
             <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX dz-clickable" id="myDropzone"></div>
             {% else %}
-            <div class="image_area">
-              <img id="IMG_toll" src="{{BASE}}uploads{{empresa.logo}}" />
-            </div>
+            <div class="pb-2">
+              <img id="IMG_toll" class="full-btn radio" src="{{BASE}}uploads{{empresa.logo}}" />
+            
             <div class="clearfix"></div>
-            <button id="remove_img" class="btn btn-outline-danger mb-1">Remover Imagem</button>
+            <button id="remove_img" class="btn btn-outline-danger mb-1 mt-2 full-btn">Remover Imagem</button>
+            </div>
             <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX dz-clickable {% if empresa.logo is not null %}hide{% endif %}" id="myDropzone"></div>
             {% endif %}
           </div>
           
           <div class="form-group col-8 float-left">
             <h5 class="pt-3 bold">Capa de apresentação (1600px x 300px)</h5>
-              <div class="custom-file">
+
+              <div id="NovaCapa" class="custom-file {% if(empresa.capa is not empty ) %}hide {% endif %}">
                 <input type="file" name="capa" id="capa" class="form-control">
               </div>
            
-            {% if(capa is not empty ) %}
+            {% if(empresa.capa is not empty ) %}
             <div class="form-group">
-              <img src="{{BASE}}uploads/{{empresa.capa}}" width="300">
+              <img id="IMG_toll2" src="{{BASE}}uploads{{empresa.capa}}" class="full-btn radio">
+              <button id="remove_img2" class="btn btn-outline-danger mb-1 mt-2 full-btn">Remover Capa</button>
             </div>
             {% endif %}
           </div>
