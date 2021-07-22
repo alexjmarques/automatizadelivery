@@ -261,7 +261,7 @@ class PerfilController extends Controller
 
     } else {
         header('Content-Type: application/json');
-        $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Vi que não informou o número, informe após o nome da Rua digitado!']);
+        $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Vi que não informou o número, informe como exemplo a seguir! (Ex.: Avenida Paulista 2073)']);
         exit($json);
     }
     }
