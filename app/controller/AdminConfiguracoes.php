@@ -82,35 +82,8 @@ class AdminConfiguracoesController extends Controller
 
     public function update($data)
     {
-        if ($data['imagemNome'] != null) {
-            $caminhoLogo = $data['imagemNome'];
-        } else {
-            $caminhoLogo = $data['logoUpdate'];
-        }
-
-        if ($data['switch']) {
-            $nf_paulista = $data['switch'];
-        } else {
-            $nf_paulista = 0;
-        }
-
-        if ($_FILES['capa']['name'] != "") {
-            $extensao = pathinfo($_FILES['capa']['name']);
-            $extensao = "." . $extensao['extension'];
-            $capa = time() . uniqid(md5('automatizaApp')) . $extensao;
-
-            $caminhoCapaSalv = UPLOADS_BASE . $capa;
-            $caminhoCapa = $capa;
-            $capaTemp = $_FILES['capa']['tmp_name'];
-            move_uploaded_file($capaTemp, $caminhoCapaSalv);
-        } else {
-            $caminhoCapa = $data['capaUpdate'];
-        }
-
-        $diasSt = $_POST['dias'];
-        if ($diasSt != null) {
-            $diasSelecionados = implode(',', $diasSt);
-        }
+        $nf_paulista = $data['switch'] ? $data['switch'] : 0;
+        $diasSelecionados = $_POST['dias'] ? implode(',', $_POST['dias']) : null;
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $retorno = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
@@ -120,8 +93,8 @@ class AdminConfiguracoesController extends Controller
         $valor->id_moeda = $data['moeda'];
         $valor->telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
         $valor->sobre = $data['sobre'];
-        $valor->logo = $caminhoLogo;
-        $valor->capa = $caminhoCapa;
+        $valor->logo = $data['imagemNome'];
+        $valor->capa = $data['imagemNomeCapa'];
         $valor->dias_atendimento = $diasSelecionados;
         $valor->email_contato = $data['email_contato'];
         $valor->nf_paulista = $nf_paulista;

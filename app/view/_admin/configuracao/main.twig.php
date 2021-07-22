@@ -15,17 +15,15 @@
   <form method="post" autocomplete="off" id="form" action="{{BASE}}{{empresa.link_site}}/admin/conf/u" enctype="multipart/form-data">
     <div class="card mb-4">
       <div class="card-body">
-        <h5 class="mb-4">Sobre a Empresa</h5>
+        <h5 class="mb-4 bold">Sobre a Empresa</h5>
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="nomeFantasia">Nome Fantasia</label>
-            <input type="text" class="form-control" id="nomeFantasia" name="nomeFantasia"
-              value="{{empresa.nome_fantasia}}">
+            <input type="text" class="form-control" id="nomeFantasia" name="nomeFantasia" value="{{empresa.nome_fantasia}}">
           </div>
           <div class="form-group col-md-4">
             <label for="inputEmail4">Razão Social</label>
-            <input type="text" class="form-control" id="razaoSocial" name="razaoSocial"
-              value="{{empresa.razao_social}}" disabled>
+            <input type="text" class="form-control" id="razaoSocial" name="razaoSocial" value="{{empresa.razao_social}}" disabled>
           </div>
           <div class="form-group col-md-4">
             <label for="inputPassword4">CNPJ</label>
@@ -33,7 +31,7 @@
           </div>
         </div>
 
-        
+
 
         <div class="form-row">
           <div class="form-group col-md-4">
@@ -52,8 +50,7 @@
           </div>
           <div class="form-group row mb-1 col-md-4 pl-3">
             <label class="col-12 col-form-label" style="padding-left: 0;">NF Paulista</label>
-            <div class="custom-switch custom-switch-primary mb-2" data-toggle="tooltip" data-placement="left"
-              title="Seu estabelecimento fornece Nota Fiscal Paulista">
+            <div class="custom-switch custom-switch-primary mb-2" data-toggle="tooltip" data-placement="left" title="Seu estabelecimento fornece Nota Fiscal Paulista">
               {% if(empresa.nf_paulista == 1 ) %}
               <input class="custom-switch-input" id="switch" name="switch" value="1" type="checkbox" checked>
               {% else %}
@@ -71,8 +68,7 @@
           </div>
           <div class="form-group col-md-6">
             <label>Email de Contato</label>
-            <input type="text" class="form-control" id="email_contato" name="email_contato"
-              value="{{empresa.email_contato}}">
+            <input type="text" class="form-control" id="email_contato" name="email_contato" value="{{empresa.email_contato}}">
           </div>
         </div>
 
@@ -83,85 +79,86 @@
         </div>
 
         <div class="form-group">
-          <label for="inputLogo">Logo da Empresa (400px x 400px)</label>
-          <div class="form-group col-md-12 form-gr-md" style="float: left;">
+
+          <div class="card-body p-0 col-4 float-left">
+            <h5 class="mt-3 bold">Logo da Empresa (400px x 400px)</h5>
+
+            {% if empresa.logo == null or empresa.logo == "" %}
+            <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX dz-clickable" id="myDropzone"></div>
+            {% else %}
             <div class="image_area">
-              <label for="upload_image">
-                {% if(empresa.logo is empty ) %}
-                <img src="{{BASE}}uploads/no-image.png" id="uploaded_image" class="img-responsive img-circle" />
-                {% else %}
-                <img src="{{BASE}}uploads/{{empresa.logo}}" id="uploaded_image" class="img-responsive img-circle" />
-                {% endif %}
-                <div class="overlay">
-                  <div class="text">Selecione uma imagem</div>
-                </div>
-                <input type="file" name="image" class="image" id="upload_image" style="display:none" />
-              </label>
-              <input type="hidden" name="imagemNome" id="imagemNome" value="{{empresa.logo}}">
+              <img id="IMG_toll" src="{{BASE}}uploads{{empresa.logo}}" />
             </div>
+            <div class="clearfix"></div>
+            <button id="remove_img" class="btn btn-outline-danger mb-1">Remover Imagem</button>
+            <div class="dropzone sc-gsTCUz sc-hJJQhR jRUqac fGBOdX dz-clickable {% if empresa.logo is not null %}hide{% endif %}" id="myDropzone"></div>
+            {% endif %}
           </div>
-          <div class="form-group">
-            <label for="inputCapa">Capa de apresentação (1600px x 300px)</label>
-            <div class="custom-file">
-              <input type="file" name="capa" id="capa" class="form-control">
+          
+          <div class="form-group col-8 float-left">
+            <h5 class="pt-3 bold">Capa de apresentação (1600px x 300px)</h5>
+              <div class="custom-file">
+                <input type="file" name="capa" id="capa" class="form-control">
+              </div>
+           
+            {% if(capa is not empty ) %}
+            <div class="form-group">
+              <img src="{{BASE}}uploads/{{empresa.capa}}" width="300">
             </div>
+            {% endif %}
           </div>
-          {% if(capa is not empty ) %}
-          <div class="form-group">
-            <img src="{{BASE}}uploads/{{empresa.capa}}" width="300">
-          </div>
-          {% endif %}
+
         </div>
       </div>
     </div>
 
     <div class="card mb-4">
       <div class="card-body">
-        <h5>Endereço Comercial</h5>
+        <h5 class="bold">Endereço Comercial</h5>
         <p class="mb-4">Endereço de Funcionamento do estabelecimento, este endereço será utilizado para calcular a taxa de entrega de seus clientes.</p>
-       
-          
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label>CEP</label>
-              <input type="text" class="form-control" id="cep_end" name="cep_end" value="{{endereco.cep}}">
-            </div>
-          
-            <div class="form-group col-md-5">
-              <label>Endereço</label>
-              <input type="text" class="form-control" id="rua_end" name="rua_end" value="{{endereco.rua}}" required>
-            </div>
-            <div class="form-group col-md-1">
-              <label>Número</label>
-              <input type="text" class="form-control" id="numero_end" name="numero_end" value="{{endereco.numero}}" required>
-            </div>
-            <div class="form-group col-md-3">
-              <label>Complemento</label>
-              <input type="text" class="form-control" id="complemento_end" name="complemento_end" value="{{endereco.complemento}}">
-            </div>
-          </div>
-  
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label>Bairro</label>
-              <input type="text" class="form-control" id="bairro_end" name="bairro_end" value="{{endereco.bairro}}">
-            </div>
-            <div class="form-group col-md-4">
-              <label>Cidade</label>
-              <input type="text" class="form-control" id="cidade_end" name="cidade_end" value="{{endereco.cidade}}">
-            </div>
-  
-            <div class="form-group col-md-2">
-              <label for="estado">Estado</label>
-              <input type="text" class="form-control" id="estado_end" name="estado_end" value="{{endereco.estado}}">
-            </div>
+
+
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label>CEP</label>
+            <input type="text" class="form-control" id="cep_end" name="cep_end" value="{{endereco.cep}}">
           </div>
 
+          <div class="form-group col-md-5">
+            <label>Endereço</label>
+            <input type="text" class="form-control" id="rua_end" name="rua_end" value="{{endereco.rua}}" required>
+          </div>
+          <div class="form-group col-md-1">
+            <label>Número</label>
+            <input type="text" class="form-control" id="numero_end" name="numero_end" value="{{endereco.numero}}" required>
+          </div>
+          <div class="form-group col-md-3">
+            <label>Complemento</label>
+            <input type="text" class="form-control" id="complemento_end" name="complemento_end" value="{{endereco.complemento}}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label>Bairro</label>
+            <input type="text" class="form-control" id="bairro_end" name="bairro_end" value="{{endereco.bairro}}">
+          </div>
+          <div class="form-group col-md-4">
+            <label>Cidade</label>
+            <input type="text" class="form-control" id="cidade_end" name="cidade_end" value="{{endereco.cidade}}">
+          </div>
+
+          <div class="form-group col-md-2">
+            <label for="estado">Estado</label>
+            <input type="text" class="form-control" id="estado_end" name="estado_end" value="{{endereco.estado}}">
+          </div>
+        </div>
 
 
 
-     
-        
+
+
+
       </div>
     </div>
 
@@ -185,11 +182,12 @@
           {% endfor %}
         </div>
         <input type="hidden" id="id_empresa" name="id_empresa" value="{{empresa.id}}">
-        <input type="hidden" name="logoUpdate" id="logoUpdate" value="{{empresa.logo}}">
-        <input type="hidden" name="capaUpdate" id="capaUpdate" value="{{empresa.capa}}">
-        <div class="btn_acao"><div class="carrega"></div>
-                <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
-                </div>
+        <input type="hidden" name="imagemNome" id="imagemNome" value="{{empresa.logo}}">
+        <input type="hidden" name="imagemNomeCapa" id="imagemNomeCapa" value="{{empresa.capa}}">
+        <div class="btn_acao">
+          <div class="carrega"></div>
+          <button class="btn btn-info d-block mt-3 acaoBtn acaoBtnAtualizar">Atualizar</button>
+        </div>
       </div>
     </div>
   </form>

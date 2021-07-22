@@ -449,7 +449,7 @@ $router->get('/{linkSite}/admin/conf/atendimento/novo', 'AdminAtendimento:novo')
 $router->get('/{linkSite}/admin/conf/atendimento/editar/{id}', 'AdminAtendimento:editar');
 $router->post('/{linkSite}/admin/conf/atendimento/i', 'AdminAtendimento:insert');
 $router->post('/{linkSite}/admin/conf/atendimento/u', 'AdminAtendimento:update');
-$router->delete('/{linkSite}/admin/conf/atendimento/delete', 'AdminAtendimento:delete');
+$router->get('/{linkSite}/admin/conf/atendimento/deletar/{id}', 'AdminAtendimento:deletar');
 
 $router->get('/{linkSite}/admin/formas-pagamento', 'AdminFormasPagamento:index');
 $router->get('/{linkSite}/admin/formas-pagamento/nova', 'AdminFormasPagamento:novo');

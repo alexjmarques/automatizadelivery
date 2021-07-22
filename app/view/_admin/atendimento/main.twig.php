@@ -23,7 +23,7 @@
                             <th style="width: 200px !important;">Dia</th>
                             <th style="width: 200px !important;">Abertura</th>
                             <th style="width: 200px !important;">Fechamento</th>
-                            <th style="width: 200px !important;">Ações</th>
+                            <th style="width: 100px !important;">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,7 +49,7 @@
                             </td>
                             <td>
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/editar/{{ p.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i></a>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/deletar{{ p.id }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i></a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/conf/atendimento/deletar/{{ p.id }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i></a>
                             </td>
                         </tr>
                         {% endfor %}

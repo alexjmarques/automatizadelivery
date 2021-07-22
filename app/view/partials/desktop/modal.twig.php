@@ -280,7 +280,7 @@
                     </form>
                 </div>
                 <div class="modal-footer border-0">
-                    <button data-dismiss="modal" aria-label="Close" class="btn btn-primary btn-block">Confirm</button>
+                    <button data-dismiss="modal" aria-label="Close" class="btn btn-primary btn-block">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -316,7 +316,7 @@
                     </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button data-dismiss="modal" aria-label="Close" class="btn btn-primary btn-block">Confirm</button>
+                    <button data-dismiss="modal" aria-label="Close" class="btn btn-primary btn-block">Confirmar</button>
                 </div>
             </div>
         </div>

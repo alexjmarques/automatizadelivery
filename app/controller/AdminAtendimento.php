@@ -171,6 +171,6 @@ class AdminAtendimento extends Controller
         $valor = (new EmpresaFuncionamento())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE . "{$data['linkSite']}/admin/atendimento");
+        redirect(BASE . "{$data['linkSite']}/admin/conf/atendimento");
     }
 }
