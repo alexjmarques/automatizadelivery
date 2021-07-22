@@ -11,9 +11,6 @@
     </ol>
 </nav>
 
-{% if nivelUsuario == 0 %}
-<div class="top-right-button-container"><a href="{{BASE}}{{empresa.link_site}}/admin/cliente/novo" class="btn btn-info btn-sm">Novo Cliente</a></div>
-{% endif %}
 <div class="separator mb-5"></div>
 <div class="row mb-4">
 <div class="col-12 data-tables-hide-filter">

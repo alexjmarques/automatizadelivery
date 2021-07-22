@@ -240,6 +240,7 @@ class PerfilController extends Controller
 
     public function insertPrimeiroEndereco($data)
     {
+    if ($data['numero']) {
         $novo = new UsuariosEnderecos();
         $novo->id_usuario = $this->sessao->getUser();
         $novo->nome_endereco = "Principal";
@@ -257,6 +258,12 @@ class PerfilController extends Controller
         header('Content-Type: application/json');
         $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço','code' => 2 ,  'url' => 'carrinho',]);
         exit($json);
+
+    } else {
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Vi que não informou o número, informe após o nome da Rua digitado!']);
+        exit($json);
+    }
     }
 
     public function insertEndereco($data)
