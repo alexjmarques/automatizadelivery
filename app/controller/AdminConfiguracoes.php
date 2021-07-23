@@ -89,11 +89,10 @@ class AdminConfiguracoesController extends Controller
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $retorno = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
 
-        
-        $upload = new \CoffeeCode\Uploader\Image(UPLOADS_BASE, "images");
         $files = $_FILES;
-        if (!empty($files["capa"])) {
-            $file = $files["capa"];
+        $file = $files["capa"];
+        if (!empty($file["name"])) {
+            $upload = new \CoffeeCode\Uploader\Image(UPLOADS_BASE, "images");
             try {
                 $uploaded = $upload->upload($file, $file["name"]);
                 $partes = explode("/uploads", $uploaded);
@@ -116,6 +115,7 @@ class AdminConfiguracoesController extends Controller
         $valor->email_contato = $data['email_contato'];
         $valor->nf_paulista = $nf_paulista;
         $valor->save();
+        
 
         if($valor->id > 0){
 
@@ -129,7 +129,7 @@ class AdminConfiguracoesController extends Controller
         $valorEnd->estado = $data['estado_end'];
         $valorEnd->save();
 
-
+        //dd($valorEnd);
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'code' => 2,  'url' => 'admin/conf/e',]);
         exit($json);

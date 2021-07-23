@@ -51,7 +51,9 @@ $('.valor, #valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_en
 
 $("#buscarCli").on('click blur touchleave touchcancel', function() {
     let telefone = $('#telefone').val();
-    let formData = { telefone }
+    let formData = {
+            telefone
+        }
         //console.log(telefone);
     $.ajax({
         url: `/${link_site}/admin/pedido/pesquisa`,
@@ -258,6 +260,7 @@ $("#form, #formIfood, #formCliente").submit(function() {
             }
         },
         error: function(data) {
+            console.log(data);
             $('.errorSup').show();
             $('#alerta').modal("show");
             $('#mensagem').html('Opss tivemos um problema!');
@@ -521,8 +524,12 @@ function atualizar() {
     $.ajax({
         url: `/${link_site}/admin/pedidos/recebido`,
         method: "get",
-        beforeSend: function() { $('#carregaRecebido').html(`<div class="text-center" id="carregaRecebido"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path></svg></div>`); },
-        complete: function() { $('#carregaRecebido').html(''); },
+        beforeSend: function() {
+            $('#carregaRecebido').html(`<div class="text-center" id="carregaRecebido"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path></svg></div>`);
+        },
+        complete: function() {
+            $('#carregaRecebido').html('');
+        },
         success: function(dd) {
             if (parseInt(dd) === 0) {
                 $('#recebido').html('<div class="text-center block"><span class="iconsminds-digital-drawing size20"></span><p>Sem Pedidos no momento</p></div>');
@@ -613,7 +620,9 @@ $("#inpFiltro").on("keyup", function() {
 
 
 function cancelarPedido(id) {
-    let valores = { id }
+    let valores = {
+        id
+    }
     $.ajax({
         url: `/${link_site}/admin/pedido/cancelar`,
         method: "POST",
@@ -684,9 +693,18 @@ function mudarStatus(id, status, id_caixa) {
 function updateItem(id_empresa, id_categoria, id_tamanhos) {
     var tamanhos_categoria = $(`#categorias${id_categoria}`).attr('data-idcat');
     if (tamanhos_categoria) {
-        var valores = { id_empresa, id_categoria, id_tamanhos, tamanhos_categoria }
+        var valores = {
+            id_empresa,
+            id_categoria,
+            id_tamanhos,
+            tamanhos_categoria
+        }
     } else {
-        var valores = { id_empresa, id_categoria, id_tamanhos }
+        var valores = {
+            id_empresa,
+            id_categoria,
+            id_tamanhos
+        }
     }
     $.ajax({
         url: `/${link_site}/admin/tamanho/u/item`,
@@ -702,9 +720,18 @@ function updateItem(id_empresa, id_categoria, id_tamanhos) {
 function updateItemMassa(id_empresa, id_tamanhos, id_massas) {
     let tamanhos_categoria = $(`#tamanhos${id_tamanhos}`).attr('data-idcat');
     if (tamanhos_categoria) {
-        var valores = { id_empresa, id_massas, id_tamanhos, tamanhos_categoria }
+        var valores = {
+            id_empresa,
+            id_massas,
+            id_tamanhos,
+            tamanhos_categoria
+        }
     } else {
-        var valores = { id_empresa, id_massas, id_tamanhos }
+        var valores = {
+            id_empresa,
+            id_massas,
+            id_tamanhos
+        }
     }
     console.log(valores);
     $.ajax({
