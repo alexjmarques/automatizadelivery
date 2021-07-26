@@ -524,7 +524,10 @@ class AdminPedidos extends Controller
         //$connector = new NetworkPrintConnector("192.168.1.101", 9600);
         //$connector = new NetworkPrintConnector("159.65.220.187", 9100);
         //$connector = new FilePrintConnector("php://stdout");
-        $connector = new FilePrintConnector("/dev/ttyS0?baud=115200");
+        //$connector = new FilePrintConnector("/dev/ttyS0?baud=115200");
+
+        $connector = new FilePrintConnector("/dev/usb/lp0");
+
         $printer = new Printer($connector);
 
         /* Print some bold text */
