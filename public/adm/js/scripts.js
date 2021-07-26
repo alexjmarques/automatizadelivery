@@ -670,7 +670,7 @@ function mudarStatus(id, status, id_caixa) {
                     atualizar();
                     $('#close-modal').trigger('click');
 
-                    varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
+                    //varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
                 } else {}
 
             },
