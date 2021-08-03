@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=0"/>
   <meta name="facebook-domain-verification" content="j35dpuvh7qnbwv0yx6zsedo37ufgq8" />
   <meta content="Organize a operação do seu estabelecimento flexibilizando seu tempo, a sua gestão e o seu negócio!. Crie seu cardápio digital e sua conta gratuita e venda sem pagar comissões!" name="description"/>
   <meta content="Automatiza Delivery" property="og:title"/>
