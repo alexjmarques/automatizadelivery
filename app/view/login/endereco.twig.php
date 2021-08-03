@@ -6,7 +6,7 @@
 <div class="osahan-verifications">
     <div class="p-4 osahan-home-page">
         <h5>{{ usuarioLogado.nome }}</h5>
-        <p class="text-dark text-50">Preciso de um endereço para entrega, mesmo se for retirada, precisamos de um endereço</p>
+        <p class="text-dark text-50">Preciso de um endereço para entrega, mesmo se for retirada.</p>
 
         <p class="text-dark text-50">Ao digitar seu endereço e número, aparecerá um campo confirmando seu endereço completo. <strong style="color:red;">Clique nele para confirmar!</strong></p>
         <form class="mt-4 mb-4" method="post" id="form" action="{{BASE}}{{empresa.link_site}}/endereco/pri/i" autocomplete="off">
