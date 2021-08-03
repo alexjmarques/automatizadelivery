@@ -48,6 +48,11 @@
 </script>
  {% if detect.isMobile() %}
   <style>
+    .pac-item {
+    padding: 9px 4px !important;
+    background: #f5f5f5  !important;
+    border-bottom: 1px solid #000  !important;
+}
     #overlayer {
       width: 100%;
       height: 100%;
