@@ -1902,7 +1902,7 @@ $("#formFinish").submit(function() {
 let autocomplete;
 let address1Field;
 
-$("#ship-address").on('click blur touchleave touchcancel',
+$("#ship-address").on('click blur touchleave',
 
     function initAutocomplete() {
         address1Field = document.querySelector("#ship-address");
