@@ -1481,7 +1481,7 @@ $("#telefoneVeri").on('blur touchleave touchcancel', function() {
 let autocomplete;
 let address1Field;
 
-$("#ship-address").on('click blur touchleave', function initAutocomplete() {
+$("#ship-address").on('click touchleave touchcancel', function initAutocomplete() {
 
     //function initAutocomplete() {
     address1Field = document.querySelector("#ship-address");
