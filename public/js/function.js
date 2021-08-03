@@ -11,7 +11,7 @@ var formatter = new Intl.NumberFormat('pt-BR', {
  */
 
 var link_site = $('body').attr('data-link_site');
-jQuery.fn.shake = function (interval, distance, times) {
+jQuery.fn.shake = function(interval, distance, times) {
     interval = typeof interval == "undefined" ? 100 : interval;
     distance = typeof distance == "undefined" ? 10 : distance;
     times = typeof times == "undefined" ? 3 : times;
@@ -26,7 +26,7 @@ jQuery.fn.shake = function (interval, distance, times) {
         left: 0
     }, interval);
 }
-$(document).ready(function () {
+$(document).ready(function() {
     $(".lds-roller").delay(1000).fadeOut("slow");
     $("#overlayer").delay(1000).fadeOut("slow");
     $('.tipo_pagamento').hide();
@@ -63,12 +63,12 @@ $('#trocoCli, #dinheiro').mask('#.##0,00', {
     reverse: true
 });
 
-$("#emailOurTel").on('blur touchleave touchcancel', function () {
+$("#emailOurTel").on('blur touchleave touchcancel', function() {
     let regra = /^[0-9]+$/;
     let valor = $(this).val();
     if (valor.match(regra)) {
         $(this).mask('(00) 00000-0000');
-    } else { }
+    } else {}
 });
 
 
@@ -79,7 +79,7 @@ $(".avaliacao_motoboy, .avaliacao_pedido").starRating({
     emptyColor: 'lightgray',
     strokeColor: '#894A00',
     useGradient: false,
-    callback: function (currentRating, el) {
+    callback: function(currentRating, el) {
         $(`#${el[0].className}`).val(currentRating);
     }
 });
@@ -167,12 +167,12 @@ switch (active_link) {
  * 
  * Funções antigas
  */
-$("#abrirCarrinhoModal").on('click', function () {
+$("#abrirCarrinhoModal").on('click', function() {
     $("#modal-carrinho").modal("show");
 });
 $('#trocoMod, #mp, #entrega_end, #dinMod').hide();
 
-$('#tipo_pagamento').on('change', function () {
+$('#tipo_pagamento').on('change', function() {
     if (parseInt($(this).val()) === 1) {
         $('#trocoMod').show();
         $('.btnValida').hide();
@@ -191,7 +191,7 @@ $('#tipo_pagamento').on('change', function () {
     }
 });
 
-$('#calcularTroco').on('click', function () {
+$('#calcularTroco').on('click', function() {
     let valor = parseFloat($('#trocoCli').val());
     let total_pago = parseFloat($('#total_pago').val());
     let totalFinal = valor - total_pago
@@ -216,7 +216,7 @@ $('#calcularTroco').on('click', function () {
 });
 
 
-$('#tipo_frete').on('change', function () {
+$('#tipo_frete').on('change', function() {
     if (parseInt($(this).val()) === 2) {
         $('#entrega_end').hide();
         $('#entregaForm').show();
@@ -254,9 +254,9 @@ var vi = $("#add_itens").length;
 var qb = $("#add_itens #itens_value").text();
 var iqba = $("#add_itens #itens_value").text();
 
-(qb === "0") ? $('.adicional_item, .adicional_item_ok').hide() : $('.adicional_item').show();
+(qb === "0") ? $('.adicional_item, .adicional_item_ok').hide(): $('.adicional_item').show();
 
-$('#add_itenSabores input[type=radio]').on('change', function (e) {
+$('#add_itenSabores input[type=radio]').on('change', function(e) {
     if ($(this).is(":checked")) {
         $(".addStyle").show()
     } else {
@@ -269,7 +269,7 @@ $('#add_itenSabores input[type=radio]').on('change', function (e) {
 
 $("#btn_pedido").hide()
 $("#add_itenPizza input[type=checkbox]").prop("disabled", true);
-$('#add_itenMassa input[type=checkbox], #add_itenMassa input[type=radio]').on('change', function (e1) {
+$('#add_itenMassa input[type=checkbox], #add_itenMassa input[type=radio]').on('change', function(e1) {
     let valor = $(this).attr('data-valor')
     let iCount = $('#iCount').text()
 
@@ -286,12 +286,12 @@ $('#add_itenMassa input[type=checkbox], #add_itenMassa input[type=radio]').on('c
         $('#total').text(formatter.format(parseFloat(totalPizza) + parseFloat(totalMassa)));
         $('#valor').val(parseFloat(totalPizza) + parseFloat(totalMassa));
     }
-    
+
     $('#massa_choice').html(`<span class="statusCart">Pronto <i class="feather-check"></i></span>`)
     $("#add_itenPizza input[type=checkbox]").prop("disabled", false);
 });
 
-$('#add_itenPizza input[type=radio]').on('change', function (e1) {
+$('#add_itenPizza input[type=radio]').on('change', function(e1) {
     $('#saborCount').text(1)
     let id = $(this).val()
     let valor = $(this).attr('data-valor')
@@ -309,7 +309,7 @@ $('#add_itenPizza input[type=radio]').on('change', function (e1) {
 
 });
 
-$('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
+$('#add_itenPizza input[type=checkbox]').on('change', function(e1) {
     $('#saborCount').text(1)
     let iCount = parseInt($('#iCount').text())
     let id = $(this).val()
@@ -317,17 +317,20 @@ $('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
     let valor = $(this).attr('data-valor')
     let totalMassa = $('#totalMassa').val()
 
-    var total = 0;var qtd = 0; var a = [];
+    var total = 0;
+    var qtd = 0;
+    var a = [];
 
-    $('#add_itenPizza input[type=checkbox]:checked').each(function (i, ele) {
-        var valor = parseFloat($(this).attr('data-valor'));
-        a.push(valor);
-        qtd = i + 1;
-        $('#saborCount').text(qtd)}
+    $('#add_itenPizza input[type=checkbox]:checked').each(function(i, ele) {
+            var valor = parseFloat($(this).attr('data-valor'));
+            a.push(valor);
+            qtd = i + 1;
+            $('#saborCount').text(qtd)
+        }
         //total += valor;
     );
     //console.log(a);
-    var total = Math.max.apply(null, a );
+    var total = Math.max.apply(null, a);
     //console.log(total);
 
     $('#totalPizza').val(total);
@@ -341,7 +344,7 @@ $('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
         $("input[type=checkbox]").prop("disabled", true);
         $("input[type=checkbox]:checked").prop("disabled", false);
         $("#btn_pedido").show()
-    }else{
+    } else {
         $("input[type=checkbox]").prop("disabled", false);
     }
 
@@ -350,7 +353,7 @@ $('#add_itenPizza input[type=checkbox]').on('change', function (e1) {
 
 });
 //Produto Adicional
-$('.mdc-card input[type=checkbox]').on('change', function (e1) {
+$('.mdc-card input[type=checkbox]').on('change', function(e1) {
     //loadTeachers($(e1.target).val());
     //console.log(e1);
     let tipoSlug = $(this).attr('data-tiposlug')
@@ -447,14 +450,14 @@ $('.mdc-card input[type=checkbox]').on('change', function (e1) {
                 id_empresa: id_empresa,
                 chave: chave
             },
-            success: function (dd) {
+            success: function(dd) {
                 console.log(dd)
                 var valorAdicional = $(`#id_adicional${adv}`).attr('valor');
                 var novoValor = (parseFloat(vb) + parseFloat(valorAdicional));
                 $('#total').text(formatter.format(novoValor));
                 $('#valorFinal').val(novoValor);
             },
-            error: function (xhr) { }
+            error: function(xhr) {}
         });
     } else {
         $(`.${adv_att}`).hide();
@@ -476,7 +479,7 @@ $('.mdc-card input[type=checkbox]').on('change', function (e1) {
                 id_empresa: id_empresa,
                 id_cliente: id_cliente
             },
-            success: function (dd) {
+            success: function(dd) {
                 console.log(dd)
                 var novoValor = (parseFloat(vb) - parseFloat(vrec));
                 if (!isNaN(novoValor)) {
@@ -484,7 +487,7 @@ $('.mdc-card input[type=checkbox]').on('change', function (e1) {
                 }
                 $(`#qtd_ad${adv}`).val(1);
             },
-            error: function (xhr) { }
+            error: function(xhr) {}
         });
         $(".addStyle").show()
     }
@@ -495,7 +498,7 @@ $('.mdc-card input[type=checkbox]').on('change', function (e1) {
     }
 
     var total = 0;
-    $('[data-qtd]').each(function (i, ele) {
+    $('[data-qtd]').each(function(i, ele) {
         let tipo_escolha = $(`#${ele['id']}`).attr('data-tipo_escolha')
         let tipoQtd = $(`#${ele['id']}`).attr('data-qtd')
         if (parseInt(tipo_escolha) === 2) {
@@ -522,7 +525,7 @@ $('.mdc-card input[type=checkbox]').on('change', function (e1) {
     }
 });
 
-$('[data-quantity="plus"]').click(function (e) {
+$('[data-quantity="plus"]').click(function(e) {
     console.log(e);
     $('.minuss').prop("disabled", false);
     fieldName = $(this).attr('data-field');
@@ -556,21 +559,21 @@ $('[data-quantity="plus"]').click(function (e) {
             valor: valor,
             quantidade: quantidade
         },
-        success: function (dd) {
+        success: function(dd) {
             var valorAdicional = $(`#id_adicional${advS}`).attr('valor');
             var novoValor = (parseFloat(valorAdicional) + parseFloat(vbA));
             $('#total').text(formatter.format(novoValor));
             $('#valorFinal').val(novoValor);
             console.log(dd);
         },
-        error: function (xhr) {
+        error: function(xhr) {
             console.log(xhr);
         }
     });
     $(".addStyle").show()
 });
 
-$('.addFavorito').click(function (e) {
+$('.addFavorito').click(function(e) {
     let id = $(this).attr('data-favorito');
 
     $.ajax({
@@ -579,7 +582,7 @@ $('.addFavorito').click(function (e) {
         data: {
             id: id
         },
-        success: function (response) {
+        success: function(response) {
             //console.log(response)
 
             switch (response) {
@@ -593,13 +596,13 @@ $('.addFavorito').click(function (e) {
                     break;
             }
         },
-        error: function (xhr) { }
+        error: function(xhr) {}
     });
 });
 
 
 //Radio Buttom
-$('.radioMoto input[type=radio]').on('change', function (e) {
+$('.radioMoto input[type=radio]').on('change', function(e) {
     var status = $(this).val();
 
     if ($(this).is(":checked")) {
@@ -621,7 +624,7 @@ $('.radioMoto input[type=radio]').on('change', function (e) {
 
 
 // This button will decrement the value till 0
-$('[data-quantity="minus"]').click(function (e) {
+$('[data-quantity="minus"]').click(function(e) {
 
     fieldName = $(this).attr('data-field');
     var currentVal = parseInt($('input[name=' + fieldName + ']').val());
@@ -654,7 +657,7 @@ $('[data-quantity="minus"]').click(function (e) {
                 id_empresa: id_empresa,
                 id_cliente: id_cliente
             },
-            success: function (dd) {
+            success: function(dd) {
                 //location.reload();
                 //console.log(dd)
                 var valorAdicional = $(`#id_adicional${advS}`).attr('valor');
@@ -662,7 +665,7 @@ $('[data-quantity="minus"]').click(function (e) {
                 $('#total').text(formatter.format(novoValor));
                 $('#valorFinal').val(novoValor);
             },
-            error: function (xhr) { }
+            error: function(xhr) {}
         });
     }
 
@@ -689,21 +692,21 @@ $('[data-quantity="minus"]').click(function (e) {
             numero_pedido: numero_pedido,
             chave: chave
         },
-        success: function (dd) {
+        success: function(dd) {
             //console.log(dd)
             var valorAdicional = $(`#id_adicional${advS}`).attr('valor');
             var novoValor = (parseFloat(vbA) - parseFloat(valorAdicional));
             $('#total').text(formatter.format(novoValor));
             $('#valorFinal').val(novoValor);
         },
-        error: function (xhr) { }
+        error: function(xhr) {}
     });
 
 });
 
 
 $('.quantity-left-minus, .minuss').prop("disabled", true);
-$('.quantity-right-plus').click(function (e) {
+$('.quantity-right-plus').click(function(e) {
 
     var a = $('#add_itens input[type=checkbox]:checked').length;
     var b = $('#add_itens input[type=radio]:checked').length;
@@ -744,7 +747,7 @@ $('.quantity-right-plus').click(function (e) {
     }
 });
 
-$('.quantity-left-minus').click(function (e) {
+$('.quantity-left-minus').click(function(e) {
 
     var a = $('#add_itens input[type=checkbox]:checked').length;
     var b = $('#add_itens input[type=radio]:checked').length;
@@ -796,18 +799,18 @@ function mudarEndereco(id) {
         url: `/${link_site}/endereco/principal/${id}`,
         type: 'POST',
         data: id,
-        beforeSend: function () {
+        beforeSend: function() {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
         },
-        complete: function () {
+        complete: function() {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
         },
-        success: function (data) {
+        success: function(data) {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
-            //console.log(data)
+                //console.log(data)
             switch (data.mensagem) {
                 case 'Endereço definido como principal':
                     $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
@@ -818,23 +821,23 @@ function mudarEndereco(id) {
                     break;
             }
         },
-        error: function (data) {
+        error: function(data) {
             $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
         },
         cache: false,
         contentType: false,
         processData: false,
-        xhr: function () {
+        xhr: function() {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
-                myXhr.upload.addEventListener('progress', function () { }, false);
+                myXhr.upload.addEventListener('progress', function() {}, false);
             }
             return myXhr;
         }
     });
     return false;
 }
-$("#form").submit(function (e) {
+$("#form").submit(function(e) {
     var formData = new FormData(this);
     var idProd = $('#chave').val();
     var idCar = $('#id_carrinho').val();
@@ -842,11 +845,11 @@ $("#form").submit(function (e) {
         url: $('#form').attr('action'),
         type: 'POST',
         data: formData,
-        beforeSend: function () {
+        beforeSend: function() {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
         },
-        success: function (dd) {
+        success: function(dd) {
             console.log(dd);
             if (dd.id > 0) {
                 console.log(dd.mensagem);
@@ -882,7 +885,7 @@ $("#form").submit(function (e) {
                         $('.errorSup').hide();
                         $('#alertGeralSite').modal("show");
                         if (dd.url) {
-                            $(".buttonAlert").on('click', function () {
+                            $(".buttonAlert").on('click', function() {
                                 window.location = `/${link_site}/${dd.url}`;
                             });
                         }
@@ -893,7 +896,7 @@ $("#form").submit(function (e) {
                         $('.errorSup').hide();
                         $('#alertGeralSite').modal("show");
                         if (dd.url) {
-                            $(".buttonAlert").on('click', function () {
+                            $(".buttonAlert").on('click', function() {
                                 window.location = `/${link_site}/`;
                             });
                         }
@@ -904,7 +907,7 @@ $("#form").submit(function (e) {
                         $('.errorSup').hide();
                         $('#alertGeralSite').modal("show");
                         if (dd.url) {
-                            $(".buttonAlert").on('click', function () {
+                            $(".buttonAlert").on('click', function() {
                                 window.location = `/${link_site}/${dd.url}`;
                             });
                         }
@@ -919,7 +922,7 @@ $("#form").submit(function (e) {
                         $('.errorSup').hide();
                         $('#alertGeralSite').modal("show");
                         if (dd.url) {
-                            $(".buttonAlert").on('click', function () {
+                            $(".buttonAlert").on('click', function() {
                                 window.location = `/${link_site}/${dd.url}`;
                             });
                         }
@@ -934,7 +937,7 @@ $("#form").submit(function (e) {
                         $('.errorSup').hide();
                         $('#alertGeralSite').modal("show");
                         if (dd.url) {
-                            $(".buttonAlert").on('click', function () {
+                            $(".buttonAlert").on('click', function() {
                                 window.location = `/${link_site}/${dd.url}`;
                             });
                         }
@@ -950,16 +953,16 @@ $("#form").submit(function (e) {
             }
 
         },
-        error: function (dd) {
+        error: function(dd) {
             $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema</div>`)
         },
         cache: false,
         contentType: false,
         processData: false,
-        xhr: function () {
+        xhr: function() {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
-                myXhr.upload.addEventListener('progress', function () { }, false);
+                myXhr.upload.addEventListener('progress', function() {}, false);
             }
             return myXhr;
         }
@@ -967,7 +970,7 @@ $("#form").submit(function (e) {
     return false;
 });
 
-$("#formFinish").submit(function () {
+$("#formFinish").submit(function() {
     var formData = new FormData(this);
     var idProd = $('#chave').val();
     var t_pg = $('#tipo_pagamento').val();
@@ -986,14 +989,14 @@ $("#formFinish").submit(function () {
             url: $('#formFinish').attr('action'),
             type: 'POST',
             data: formData,
-            beforeSend: function () {
+            beforeSend: function() {
                 $(".btn_acao a, .btn_acao button").addClass('hide');
                 $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
             },
-            complete: function () {
+            complete: function() {
                 $('.btn_acao .carrega').html('')
             },
-            success: function (data) {
+            success: function(data) {
                 $(".btn_acao a, .btn_acao button").removeClass('hide');
                 $('.btn_acao .carrega').html('')
                 console.log(data);
@@ -1007,17 +1010,17 @@ $("#formFinish").submit(function () {
                 $(".btnValida").prop("disabled", false);
                 $('.btnValida').html('FINALIZAR PEDIDO');
             },
-            error: function (data) {
+            error: function(data) {
                 $(".btn_acao a, .btn_acao button").removeClass('hide');
                 $('#mensagem').html(`<div class="alert alert-danger" role="alert">Opss tivemos um problema com seu pedido</div>`)
             },
             cache: false,
             contentType: false,
             processData: false,
-            xhr: function () {
+            xhr: function() {
                 var myXhr = $.ajaxSettings.xhr();
                 if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', function () { }, false);
+                    myXhr.upload.addEventListener('progress', function() {}, false);
                 }
                 return myXhr;
             }
@@ -1027,7 +1030,7 @@ $("#formFinish").submit(function () {
 });
 
 function produtosModal(id_produto, id_carrinho) {
-    $.get(`/${link_site}/carrinho/pedido/acao/${id_produto}/${id_carrinho}`, function (dd) {
+    $.get(`/${link_site}/carrinho/pedido/acao/${id_produto}/${id_carrinho}`, function(dd) {
         let retorno = `
         <p id="mensagem" class="mb-4 text-center">Deseja remover este item <strong>${dd}</strong> do seu pedido?<p>
         <div class="mt-4 text-center">
@@ -1043,8 +1046,8 @@ function produtosModal(id_produto, id_carrinho) {
 /**
  * Atualizar dados para o Motoboy e Cliente em tempo real
  */
-$("#formBusca").submit(function () {
-    $.get(`/${link_site}/motoboy/pegar/entrega/busca`, function (dd) {
+$("#formBusca").submit(function() {
+    $.get(`/${link_site}/motoboy/pegar/entrega/busca`, function(dd) {
         var numero_pedido = $(`#numero_pedido`).val();
         var id_empresa = $(`#id_empresa`).val();
         var formData = {
@@ -1058,17 +1061,17 @@ $("#formBusca").submit(function () {
                 url: `/${link_site}/motoboy/pegar/entrega/busca`,
                 type: 'post',
                 data: formData,
-                beforeSend: function () {
+                beforeSend: function() {
                     $('.carregar').html(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><p class="small mb-0">Estamos processando a sua busca aguarde um momento.</p></div></div></div>`);
                 },
-                complete: function (data) {
+                complete: function(data) {
                     $('.carregar').html('');
                 },
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     $('#pesquisaEntregasMotoboy').html(data);
                 },
-                error: function (data) {
+                error: function(data) {
                     $('.carregar').html(`<div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><h4 class="text-primary">Nenhum pedido foi encontrado.</h4><p class="small mb-0">Verifique o número digitado ou tente novamente.</p></div></div></div>`);
                 }
             });
@@ -1082,27 +1085,27 @@ $("#formBusca").submit(function () {
 function mudarStatusEntrega(id, status, id_caixa, id_motoboy, numero_pedido, id_empresa, id_cliente) {
 
     let valores = {
-        id,
-        status,
-        id_caixa,
-        id_motoboy,
-        numero_pedido,
-        id_empresa,
-        id_cliente
-    }
-    //console.log(valores);
+            id,
+            status,
+            id_caixa,
+            id_motoboy,
+            numero_pedido,
+            id_empresa,
+            id_cliente
+        }
+        //console.log(valores);
     $.ajax({
         url: `/${link_site}/admin/pedido/mudar/${id}/${status}/${id_caixa}/${id_motoboy}`,
         method: "post",
         data: valores,
         dataType: "text",
-        success: function (dd) {
+        success: function(dd) {
             if (dd.mensagem == 'Status alterado com sucesso') {
                 $('#mensagem').html("Legal! Agora e só iniciar a entrega deste pedido!");
                 $('.successSup').show();
                 $('.errorSup').hide();
                 $('#alertGeralSite').modal("show");
-                $(".buttonAlert").on('click', function () {
+                $(".buttonAlert").on('click', function() {
                     window.location = `/${link_site}/motoboy/entregas`;
                 });
             } else {
@@ -1116,16 +1119,16 @@ function mudarStatusEntrega(id, status, id_caixa, id_motoboy, numero_pedido, id_
 
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     if ($(document).find(`[data-tipo_escolha='2']`).length > 0) {
         $(`.addStyleMod, .addStyleModT, .addStyle`).hide();
     }
-    $('#add_itenSabores').each(function () {
+    $('#add_itenSabores').each(function() {
         if (parseInt($(`#add_itenSabores`).length) > 0) {
             $(`.addStyle`).hide();
         }
     });
-    $('[data-tipo]').each(function (i, ele) {
+    $('[data-tipo]').each(function(i, ele) {
         let verifica = $(`#${ele['id']} .custom-control`).length
         if (parseInt(verifica) === 0) {
             $(`#${ele['id']}`).remove();
@@ -1134,7 +1137,7 @@ $(document).ready(function () {
 
     function atualizarMes() {
         $('.carregar').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
-        $.get(`/${link_site}/motoboy/buscar/entregas/mes`, function (dd) {
+        $.get(`/${link_site}/motoboy/buscar/entregas/mes`, function(dd) {
             $('#dadosMes').html(dd);
             $('.carregar').html('');
         })
@@ -1142,7 +1145,7 @@ $(document).ready(function () {
     atualizarMes();
 
     function atualizar() {
-        $.get(`/${link_site}/home/ultimaVenda`, function (dd) {
+        $.get(`/${link_site}/home/ultimaVenda`, function(dd) {
             if (parseInt($(dd).attr('data-status')) === 1) {
                 localStorage.setItem("sttInit", $(dd).attr('data-status'));
             }
@@ -1158,7 +1161,7 @@ $(document).ready(function () {
 
         let dataPedido = $('#acompanharStatusPedido').attr('data-pedido')
         if (dataPedido != undefined) {
-            $.get(`/${link_site}/meu-pedido/acompanharStatusPedido/${dataPedido}`, function (dd) {
+            $.get(`/${link_site}/meu-pedido/acompanharStatusPedido/${dataPedido}`, function(dd) {
                 console.log('oi')
                 if (parseInt($(dd).attr('data-status')) === 1) {
                     localStorage.setItem("sttInit", $(dd).attr('data-status'));
@@ -1171,11 +1174,11 @@ $(document).ready(function () {
                 $('#acompanharStatusPedido').html(dd);
             })
         }
-        $.get(`/${link_site}/motoboy/pedido/listar`, function (dd) {
+        $.get(`/${link_site}/motoboy/pedido/listar`, function(dd) {
             $('#listarEntregasMotoboy').html(dd);
         })
 
-        $.get(`/${link_site}/motoboy/pedido/listar/qtd`, function (dd) {
+        $.get(`/${link_site}/motoboy/pedido/listar/qtd`, function(dd) {
             if (parseInt($(dd).text()) === 0) {
                 localStorage.setItem("quantidadeInicial", $(dd).text());
             }
@@ -1201,13 +1204,13 @@ $(document).ready(function () {
                     method: "POST",
                     data: valores,
                     dataType: "text",
-                    success: function (dd) {
+                    success: function(dd) {
                         //console.log(dd);
                     },
                 })
             }
         } else {
-            $.get(`/${link_site}/u/valid`, function (dd) {
+            $.get(`/${link_site}/u/valid`, function(dd) {
                 console.log(dd);
                 if (dd.user !== null && dd.user !== null) {
                     localStorage.setItem('u', dd.user);
@@ -1218,7 +1221,7 @@ $(document).ready(function () {
         }
     }
     setInterval(atualizar, 10000);
-    $(function () {
+    $(function() {
         atualizar();
     });
 
@@ -1232,7 +1235,7 @@ $(document).ready(function () {
 
 $('.adicional_item_ok').hide();
 
-window.onscroll = function () {
+window.onscroll = function() {
     myFunction()
 };
 var header = document.getElementById("menuCat");
@@ -1252,7 +1255,7 @@ function myFunction() {
     }
 }
 
-$('.smoothScroll').click(function () {
+$('.smoothScroll').click(function() {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
         var target = $(this.hash);
         let verifica = $(this).attr('id')
@@ -1271,7 +1274,7 @@ $('.smoothScroll').click(function () {
     }
 });
 
-$("#mes").change(function () {
+$("#mes").change(function() {
     var mes = $(this).val();
     console.log(mes)
     var formData = {
@@ -1281,20 +1284,20 @@ $("#mes").change(function () {
         url: `/${link_site}/motoboy/buscar/entregas/mes`,
         type: 'post',
         data: formData,
-        beforeSend: function () {
+        beforeSend: function() {
             $('.carregar').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         },
-        complete: function (data) {
+        complete: function(data) {
             $('.carregar').html('');
         },
-        success: function (dd) {
+        success: function(dd) {
             console.log(dd)
             $('#dadosMes').html(dd);
         }
     });
 })
 
-$("#button-addon2").on('click', function () {
+$("#button-addon2").on('click', function() {
     var cupomDesconto = $('#cupomDesconto').val();
     var formData = {
         'cupomDesconto': cupomDesconto
@@ -1303,10 +1306,10 @@ $("#button-addon2").on('click', function () {
         url: `/${link_site}/cupomDesconto`,
         type: 'POST',
         data: formData,
-        beforeSend: function () {
+        beforeSend: function() {
             $('.button-addon2').html('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path>');
         },
-        success: function (dd) {
+        success: function(dd) {
             //console.log(dd);
             let retorno = parseFloat(dd.id)
             if (retorno === 0) {
@@ -1348,7 +1351,7 @@ if (foraDaAreaEntrega > 0) {
     $('#alertGeralSite').modal("show");
 }
 
-$("#btnValidarCode").on('click', function () {
+$("#btnValidarCode").on('click', function() {
     let telefone = $("#telefone").val();
     let id_empresa = $("#id_empresa").val();
     let codeValida = $("#codeValida").val();
@@ -1362,15 +1365,15 @@ $("#btnValidarCode").on('click', function () {
         method: "POST",
         data: valores,
         dataType: "text",
-        beforeSend: function () {
+        beforeSend: function() {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
         },
-        complete: function () {
+        complete: function() {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
         },
-        success: function (dd) {
+        success: function(dd) {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             console.log(dd)
@@ -1392,7 +1395,7 @@ $("#btnValidarCode").on('click', function () {
 });
 
 
-$("#btnValidarCodeLogin").on('click', function () {
+$("#btnValidarCodeLogin").on('click', function() {
     let telefone = $("#emailOurTel").val();
     let id_empresa = $("#id_empresa").val();
     let codeValida = $("#codeValida").val();
@@ -1406,15 +1409,15 @@ $("#btnValidarCodeLogin").on('click', function () {
         method: "POST",
         data: valores,
         dataType: "text",
-        beforeSend: function () {
+        beforeSend: function() {
             $(".btn_acao a, .btn_acao button").addClass('hide');
             $('.btn_acao .carrega').html('<div class="env"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><br/>Aguarde processando informações!</div>');
         },
-        complete: function () {
+        complete: function() {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
         },
-        success: function (dd) {
+        success: function(dd) {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
             console.log(dd)
@@ -1447,13 +1450,13 @@ function produtoModalView(id_produto) {
             id_produto
         },
         dataType: "html",
-        success: function (dd) {
+        success: function(dd) {
             $('#productTitle').html(dd.titulo)
         },
     })
 }
 
-$("#telefoneVeri").on('blur touchleave touchcancel', function () {
+$("#telefoneVeri").on('blur touchleave touchcancel', function() {
     let telefone = $(this).val();
     $.ajax({
         url: `/${link_site}/verifica/telefone`,
@@ -1462,7 +1465,7 @@ $("#telefoneVeri").on('blur touchleave touchcancel', function () {
             telefone
         },
         dataType: "html",
-        success: function (dd) {
+        success: function(dd) {
             console.log(dd)
             if (parseInt(dd) === 1) {
                 $('#ValidaCode').modal("hide");
@@ -1478,7 +1481,9 @@ $("#telefoneVeri").on('blur touchleave touchcancel', function () {
 let autocomplete;
 let address1Field;
 
-function initAutocomplete() {
+$("#ship-address").on('click blur touchleave touchcancel', function() {
+
+    //function initAutocomplete() {
     address1Field = document.querySelector("#ship-address");
     autocomplete = new google.maps.places.Autocomplete(address1Field, {
         componentRestrictions: {
@@ -1489,7 +1494,7 @@ function initAutocomplete() {
     });
     address1Field.focus();
     autocomplete.addListener("place_changed", fillInAddress);
-}
+})
 
 function fillInAddress() {
     const place = autocomplete.getPlace();
@@ -1497,26 +1502,31 @@ function fillInAddress() {
     for (const component of place.address_components) {
         const componentType = component.types[0];
         switch (componentType) {
-            case "street_number": {
-                $("#numero").val(component.long_name);
-                break;
-            }
-            case "route": {
-                $("#rua").val(component.long_name);
-                break;
-            }
-            case "postal_code": {
-                $("#cep").val(component.long_name);
-                break;
-            }
-            case "administrative_area_level_2": {
-                $("#cidade").val(component.long_name);
-                break;
-            }
-            case "administrative_area_level_1": {
-                $("#estado").val(component.short_name);
-                break;
-            }
+            case "street_number":
+                {
+                    $("#numero").val(component.long_name);
+                    break;
+                }
+            case "route":
+                {
+                    $("#rua").val(component.long_name);
+                    break;
+                }
+            case "postal_code":
+                {
+                    $("#cep").val(component.long_name);
+                    break;
+                }
+            case "administrative_area_level_2":
+                {
+                    $("#cidade").val(component.long_name);
+                    break;
+                }
+            case "administrative_area_level_1":
+                {
+                    $("#estado").val(component.short_name);
+                    break;
+                }
             case "sublocality_level_1":
                 $("#bairro").val(component.short_name);
                 break;

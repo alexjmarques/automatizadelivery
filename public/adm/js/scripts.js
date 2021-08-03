@@ -1902,8 +1902,9 @@ $("#formFinish").submit(function() {
 let autocomplete;
 let address1Field;
 
-function initAutocomplete() {
+$("#ship-address").on('click blur touchleave touchcancel', function() {
 
+    //function initAutocomplete() {
     address1Field = document.querySelector("#ship-address");
     autocomplete = new google.maps.places.Autocomplete(address1Field, {
         componentRestrictions: {
@@ -1914,7 +1915,7 @@ function initAutocomplete() {
     });
     address1Field.focus();
     autocomplete.addListener("place_changed", fillInAddress);
-}
+})
 
 function fillInAddress() {
     const place = autocomplete.getPlace();
