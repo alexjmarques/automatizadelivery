@@ -329,10 +329,10 @@ class AdminPedidos extends Controller
         $carrinho = $this->acoes->getByFieldAll('carrinho', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $empresa->id);
         $nf = $nfPaulista->cpf != "" ? "NOTA FISCAL " . $nfPaulista->cpf : 0;
 
-        $tax = $pedido->tipo_frete == 2 ? "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%;padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ". $pedido->valor_frete."</strong></td></tr>" : "<td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%;padding-bottom: 10px;'><strong>Grátis</strong></td></tr>";
+        $tax = $pedido->tipo_frete == 2 ? "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%; text-align:right;  padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ". $pedido->valor_frete."</strong></td></tr>" : "<td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%;padding-bottom: 10px;'><strong>Grátis</strong></td></tr>";
         
-        $total = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Total</td><td style=' width: 20%;padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ".number_format($pedido->total_pago, 2, '.', '') ."</strong></td></tr>";
-        $subtotal = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Subtotal</td><td style=' width: 20%;padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ".number_format($pedido->total, 2, '.', '') ."</strong></td></tr>";
+        $total = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Total</td><td style=' width: 20%;padding-bottom: 10px; text-align:right; '><strong>" . $moeda->simbolo ." ".number_format($pedido->total_pago, 2, '.', '') ."</strong></td></tr>";
+        $subtotal = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Subtotal</td><td style=' width: 20%; text-align:right; padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ".number_format($pedido->total, 2, '.', '') ."</strong></td></tr>";
 
             $date = strftime('%A, %d de %B de %Y', strtotime('today'));
 
@@ -373,7 +373,7 @@ class AdminPedidos extends Controller
                             $print .= "<br/>";
                             
                             $print .= "</td>";
-                            $print .= "<td style=' width: 20%;padding-bottom: 10px;'>";
+                            $print .= "<td style=' width: 20%; text-align:right; padding-bottom: 10px;'>";
                             $print .= "<strong>{$moeda->simbolo} " . number_format(($car->valor * $car->quantidade), 2, '.', '')."</strong>";
                             
                             $print .= "</td>";
