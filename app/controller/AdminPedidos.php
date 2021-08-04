@@ -340,7 +340,7 @@ class AdminPedidos extends Controller
 
             $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0;'>{$empresa->nome_fantasia}</h3>";
 
-            $print .= "WHATSAPP " . $this->mascTelefone($empresa->telefone);
+            $print .= "<strong style='text-align:center; margin-top:0; margin-bottom:0;'>WHATSAPP".$this->mascTelefone($empresa->telefone)."</strong>";
             $print .= "<br/>";
             $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px;'>PEDIDO #{$pedido->numero_pedido}</h2>";
             $print .= "<hr>";
