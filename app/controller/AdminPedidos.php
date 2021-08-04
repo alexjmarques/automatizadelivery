@@ -3,6 +3,8 @@
 namespace app\controller;
 
 use Dompdf\Dompdf;
+use chillerlan\QRCode\QRCode;
+
 use app\classes\Input;
 use app\classes\Acoes;
 use app\classes\item;
@@ -339,8 +341,9 @@ class AdminPedidos extends Controller
         $date = strftime('%A, %d de %B de %Y', strtotime('today'));
 
             $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>{$empresa->nome_fantasia}</h3>";
-            $print .= "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>WHATSAPP ".$this->mascTelefone($empresa->telefone)."</h3>";
-            $print .= "<br/>";
+            //$print .= "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>WHATSAPP ".$this->mascTelefone($empresa->telefone)."</h3>";
+            $url = "https://automatizadelivery.com.br/".$data['linkSite'];
+            $print.= '<h2 style="text-align:center;"><img src="'.(new QRCode)->render($url).'" alt="QR Code"/></h2>';
             $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px; width: 100%;'>PEDIDO #{$pedido->numero_pedido}</h2>";
             $print .= "<hr>";
            
