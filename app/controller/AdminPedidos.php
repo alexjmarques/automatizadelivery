@@ -338,10 +338,10 @@ class AdminPedidos extends Controller
         date_default_timezone_set('America/Sao_Paulo');
         $date = strftime('%A, %d de %B de %Y', strtotime('today'));
 
-            $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0;'>{$empresa->nome_fantasia}</h3>";
-            $print .= "<h3 style='text-align:center; margin-top:0; margin-bottom:0;'>WHATSAPP".$this->mascTelefone($empresa->telefone)."</h3>";
+            $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>{$empresa->nome_fantasia}</h3>";
+            $print .= "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>WHATSAPP ".$this->mascTelefone($empresa->telefone)."</h3>";
             $print .= "<br/>";
-            $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px;'>PEDIDO #{$pedido->numero_pedido}</h2>";
+            $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px; width: 100%;'>PEDIDO #{$pedido->numero_pedido}</h2>";
             $print .= "<hr>";
            
             $print .= "<h4 style='text-align:center; margin-top:0; margin-bottom:0;'>ITENS DO PEDIDO</h4>";
