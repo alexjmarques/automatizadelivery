@@ -334,9 +334,14 @@ class AdminPedidos extends Controller
         $total = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Total</td><td style=' width: 20%;padding-bottom: 10px; text-align:right; '><strong>" . $moeda->simbolo ." ".number_format($pedido->total_pago, 2, '.', '') ."</strong></td></tr>";
         $subtotal = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Subtotal</td><td style=' width: 20%; text-align:right; padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ".number_format($pedido->total, 2, '.', '') ."</strong></td></tr>";
 
-            $date = strftime('%A, %d de %B de %Y', strtotime('today'));
+        setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+        date_default_timezone_set('America/Sao_Paulo');
+        $date = strftime('%A, %d de %B de %Y', strtotime('today'));
 
-            $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0;'>PEDIDO DE VENDA</h3>";
+            $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0;'>{$empresa->nome_fantasia}</h3>";
+
+            $print .= "WHATSAPP " . $this->mascTelefone($empresa->telefone);
+            $print .= "<br/>";
             $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px;'>PEDIDO #{$pedido->numero_pedido}</h2>";
             $print .= "<hr>";
            
@@ -412,11 +417,6 @@ class AdminPedidos extends Controller
 
             /* Footer */
             $print .= "AGRADECEMOS A PREFERÊNCIA!";
-            $print .= "<br/>";
-            $print .= $empresa->nome_fantasia ;
-            $print .= "<br/>";
-            $print .= "WHATSAPP " . $this->mascTelefone($empresa->telefone);
-            $print .= "<br/>";
             $print .= "<br/>";
             $print .= $date;
             $print .= "<br/>";
