@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\classes\Input;
+use Dompdf\Dompdf;
 use app\classes\Acoes;
 use app\classes\Cache;
 use app\core\Controller;
@@ -45,6 +46,17 @@ class AllController extends Controller
             if ($val == max($array)) return $val; 
         }
     }
+
+    // public function gerarPDF($linkSite, $id)
+    // {
+    //     $dompdf = new Dompdf();
+
+    //     $dompdf->loadHtml(ob_get_clean());
+
+    //     //$dompdf->setPaper($papel, $orientacao); //portrait ou landscap
+    //     $dompdf->render();
+    //     $dompdf->stream("pedido.pdf", ["Attachment" => false ]);
+    // }
 
     public function verificaPlano($data)
     {

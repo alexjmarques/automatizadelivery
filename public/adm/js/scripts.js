@@ -670,14 +670,14 @@ function mudarStatus(id, status, id_caixa) {
                     atualizar();
                     $('#close-modal').trigger('click');
 
-                    //varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, 'popup')
+                    varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimirPDF/${id}`, 'popup')
                 } else {}
 
             },
         })
         // var newWin = window.open();
         // $.ajax({
-        //   type: "GET", url: `https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimir-local/${id}`, data: {},
+        //   type: "GET", url: `https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimirPDF/${id}`, data: {},
         //   success: function (data) {
         //     newWin.document.write(data);
         //     newWin.document.close();

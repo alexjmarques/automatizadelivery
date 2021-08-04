@@ -289,6 +289,9 @@ $router->get('/{linkSite}/admin/pedidos/geral', 'AdminPedidos:pedidosGeral');
 $router->get('/{linkSite}/admin/pedido/mostrar/{id}/{numero_pedido}', 'AdminPedidos:pedidoMostrar');
 $router->get('/{linkSite}/admin/pedido/imprimir/{id}', 'AdminPedidos:pedidoImprimir');
 $router->get('/{linkSite}/admin/pedido/imprimir-local/{id}', 'AdminPedidos:pedidoMostrarImprimir');
+
+$router->get('/{linkSite}/admin/pedido/imprimirPDF/{id}', 'AdminPedidos:pedidoImprimirPDF');
+
 $router->get('/{linkSite}/admin/pedido/imprimirtest', 'AdminPedidos:pedidoTestImprimir');
 
 $router->post('/{linkSite}/admin/pedido/mudar/{id}/{status}/{id_caixa}/{motoboy}', 'AdminPedidos:mudarStatus');

@@ -3,12 +3,10 @@
     "description": "Sistema de Gestão de Delivery",
     "minimum-stability": "stable",
     "license": "proprietary",
-    "authors": [
-        {
-            "name": "Alex Marques",
-            "email": "alex@automatiza.app"
-        }
-    ],
+    "authors": [{
+        "name": "Alex Marques",
+        "email": "alex@automatiza.app"
+    }],
     "config": {
         "vendor-dir": "vendor"
     },
@@ -51,6 +49,7 @@
         "pear/http_request2": "^2.4",
         "twilio/sdk": "^6.24",
         "mobiledetect/mobiledetectlib": "^2.8",
-        "delfimov/translate": "~2.0"
+        "delfimov/translate": "~2.0",
+        "dompdf/dompdf": "0.8.*"
     }
 }

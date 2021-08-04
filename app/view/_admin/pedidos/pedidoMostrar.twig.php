@@ -18,6 +18,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/pedido/editar/produtos/{{ pedido.id }}">Editar Pedido</a>
+    <a class="dropdown-item" href="{{BASE}}{{empresa.link_site}}/admin/pedido/imprimirPDF/{{ pedido.id }}" target="_blank">Imprimir Pedido</a>
     <a class="dropdown-item" href="#" onclick="cancelarPedido({{ pedido.id }})">Cancelar Pedido</a>
     <a class="dropdown-item" href="#" id="close-modal" type="button" class="closes" data-dismiss="modal" aria-label="Close">Fechar</a>
   </div>

@@ -2,6 +2,7 @@
 
 namespace app\controller;
 
+use Dompdf\Dompdf;
 use app\classes\Input;
 use app\classes\Acoes;
 use app\classes\item;
@@ -289,6 +290,143 @@ class AdminPedidos extends Controller
             'clientePagamento' => $clientePagamento
 
         ]);
+    }
+    
+    public function pedidoImprimirPDF($data)
+    {
+        //dd($data);
+        $dompdf = new Dompdf();
+
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
+
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
+        //dd($pedido);
+        $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
+        $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $pedido->id_cliente);
+
+        $tipoPagamento = $this->acoes->getByField('formasPagamento', 'id', $pedido->tipo_pagamento);
+        $tipoFrete = $this->acoes->getByField('tipoDelivery', 'id', $pedido->tipo_frete);
+        $status = $this->acoes->getByField('status', 'id', $pedido->status);
+
+        $motoboys = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 1);
+
+        $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+        $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+        $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'numero_pedido', $pedido->numero_pedido);
+        $clientePagamento = $this->acoes->getByFieldAll('carrinhoPedidoPagamento', 'numero_pedido', $pedido->numero_pedido);
+
+        if ($empresa->nf_paulista == 1) {
+            $nfPaulista = $this->acoes->getByFieldAll('carrinhoCPFNota', 'numero_pedido', $pedido->numero_pedido);
+        }
+        $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+        $carrinho = $this->acoes->getByFieldAll('carrinho', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $empresa->id);
+        $nf = $nfPaulista->cpf != "" ? "NOTA FISCAL " . $nfPaulista->cpf : 0;
+
+        $tax = $pedido->tipo_frete == 2 ? "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%;padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ". $pedido->valor_frete."</strong></td></tr>" : "<td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%;padding-bottom: 10px;'><strong>Grátis</strong></td></tr>";
+        
+        $total = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Total</td><td style=' width: 20%;padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ".number_format($pedido->total_pago, 2, '.', '') ."</strong></td></tr>";
+        $subtotal = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Subtotal</td><td style=' width: 20%;padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ".number_format($pedido->total, 2, '.', '') ."</strong></td></tr>";
+
+            $date = strftime('%A, %d de %B de %Y', strtotime('today'));
+
+            $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0;'>PEDIDO DE VENDA</h3>";
+            $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px;'>PEDIDO #{$pedido->numero_pedido}</h2>";
+            $print .= "<hr>";
+           
+            $print .= "<h4 style='text-align:center; margin-top:0; margin-bottom:0;'>ITENS DO PEDIDO</h4>";
+            $print .= "<table style='text-align:left; margin-top:0; margin-bottom:0; border-collapse: collapse;width: 100%;'>";
+            foreach ($carrinho as $car) {
+                
+                foreach ($produtos as $prod) {
+                    if ($pedido->numero_pedido == $car->numero_pedido) {
+                        if ($car->id_produto == $prod->id) {
+                            $print .= "<tr style='border-bottom:2px dotted #ccc; width: 100%;'>";
+                            $print .= "<td style=' width: 80%;padding-bottom: 10px;'>";
+                            $print .= $car->quantidade . 'x - ' . $prod->nome;
+
+                            foreach ($sabores as $s) {
+                                $print .= $s->id == $car->id_sabores ? ' | Sabor.: ' . $s->nome . ' | ' : "";
+                            }
+                            $print .= "<br/>";
+                            
+                            
+                            foreach ($carrinhoAdicional as $cartAd) {
+                                if ($prod->id == $cartAd->id_produto) {
+                                    if ($car->chave == $cartAd->chave) {
+                                        foreach ($produtosAdicionais as $a) {
+                                            if ($a->id == $cartAd->id_adicional) {
+                                                $print .= " - " . $cartAd->quantidade . 'x ' . $a->nome;
+                                                $print .= "<br/>";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            $print .= $car->observacao != "" ? "<strong>(Obs.:" . $car->observacao . ')</strong>' : "";
+                            $print .= "<br/>";
+                            
+                            $print .= "</td>";
+                            $print .= "<td style=' width: 20%;padding-bottom: 10px;'>";
+                            $print .= "<strong>{$moeda->simbolo} " . number_format(($car->valor * $car->quantidade), 2, '.', '')."</strong>";
+                            
+                            $print .= "</td>";
+                            $print .= "</tr>";
+                        }
+                    }
+                }
+               
+            }
+            $print .= "</table>";
+            $print .= "<br/>";
+            $print .= "<hr>";
+            $print .= "<table style='text-align:left; margin-top:0; margin-bottom:0; border-collapse: collapse;width: 100%;'>";
+            $print .= $subtotal;
+            $print .= $tax;
+            $print .= $total;
+            $print .= "</table>";
+
+            /* Dados Entrega */
+            $print .= "<hr>";
+            $print .= "<h3 style='text-align:left; margin-top:0; margin-bottom:0;'>DADOS CLIENTE</h3>";
+            $print .= "<br/>";
+            $print .= "<h3 style='text-align:left; margin-top:0; margin-bottom:0;'>{$cliente->nome}</h3>";
+            $print .= "<strong>TELEFONE </strong>" . $this->mascTelefone($cliente->telefone);
+            $print .= "<br/>";
+            $print .= "<strong>ENDEREÇO </strong>" . $endereco->rua . " " . $endereco->numero. " - " .$endereco->bairro;
+            $print .= "<br/>";
+            $print .= "<strong>COMP </strong>" . $endereco->complemento;
+            $print .= "<hr>";
+
+            /* NF PAULISTA */
+            if ($nf != 0) {
+                $print .= $nf;
+                $print .= "<hr>";
+            }
+
+            /* Footer */
+            $print .= "AGRADECEMOS A PREFERÊNCIA!";
+            $print .= "<br/>";
+            $print .= $empresa->nome_fantasia ;
+            $print .= "<br/>";
+            $print .= "WHATSAPP " . $this->mascTelefone($empresa->telefone);
+            $print .= "<br/>";
+            $print .= "<br/>";
+            $print .= $date;
+            $print .= "<br/>";
+            $print .= "Automatiza Delivery";
+
+            //dd($print);
+        $dompdf->loadHtml($print);
+        //$dompdf->setPaper($papel, $orientacao); //portrait ou landscap
+        $dompdf->render();
+        $dompdf->stream("pedido.pdf", ["Attachment" => false ]);
     }
 
 
