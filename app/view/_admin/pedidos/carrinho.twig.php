@@ -193,6 +193,7 @@
     {% else %}
     <button class="btn btn-success btn-block btn-lg acaoBtn btnValida p-4" type="submit">FINALIZAR PEDIDO<i class="icofont-long-arrow-right"></i></button>
     {% endif %}
+    <div class="clearfix"></div>
 </div>
 </form>
 <script>

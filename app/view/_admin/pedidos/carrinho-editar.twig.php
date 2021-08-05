@@ -123,7 +123,7 @@
             <p class=" mt-3">Total em Dinheiro para calcular o seu Troco</p>
             <input type="text" class="form-control" id="trocoCli" placeholder="Total em Dinheiro" name="trocoCli">
             {# <a class="btn btn-primary full-btn mt-2" href="#" id="calcularTroco"> Calcular Troco </a> #}
-
+            <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
         <hr>
@@ -191,6 +191,7 @@
         {% else %}
         <button class="btn btn-success btn-block btn-lg acaoBtn btnValida p-4" type="submit">ATUALIZAR PEDIDO<i class="icofont-long-arrow-right"></i></button>
         {% endif %}
+        <div class="clearfix"></div>
     </div>
 </form>
 <script>
