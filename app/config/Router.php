@@ -179,6 +179,9 @@ $router->post('/{linkSite}/endereco/i', 'PerfilController:insertEndereco');
 $router->post('/{linkSite}/endereco/pri/i', 'PerfilController:insertPrimeiroEndereco');
 
 $router->post('/{linkSite}/endereco/u', 'PerfilController:updateEndereco');
+
+$router->post('/{linkSite}/endereco/principal/{id}', 'PerfilController:mudarEnderecoPrincipal');
+
 $router->get('/{linkSite}/endereco/d/{id}', 'PerfilController:deletarEndereco');
 
 /*
@@ -298,8 +301,12 @@ $router->post('/{linkSite}/admin/pedido/mudar/{id}/{status}/{id_caixa}/{motoboy}
 
 
 $router->get('/{linkSite}/admin/pedido/novo', 'AdminPedidosBalcaoController:index');
+$router->get('/{linkSite}/admin/pedido/novo/{id}', 'AdminPedidosBalcaoController:novo');
+$router->get('/{linkSite}/admin/pedido/editar/{idCliente}/{id}', 'AdminPedidosBalcaoController:editar');
+
 $router->post('/{linkSite}/admin/pedido/pesquisa', 'AdminPedidosBalcaoController:pesquisaCliente');
 $router->post('/{linkSite}/admin/novo/cliente', 'AdminPedidosBalcaoController:carrinhoCadastroValida');
+$router->post('/{linkSite}/admin/editar/endereco/cliente', 'AdminPedidosBalcaoController:carrinhoCadastroEndereco');
 
 $router->get('/{linkSite}/admin/pedido/novo/produtos', 'AdminPedidosBalcaoController:produtos');
 $router->post('/{linkSite}/admin/produto/addCarrinho/produto/{id}', 'AdminPedidosBalcaoController:carrinhoAddProduto');
@@ -312,12 +319,14 @@ $router->post('/{linkSite}/admin/produto/editCarrinho/produto/{id}', 'AdminPedid
 $router->post('/{linkSite}/admin/produto/editCarrinho/produto-pizza/{tamanho}', 'AdminPedidosBalcaoController:carrinhoEditarProdutoPizza');
 
 
-$router->post('/{linkSite}/admin/pedido/novo/start', 'AdminPedidosBalcaoController:start');
-$router->get('/{linkSite}/admin/produto/novo/mostrar/{id}', 'AdminPedidosBalcaoController:produtoMostrar');
+$router->get('/{linkSite}/admin/produto/novo/mostrar/{id}/{idCliente}', 'AdminPedidosBalcaoController:produtoMostrar');
 $router->get('/{linkSite}/admin/produto/novo/mostrar-pizza/{tamanho}', 'AdminPedidosBalcaoController:produtoPizzaMostrar');
 
-$router->get('/{linkSite}/admin/produto/editar/mostrar/{id}/{numero_pedido}', 'AdminPedidosBalcaoController:produtoMostrarEditar');
+$router->get('/{linkSite}/admin/produto/editar/mostrar/{id}/{idCliente}/{numero_pedido}', 'AdminPedidosBalcaoController:produtoMostrarEditar');
 $router->get('/{linkSite}/admin/produto/editar/mostrar-pizza/{tamanho}/{numero_pedido}', 'AdminPedidosBalcaoController:produtoPizzaMostrarEditar');
+
+$router->get('/{linkSite}/admin/pedido/produtos/carrinho/{id}', 'AdminPedidosBalcaoController:carrinhoProdutos');
+$router->get('/{linkSite}/admin/pedido/produtos/carrinho/{id}/{numeroPedido}', 'AdminPedidosBalcaoController:carrinhoProdutosEditar');
 
 $router->get('/{linkSite}/admin/pedido/novo/produtos/detalhes', 'AdminPedidosBalcaoController:carrinhoFinalizar');
 $router->get('/{linkSite}/admin/produto/adicional/atualiza/{chave}/{id}', 'AdminPedidosBalcaoController:carrinhoCheckoutAdicionalUpdate');
@@ -326,7 +335,7 @@ $router->get('/{linkSite}/admin/produto/addCarrinho/adicionalis/{chave}', 'Admin
 $router->get('/{linkSite}/admin/produto/removeCarrinho/adicionalis/{chave}', 'AdminPedidosBalcaoController:removeCarrinhoCheckoutAdicional');
 
 $router->get('/{linkSite}/admin/carrinho', 'AdminPedidosBalcaoController:carrinho');
-$router->get('/{linkSite}/admin/carrinho/deletar/{id_produto}/{id_carrinho}', 'AdminPedidosBalcaoController:deletarItemCarrinho');
+$router->post('/{linkSite}/admin/carrinho/deletar/{id_produto}/{id_carrinho}', 'AdminPedidosBalcaoController:deletarItemCarrinho');
 $router->get('/{linkSite}/admin/carrinho/deletar/{id_produto}/{id_carrinho}/{pedido}', 'AdminPedidosBalcaoController:deletarItemCarrinhoEditar');
 
 $router->post('/{linkSite}/admin/carrinho/finaliza', 'AdminPedidosBalcaoController:carrinhoFinalizarPedido');

@@ -137,6 +137,7 @@
                                 <div class="alert alert-warning" role="alert"> Para cadastrar um novo produdo com e inserir variações de escolhas cadastre um Produto Adicional! <a href="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/novo">Clique aqui</a> para Cadastrar.</div>
                             {% else %}
                             <div class="form-row">
+                                
                                 <div class="form-group col-md-12">
                                     <div id="prodAdicional">
                                         {% for ta in tipoAdicional %}

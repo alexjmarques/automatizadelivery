@@ -22,7 +22,7 @@
             </div>
           </div>
 
-          <div class="bg-white mb-3 border-top mt-1 pt-2 ">
+          <div id="pedidoTipo" class="bg-white mb-3 border-top mt-1 pt-2 ">
             <label class="col-12 col-form-label" style="padding-left: 0;"><strong>Pedido para Entrega</strong></label>
             <select id="entrega" name="entrega" class="form-control select2-single">
               <option value="1" selected>Pedido para Entrega</option>
@@ -48,6 +48,7 @@
             <input type="hidden" id="cidade" name="cidade" value="">
             <input type="hidden" id="bairro" name="bairro" value="">
             <input type="hidden" id="estado" name="estado" value="">
+            <input type="hidden" id="idCliente" name="idCliente" value="">
 
             <div class="form-group">
               <label for="telefone" class="text-dark">Complemento ou referência <span style="color:red;">*</span></label>

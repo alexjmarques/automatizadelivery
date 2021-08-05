@@ -163,11 +163,12 @@ class PerfilController extends Controller
         ]);
     }
 
-    
-    
+
+
     public function novoEnderecoPrimeiro($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
@@ -175,6 +176,7 @@ class PerfilController extends Controller
         $this->load('login/endereco', [
             'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
+            'empresaEndereco' => $empresaEndereco,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -240,37 +242,56 @@ class PerfilController extends Controller
 
     public function insertPrimeiroEndereco($data)
     {
-    if ($data['numero']) {
-        $novo = new UsuariosEnderecos();
-        $novo->id_usuario = $this->sessao->getUser();
-        $novo->nome_endereco = "Principal";
-        $novo->rua = $data['rua'];
-        $novo->numero = $data['numero'];
-        $novo->complemento = $data['complemento'];
-        $novo->bairro = $data['bairro'];
-        $novo->cidade = $data['cidade'];
-        $novo->estado = $data['estado'];
-        $novo->cep = $data['cep'];
-        $novo->principal = 1;
-        $novo->save();
+        if ($data['numero']) {
+            $novo = new UsuariosEnderecos();
+            $novo->id_usuario = $this->sessao->getUser();
+            $novo->nome_endereco = "Principal";
+            $novo->rua = $data['rua'];
+            $novo->numero = $data['numero'];
+            $novo->complemento = $data['complemento'];
+            $novo->bairro = $data['bairro'];
+            $novo->cidade = $data['cidade'];
+            $novo->estado = $data['estado'];
+            $novo->cep = $data['cep'];
+            $novo->principal = 1;
+            $novo->save();
 
 
-        header('Content-Type: application/json');
-        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço','code' => 2 ,  'url' => 'carrinho',]);
-        exit($json);
-
-    } else {
-        header('Content-Type: application/json');
-        $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Vi que não informou o número, informe como exemplo a seguir! (Ex.: Avenida Paulista 2073)']);
-        exit($json);
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço', 'code' => 2,  'url' => 'carrinho',]);
+            exit($json);
+        } else {
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Vi que não informou o número, informe como exemplo a seguir! (Ex.: Avenida Paulista 2073)']);
+            exit($json);
+        }
     }
+
+    public function mudarEnderecoPrincipal($data)
+    {
+        $resulEnderecos = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        if ($data['id'] != $resulEnderecos->id) {
+            $valor = (new UsuariosEnderecos())->findById($resulEnderecos->id);
+            $valor->principal = 0;
+            $valor->save();
+
+            if ($valor > 0) {
+                $valorNovo = (new UsuariosEnderecos())->findById($data['id']);
+                $valorNovo->principal = 1;
+                $valorNovo->save();
+
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => $valorNovo->id, 'resp' => 'insert', 'mensagem' => 'Endereço definido como principal', 'url' => 'enderecos']);
+                exit($json);
+            }
+        }
     }
 
     public function insertEndereco($data)
     {
         if ($data['principal'] == 1) {
             $resulEnderecos = $this->acoes->countsTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-        
+
             if ($resulEnderecos > 0) {
                 $endereco = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
                 $valor = (new UsuariosEnderecos())->findById($endereco->id);
@@ -293,7 +314,7 @@ class PerfilController extends Controller
         $novo->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar um novo endereço','code' => 2 ,  'url' => 'enderecos',]);
+        $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar um novo endereço', 'code' => 2,  'url' => 'enderecos',]);
         exit($json);
     }
 
@@ -329,7 +350,7 @@ class PerfilController extends Controller
         $novo->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Endereço atualizado com Sucesso!', 'error' => 'Erro ao atualizar o endereço','code' => 2 ,  'url' => 'enderecos',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Endereço atualizado com Sucesso!', 'error' => 'Erro ao atualizar o endereço', 'code' => 2,  'url' => 'enderecos',]);
         exit($json);
     }
 
@@ -347,7 +368,7 @@ class PerfilController extends Controller
         $valor->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados atualizado com sucesso', 'error' => 'Erro ao atualizar o seus dados','code' => 2 ,  'url' => 'perfil',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Dados atualizado com sucesso', 'error' => 'Erro ao atualizar o seus dados', 'code' => 2,  'url' => 'perfil',]);
         exit($json);
     }
 }

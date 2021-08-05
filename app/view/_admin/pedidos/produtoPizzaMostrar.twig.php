@@ -66,6 +66,7 @@
             <input type="hidden" name="id_adicional" id="id_adicional" value="{{ produto.adicional }}">
             <input type="hidden" name="chave" id="chave" value="{{chave}}">
             <input type="hidden" name="id_empresa" id="id_empresa" value="{{empresa.id}}">
+            <input type="hidden" name="id_cliente_{{produto.id}}" id="id_cliente_{{produto.id}}" value="{{idCliente}}"> 
             <input type="hidden" name="valor" id="valor" value="{% if produto.valor_promocional != '0.00' %}{{ produto.valor_promocional }}{% else %}{{ produto.valor }}{% endif %}">
 
             <button class="btn btn-success btn-block btn-lg addStyle mt-4 p-4">ADICIONAR AO PEDIDO <i class="feather-shopping-cart"></i></button>

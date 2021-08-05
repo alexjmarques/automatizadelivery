@@ -1,6 +1,7 @@
 /**
 * Checkout
 */
+
 meter {
     width: 100%;
 }
@@ -10,7 +11,7 @@ textarea.form-control {
 }
 
 .quantity-left-minus {
-    border-radius: 0  !important;
+    border-radius: 0 !important;
     -webkit-border-top-left-radius: 4px !important;
     -webkit-border-bottom-left-radius: 4px !important;
     -moz-border-radius-topleft: 4px !important;
@@ -18,27 +19,33 @@ textarea.form-control {
     border-top-left-radius: 4px !important;
     border-bottom-left-radius: 4px !important;
 }
-.quantidade{
-  float: right;
+
+.quantidade {
+    float: right;
 }
-.quantidade button{
+
+.quantidade button {
     width: 40px;
 }
-#quantity:focus{
+
+#quantity:focus {
     background: #fff;
 }
-.col-lg-3.quantidade .input-group{
+
+.col-lg-3.quantidade .input-group {
     width: 130px;
     padding-top: 5px;
     float: left;
 }
+
 .mdc-card h5,
 #add_itenSabores h5 {
     font-size: 1rem;
     font-weight: bold;
 }
+
 .quantity-right-plus {
-    border-radius: 0  !important;
+    border-radius: 0 !important;
     -webkit-border-top-right-radius: 4px !important;
     -webkit-border-bottom-right-radius: 4px !important;
     -moz-border-radius-topright: 4px !important;
@@ -46,17 +53,19 @@ textarea.form-control {
     border-top-right-radius: 4px !important;
     border-bottom-right-radius: 4px !important;
 }
+
 .btn-primary:focus,
-.btn-primary:hover{
+.btn-primary:hover {
     background: #571118;
     background-color: #571118;
-
 }
-.small-mais{
+
+.small-mais {
     font-size: 14px !important;
     line-height: inherit !important;
 }
-.qtd-control{
+
+.qtd-control {
     float: right;
     width: 30px;
     display: inline-block;
@@ -67,105 +76,119 @@ textarea.form-control {
     line-height: 1.5;
     color: #495057;
     vertical-align: middle;
-    
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    
 }
-.input-group{
+
+.input-group {
     width: 110px;
     float: right;
     margin-top: 0;
 }
+
 .plus-minus-input {
     -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-  }
-  
-  .plus-minus-input .input-group-field {
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.plus-minus-input .input-group-field {
     text-align: center;
     margin-left: 0;
     margin-right: 0rem;
     padding: .2rem;
     border-radius: 0;
     border: none;
-  }
-  
-  .plus-minus-input .input-group-field::-webkit-inner-spin-button,
-  .plus-minus-input .input-group-field ::-webkit-outer-spin-button {
+}
+
+.plus-minus-input .input-group-field::-webkit-inner-spin-button,
+.plus-minus-input .input-group-field ::-webkit-outer-spin-button {
     -webkit-appearance: none;
-            appearance: none;
-  }
-  
-  .plus-minus-input .input-group-button .circle {
+    appearance: none;
+}
+
+.plus-minus-input .input-group-button .circle {
     border-radius: 50%;
     padding: 0.25em 0.8em;
-  }
-  .input-group-btn .quantity-left-minus,
-  .input-group-btn .quantity-right-plus{
-      width: 40px;
-  }
-  .subprice{
-      line-height: inherit !important;
-      color: #155724 !important;
-      font-size: 13px !important;
-  }
-  .line-e{
-      line-height: initial;
-  }
-  .btnDeletarFloatMod.sair{
-      width: 100%;
-  }
-  .new__button{
-      margin: 0 auto;
-  }
-  .svgPedido{
+}
+
+.input-group-btn .quantity-left-minus,
+.input-group-btn .quantity-right-plus {
+    width: 40px;
+}
+
+.subprice {
+    line-height: inherit !important;
+    color: #155724 !important;
+    font-size: 13px !important;
+}
+
+.line-e {
+    line-height: initial;
+}
+
+.btnDeletarFloatMod.sair {
+    width: 100%;
+}
+
+.new__button {
+    margin: 0 auto;
+}
+
+.svgPedido {
     max-width: 200px;
     width: 100%;
     display: block;
     margin: 0px auto;
-  }
-.text-13{
+}
+
+.text-13 {
     font-size: 13px;
     font-weight: 600;
 }
 
 .btn-success.btn-block.btn-lg.addStyle,
-.btn-info.addStyle{
+.btn-info.addStyle {
     background: #000;
     border-color: #000;
 }
+
 .row-scroll {
     overflow: auto;
     white-space: nowrap;
     padding-top: 20px;
 }
+
 .row-scroll .col-xl-1 {
     display: inline-block;
     vertical-align: top;
     width: auto;
-    padding:0;
+    padding: 0;
 }
 
-.col-md4{
+.col-md4 {
     width: 40%;
     float: left;
 }
-.col-md6{
+
+.col-md6 {
     width: 60%;
     float: left;
 }
-.col-md12{
+
+.col-md12 {
     width: 100%;
-    float: left;  
+    float: left;
 }
-.linha{
+
+.linha {
     border-bottom: 1px dotted #ccc
 }
-.list-card.bg-white{
+
+.list-card.bg-white {
     border: 1px dotted #ccc
 }
+
 .StatusRest {
     width: 100%;
     height: 60px;
@@ -191,7 +214,7 @@ textarea.form-control {
     font-size: 18px;
 }
 
-.bygbrb > .content-wrap .group .content > strong {
+.bygbrb>.content-wrap .group .content>strong {
     margin-bottom: 12px;
     display: block;
     font-size: 12px;
@@ -199,20 +222,25 @@ textarea.form-control {
     line-height: 150%;
     color: rgb(127, 143, 159);
 }
-.bqcUJK + div {
+
+.bqcUJK+div {
     margin-top: 8px;
 }
+
 .rounded-circle {
     border-radius: 5px!important;
 }
+
 .col.bg-white.rounded-circle.mt-n4.px-3.py-2,
 .bg-danger.rounded-circle.mt-n0.shadow {
     border-radius: 50%!important;
 }
-#acompanharStatusPedido .status{
+
+#acompanharStatusPedido .status {
     border: 1px solid #fff !important;
 }
-.status h6.fttHome{
+
+.status h6.fttHome {
     font-size: 13px;
     font-weight: bold;
 }
@@ -220,11 +248,13 @@ textarea.form-control {
 .select2-container .select2-selection--single .select2-selection__rendered {
     padding-right: 38px !important;
 }
-.motoFull{
+
+.motoFull {
     float: left;
     width: 100%;
 }
-.valorFullSize{
+
+.valorFullSize {
     font-size: 38px;
     font-weight: bold;
     color: #2c2e2f;
@@ -233,7 +263,7 @@ textarea.form-control {
     font-weight: 300;
 }
 
-.valorFullSizeMini{
+.valorFullSizeMini {
     font-size: 22px ​!important;
     font-weight: bold;
     color: #2c2e2f;
@@ -241,54 +271,65 @@ textarea.form-control {
     font-family: 'Merriweather Sans', sans-serif;
     font-weight: 300;
 }
-.metade{
-  width: 50%;
-  float: left;
+
+.metade {
+    width: 50%;
+    float: left;
 }
-.btn-waze{
+
+.btn-waze {
     color: #fff;
     background-color: #7EC0EE;
 }
 
-.btn-maps{
+.btn-maps {
     background-color: #4A89F3;
     color: #fff;
 }
+
 .landing-page-skip,
-.location-page{
+.location-page {
     background-color: #fff !important;
 }
+
 .osahan-slider .d-flex.flex-column,
-.location-page .d-flex.flex-column{
+.location-page .d-flex.flex-column {
     margin: 0 auto;
     float: none;
 }
+
 .btn-black,
 .btn-black:focus,
-.btn-black:hover{
+.btn-black:hover {
     background-color: #000;
     color: #fff !important;
 }
-.numero_pedidoMoto{
+
+.numero_pedidoMoto {
     font-size: 30px !important;
     line-height: 30px;
     padding: 0 !important;
     height: calc(1.2em + 1.2rem + 2px) !important;
 }
-.btn.btn-primary.d-block.mt-3{
-  margin: 15px auto 0 auto !important;
-  float:none;
+
+.btn.btn-primary.d-block.mt-3 {
+    margin: 15px auto 0 auto !important;
+    float: none;
 }
-.full-width.col-md-6.text-center{
-  margin: 0 auto !important;
-  float:none;
+
+.full-width.col-md-6.text-center {
+    margin: 0 auto !important;
+    float: none;
 }
-.btn-success{
+
+.btn-success {
     text-transform: uppercase;
 }
-.verdeNf{
+
+.verdeNf {
     background-color: #28a7453d !important
 }
+
 .count-number-input {
     width: 39px;
     text-align: center;
@@ -300,7 +341,11 @@ textarea.form-control {
     border-radius: 0px;
     vertical-align: bottom;
 }
-.sabor_item_ok, .sabor_item, .adicional_item_ok, .adicional_item {
+
+.sabor_item_ok,
+.sabor_item,
+.adicional_item_ok,
+.adicional_item {
     float: right;
     font-size: 14px;
     font-weight: 600;
@@ -314,15 +359,18 @@ button.quantity-left-minus:hover,
 button.quantity-right-plus:active,
 button.quantity-left-minus:active,
 button.quantity-right-plus:focus,
-button.quantity-left-minus:focus{
+button.quantity-left-minus:focus {
     padding: 8px 8px !important;
     font-size: 15px;
     border: none;
 }
-.sabor_item_ok, .adicional_item_ok {
+
+.sabor_item_ok,
+.adicional_item_ok {
     color: green;
 }
-.boRight{
+
+.boRight {
     text-align: right;
     float: right;
     width: 93px;
@@ -341,53 +389,65 @@ nav.pagin .pagin_item {
     text-decoration: none;
     font-size: 16px;
 }
-.pagin_item:hover{
+
+.pagin_item:hover {
     background-color: #4d4a4b;
     color: white !important;
 }
+
 .pagin_active:hover,
-.pagin_active{
+.pagin_active {
     background-color: #880a1f;
     color: white !important;
 }
 
-.float-ceter{
+.float-ceter {
     margin: 0 auto;
 }
+
 .formStatus5 p.text-muted,
-.formStatus5 p.text-danger{
+.formStatus5 p.text-danger {
     color: #909090 !important;
     text-decoration: line-through !important;
 }
-.formStatus5 p strong{
+
+.formStatus5 p strong {
     color: #dc3545 !important;
 }
-.formStatus6 p{
+
+.formStatus6 p {
     color: #dc3545 !important;
     text-decoration: line-through !important;
 }
-.even{
+
+.even {
     background: #f5f5f5;
 }
-.linhaFooter{
+
+.linhaFooter {
     margin-top: 10px;
 }
-.linhaFooter th{
+
+.linhaFooter th {
     padding: 15px;
     font-size: 18px;
 }
-.bc-danger{
+
+.bc-danger {
     border-color: #880a1f !important;
     color: #880a1f !important;
 }
+
 .produtoTable img,
-.produtoTable span{
+.produtoTable span {
     float: left;
 }
-.produtoTable img{
+
+.produtoTable img {
     margin-right: 5px;
 }
-.produtoTable span strong{
+
+.produtoTable span strong {
     font-size: 16px;
 }
 
@@ -572,47 +632,59 @@ nav.pagin .pagin_item {
     background: #000;
     border-color: #000
 }
-.select_sabores{
+
+.select_sabores {
     float: right;
     width: 200px;
 }
-.select_quantidade{
+
+.select_quantidade {
     float: right;
     width: 60px;
 }
+
 .select_quantidade .selection,
-.select_sabores .selection{
+.select_sabores .selection {
     width: 100%;
 }
-.btn_acao{
+
+.btn_acao {
     text-align: center;
 }
-.btn_acao .carrega{
+
+.btn_acao .carrega {
     background-color: rgb(240, 240, 240);
     border-radius: 10px;
     text-align: center;
     width: 100%;
 }
-.btn_acao .carrega .env{
+
+.btn_acao .carrega .env {
     padding: 10px 15px;
 }
 
-.enderecoCampo{
+.enderecoCampo {
     position: relative;
 }
-.enderecoCampo input{
+
+.enderecoCampo input {
     height: 60px !important;
     padding-left: 30px;
 }
-.enderecoCampo svg{
+
+.enderecoCampo svg {
     position: absolute;
     top: 15px;
     left: 8px;
     width: auto;
     margin: 0;
 }
-.pac-container{
+
+.pac-container {
     z-index: 999999;
     top: 341px !important;
 }
 
+.enderecoNew .pac-container {
+    top: 217px !important;
+}

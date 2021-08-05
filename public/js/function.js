@@ -810,7 +810,7 @@ function mudarEndereco(id) {
         success: function(data) {
             $(".btn_acao a, .btn_acao button").removeClass('hide');
             $('.btn_acao .carrega').html('')
-                //console.log(data)
+            console.log(data)
             switch (data.mensagem) {
                 case 'Endereço definido como principal':
                     $('#mensagem').html(`<div class="alert alert-success" role="alert">${data.mensagem}</div>`);
@@ -1478,60 +1478,90 @@ $("#telefoneVeri").on('blur touchleave touchcancel', function() {
     })
 })
 
-let autocomplete;
-let address1Field;
+$("#numero").on('blur touchleave touchcancel', function() {
+        var rua = $("#rua").val().replace(" ", "%20");
+        var numero = $("#numero").val().replace(" ", "%20");
+        var cidade = $("#cidade").val().replace(" ", "%20");
+        var estado = $("#estado").val().replace(" ", "%20");
+        var url = `https://maps.google.com/maps/api/geocode/json?address=${rua}%20${numero}%20-%20${cidade}&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ`;
 
-$("#ship-address").on('click touchleave touchcancel', function initAutocomplete() {
+        $.getJSON(url, function(place) {
+            //console.log(place.results[0].address_components)
+            for (const component of place.results[0].address_components) {
+                const componentType = component.types[0];
+                console.log(component)
+                switch (componentType) {
+                    case "street_number":
+                        {
+                            $("#numero").val(component.long_name);
+                            break;
+                        }
+                    case "route":
+                        {
+                            $("#rua").val(component.long_name);
+                            break;
+                        }
+                    case "postal_code":
+                        {
+                            $("#cep").val(component.long_name);
+                            break;
+                        }
+                    case "administrative_area_level_2":
+                        {
+                            $("#cidade").val(component.long_name);
+                            break;
+                        }
+                    case "administrative_area_level_1":
+                        {
+                            $("#estado").val(component.short_name);
+                            break;
+                        }
+                    case "sublocality":
+                        $("#bairro").val(component.short_name);
+                        break;
+                    case "political":
+                        $("#bairro").val(component.short_name);
+                        break;
+                    case "sublocality_level_1":
+                        $("#bairro").val(component.short_name);
+                        break;
+                }
+            }
 
-    //function initAutocomplete() {
-    address1Field = document.querySelector("#ship-address");
-    autocomplete = new google.maps.places.Autocomplete(address1Field, {
-        componentRestrictions: {
-            country: ["br", "br"]
-        },
-        fields: ["address_components", "geometry"],
-        types: ["address"],
-    });
-    address1Field.focus();
-    autocomplete.addListener("place_changed", fillInAddress);
-})
+            // try {
+            //     // Preenche os campos de acordo com o retorno da pesquisa
+            //     $("#endereco").val(dadosRetorno.logradouro);
+            //     $("#bairro").val(dadosRetorno.bairro);
+            //     $("#cidade").val(dadosRetorno.localidade);
+            //     $("#uf").val(dadosRetorno.uf);
+            // } catch (ex) {}
+        });
+    })
+    // let autocomplete;
+    // let address1Field;
 
-function fillInAddress() {
-    const place = autocomplete.getPlace();
+// $("#ship-address").on('click touchleave touchcancel', function initAutocomplete() {
 
-    for (const component of place.address_components) {
-        const componentType = component.types[0];
-        switch (componentType) {
-            case "street_number":
-                {
-                    $("#numero").val(component.long_name);
-                    break;
-                }
-            case "route":
-                {
-                    $("#rua").val(component.long_name);
-                    break;
-                }
-            case "postal_code":
-                {
-                    $("#cep").val(component.long_name);
-                    break;
-                }
-            case "administrative_area_level_2":
-                {
-                    $("#cidade").val(component.long_name);
-                    break;
-                }
-            case "administrative_area_level_1":
-                {
-                    $("#estado").val(component.short_name);
-                    break;
-                }
-            case "sublocality_level_1":
-                $("#bairro").val(component.short_name);
-                break;
-        }
-    }
-    //address1Field.value = address1Field;
-    //address2Field.focus();
-}
+//     //function initAutocomplete() {
+//     address1Field = document.querySelector("#ship-address");
+//     autocomplete = new google.maps.places.Autocomplete(address1Field, {
+//         componentRestrictions: {
+//             country: ["br", "br"]
+//         },
+//         fields: ["address_components", "geometry"],
+//         types: ["address"],
+//     });
+//     address1Field.focus();
+//     autocomplete.addListener("place_changed", fillInAddress);
+// })
+
+// function fillInAddress() {
+//     const place = autocomplete.getPlace();
+
+
+
+
+
+//     //address1Field.value = address1Field;
+//     //address2Field.focus();
+// }

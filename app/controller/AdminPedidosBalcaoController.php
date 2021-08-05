@@ -59,6 +59,7 @@ class AdminPedidosBalcaoController extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($estabelecimento) {
             $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
         }
@@ -95,7 +96,204 @@ class AdminPedidosBalcaoController extends Controller
             'planoAtivo' => $planoAtivo,
             'clientes' => $resultClientes,
             'caixa' => $caixa->status,
+            'estabelecimento' => $estabelecimento,
+            'planoAtivo' => $planoAtivo,
             'motoboy' => $resultMotoboy
+        ]);
+    }
+
+
+    public function novo($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+
+        $cliente = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $cliente->id, 'principal', 1);
+
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+
+        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id, 'posicao ASC');
+        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
+        $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
+
+        $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+
+        if ($estabelecimento) {
+            $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
+        }
+
+            $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
+            $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
+
+            $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+            $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+            $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
+            $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
+
+            if ($enderecoAtivo) {
+                $cFrete = $this->calculoFrete->calculo($enderecoAtivo->rua, $enderecoAtivo->numero, $enderecoAtivo->bairro, $enderecoAtivo->cep, $enderecoAtivo->id);
+                $infoKm = $this->calculoFrete->infoKm($enderecoAtivo->rua, $enderecoAtivo->numero, $enderecoAtivo->bairro, $enderecoAtivo->cep, $enderecoAtivo->id);
+
+                $termo = 'km';
+                $pattern = '/' . $termo . '/';
+                if (preg_match($pattern, $infoKm)) {
+                    $cFrete = $cFrete;
+                } else {
+                    $cFrete = 1;
+                }
+
+                //dd($infoKm);
+                //dd($cFrete);
+                $taxa_entrega = $delivery->taxa_entrega;
+                $km_entrega = $delivery->km_entrega;
+
+                $taxa_entrega2 = $delivery->taxa_entrega2;
+                $km_entrega2 = $delivery->km_entrega2;
+
+                $taxa_entrega3 = $delivery->taxa_entrega3;
+                $km_entrega3 = $delivery->km_entrega3;
+
+                $km_entrega_excedente = $delivery->km_entrega_excedente;
+                $valor_excedente = $delivery->valor_excedente;
+
+
+                if ($cFrete <= $km_entrega) {
+                    $total = $taxa_entrega;
+                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                        $total = $taxa_entregaNova;
+                    }
+                }
+
+                if ($delivery->km_entrega_excedente != 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
+                }
+
+                if ($km_entrega2 != 0.00) {
+                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
+                        $total = $taxa_entrega2;
+                    }
+
+                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                        $total = $taxa_entregaNova;
+
+                        //dd($total);
+                    }
+
+                    if ($delivery->km_entrega_excedente == 0) {
+                        $deliveryEntregaExcedente = $delivery->km_entrega2;
+                    }
+                }
+
+                if ($km_entrega3 != 0.00) {
+                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
+                        $total = $taxa_entrega3;
+                    }
+
+                    if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                        $total = $taxa_entregaNova;
+                    }
+
+                    if ($delivery->km_entrega_excedente == 0) {
+                        $deliveryEntregaExcedente = $delivery->km_entrega3;
+                    }
+                }
+
+                if ($delivery->frete_status == 1) {
+                    if ($delivery->valor <= $valorCarrinho) {
+                        $total = 0;
+                    }
+                }
+
+                if ($delivery->primeira_compra == 1) {
+                    if ($resultVendasFeitas == 0) {
+                        $total = 0;
+                    }
+                }
+            }
+
+            $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
+
+            $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+
+            if ($cupomVerifica > 0) {
+                $cupomUtilizacoesId = $this->acoes->getByField('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id,);
+                $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizacoesId->id_cupom);
+
+                if ((int)$cupomValida->tipo_cupom == 1) {
+                    $valor = $valorCarrinho;
+                    $porcentagem = floatval($cupomValida->valor_cupom);
+                    $resul = $valor * ($porcentagem / 100);
+                    $resultado = $resul;
+                } else {
+                    $resultado = $cupomValida->valor_cupom;
+                }
+                $valorCarrinho = $valorCarrinho - $resultado;
+            }
+
+
+        if ($this->sessao->getUser()) {
+            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() == 3) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+        $usuario = $this->acoes->getFind('usuarios');
+        $count = $this->acoes->counts('motoboy', 'id_empresa', $empresa->id);
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 10, $page);
+        $retorno = $this->acoes->pagination('motoboy', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
+
+        $this->load('_admin/pedidos/novo-cliente', [
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'moeda' => $moeda,
+            'planoAtivo' => $planoAtivo,
+            'cliente' => $cliente,
+            'enderecoAtivo' => $enderecoAtivo,
+            'caixa' => $caixa->status,
+            'tamanhos' => $tamanhos,
+            'tamanhosCategoria' => $tamanhosCategoria,
+            'estabelecimento' => $estabelecimento,
+            'produto' => $produto,
+            'caixa' => $caixa->status,
+
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'delivery' => $delivery,
+            'tipo' => $tipo,
+            'pagamento' => $pagamento,
+            'calculoFrete' => $total,
+            'numero_pedido' => $this->sessao->getSessao('numeroPedido'),
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'valorPedido' => $valorCarrinho,
+            'km' => $cFrete,
+            'km_entrega_excedente' => $km_entrega_excedente,
+            'km_entrega' => $km_entrega,
+
+            'categoria' => $categoria
         ]);
     }
 
@@ -104,25 +302,17 @@ class AdminPedidosBalcaoController extends Controller
         $telefone = preg_replace('/[^0-9]/', '', $data['telefone']);
         $resultClientes = $this->acoes->getByFieldTwo('usuarios', 'telefone', $telefone, 'nivel', 3);
         if ($resultClientes) {
-            //$resultEndereco = $this->acoes->getByField('enderecos', 'id_usuario', $resultClientes->id);
+            $resultEndereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $resultClientes->id);
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $resultClientes->id, 'nome' => $resultClientes->nome, 'telefone' => $data['telefone']]);
+            $json = json_encode([
+                'id' => $resultClientes->id, 'nome' => $resultClientes->nome, 'telefone' => $data['telefone'], 'rua' => $resultEndereco->rua, 'numero' => $resultEndereco->numero, 'bairro' => $resultEndereco->bairro, 'complemento' => $resultEndereco->complemento, 'cep' => $resultEndereco->cep
+            ]);
             exit($json);
         } else {
             header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'mensagem' => 'Cliente não cadastrado, faça o cadastro antes de continuar']);
             exit($json);
         }
-    }
-
-
-    public function start($data)
-    {
-        $this->sessao->sessaoNew('id_cliente', $data['cliente']);
-
-        header('Content-Type: application/json');
-        $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'Carrinho interno iniciado', 'error' => 'Não foi posível iniciar carrinho interno iniciado', 'code' => 1,  'url' => 'admin/pedido/novo/produtos']);
-        exit($json);
     }
 
 
@@ -150,12 +340,12 @@ class AdminPedidosBalcaoController extends Controller
         if ($this->sessao->getUser()) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'));
+            //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
+            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
 
             if ($verificaVendaAtiva > 0) {
-                $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'), 'status', 4, 1, 'id', 'DESC');
+                $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 4, 1, 'id', 'DESC');
             }
         }
         $hoje = date('w', strtotime(date('Y-m-d')));
@@ -186,9 +376,8 @@ class AdminPedidosBalcaoController extends Controller
         ]);
     }
 
-    public function pedidoEditar($data)
+    public function editar($data)
     {
-        //dd('pagamento');
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -198,7 +387,6 @@ class AdminPedidosBalcaoController extends Controller
         $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
         $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
         $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
-
 
         $carrinho = $this->acoes->getByFieldTreeNull('carrinho', 'id_cliente', $pedido->id_cliente, 'id_empresa', $empresa->id, 'numero_pedido', $pedido->numero_pedido);
         $usuario = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
@@ -340,7 +528,7 @@ class AdminPedidosBalcaoController extends Controller
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
         }
 
-        $this->load('_admin/pedidos/pedidoEditar', [
+        $this->load('_admin/pedidos/editar-cliente', [
             'empresa' => $empresa,
             'trans' => $this->trans,
             'pedido' => $pedido,
@@ -373,8 +561,8 @@ class AdminPedidosBalcaoController extends Controller
     public function carrinhoQtd($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        if ($this->sessao->getSessao('id_cliente')) {
-            $contagem = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+        if ($cliente->id) {
+            $contagem = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
             echo $contagem;
         }
     }
@@ -435,10 +623,11 @@ class AdminPedidosBalcaoController extends Controller
          */
 
 
+        $id_cliente = 'id_cliente_'.$data['id'];
 
         $valor = new Carrinho();
         $valor->id_produto = $idProduto;
-        $valor->id_cliente = $this->sessao->getSessao('id_cliente');
+        $valor->id_cliente = $data[$id_cliente];
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = $data['quantity'];
         $valor->observacao = $data['observacao'];
@@ -510,7 +699,7 @@ class AdminPedidosBalcaoController extends Controller
 
         $valor = new Carrinho();
         $valor->id_produto = $idProduto;
-        $valor->id_cliente = $pedido->id_cliente;
+        $valor->id_cliente = $data['id_cliente'];
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = $data['quantity'];
         $valor->observacao = $data['observacao'];
@@ -532,15 +721,20 @@ class AdminPedidosBalcaoController extends Controller
             $sabores = $data['sabores'][0];
         }
 
+        $id_cliente = 'id_cliente_'.$data['id'];
+
         $valor = new Carrinho();
         $valor->id_produto = $data['id'];
-        $valor->id_cliente = $this->sessao->getSessao('id_cliente');
+        $valor->id_cliente = $data[$id_cliente];
         $valor->id_empresa = $data['id_empresa'];
         $valor->quantidade = $data['quantity'];
         $valor->observacao = $data['observacao'];
         $valor->id_sabores = $sabores;
         $valor->id_adicional = $data['id_adicional'];
         $valor->valor = $data['valor'];
+        if ($data['numero_pedido']) {
+        $valor->numero_pedido = $data['numero_pedido'];
+        }
         $valor->save();
 
         if ($data['adicional']) {
@@ -551,60 +745,20 @@ class AdminPedidosBalcaoController extends Controller
                 }
                 $cartAdic = new CarrinhoAdicional();
                 $cartAdic->id_carrinho = $valor->id;
-                $cartAdic->id_cliente = $this->sessao->getSessao('id_cliente');
+                $cartAdic->id_cliente = $data[$id_cliente];
                 $cartAdic->id_produto = $data['id'];
                 $cartAdic->id_adicional = $res;
                 $cartAdic->valor = $valor_adicional;
                 $cartAdic->quantidade = $qtd_adicional;
+                if ($data['numero_pedido']) {
+                    $cartAdic->numero_pedido = $data['numero_pedido'];
+                    }
                 $cartAdic->id_empresa = $data['id_empresa'];
                 $cartAdic->save();
             }
         }
         header('Content-Type: application/json');
         $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao carrinho', 'error' => 'Não foi posível adicionar o produto ao carrinho', 'code' => 520]);
-        exit($json);
-    }
-
-    public function carrinhoEditarProduto($data)
-    {
-        $pedido = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido'], 'id_empresa', $data['id_empresa']);
-        //dd($data);
-        $sabores = null;
-        if ($data['sabores']) {
-            $sabores = $data['sabores'][0];
-        }
-
-        $valor = new Carrinho();
-        $valor->id_produto = $data['id'];
-        $valor->id_cliente = $pedido->id_cliente;
-        $valor->id_empresa = $data['id_empresa'];
-        $valor->quantidade = $data['quantity'];
-        $valor->numero_pedido = $data['numero_pedido'];
-        $valor->observacao = $data['observacao'];
-        $valor->id_sabores = $sabores;
-        $valor->id_adicional = $data['id_adicional'];
-        $valor->valor = $data['valor'];
-        $valor->save();
-
-        if ($data['adicional']) {
-            foreach ($data['adicional'] as $res) {
-                if ($data["valor{$res}"]) {
-                    $valor_adicional = $data["valor{$res}"];
-                    $qtd_adicional = $data["qtd_ad{$res}"];
-                }
-                $cartAdic = new CarrinhoAdicional();
-                $cartAdic->id_carrinho = $valor->id;
-                $cartAdic->id_cliente = $this->sessao->getSessao('id_cliente');
-                $cartAdic->id_produto = $data['id'];
-                $cartAdic->id_adicional = $res;
-                $cartAdic->valor = $valor_adicional;
-                $cartAdic->quantidade = $qtd_adicional;
-                $cartAdic->id_empresa = $data['id_empresa'];
-                $cartAdic->save();
-            }
-        }
-        header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto Adicionado ao pedido', 'error' => 'Não foi posível adicionar o produto ao pedido', 'code' => 520, 'url' => "pedido/editar/produtos/{$pedido->id}"]);
         exit($json);
     }
 
@@ -631,7 +785,7 @@ class AdminPedidosBalcaoController extends Controller
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'));
+            //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
         }
 
         $this->load('_admin/pedidos/produtoMostrar', [
@@ -647,7 +801,7 @@ class AdminPedidosBalcaoController extends Controller
             'tipoAdicional' => $resulTipoAdicional,
             'produtoSabores' => $resultSabores,
             'produtoSabores' => $resultSabores,
-            'carrinhoqtd' => $verificaVendaAtiva,
+            'idCliente' => $data['idCliente'],
             'chave' => md5(uniqid(rand(), true)),
             'caixa' => $caixa->status
         ]);
@@ -675,7 +829,7 @@ class AdminPedidosBalcaoController extends Controller
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'));
+            //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
         }
 
         $this->load('_admin/pedidos/produtoMostrarEditar', [
@@ -692,12 +846,11 @@ class AdminPedidosBalcaoController extends Controller
             'tipoAdicional' => $resulTipoAdicional,
             'produtoSabores' => $resultSabores,
             'produtoSabores' => $resultSabores,
-            'carrinhoqtd' => $verificaVendaAtiva,
+            'idCliente' => $data['idCliente'],
             'chave' => md5(uniqid(rand(), true)),
             'caixa' => $caixa->status
         ]);
     }
-
 
 
 
@@ -734,7 +887,7 @@ class AdminPedidosBalcaoController extends Controller
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'));
+            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
         }
 
         $this->load('_admin/pedidos/produtoPizzaMostrar', [
@@ -799,7 +952,7 @@ class AdminPedidosBalcaoController extends Controller
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getSessao('id_cliente'));
+            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
         }
 
         $this->load('_admin/pedidos/produtoPizzaMostrarEditar', [
@@ -832,7 +985,7 @@ class AdminPedidosBalcaoController extends Controller
         ]);
     }
 
-    public function carrinho($data)
+    public function carrinhoProdutos($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
@@ -840,23 +993,19 @@ class AdminPedidosBalcaoController extends Controller
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
-        $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id, 'posicao ASC');
-        $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
-        $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
+        $cliente = $this->acoes->getByField('usuarios', 'id', $data['id']);
 
-
-        if ($this->sessao->getSessao('id_cliente')) {
+        $carrinho = $this->acoes->getByFieldTreeNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null');
+        if ($carrinho) {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'principal', 1);
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $cliente->id);
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $cliente->id, 'principal', 1);
 
-            $carrinho = $this->acoes->getByFieldTreeNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id, 'numero_pedido', 'null');
-            $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
-            $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'principal', 1);
+            $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $cliente->id, 'principal', 1);
 
             $estados = $this->acoes->getFind('estados');
             $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-            $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'id_cliente', $this->sessao->getSessao('id_cliente'));
+            $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'id_cliente', $cliente->id);
             $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
 
             $adicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
@@ -864,185 +1013,9 @@ class AdminPedidosBalcaoController extends Controller
             $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
             $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
 
-            $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
-            $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
-            $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
-            $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
-
-            if ($endereco) {
-                $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
-                $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
-
-                $termo = 'km';
-                $pattern = '/' . $termo . '/';
-                if (preg_match($pattern, $infoKm)) {
-                    $cFrete = $cFrete;
-                } else {
-                    $cFrete = 1;
-                }
-
-                //dd($infoKm);
-                $taxa_entrega = $delivery->taxa_entrega;
-                $km_entrega = $delivery->km_entrega;
-
-                $taxa_entrega2 = $delivery->taxa_entrega2;
-                $km_entrega2 = $delivery->km_entrega2;
-
-                $taxa_entrega3 = $delivery->taxa_entrega3;
-                $km_entrega3 = $delivery->km_entrega3;
-
-                $km_entrega_excedente = $delivery->km_entrega_excedente;
-                $valor_excedente = $delivery->valor_excedente;
-
-
-
-
-                if ($cFrete <= $km_entrega) {
-                    $total = $taxa_entrega;
-                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega + $freteVezes;
-                        $total = $taxa_entregaNova;
-                    }
-                }
-
-                if ($delivery->km_entrega_excedente != 0) {
-                    $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
-                }
-
-                if ($km_entrega2 != 0.00) {
-                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
-                        $total = $taxa_entrega2;
-                    }
-
-                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
-                        $total = $taxa_entregaNova;
-
-                        //dd($total);
-                    }
-
-                    if ($delivery->km_entrega_excedente == 0) {
-                        $deliveryEntregaExcedente = $delivery->km_entrega2;
-                    }
-                }
-
-                if ($km_entrega3 != 0.00) {
-                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
-                        $total = $taxa_entrega3;
-                    }
-
-                    if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
-                        $total = $taxa_entregaNova;
-                    }
-
-                    if ($delivery->km_entrega_excedente == 0) {
-                        $deliveryEntregaExcedente = $delivery->km_entrega3;
-                    }
-                }
-
-                if ($delivery->frete_status == 1) {
-                    if ($delivery->valor <= $valorCarrinho) {
-                        $total = 0;
-                    }
-                }
-
-                if ($delivery->primeira_compra == 1) {
-                    if ($resultVendasFeitas == 0) {
-                        $total = 0;
-                    }
-                }
-            }
-            $numeroPedido = $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
-            $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-
-            if ($cupomVerifica > 0) {
-                $cupomUtilizacoesId = $this->acoes->getByField('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id,);
-                $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizacoesId->id_cupom);
-
-                if ((int)$cupomValida->tipo_cupom == 1) {
-                    $valor = $valorCarrinho;
-                    $porcentagem = floatval($cupomValida->valor_cupom);
-                    $resul = $valor * ($porcentagem / 100);
-                    $resultado = $resul;
-                } else {
-                    $resultado = $cupomValida->valor_cupom;
-                }
-                $valorCarrinho = $valorCarrinho - $resultado;
-            }
-        } else {
-            redirect(BASE . "{$empresa->link_site}/carrinho/dados");
-        }
-        $resultchave = md5(uniqid(rand(), true));
-
-        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
-
-        if ($resultCarrinhoQtd == 0) {
-            redirect(BASE . "{$empresa->link_site}");
-        }
-
-        $this->load('_admin/pedidos/carrinhoMostrarProdutos', [
-            'empresa' => $empresa,
-            'trans' => $this->trans,
-            'usuarioLogado' => $usuarioLogado,
-            'isLogin' => $this->sessao->getUser(),
-            'moeda' => $moeda,
-            'estados' => $estados,
-            'carrinho' => $carrinho,
-            'carrinhoAdicional' => $carrinhoAdicional,
-            'tamanhosCategoria' => $tamanhosCategoria,
-            'tamanhos' => $tamanhos,
-            'produtos' => $produtos,
-            'adicionais' => $adicionais,
-            'sabores' => $sabores,
-            'tipo' => $tipo,
-            'planoAtivo' => $planoAtivo,
-            'pagamento' => $pagamento,
-            'numero_pedido' => $this->sessao->getSessao('numeroPedido'),
-            'nivelUsuario' => $this->sessao->getNivel(),
-            'valorPedido' => $valorCarrinho,
-            'carrinhoQtd' => $resultCarrinhoQtd,
-            'caixa' => $caixa->status
-        ]);
-    }
-
-
-    public function carrinhoFinalizar($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-
-        if ($this->sessao->getSessao('id_cliente')) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'principal', 1);
-
-            $carrinho = $this->acoes->getByFieldTreeNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id, 'numero_pedido', 'null');
-            $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
-            $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'principal', 1);
-
-            $estados = $this->acoes->getFind('estados');
-            $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-            $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'id_cliente', $this->sessao->getSessao('id_cliente'));
-            $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
-
-            $adicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
-            $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
-            $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
-            $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
-
-            $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
-            $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
-            $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+            $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+            $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+            $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
             $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
 
             if ($endereco) {
@@ -1153,17 +1126,14 @@ class AdminPedidosBalcaoController extends Controller
                 }
                 $valorCarrinho = $valorCarrinho - $resultado;
             }
-        } else {
-            redirect(BASE . "{$empresa->link_site}/carrinho/dados");
-        }
-        $resultchave = md5(uniqid(rand(), true));
+            $resultchave = md5(uniqid(rand(), true));
 
-        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
 
         if ($resultCarrinhoQtd == 0) {
             redirect(BASE . "{$empresa->link_site}");
         }
-        $this->load('_admin/pedidos/novoDetalhes', [
+        $this->load('_admin/pedidos/carrinho', [
             'empresa' => $empresa,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
@@ -1179,6 +1149,7 @@ class AdminPedidosBalcaoController extends Controller
             'adicionais' => $adicionais,
             'sabores' => $sabores,
             'tipo' => $tipo,
+            'cliente' => $cliente,
             'pagamento' => $pagamento,
             'calculoFrete' => $total,
             'numero_pedido' => $this->sessao->getSessao('numeroPedido'),
@@ -1190,24 +1161,207 @@ class AdminPedidosBalcaoController extends Controller
             'km_entrega' => $km_entrega,
             'caixa' => $caixa->status
         ]);
+        }else{
+            echo 0;
+        }
+        
+    }
+
+    public function carrinhoProdutosEditar($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+
+        $cliente = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $pedido = $this->acoes->getByFieldTwo('carrinhoPedidos', 'numero_pedido', $data['numeroPedido'], 'id_cliente', $cliente->id);
+
+
+        $carrinho = $this->acoes->getByFieldTreeAll('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', $data['numeroPedido']);
+        if ($carrinho) {
+            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $cliente->id);
+            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $cliente->id, 'principal', 1);
+
+            $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $cliente->id, 'principal', 1);
+
+            $estados = $this->acoes->getFind('estados');
+            $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+            $carrinhoAdicional = $this->acoes->getByFieldAll('carrinhoAdicional', 'id_cliente', $cliente->id);
+            $produtos = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
+
+            $adicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
+            $sabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
+            $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
+            $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
+
+            $resultSoma = $this->acoes->sumFielsTree('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', $data['numeroPedido'], 'valor * quantidade');
+            $resultSomaAdicional = $this->acoes->sumFielsTree('carrinhoAdicional', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', $data['numeroPedido'], 'valor * quantidade');
+            $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
+            $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
+
+            if ($endereco) {
+                $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
+                $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
+
+                $termo = 'km';
+                $pattern = '/' . $termo . '/';
+                if (preg_match($pattern, $infoKm)) {
+                    $cFrete = $cFrete;
+                } else {
+                    $cFrete = 1;
+                }
+
+                //dd($infoKm);
+                //dd($cFrete);
+                $taxa_entrega = $delivery->taxa_entrega;
+                $km_entrega = $delivery->km_entrega;
+
+                $taxa_entrega2 = $delivery->taxa_entrega2;
+                $km_entrega2 = $delivery->km_entrega2;
+
+                $taxa_entrega3 = $delivery->taxa_entrega3;
+                $km_entrega3 = $delivery->km_entrega3;
+
+                $km_entrega_excedente = $delivery->km_entrega_excedente;
+                $valor_excedente = $delivery->valor_excedente;
+
+
+                if ($cFrete <= $km_entrega) {
+                    $total = $taxa_entrega;
+                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                        $total = $taxa_entregaNova;
+                    }
+                }
+
+                if ($delivery->km_entrega_excedente != 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
+                }
+
+                if ($km_entrega2 != 0.00) {
+                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
+                        $total = $taxa_entrega2;
+                    }
+
+                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                        $total = $taxa_entregaNova;
+
+                        //dd($total);
+                    }
+
+                    if ($delivery->km_entrega_excedente == 0) {
+                        $deliveryEntregaExcedente = $delivery->km_entrega2;
+                    }
+                }
+
+                if ($km_entrega3 != 0.00) {
+                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
+                        $total = $taxa_entrega3;
+                    }
+
+                    if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                        $total = $taxa_entregaNova;
+                    }
+
+                    if ($delivery->km_entrega_excedente == 0) {
+                        $deliveryEntregaExcedente = $delivery->km_entrega3;
+                    }
+                }
+
+                if ($delivery->frete_status == 1) {
+                    if ($delivery->valor <= $valorCarrinho) {
+                        $total = 0;
+                    }
+                }
+
+                if ($delivery->primeira_compra == 1) {
+                    if ($resultVendasFeitas == 0) {
+                        $total = 0;
+                    }
+                }
+            }
+
+            //$this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
+
+            $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+
+            if ($cupomVerifica > 0) {
+                $cupomUtilizacoesId = $this->acoes->getByField('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id,);
+                $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizacoesId->id_cupom);
+
+                if ((int)$cupomValida->tipo_cupom == 1) {
+                    $valor = $valorCarrinho;
+                    $porcentagem = floatval($cupomValida->valor_cupom);
+                    $resul = $valor * ($porcentagem / 100);
+                    $resultado = $resul;
+                } else {
+                    $resultado = $cupomValida->valor_cupom;
+                }
+                $valorCarrinho = $valorCarrinho - $resultado;
+            }
+            
+        $this->load('_admin/pedidos/carrinho-editar', [
+            'empresa' => $empresa,
+            'enderecoAtivo' => $enderecoAtivo,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'moeda' => $moeda,
+            'estados' => $estados,
+            'planoAtivo' => $planoAtivo,
+            'delivery' => $delivery,
+            'carrinho' => $carrinho,
+            'carrinhoAdicional' => $carrinhoAdicional,
+            'produtos' => $produtos,
+            'adicionais' => $adicionais,
+            'sabores' => $sabores,
+            'tipo' => $tipo,
+            'cliente' => $cliente,
+            'pagamento' => $pagamento,
+            'calculoFrete' => $total,
+            'numero_pedido' => $pedido->numero_pedido,
+            'id_pedido' => $pedido->id,
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'valorPedido' => $valorCarrinho,
+            'endereco' => $endereco,
+            'km' => $cFrete,
+            'km_entrega_excedente' => $km_entrega_excedente,
+            'km_entrega' => $km_entrega,
+            'caixa' => $caixa->status
+        ]);
+        }else{
+            echo 0;
+        }
+        
     }
 
     //Finaliza e fecha o pedido do cliente
     public function carrinhoFinalizarPedido($data)
     {
-        if($data['tipo_frete']){
+        if ($data['tipo_frete']) {
             $tipo_frete = $data['tipo_frete'];
-        }else{
+        } else {
             $tipo_frete = 1;
         }
 
-        if($data['valor_frete']){
+        if ($data['valor_frete']) {
             $valor_frete = $data['valor_frete'];
-        }else{
+        } else {
             $valor_frete = 0;
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+        $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $data['idCliente'], 'id_empresa', $empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $chave = md5(uniqid(rand(), true));
@@ -1220,7 +1374,7 @@ class AdminPedidosBalcaoController extends Controller
             }
         }
 
-        $carrinhoAdicional = $this->acoes->getByFieldAllTwoNull('carrinhoAdicional', 'id_cliente', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+        $carrinhoAdicional = $this->acoes->getByFieldAllTwoNull('carrinhoAdicional', 'id_cliente', $data['idCliente'], 'id_empresa', $empresa->id);
 
         if ($carrinhoAdicional) {
             foreach ($carrinhoAdicional as $cartAdic) {
@@ -1232,7 +1386,7 @@ class AdminPedidosBalcaoController extends Controller
 
         if ($data['cpf'] != null) {
             $cpf = new CarrinhoCPFNota();
-            $cpf->id_cliente = $this->sessao->getSessao('id_cliente');
+            $cpf->id_cliente = $data['idCliente'];
             $cpf->id_empresa = $empresa->id;
             $cpf->numero_pedido = $data['numero_pedido'];
             $cpf->cpf = $data['cpf'];
@@ -1252,7 +1406,7 @@ class AdminPedidosBalcaoController extends Controller
         $cpp = new CarrinhoPedidoPagamento();
         $cpp->pag_dinheiro = $pagamento;
         $cpp->pag_cartao = $pagamentoCartão;
-        $cpp->id_cliente = $this->sessao->getSessao('id_cliente');
+        $cpp->id_cliente = $data['idCliente'];
         $cpp->id_tipo_pagamento = $data['tipo_pagamento'];
         $cpp->numero_pedido = $data['numero_pedido'];
         $cpp->id_empresa = $empresa->id;
@@ -1260,7 +1414,7 @@ class AdminPedidosBalcaoController extends Controller
 
         $pedido = new CarrinhoPedidos();
         $pedido->id_caixa = $estabelecimento[0]->id;
-        $pedido->id_cliente = $this->sessao->getSessao('id_cliente');
+        $pedido->id_cliente = $data['idCliente'];
         $pedido->id_empresa = $empresa->id;
         $pedido->total = $data['total'];
         $pedido->total_pago = $data['total_pago'];
@@ -1281,7 +1435,7 @@ class AdminPedidosBalcaoController extends Controller
 
         //dd($pedido);
 
-        $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $this->sessao->getSessao('id_cliente'), 'id_empresa', $empresa->id);
+        $user = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $data['idCliente'], 'id_empresa', $empresa->id);
 
         if ($user) {
             $userUp = (new UsuariosEmpresa())->findById($user->id);
@@ -1290,13 +1444,13 @@ class AdminPedidosBalcaoController extends Controller
         } else {
             $userUp = new UsuariosEmpresa();
             $userUp->id_empresa = $empresa->id;
-            $userUp->id_usuario = $this->sessao->getSessao('id_cliente');
+            $userUp->id_usuario = $data['idCliente'];
             $userUp->nivel = 3;
             $userUp->pedidos = 1;
             $userUp->save();
         }
 
-        //$cliente = $this->acoes->getByField('usuarios', 'id', $this->sessao->getSessao('id_cliente'));
+        //$cliente = $this->acoes->getByField('usuarios', 'id', $cliente->id);
         //$mensagem =  "Você acaba de efetuar um pedido no {$empresa->nome_fantasia} esse é seu número de pedido: {$data['numero_pedido']}. Para acompanhar seu pedido acesse nosso site, faça o login usando o número de Telefone informado no momento do pedido. Para acompanhar acesse o link: https://www.automatizadelivery.com.br/{$empresa->link_site}/login";
         //$ddi = '+55';
         //$numerofinal = $ddi . $cliente->telefone;
@@ -1339,9 +1493,13 @@ class AdminPedidosBalcaoController extends Controller
                 $valorAd = (new CarrinhoAdicional())->findById($res->id);
                 $valorAd->destroy();
             }
-            redirect(BASE . "{$data['linkSite']}/admin/pedido/novo/produtos");
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 1, 'valor' => 1]);
+            exit($json);
         }
-        redirect(BASE . "{$data['linkSite']}/admin/pedido/novo/produtos");
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => 1]);
+        exit($json);
     }
 
     public function deletarItemCarrinhoEditar($data)
@@ -1443,6 +1601,57 @@ class AdminPedidosBalcaoController extends Controller
             header('Content-Type: application/json');
             $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Cliente Cadastrado com sucesso', 'code' => 5,  'url' => 'admin/pedido/novo/produtos']);
             exit($json);
+        }
+    }
+
+    public function carrinhoCadastroEndereco($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $cliente = $this->acoes->getByField('usuarios', 'id', $data['idCliente']);
+        $usuario = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $cliente->id, 'id_empresa', $empresa->id);
+
+        if ($usuario) {
+            $valorEnd = new UsuariosEnderecos();
+            $valorEnd->id_usuario = $cliente->id;
+            $valorEnd->nome_endereco = "Padrão";
+            $valorEnd->rua = $data['rua'];
+            $valorEnd->numero = $data['numero'];
+            $valorEnd->complemento = $data['complemento'];
+            $valorEnd->bairro = $data['bairro'];
+            $valorEnd->cidade = $data['cidade'];
+            $valorEnd->estado = $data['estado'];
+            $valorEnd->cep = $data['cep'];
+            $valorEnd->principal = 1;
+            $valorEnd->save();
+
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Endereço Cadastrado com sucesso', 'code' => 6]);
+            exit($json);
+        } else {
+            $valorEmp = new UsuariosEmpresa();
+            $valorEmp->id_usuario = $cliente->id;
+            $valorEmp->id_empresa = $empresa->id;
+            $valorEmp->nivel = 3;
+            $valorEmp->save();
+
+            if ($valorEmp->id > 0) {
+                $valorEnd = new UsuariosEnderecos();
+                $valorEnd->id_usuario = $cliente->id;
+                $valorEnd->nome_endereco = "Padrão";
+                $valorEnd->rua = $data['rua'];
+                $valorEnd->numero = $data['numero'];
+                $valorEnd->complemento = $data['complemento'];
+                $valorEnd->bairro = $data['bairro'];
+                $valorEnd->cidade = $data['cidade'];
+                $valorEnd->estado = $data['estado'];
+                $valorEnd->cep = $data['cep'];
+                $valorEnd->principal = 1;
+                $valorEnd->save();
+
+                header('Content-Type: application/json');
+                $json = json_encode(['id' => $valorEmp->id, 'resp' => 'insert', 'mensagem' => 'Endereço Cadastrado com sucesso', 'code' => 6]);
+                exit($json);
+            }
         }
     }
 }

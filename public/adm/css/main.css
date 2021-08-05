@@ -1778,6 +1778,117 @@ table.dataTable td {
     box-shadow: 0 1px 15px rgb(0 0 0 / 4%), 0 1px 6px rgb(0 0 0 / 4%);
 }
 
+.big-table {
+    position: relative;
+    width: 100%;
+    margin-top: 0px
+}
+
+.grid-table {
+    position: relative;
+    top: 0;
+    display: -ms-grid;
+    display: grid;
+    width: 100%;
+    justify-items: start;
+    grid-auto-flow: column dense;
+    grid-row-gap: 0px;
+    -ms-grid-columns: 1fr;
+    grid-template-columns: 1fr;
+    -ms-grid-rows: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto
+}
+
+.grid-table.goomergo {
+    -ms-grid-rows: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto
+}
+
+.grid-table.combo {
+    -ms-grid-rows: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto
+}
+
+#customers {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td,
+#customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#customers tr:hover {
+    background-color: #ddd;
+}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(61, 61, 61);
+    color: white;
+}
+
+.table-header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    margin-left: 0;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #f3f7f8;
+}
+
+.roll {
+    position: relative;
+    overflow: scroll;
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 700px;
+}
+
+.table-header-plan {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    width: 100%;
+    background-color: #f3f7f8;
+}
+
+.table-header-plan h4 {
+    float: left !important;
+    width: 100% !important;
+}
+
+.table-header-plan p {
+    float: left !important;
+    width: 100% !important;
+}
+
+.table-ss {
+    background-color: #f3f7f8;
+}
+
 .cartFlut i {
     font-size: 22px;
 }
@@ -1805,10 +1916,99 @@ table.dataTable td {
     margin-top: -85px;
 }
 
+#buscarCli {
+    height: 50px;
+    width: 20%;
+    float: left;
+    padding: 4px;
+}
+
+#buscarCli svg {
+    width: 100%;
+}
+
+.resumo-pedido {
+    background: #fff;
+    height: calc(100% - 90px);
+}
+
+.row-nowrap {
+    flex-flow: row nowrap;
+}
+
+.column-nowrap {
+    flex-flow: column nowrap;
+}
+
+.row-wrap {
+    flex-flow: row wrap;
+}
+
+.containers {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.stretch {
+    align-items: stretch;
+}
+
+
+/* Flex Item */
+
+.item {
+    /* O flex: 1; é necessário para que cada item se expanda ocupando o tamanho máximo do container. */
+    flex: 1;
+    margin: 5px;
+    background: tomato;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.resumo-pedido #telefone {
+    height: 50px;
+    font-size: 16px;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+#mostrarCliente {
+    padding: 0px;
+}
+
+.btn-infos {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-infos:hover {
+    color: #fff;
+    background-color: #0d6370;
+    border-color: #0d6370;
+}
+
+.btn-success:hover svg {
+    fill: #218838 !important;
+}
+
 .bloco-ops {
     background: #f1f4f5;
     border: 1px solid #b3b3b3;
-    border-radius: 5px;
+    align-items: center;
+    font-size: 15px;
+}
+
+.bloco-ops-cli {
+    align-items: center;
+    font-size: 15px;
 }
 
 .btn_buscar {
@@ -1829,7 +2029,7 @@ table.dataTable td {
 }
 
 .excluir_prod {
-    padding: 0 0 0 20px !important;
+    padding: 0 0 0 0px !important;
     float: right;
     font-size: 22px;
     color: #880a1f;
@@ -1838,6 +2038,19 @@ table.dataTable td {
 .produtosEditar .excluir_prod {
     padding: 0 5px !important;
     margin-top: -3px;
+}
+
+.input-group.plus-minus-input {
+    width: 100px;
+}
+
+.moeda_valor.right {
+    text-align: right;
+    float: right;
+}
+
+.input-group.plus-minus-input .btn {
+    padding: 0.5rem !important;
 }
 
 .btnFPedido {
@@ -1907,7 +2120,7 @@ table.dataTable td {
 }
 
 .leadPrice {
-    font-size: 3.2em;
+    font-size: 2.5em;
     line-height: initial;
 }
 
@@ -5215,7 +5428,7 @@ table.dataTable td {
 }
 
 main {
-    margin-top: 140px !important;
+    margin-top: 130px !important;
 }
 
 .block {
@@ -5461,12 +5674,24 @@ button.position-relative h6 {
     line-height: 29px;
 }
 
+#mostrarCliente .alert {
+    margin-top: 5px;
+}
+
+.form-pedido {
+    width: 80%;
+    float: left;
+    height: 50px;
+    border-radius: 0;
+    font-size: 14px;
+}
+
 .select2-container--classic .select2-selection--single {
     padding-left: 10px;
 }
 
-.full-width #observacao {
-    min-height: 100px;
+h5.full-width.pb-0.bold {
+    font-size: .9rem !important;
 }
 
 .select2-container--classic .select2-selection--single .select2-selection__arrow {

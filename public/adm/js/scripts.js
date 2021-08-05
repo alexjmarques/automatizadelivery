@@ -49,12 +49,59 @@ $('.valor, #valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_en
     reverse: true
 });
 
-$("#buscarCli").on('click blur touchleave touchcancel', function() {
+function buscarCli() {
     let telefone = $('#telefone').val();
     let formData = {
-            telefone
-        }
-        //console.log(telefone);
+        telefone
+    }
+    console.log('aqui' + telefone.replace(/[^0-9]/g, '').length)
+    if (telefone.replace(/[^0-9]/g, '').length > 10) {
+        $.ajax({
+            url: `/${link_site}/admin/pedido/pesquisa`,
+            type: 'post',
+            data: formData,
+            beforeSend: function() {
+                $('.carregar').html(`<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path><div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><p class="small mb-0">Estamos processando a sua busca aguarde um momento.</p></div></div></div>`);
+            },
+            complete: function(data) {
+                $('.carregar').html('');
+            },
+            success: function(data) {
+                console.log(data.id);
+                if (data.id > 0) {
+                    if (data.rua) {
+                        $('#mostrarCliente').html(`<div class="mt-1 p-2 bloco-ops"><strong>Nome:</strong> ${data.nome}<br/><strong>Telefone:</strong> ${data.telefone}<br/><strong>Endereço:</strong> ${data.rua}, ${data.numero} - ${data.bairro}<br/><i>COMPLEMENTO:</i> ${data.complemento}<br/><i>CEP:</i> ${data.cep}<div class="flex-container pt-2"><a href="/${link_site}/admin/pedido/novo/${data.id}" class="btn col-12 btn-success text-uppercase p-3">Fazer Pedido</a></div></div>`);
+                    } else {
+                        $('#mostrarCliente').html(`<div class="mt-1 p-2 bloco-ops"><strong>Nome:</strong> ${data.nome}<br/><strong>Telefone:</strong> ${data.telefone}<br/><div class="flex-container pt-2"><a href="#novoEnderecoModal" onclick="novoEnderecoModal(${data.id})" class="btn col-6 btn-infos text-uppercase mr-1">Cadastrar Endereço</a><a href="/${link_site}/admin/pedido/novo/${data.id}" class="btn col-6 btn-success text-uppercase">Fazer Pedido</a></div></div>`);
+                    }
+
+                } else {
+                    $('#mostrarCliente').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>
+                <p class="p-0 pr-2 col-12">Faça o cadastro clicando no botão abaixo!</p>
+                <a data-toggle="modal" data-target="#modalNovoCliente" href="#" class="btn btn-info btn-sm left">Cadastrar Cliente</a>`);
+                }
+
+            },
+            error: function(data) {
+                $('.carregar').html(`<div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><h4 class="text-primary">Nenhum pedido foi encontrado.</h4><p class="small mb-0">Verifique o número digitado ou tente novamente.</p></div></div></div>`);
+            }
+        });
+    } else {
+        $('#mensagem').html("Você precisa informar um número de telefone valido para continuar!");
+        $('.successSup').hide();
+        $('.errorSup').show();
+        $('#alerta').modal("show");
+    }
+    return false;
+}
+
+
+function novoEnderecoModal(id) {
+    let telefone = $('#telefone').val();
+    let formData = {
+        telefone
+    }
+
     $.ajax({
         url: `/${link_site}/admin/pedido/pesquisa`,
         type: 'post',
@@ -67,10 +114,15 @@ $("#buscarCli").on('click blur touchleave touchcancel', function() {
         },
         success: function(data) {
             console.log(data.id);
-            if (data.id > 0) {
-                $('#mostrarCliente').html(`<div class="mt-3 p-2 bloco-ops flex-container"><div class="p-2"><input type="radio" id="cliente" name="cliente" checked value="${data.id}"></div><label for="cliente" class="p-2">Nome: ${data.nome}<br/>Telefone: ${data.telefone}</label></div>`);
-            } else {
-                $('#mostrarCliente').html(`<div class="alert alert-danger" role="alert">${data.mensagem}</div>`);
+            if (data.id === id) {
+                $('#modalNovoCliente').modal('show');
+                $('#formCliente').attr("action", `/${link_site}/admin/editar/endereco/cliente`);
+                $('#pedidoTipo, #formCliente .bg-white.mb-3 p').hide();
+                $('#formCliente h2').text("Novo Endereço");
+                $('#formCliente #nome').val(data.nome).prop('required', false).prop('disabled', true);
+                $('#formCliente #telefone').val(telefone).prop('required', false).prop('disabled', true);
+                $('#idCliente').val(data.id);
+                $('#app-container').addClass("enderecoNew");
             }
 
         },
@@ -78,22 +130,8 @@ $("#buscarCli").on('click blur touchleave touchcancel', function() {
             $('.carregar').html(`<div class="mb-3 osahan-cart-item osahan-home-page"><div class="p-3 osahan-profile"><div class="osahan-text text-center mt-3"><h4 class="text-primary">Nenhum pedido foi encontrado.</h4><p class="small mb-0">Verifique o número digitado ou tente novamente.</p></div></div></div>`);
         }
     });
-    // $.get(`/${link_site}/admin/pedido/pesquisa`, function (dd) {
-    //   console.log(dd);
-
-    //     var buscaCliente = $('#buscaCliente').val();
-    //     var id_empresa = $(`#id_empresa`).val();
-
-    //     if (parseInt(numero_pedido) === 0) {
-    //         $('#mensagem').html(`<div class="alert alert-danger" role="alert">Para efetuar informe o numero do pedido</div>`)
-    //     } else {
-
-    //     }
-    //     $('#pesquisaEntregasMotoboy').html(dd);
-    //     $('#mensagem').html('')
-    // })
     return false;
-});
+}
 
 $('#valor_cupom').mask('##00%', {
     reverse: true
@@ -239,6 +277,17 @@ $("#form, #formIfood, #formCliente").submit(function() {
                             });
                         }
                     }
+                    break;
+                case 6:
+                    $('#modalNovoCliente').modal("hide");
+                    $('#formCliente').attr("action", `/${link_site}/admin/novo/cliente`);
+                    $('#pedidoTipo, #formCliente .bg-white.mb-3 p').show();
+                    $('#formCliente h2').text("Novo Cliente");
+                    $('#formCliente #nome').val(data.nome).prop('required', true).prop('disabled', false);
+                    $('#formCliente #telefone').val(telefone).prop('required', true).prop('disabled', false);
+                    $('#idCliente').val("");
+                    $('#app-container').removeClass("enderecoNew");
+                    buscarCli();
                     break;
                 default:
                     $('#mensagem').html(data.mensagem);
@@ -520,6 +569,52 @@ function atualizaCart() {
 //   atualizaCart();
 // });
 
+function customersProdutos() {
+    let id = $('.resumo-pedido').attr("data-cliente");
+    $.ajax({
+        url: `/${link_site}/admin/pedido/produtos/carrinho/${id}`,
+        method: "get",
+        beforeSend: function() {
+            $('#carregaCarrinho').html(`<div class="text-center" id="carregaRecebido"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path></svg></div>`);
+        },
+        complete: function() {
+            $('#carregaCarrinho').html('');
+        },
+        success: function(dd) {
+            //console.log(dd);
+            if (parseInt(dd) === 0) {
+                $('#mostraCarrinhoItens').html('<div class="alert alert-info text-center">Adicione Produtos para continuar</div>');
+            } else {
+                $('#mostraCarrinhoItens').html(dd);
+            }
+        },
+    })
+}
+
+
+function customersProdutosEditar() {
+    let id = $('.resumo-pedido').attr("data-cliente");
+    let pedido_cliente = $('.resumo-pedido').attr("data-pedido-cliente");
+    $.ajax({
+        url: `/${link_site}/admin/pedido/produtos/carrinho/${id}/${pedido_cliente}`,
+        method: "get",
+        beforeSend: function() {
+            $('#carregaCarrinhoEditar').html(`<div class="text-center" id="carregaRecebido"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="30px" height="30px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#a90e19" stroke="none"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"></animateTransform></path></svg></div>`);
+        },
+        complete: function() {
+            $('#carregaCarrinhoEditar').html('');
+        },
+        success: function(dd) {
+            //console.log(dd);
+            if (parseInt(dd) === 0) {
+                $('#mostraCarrinhoItensEditar').html('<div class="alert alert-info text-center">Adicione Produtos para continuar</div>');
+            } else {
+                $('#mostraCarrinhoItensEditar').html(dd);
+            }
+        },
+    })
+}
+
 function atualizar() {
     $.ajax({
         url: `/${link_site}/admin/pedidos/recebido`,
@@ -606,9 +701,12 @@ function atualizar() {
 
     })
 }
+//setInterval(customersProdutos, 30000);
 setInterval(atualizar, 30000);
 $(function() {
     atualizar();
+    customersProdutos();
+    customersProdutosEditar();
 });
 
 $("#inpFiltro").on("keyup", function() {
@@ -617,7 +715,6 @@ $("#inpFiltro").on("keyup", function() {
         return $(this).text().toLowerCase().trim().indexOf(value) == -1;
     }).hide();
 });
-
 
 function cancelarPedido(id) {
     let valores = {
@@ -636,6 +733,23 @@ function cancelarPedido(id) {
     })
 }
 
+function deletarProduto(id_produto, carrinho_id) {
+    let valores = {
+        id_produto,
+        carrinho_id
+    }
+    $.ajax({
+        url: `/${link_site}/admin/carrinho/deletar/${id_produto}/${carrinho_id}`,
+        method: "POST",
+        data: valores,
+        dataType: "text",
+        success: function() {
+            customersProdutos();
+        },
+    })
+
+
+}
 
 function mudarStatus(id, status, id_caixa) {
     var id_motoboy = 0
@@ -1171,6 +1285,12 @@ switch (active_link) {
         $('#menuPedido .primaryMenu').removeClass('collapsed')
         $('#subPn').addClass('active')
         break;
+
+    case `/${link_site}/admin/pedido/novo/${activeId}`:
+        $('#collapseMenuTypes').addClass('show')
+        $('#menuPedido .primaryMenu').removeClass('collapsed')
+        $('#subPn').addClass('active')
+        break;
     case `/${link_site}/admin/caixa/visao-geral`:
         $('#collapseCaixaTypes').addClass('show')
         $('#menuCaixa .primaryMenu').removeClass('collapsed')
@@ -1528,14 +1648,14 @@ $("#switchEnd").on("change", function() {
     }
 });
 
-function produtoModal(id) {
+function produtoModal(id, idCliente) {
     $("#id").text(id);
-    console.log('dd');
     $.ajax({
-        url: `/${link_site}/admin/produto/novo/mostrar/${id}`,
+        url: `/${link_site}/admin/produto/novo/mostrar/${id}/${idCliente}`,
         method: "get",
         data: {
-            id
+            id,
+            idCliente
         },
         dataType: "html",
         beforeSend: function() {
@@ -1562,14 +1682,15 @@ function produtoModal(id) {
     })
 }
 
-function produtoModalEditar(id, numero_pedido) {
+function produtoModalEditar(id, idCliente, numero_pedido) {
     $("#id").text(id);
     console.log('dd');
     $.ajax({
-        url: `/${link_site}/admin/produto/editar/mostrar/${id}/${numero_pedido}`,
+        url: `/${link_site}/admin/produto/editar/mostrar/${id}/${idCliente}/${numero_pedido}`,
         method: "get",
         data: {
             id,
+            idCliente,
             numero_pedido
         },
         dataType: "html",
@@ -1902,59 +2023,57 @@ $("#formFinish").submit(function() {
 let autocomplete;
 let address1Field;
 
-$("#ship-address").on('click touchleave touchcancel',
 
-    function initAutocomplete() {
-        address1Field = document.querySelector("#ship-address");
-        autocomplete = new google.maps.places.Autocomplete(address1Field, {
-            componentRestrictions: {
-                country: ["br", "br"]
-            },
-            fields: ["address_components", "geometry"],
-            types: ["address"],
-        });
-        address1Field.focus();
-        autocomplete.addListener("place_changed", fillInAddress);
-    },
+function initAutocomplete() {
+    address1Field = document.querySelector("#ship-address");
+    autocomplete = new google.maps.places.Autocomplete(address1Field, {
+        componentRestrictions: {
+            country: ["br", "br"]
+        },
+        fields: ["address_components", "geometry"],
+        types: ["address"],
+    });
+    address1Field.focus();
+    autocomplete.addListener("place_changed", fillInAddress);
+}
 
-    function fillInAddress() {
-        const place = autocomplete.getPlace();
+function fillInAddress() {
+    const place = autocomplete.getPlace();
 
-        for (const component of place.address_components) {
-            const componentType = component.types[0];
-            switch (componentType) {
-                case "street_number":
-                    {
-                        $("#numero").val(component.long_name);
-                        break;
-                    }
-                case "route":
-                    {
-                        $("#rua").val(component.long_name);
-                        break;
-                    }
-                case "postal_code":
-                    {
-                        $("#cep").val(component.long_name);
-                        break;
-                    }
-                case "administrative_area_level_2":
-                    {
-                        $("#cidade").val(component.long_name);
-                        break;
-                    }
-                case "administrative_area_level_1":
-                    {
-                        $("#estado").val(component.short_name);
-                        break;
-                    }
-                case "sublocality_level_1":
-                    $("#bairro").val(component.short_name);
+    for (const component of place.address_components) {
+        const componentType = component.types[0];
+        switch (componentType) {
+            case "street_number":
+                {
+                    $("#numero").val(component.long_name);
                     break;
-            }
+                }
+            case "route":
+                {
+                    $("#rua").val(component.long_name);
+                    break;
+                }
+            case "postal_code":
+                {
+                    $("#cep").val(component.long_name);
+                    break;
+                }
+            case "administrative_area_level_2":
+                {
+                    $("#cidade").val(component.long_name);
+                    break;
+                }
+            case "administrative_area_level_1":
+                {
+                    $("#estado").val(component.short_name);
+                    break;
+                }
+            case "sublocality_level_1":
+                $("#bairro").val(component.short_name);
+                break;
         }
     }
-)
+}
 
 $('#entrega').on('change', function() {
     if (parseInt($(this).val()) === 1) {

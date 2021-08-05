@@ -149,6 +149,7 @@
 <div class="modal fade modal-right" id="modProduto" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content pb-0">
+        
             <div class="modal-body p-0" id="mostrarProduto">
                 <div class="text-center pb-3">
                     <h4 class="text-center pt-5">Carregando...</h4>
@@ -158,7 +159,9 @@
                         </path>
                     </svg>
                 </div>
+
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Fechar</button>
 
