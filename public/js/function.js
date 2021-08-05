@@ -123,12 +123,12 @@ switch (active_link) {
         break;
 
     case `/${link_site}/enderecos`:
-        $('#perfil').addClass('selected')
-        $('#perfil a, #perfil a i').addClass('text-danger').removeClass('text-dark')
+        $('#endereco').addClass('selected')
+        $('#endereco a, #perfil a i').addClass('text-danger').removeClass('text-dark')
         break;
     case `/${link_site}/endereco/novo`:
-        $('#perfil').addClass('selected')
-        $('#perfil a, #perfil a i').addClass('text-danger').removeClass('text-dark')
+        $('#endereco').addClass('selected')
+        $('#endereco a, #perfil a i').addClass('text-danger').removeClass('text-dark')
         break;
     case `/${link_site}/favoritos`:
         $('#favoritos').addClass('selected')
@@ -1479,89 +1479,61 @@ $("#telefoneVeri").on('blur touchleave touchcancel', function() {
 })
 
 $("#numero").on('blur touchleave touchcancel mouseout click', function() {
-        var rua = $("#rua").val().replace(" ", "%20");
-        var numero = $("#numero").val().replace(" ", "%20");
-        var cidade = $("#cidade").val().replace(" ", "%20");
-        var estado = $("#estado").val().replace(" ", "%20");
-        var url = `https://maps.google.com/maps/api/geocode/json?address=${rua}%20${numero}%20-%20${cidade}&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ`;
+    var rua = $("#rua").val().replace(" ", "%20");
+    var numero = $("#numero").val().replace(" ", "%20");
+    var cidade = $("#cidade").val().replace(" ", "%20");
+    var estado = $("#estado").val().replace(" ", "%20");
+    var url = `https://maps.google.com/maps/api/geocode/json?address=${rua}%20${numero}%20-%20${cidade}&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ`;
 
-        $.getJSON(url, function(place) {
-            //console.log(place.results[0].address_components)
-            for (const component of place.results[0].address_components) {
-                const componentType = component.types[0];
-                console.log(component)
-                switch (componentType) {
-                    case "street_number":
-                        {
-                            $("#numero").val(component.long_name);
-                            break;
-                        }
-                    case "route":
-                        {
-                            $("#rua").val(component.long_name);
-                            break;
-                        }
-                    case "postal_code":
-                        {
-                            $("#cep").val(component.long_name);
-                            break;
-                        }
-                    case "administrative_area_level_2":
-                        {
-                            $("#cidade").val(component.long_name);
-                            break;
-                        }
-                    case "administrative_area_level_1":
-                        {
-                            $("#estado").val(component.short_name);
-                            break;
-                        }
-                    case "sublocality":
-                        $("#bairro").val(component.short_name);
+    $.getJSON(url, function(place) {
+        //console.log(place.results[0].address_components)
+        for (const component of place.results[0].address_components) {
+            const componentType = component.types[0];
+            console.log(component)
+            switch (componentType) {
+                case "street_number":
+                    {
+                        $("#numero").val(component.long_name);
                         break;
-                    case "political":
-                        $("#bairro").val(component.short_name);
+                    }
+                case "route":
+                    {
+                        $("#rua").val(component.long_name);
                         break;
-                    case "sublocality_level_1":
-                        $("#bairro").val(component.short_name);
+                    }
+                case "postal_code":
+                    {
+                        $("#cep").val(component.long_name);
                         break;
-                }
+                    }
+                case "administrative_area_level_2":
+                    {
+                        $("#cidade").val(component.long_name);
+                        break;
+                    }
+                case "administrative_area_level_1":
+                    {
+                        $("#estado").val(component.short_name);
+                        break;
+                    }
+                case "sublocality":
+                    $("#bairro").val(component.short_name);
+                    break;
+                case "political":
+                    $("#bairro").val(component.short_name);
+                    break;
+                case "sublocality_level_1":
+                    $("#bairro").val(component.short_name);
+                    break;
             }
+        }
 
-            // try {
-            //     // Preenche os campos de acordo com o retorno da pesquisa
-            //     $("#endereco").val(dadosRetorno.logradouro);
-            //     $("#bairro").val(dadosRetorno.bairro);
-            //     $("#cidade").val(dadosRetorno.localidade);
-            //     $("#uf").val(dadosRetorno.uf);
-            // } catch (ex) {}
-        });
-    })
-    // let autocomplete;
-    // let address1Field;
-
-// $("#ship-address").on('click touchleave touchcancel', function initAutocomplete() {
-
-//     //function initAutocomplete() {
-//     address1Field = document.querySelector("#ship-address");
-//     autocomplete = new google.maps.places.Autocomplete(address1Field, {
-//         componentRestrictions: {
-//             country: ["br", "br"]
-//         },
-//         fields: ["address_components", "geometry"],
-//         types: ["address"],
-//     });
-//     address1Field.focus();
-//     autocomplete.addListener("place_changed", fillInAddress);
-// })
-
-// function fillInAddress() {
-//     const place = autocomplete.getPlace();
-
-
-
-
-
-//     //address1Field.value = address1Field;
-//     //address2Field.focus();
-// }
+        // try {
+        //     // Preenche os campos de acordo com o retorno da pesquisa
+        //     $("#endereco").val(dadosRetorno.logradouro);
+        //     $("#bairro").val(dadosRetorno.bairro);
+        //     $("#cidade").val(dadosRetorno.localidade);
+        //     $("#uf").val(dadosRetorno.uf);
+        // } catch (ex) {}
+    });
+})

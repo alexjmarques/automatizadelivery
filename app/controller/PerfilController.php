@@ -172,6 +172,8 @@ class PerfilController extends Controller
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+        }else{
+            redirect(BASE . "{$empresa->link_site}");
         }
         $this->load('login/endereco', [
             'empresa' => $empresa,
