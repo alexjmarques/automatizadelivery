@@ -745,6 +745,7 @@ function deletarProduto(id_produto, carrinho_id) {
         dataType: "text",
         success: function() {
             customersProdutos();
+            customersProdutosEditar();
         },
     })
 
@@ -1823,48 +1824,54 @@ $('#tipo_pagamento').on('change', function() {
     }
 });
 
-$('#calcularTroco').on('click', function() {
-    let valor = parseFloat($('#trocoCli').val());
-    let total_pago = parseFloat($('#total_pago').val());
-    let totalFinal = valor - total_pago
+$('#trocoCli').on('blur', function() {
+    let acao = $(this).val();
+    if (acao != "") {
+        let valor = parseFloat($('#trocoCli').val());
+        let total_pago = parseFloat($('#total_pago').val());
+        let totalFinal = valor - total_pago
 
-    if (valor === "" || valor < total_pago) {
-        $('#mensagem').html('O troco do cliente precisa ser maior que o total do pedido!');
-        $('.errorSup, .buttonAlert').show();
-        $('.successSup').hide();
-        $('#alerta').modal("show");
-        return false
-    } else {
-        $('#troco').val(valor)
-        $('.btnValida').show()
-        $('#trocoCliente').show();
-        $('#trocoCliente span').text(formatter.format(totalFinal))
-            // $("html, body").animate({
-            //   scrollTop: $('.acaoBtn').height()
-            // }, "slow");
-        return false
+        if (valor === "" || valor < total_pago) {
+            $('#mensagem').html('O troco do cliente precisa ser maior que o total do pedido!');
+            $('.errorSup, .buttonAlert').show();
+            $('.successSup').hide();
+            $('#alerta').modal("show");
+            return false
+        } else {
+            $('#troco').val(valor)
+            $('.btnValida').show()
+            $('#trocoCliente').show();
+            $('#trocoCliente span').text(formatter.format(totalFinal))
+                // $("html, body").animate({
+                //   scrollTop: $('.acaoBtn').height()
+                // }, "slow");
+            return false
+        }
     }
 });
 
-$('#button-desconto').on('click', function() {
-    let troco = parseFloat($('#trocoCli').val());
-    let valor = parseFloat($('#desconto').val());
-    let total_pago = parseFloat($('#total_pago').val());
-    let totalFinal = total_pago - valor
-    let totalFinalDesconto = troco - total_pago
+$('#desconto').on('blur', function() {
+    let acao = $(this).val();
+    if (acao != "") {
+        let troco = parseFloat($('#trocoCli').val());
+        let valor = parseFloat($('#desconto').val());
+        let total_pago = parseFloat($('#total_pago').val());
+        let totalFinal = total_pago - valor
+        let totalFinalDesconto = troco - total_pago
 
-    if (troco) {
-        $('#troco').val(troco)
+        if (troco) {
+            $('#troco').val(troco)
+            $('.btnValida').show()
+            $('#trocoCliente').show();
+            $('#trocoCliente span').text(formatter.format(totalFinalDesconto))
+        }
+
+        $('#total_pago').val(totalFinal)
         $('.btnValida').show()
-        $('#trocoCliente').show();
-        $('#trocoCliente span').text(formatter.format(totalFinalDesconto))
+        $('#descontoCliente').show();
+        $('#descontoCliente span').text(formatter.format(valor))
+        $('#valorProdutoMostra').text(formatter.format(totalFinal))
     }
-
-    $('#total_pago').val(totalFinal)
-    $('.btnValida').show()
-    $('#descontoCliente').show();
-    $('#descontoCliente span').text(formatter.format(valor))
-    $('#valorProdutoMostra').text(formatter.format(totalFinal))
     return false
 });
 

@@ -106,9 +106,9 @@
         <h5 class="full-width pb-0 bold">Desconto</h5>
         <div class="input-group-sm mb-2 input-group full-width mt-0 desconto_cli">
             <span class="moedaSimb position-absolute">{{ moeda.simbolo }}</span> <input type="text" class="form-control valor pl-4" id="desconto" name="desconto" value="">
-            <div class="input-group-append">
+            {# <div class="input-group-append">
                 <button id="button-desconto" type="button" class="btn btn-primary"> Aplicar</button>
-            </div>
+            </div> #}
         </div>
     </div>
     <div class="mb-0 input-group full-width mt-2 col-6 float-left pr-0">
@@ -125,7 +125,7 @@
     <div id="trocoMod" class="mt-1">
             <p class=" mt-3">Total em Dinheiro para calcular o seu Troco</p>
             <input type="text" class="form-control" id="trocoCli" placeholder="Total em Dinheiro" name="trocoCli">
-            <a class="btn btn-primary full-btn mt-2" href="#" id="calcularTroco"> Calcular Troco </a>
+            {# <a class="btn btn-primary full-btn mt-2" href="#" id="calcularTroco"> Calcular Troco </a> #}
 
     </div>
     <div class="clearfix"></div>
@@ -212,7 +212,9 @@
     }
 });
 
-$('#calcularTroco').on('click', function() {
+$('#trocoCli').on('blur', function() {
+    let acao = $(this).val();
+    if (acao != "") {
     let valor = parseFloat($('#trocoCli').val());
     let total_pago = parseFloat($('#total_pago').val());
     let totalFinal = valor - total_pago
@@ -233,6 +235,7 @@ $('#calcularTroco').on('click', function() {
             // }, "slow");
         return false
     }
+}
 });
 
 
@@ -296,7 +299,9 @@ $('#trocoCli').mask('#.##0,00', {
 });
 
 
-    $('#button-desconto').on('click', function() {
+    $('#desconto').on('blur', function() {
+        let acao = $(this).val();
+        if (acao != "") {
     let troco = parseFloat($('#trocoCli').val());
     let valor = parseFloat($('#desconto').val());
     let total_pago = parseFloat($('#total_pago').val());
@@ -315,6 +320,7 @@ $('#trocoCli').mask('#.##0,00', {
     $('#descontoCliente').show();
     $('#descontoCliente span').text(formatter.format(valor))
     $('#valorProdutoMostra').text(formatter.format(totalFinal))
+}
     return false
 });
 

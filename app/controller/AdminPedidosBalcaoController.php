@@ -411,6 +411,7 @@ class AdminPedidosBalcaoController extends Controller
         $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
         $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
         $carrinho = $this->acoes->getByFieldTwoAll('carrinho', 'id_empresa', $empresa->id, 'numero_pedido', $pedido->numero_pedido);
+        $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $cliente->id, 'principal', 1);
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
 
         $adicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
@@ -513,7 +514,7 @@ class AdminPedidosBalcaoController extends Controller
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $pedido->id_cliente, 'id_empresa', $empresa->id);
             $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $pedido->id_cliente);
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            //$enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
 
             if ($verificaVendaAtiva > 0) {
                 $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $pedido->id_cliente, 'status', 4, 1, 'id', 'DESC');
@@ -532,7 +533,7 @@ class AdminPedidosBalcaoController extends Controller
             'empresa' => $empresa,
             'trans' => $this->trans,
             'pedido' => $pedido,
-
+            'enderecoAtivo' => $enderecoAtivo,
             'pagamento' => $pagamento,
             'tipo' => $tipo,
             'sabores' => $sabores,
