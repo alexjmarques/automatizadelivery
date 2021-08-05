@@ -6,7 +6,7 @@
       <p>O código que enviamos para validar seu acesso.</p>
       <div class="row mx-0 mb-4 mt-3">
       <div class="col pr-1 pl-0 ">
-      <input type="text" value="" name="codeValida" id="codeValida" class="form-control form-control-lg">
+      <input type="number" value="" name="codeValida" id="codeValida" class="form-control form-control-lg">
       <input type="hidden" id="id" name="id" value="{{usuario.id}}">
       </div>
       </div>

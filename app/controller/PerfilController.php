@@ -244,17 +244,65 @@ class PerfilController extends Controller
 
     public function insertPrimeiroEndereco($data)
     {
+
+        $geo= array();
+        $addr = str_replace(" ", "+", $data['rua'].' '.$data['numero'].', '.$data['cidade'].' - '.$data['estado']);
+        $address = utf8_encode($addr);
+
+        $geocode = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ');
+        $output = json_decode($geocode);
+
+        foreach( $output->results[0]->address_components as $component) {
+            $componentType = $component->types[0];
+            switch ($componentType) {
+                case "street_number":
+                    {
+                        $street_number = $component->long_name;
+                        break;
+                    }
+                case "route":
+                    {
+                        $rua = $component->long_name;
+                        break;
+                    }
+                case "postal_code":
+                    {
+                        $cep = $component->long_name;
+                        break;
+                    }
+                case "administrative_area_level_2":
+                    {
+                        $cidade = $component->long_name;
+                        break;
+                    }
+                case "administrative_area_level_1":
+                    {
+                        $estado = $component->short_name;
+                        break;
+                    }
+                case "sublocality":
+                    $bairro = $component->short_name;
+                    break;
+                case "political":
+                    $bairro = $component->short_name;
+                    break;
+                case "sublocality_level_1":
+                    $bairro = $component->short_name;
+                    break;
+            }
+        }
+
         if ($data['numero']) {
             $novo = new UsuariosEnderecos();
             $novo->id_usuario = $this->sessao->getUser();
             $novo->nome_endereco = "Principal";
-            $novo->rua = $data['rua'];
+            $novo->rua = $rua;
             $novo->numero = $data['numero'];
             $novo->complemento = $data['complemento'];
-            $novo->bairro = $data['bairro'];
-            $novo->cidade = $data['cidade'];
-            $novo->estado = $data['estado'];
-            $novo->cep = $data['cep'];
+            $novo->bairro = $bairro;
+            $novo->cidade = $cidade;
+            $novo->estado = $estado;
+            $novo->cep = $cep;
             $novo->principal = 1;
             $novo->save();
 
@@ -302,16 +350,63 @@ class PerfilController extends Controller
             }
         }
 
+        $geo= array();
+        $addr = str_replace(" ", "+", $data['rua'].' '.$data['numero'].', '.$data['cidade'].' - '.$data['estado']);
+        $address = utf8_encode($addr);
+
+        $geocode = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ');
+        $output = json_decode($geocode);
+
+        foreach( $output->results[0]->address_components as $component) {
+            $componentType = $component->types[0];
+            switch ($componentType) {
+                case "street_number":
+                    {
+                        $street_number = $component->long_name;
+                        break;
+                    }
+                case "route":
+                    {
+                        $rua = $component->long_name;
+                        break;
+                    }
+                case "postal_code":
+                    {
+                        $cep = $component->long_name;
+                        break;
+                    }
+                case "administrative_area_level_2":
+                    {
+                        $cidade = $component->long_name;
+                        break;
+                    }
+                case "administrative_area_level_1":
+                    {
+                        $estado = $component->short_name;
+                        break;
+                    }
+                case "sublocality":
+                    $bairro = $component->short_name;
+                    break;
+                case "political":
+                    $bairro = $component->short_name;
+                    break;
+                case "sublocality_level_1":
+                    $bairro = $component->short_name;
+                    break;
+            }
+        }
+
         $novo = new UsuariosEnderecos();
         $novo->id_usuario = $this->sessao->getUser();
         $novo->nome_endereco = $data['nome_endereco'];
-        $novo->rua = $data['rua'];
+        $novo->rua = $rua;
         $novo->numero = $data['numero'];
         $novo->complemento = $data['complemento'];
-        $novo->bairro = $data['bairro'];
-        $novo->cidade = $data['cidade'];
-        $novo->estado = $data['estado'];
-        $novo->cep = $data['cep'];
+        $novo->bairro = $bairro;
+        $novo->cidade = $cidade;
+        $novo->estado = $estado;
+        $novo->cep = $cep;
         $novo->principal = $data['principal'];
         $novo->save();
 

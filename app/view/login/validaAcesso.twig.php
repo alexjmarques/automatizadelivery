@@ -11,7 +11,7 @@
         <form id="form" action="{{BASE}}{{empresa.link_site}}/valida/acesso/code/up">
             <div class="row my-5 mx-0">
                 <div class="col pr-1 pl-0">
-                    <input type="text" value="" name="codeValida" id="codeValida" class="form-control form-control-lg">
+                    <input type="number" value="" name="codeValida" id="codeValida" class="form-control form-control-lg">
                     <input type="hidden" id="id" name="id" value="{{usuario.id}}">
                 </div>
             </div>
