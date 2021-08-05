@@ -1478,7 +1478,7 @@ $("#telefoneVeri").on('blur touchleave touchcancel', function() {
     })
 })
 
-$("#numero").on('blur touchleave touchcancel', function() {
+$("#numero").on('blur touchleave touchcancel mouseout click', function() {
         var rua = $("#rua").val().replace(" ", "%20");
         var numero = $("#numero").val().replace(" ", "%20");
         var cidade = $("#cidade").val().replace(" ", "%20");
