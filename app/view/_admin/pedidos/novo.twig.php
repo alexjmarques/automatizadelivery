@@ -1,5 +1,5 @@
 {% extends 'partials/bodyAdmin.twig.php'  %}
-{% block title %}Admin Águas Claras Delivery
+{% block title %}Admin Automatiza Delivery
 {% endblock %}
 {% block body %}
 <h1>Novo Pedido</h1>
