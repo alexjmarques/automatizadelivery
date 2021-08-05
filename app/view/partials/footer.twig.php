@@ -4,7 +4,7 @@
             <a href="{{BASE}}{{empresa.link_site}}/" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-home"></i></p>Início</a>
         </div>
         <div id="pedidos" class="col">
-            <a href="{{BASE}}{{empresa.link_site}}/meus-pedidos" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-map-pin"></i></p>Pedidos</a>
+            <a href="{{BASE}}{{empresa.link_site}}/meus-pedidos" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-list"></i></p>Pedidos</a>
         </div>
         <div class="col bg-white rounded-circle mt-n4 px-3 py-2">
             <div class="bg-danger rounded-circle mt-n0 shadow">
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div id="endereco" class="col">
-            <a href="{{BASE}}{{empresa.link_site}}/enderecos" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="fa fa-map-marker"></i></p>Enderecos</a>
+            <a href="{{BASE}}{{empresa.link_site}}/enderecos" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-map-pin"></i></p>Enderecos</a>
         </div>
         <div id="perfil" class="col">
             <a href="{{BASE}}{{empresa.link_site}}/perfil" class="text-dark small font-weight-bold text-decoration-none"><p class="h4 m-0"><i class="feather-user"></i></p>Perfil</a>
