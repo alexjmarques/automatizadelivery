@@ -169,7 +169,7 @@ class PedidosController extends Controller
     {
         $venda = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
 
-        $valor = (new CarrinhoPedidos())->findById($data->id);
+        $valor = (new CarrinhoPedidos())->findById($venda->id);
         $valor->status = 6;
         $valor->save();
 
