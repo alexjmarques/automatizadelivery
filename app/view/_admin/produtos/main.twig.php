@@ -78,9 +78,9 @@
                             </td>
                             <td>
                             {% if p.valor == 0.00 %}
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/produto-pizza/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/produto-pizza/editar/{{ p.id }}" class="btn btn-outline-success" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
                                 {% else %}
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/produto/editar/{{ p.id }}" class="btn btn-outline-success" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
                                 {% endif %}
                             </td>
                         </tr>

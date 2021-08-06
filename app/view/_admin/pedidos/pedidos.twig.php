@@ -59,7 +59,7 @@
                                             </p>
                                         </td>
                                         <td>
-                                        <a data-toggle="modal" data-target="#modPedido" onclick="produtosModal({{p.id}}, {{p.numero_pedido}} )" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal">Ver Mais</a>
+                                        <a data-toggle="modal" data-target="#modPedido" onclick="produtosModal({{p.id}}, {{p.numero_pedido}} )" class="btn btn-outline-success" ata-toggle="modal" data-target="#rightModal">Ver Mais</a>
                                         </td>
                                     </tr>
                                 {% endfor %}

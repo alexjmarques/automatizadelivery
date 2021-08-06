@@ -42,7 +42,7 @@
                             </td>
                             <td>
                             <a class="btn btn-outline-info mb-1" data-toggle="modal" data-target="#alerta" onclick="verEndereco({{ user.id }})"><i class="simple-icon-eye"></i></a>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/cliente/editar/{{ user.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/cliente/editar/{{ user.id }}" class="btn btn-outline-success" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
                                 {% if nivelUsuario == 0 %}
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/cliente/d/{{ user.id }}/{{ user.nivel }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i></a>
                                 {% endif%}

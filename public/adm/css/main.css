@@ -5741,3 +5741,8 @@ h5.full-width.pb-0.bold {
     list-style: none;
     font-size: 14px;
 }
+
+#customers .linhaTop th {
+    font-size: 16px;
+    background-color: #880a1f !important;
+}

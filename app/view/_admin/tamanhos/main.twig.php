@@ -43,7 +43,7 @@
                             
                             <td>
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/tamanho/editar/{{ p.id }}"
-                                    class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i></a>
+                                    class="btn btn-outline-success"><i class="simple-icon-note"></i></a>
                             </td>
                         </tr>
                         {% endfor %}

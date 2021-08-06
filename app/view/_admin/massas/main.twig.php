@@ -35,7 +35,7 @@
                             {{moeda.simbolo}} {{ m.valor|number_format(2, ',', '.') }}
                             </td>
                             <td>
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/massa/editar/{{ m.id }}" class="btn btn-outline-success mb-1"><i class="simple-icon-note"></i></a>
+                                <a href="{{BASE}}{{empresa.link_site}}/admin/massa/editar/{{ m.id }}" class="btn btn-outline-success"><i class="simple-icon-note"></i></a>
                             </td>
                         </tr>
                         {% endfor %}

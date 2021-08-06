@@ -58,7 +58,7 @@
                                             <p class="text-muted">{{ moeda.simbolo }} {{ p.valor|number_format(2, ',', '.') }}</p>
                                         </td>
                                         <td>
-                                            <a href="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/editar/{{ p.id }}" class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
+                                            <a href="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/editar/{{ p.id }}" class="btn btn-outline-success" ata-toggle="modal" data-target="#rightModal"><i class="simple-icon-note"></i></a>
                                             <a href="{{BASE}}{{empresa.link_site}}/admin/produto-adicional/d/{{ p.id }}" class="btn btn-outline-danger mb-1"><i class="simple-icon-trash"></i></a>
                                         </td>
                                     </tr>

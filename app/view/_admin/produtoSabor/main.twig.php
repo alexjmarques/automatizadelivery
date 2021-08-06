@@ -34,7 +34,7 @@
 
                             <td>
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produto-sabor/editar/{{ p.id }}"
-                                    class="btn btn-outline-success mb-1" ata-toggle="modal" data-target="#rightModal"><i
+                                    class="btn btn-outline-success" ata-toggle="modal" data-target="#rightModal"><i
                                         class="simple-icon-note"></i> Editar</a>
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/produto-sabor/d/{{ p.id }}" class="btn btn-outline-danger mb-1"><i
                                         class="simple-icon-trash"></i> Deletar</a>
