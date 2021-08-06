@@ -1818,6 +1818,7 @@ table.dataTable td {
 #customers th {
     border: 1px solid #ddd;
     padding: 8px;
+    height: 54px;
 }
 
 #customers tr:nth-child(even) {
@@ -5743,7 +5744,6 @@ h5.full-width.pb-0.bold {
 }
 
 #customers .linhaTop th {
-    font-size: 16px;
-    text-transform: uppercase;
+    font-size: 15px;
     background-color: #880a1f !important;
 }
