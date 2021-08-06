@@ -944,6 +944,7 @@ $("#form").submit(function(e) {
                         break;
                 }
             } else {
+                console.log(dd.error);
                 $(".btn_acao a, .btn_acao button").removeClass('hide');
                 $('.btn_acao .carrega').html('')
                 $('.errorSup').show();

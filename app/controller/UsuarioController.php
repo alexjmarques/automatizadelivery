@@ -259,6 +259,10 @@ class UsuarioController extends Controller
                 $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os pedidos', 'url' => '']);
                 exit($json);
             }
+        }else{
+            header('Content-Type: application/json');
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Código inválido! Verifique se digitou corretamente', 'url' => '']);
+                exit($json);
         }
     }
 

@@ -641,6 +641,10 @@ class CarrinhoController extends Controller
                 $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os carrinho', 'code' => 2,  'url' => 'carrinho']);
                 exit($json);
             }
+        }else{
+            header('Content-Type: application/json');
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Código inválido! Verifique se digitou corretamente', 'url' => '']);
+                exit($json);
         }
     }
 
@@ -679,6 +683,10 @@ class CarrinhoController extends Controller
                 $json = json_encode(['id' => $usuario->id, 'resp' => 'insert', 'mensagem' => 'OK Vai para o carrinho', 'code' => 2,  'url' => 'carrinho']);
                 exit($json);
             }
+        }else{
+            header('Content-Type: application/json');
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Código inválido! Verifique se digitou corretamente', 'url' => '']);
+                exit($json);
         }
     }
 
