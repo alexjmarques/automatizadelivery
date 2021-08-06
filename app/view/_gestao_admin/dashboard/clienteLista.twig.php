@@ -30,7 +30,6 @@
         </div>
         {% else %}
         <div class="card">
-
             <div class="card-body">
                 <table class="data-table data-table-simple responsive nowrap">
                     <thead class="linhaTop">

@@ -222,11 +222,11 @@ if($rcat){
         $totalPedidos = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
 
         $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
-        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 3);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
-        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'pedidos ASC');
+        $pager->pager((int)$count, 30, $page);
+        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'pedidos DESC');
 
         $this->load('_admin/dashboard/clienteLista', [
             'paginacao' => $pager->render('mt-4 pagin'),

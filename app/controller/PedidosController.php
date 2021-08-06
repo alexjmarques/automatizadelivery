@@ -61,7 +61,7 @@ class PedidosController extends Controller
         $count = $this->acoes->counts('carrinhoPedidos', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
+        $pager->pager((int)$count, 30, $page);
         $pedidos = $this->acoes->pagination('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), $pager->limit(), $pager->offset(), 'id DESC');
         $diahoje = date('d');
 

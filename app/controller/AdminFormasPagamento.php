@@ -54,7 +54,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $count = $this->acoes->counts('formasPagamento', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
+        $pager->pager((int)$count, 30, $page);
         $resultProdutos = $this->acoes->pagination('formasPagamento', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
 

@@ -283,7 +283,7 @@ class UsuarioController extends Controller
         $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 2);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
+        $pager->pager((int)$count, 30, $page);
         $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
         $this->load('_admin/atendentes/main', [
@@ -385,7 +385,7 @@ class UsuarioController extends Controller
 
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
+        $pager->pager((int)$count, 30, $page);
         $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id_usuario ASC');
 
         $this->load('_admin/clientes/main', [
@@ -506,7 +506,7 @@ class UsuarioController extends Controller
         $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 1);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
+        $pager->pager((int)$count, 30, $page);
         $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
         $this->load('_admin/administradores/main', [

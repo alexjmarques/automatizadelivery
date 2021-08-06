@@ -74,7 +74,7 @@ class Admin extends Controller
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
             $pager = new \CoffeeCode\Paginator\Paginator();
-            $pager->pager((int)$count, 10, $page);
+            $pager->pager((int)$count, 30, $page);
             $empresas = $this->acoes->paginationAdd('empresa', $pager->limit(), $pager->offset(), 'id ASC');
 
             $this->load('_gestao_admin/empresas/main', [
@@ -97,7 +97,7 @@ class Admin extends Controller
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
             $pager = new \CoffeeCode\Paginator\Paginator();
-            $pager->pager((int)$count, 10, $page);
+            $pager->pager((int)$count, 30, $page);
             $paginas = $this->acoes->paginationAdd('paginas', $pager->limit(), $pager->offset(), 'id ASC');
 
             $this->load('_gestao_admin/paginas/main', [

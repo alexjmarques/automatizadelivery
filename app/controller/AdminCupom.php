@@ -60,7 +60,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $count = $this->acoes->counts('cupomDesconto', 'id_empresa', $empresa->id);
         $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
         $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 10, $page);
+        $pager->pager((int)$count, 30, $page);
         $retorno = $this->acoes->pagination('cupomDesconto', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id ASC');
 
         $this->load('_admin/cupom/main', [
