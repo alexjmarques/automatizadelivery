@@ -2665,6 +2665,7 @@ $.dore = function(element, options) {
 
             $(".data-table-simple").DataTable({
                 bLengthChange: false,
+                "ordering": false,
                 searching: false,
                 destroy: true,
                 bScrollInfinite: false,

@@ -32,7 +32,7 @@
         <div class="card">
 
             <div class="card-body">
-            <table id="customers" class="data-table">
+                <table class="data-table data-table-simple responsive nowrap">
                     <thead class="linhaTop">
                         <tr>
                             <th>Cliente</th>
