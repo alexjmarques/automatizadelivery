@@ -1537,6 +1537,7 @@ class AdminPedidosBalcaoController extends Controller
                 $valorEmp->id_usuario = $getTelefone->id;
                 $valorEmp->id_empresa = $empresa->id;
                 $valorEmp->nivel = 3;
+                $valorEmp->pedidos = 0;
                 $valorEmp->save();
 
                 if ($valorEmp->id > 0) {
@@ -1581,6 +1582,7 @@ class AdminPedidosBalcaoController extends Controller
                 $valorEmp->id_usuario = $valor->id;
                 $valorEmp->id_empresa = $empresa->id;
                 $valorEmp->nivel = 3;
+                $valorEmp->pedidos = 0;
                 $valorEmp->save();
             }
 
@@ -1633,6 +1635,7 @@ class AdminPedidosBalcaoController extends Controller
             $valorEmp->id_usuario = $cliente->id;
             $valorEmp->id_empresa = $empresa->id;
             $valorEmp->nivel = 3;
+            $valorEmp->pedidos = 0;
             $valorEmp->save();
 
             if ($valorEmp->id > 0) {

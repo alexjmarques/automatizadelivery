@@ -206,6 +206,7 @@ class UsuarioController extends Controller
                 $valorEmp->id_usuario = $getTelefone->id;
                 $valorEmp->id_empresa = $empresa->id;
                 $valorEmp->nivel = $getTelefone->nivel;
+                $valorEmp->pedidos = 0;
                 $valorEmp->save();
             }
 
@@ -616,6 +617,7 @@ class UsuarioController extends Controller
                 $valorEmp->id_usuario = $valor->id;
                 $valorEmp->id_empresa = $data['id_empresa'];
                 $valorEmp->nivel = $data['nivel'];
+                $valorEmp->pedidos = 0;
                 $valorEmp->save();
 
                 if ($valorEmp->id > 0) {
@@ -776,6 +778,7 @@ class UsuarioController extends Controller
             $valorEmp->id_usuario = $getTelefone->id;
             $valorEmp->id_empresa = $empresa->id;
             $valorEmp->nivel = $getTelefone->nivel;
+            $valorEmp->pedidos = 0;
             $valorEmp->save();
 
             $this->sessao->add($valorEmp->id, $valorEmp->email, $valorEmp->nivel);
@@ -820,6 +823,7 @@ class UsuarioController extends Controller
                     $valoEmp = new UsuariosEmpresa();
                     $valoEmp->id_usuario = $valor->id;
                     $valoEmp->id_empresa = $empresa->id;
+                    $valoEmp->pedidos = 0;
                     $valoEmp->nivel = 3;
                     $valoEmp->save();
                 } else {

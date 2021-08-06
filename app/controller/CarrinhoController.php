@@ -529,6 +529,7 @@ class CarrinhoController extends Controller
                 $valorEmp->id_usuario = $getTelefone->id;
                 $valorEmp->id_empresa = $empresa->id;
                 $valorEmp->nivel = $getTelefone->nivel;
+                $valorEmp->pedidos = 0;
                 $valorEmp->save();
             }
 
@@ -565,6 +566,7 @@ class CarrinhoController extends Controller
             $valoEmp = new UsuariosEmpresa();
             $valoEmp->id_usuario = $valor->id;
             $valoEmp->id_empresa = $empresa->id;
+            $valoEmp->pedidos = 0;
             $valoEmp->nivel = 3;
             $valoEmp->save();
 
@@ -668,6 +670,7 @@ class CarrinhoController extends Controller
                     $valorEmp = new UsuariosEmpresa();
                     $valorEmp->id_usuario = $usuario->id;
                     $valorEmp->id_empresa = $empresa->id;
+                    $valorEmp->pedidos = 0;
                     $valorEmp->nivel = 3;
                     $valorEmp->save();
                 }

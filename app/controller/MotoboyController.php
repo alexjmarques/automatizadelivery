@@ -159,6 +159,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                 $valorEmp = new UsuariosEmpresa();
                 $valorEmp->id_usuario = $motoboy->id;
                 $valorEmp->id_empresa = $empresa->id;
+                $valorEmp->pedidos = 0;
                 $valorEmp->nivel = $data['nivel'];
                 $valorEmp->save();
             }
@@ -202,6 +203,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                 $valorEmp = new UsuariosEmpresa();
                 $valorEmp->id_usuario = $telefone->id;
                 $valorEmp->id_empresa = $empresa->id;
+                $valorEmp->pedidos = 0;
                 $valorEmp->nivel = $data['nivel'];
                 $valorEmp->save();
             }
@@ -228,6 +230,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $valorEmp->id_usuario = $valor->id;
             $valorEmp->id_empresa = $empresa->id;
             $valorEmp->nivel = $data['nivel'];
+            $valorEmp->pedidos = 0;
             $valorEmp->save();
 
             header('Content-Type: application/json');

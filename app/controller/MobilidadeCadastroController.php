@@ -269,6 +269,7 @@ class MobilidadeCadastroController extends Controller
             $usuariosEmpresa = new UsuariosEmpresa();
             $usuariosEmpresa->id_usuario = $usuarios->id;
             $usuariosEmpresa->id_empresa = $empresa->id;
+            $usuariosEmpresa->pedidos = 0;
             $usuariosEmpresa->nivel = 0;
             $usuariosEmpresa->save();
             //print_r($usuariosEmpresa);
