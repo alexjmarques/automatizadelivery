@@ -17,7 +17,7 @@
     <div class="col-12 data-tables-hide-filter">
         <div class="card">
             <div class="card-body">
-                <table class="data-table data-table-simple responsive nowrap">
+                <table id="customers" class="data-table">
                     <thead class="linhaTop">
                         <tr>
                             <th style="width: 200px !important;">Dia</th>

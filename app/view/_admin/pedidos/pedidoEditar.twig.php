@@ -131,7 +131,7 @@
 
                     <form method="post" autocomplete="off" id="formFinish" action="{{BASE}}{{empresa.link_site}}/admin/carrinho/finaliza-update" novalidate>
                         <div class="bg-white mb-3 col-md-12 p-0 float-left">
-                            <table class="data-table data-table-simple responsive nowrap">
+                            <table id="customers" class="data-table">
                                 <thead class="linhaTop">
                                     <tr>
                                         <th>Item</th>

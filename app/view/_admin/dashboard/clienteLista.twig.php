@@ -17,7 +17,6 @@
         <div class="row">
             <div class="form-side col-lg-12">
                 <div class="text-center pt-4">
-
                     <p class="display-1 font-weight-bold mt-5">
                         <span class="iconsminds-digital-drawing iconeMenu"></span>
                     </p>
@@ -32,7 +31,7 @@
         <div class="card">
 
             <div class="card-body">
-                <table class="data-table data-table-simple responsive nowrap">
+                <table id="customers" class="data-table">
                     <thead class="linhaTop">
                         <tr>
                             <th>Cliente</th>

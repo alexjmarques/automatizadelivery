@@ -30,8 +30,9 @@
         </div>
         {% else %}
         <div class="card">
+
             <div class="card-body">
-            <table id="customers" class="data-table">
+                <table id="customers" class="data-table">
                     <thead class="linhaTop">
                         <tr>
                             <th>Cliente</th>
