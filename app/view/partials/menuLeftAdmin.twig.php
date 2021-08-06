@@ -23,7 +23,7 @@
                 {% if planoAtivo > 2 %}
                 <li id="menuCaixa">
                     <a href="#" data-toggle="collapse" data-target="#collapseCaixaTypes" aria-expanded="true" aria-controls="collapseCaixaTypes" class="primaryMenu rotate-arrow-icon collapsed">
-                        <span class="iconsminds-digital-drawing iconeMenu"></span> <span class="d-inline-block"> Fluxo de Caixa</span>
+                        <span class="iconsminds-digital-drawing iconeMenu"></span> <span class="d-inline-block"> Relatórios</span>
                         <i class="simple-icon-arrow-down iconAcao"></i>
                     </a>
                     <div id="collapseCaixaTypes" class="collapse rounded-left cianColor" data-parent="#menuTypes">
@@ -36,7 +36,7 @@
                             </li>
                             <li id="caiRel">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/caixa/relatorio">
-                                    <span class="d-inline-block">Fluxo de Caixa</span>
+                                    <span class="d-inline-block">Relatório de Caixa</span>
                                 </a>
                             </li>
                             <li id="caiCli">
@@ -50,7 +50,7 @@
                 {% else %}
                 <li id="menuCaixa" class="indisponivel">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
-                        <span class="iconsminds-digital-drawing iconeMenu"></span> <span class="d-inline-block"> Fluxo de Caixa <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
+                        <span class="iconsminds-digital-drawing iconeMenu"></span> <span class="d-inline-block"> Relatórios <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
                     </a>
                 </li>
                 {% endif %}

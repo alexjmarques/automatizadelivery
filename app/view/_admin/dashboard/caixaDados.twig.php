@@ -10,7 +10,7 @@
                     <a href="{{BASE}}{{empresa.link_site}}/admin">Painel</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{BASE}}{{empresa.link_site}}/admin/caixa">Fluxo de Caixa</a>
+                    <a href="{{BASE}}{{empresa.link_site}}/admin/caixa">Relatórios</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Dia ({{ caixaDados.data_inicio|date('m-d') }})
                 </li>
