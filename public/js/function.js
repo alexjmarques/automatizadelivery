@@ -173,6 +173,7 @@ $("#abrirCarrinhoModal").on('click', function() {
 $('#trocoMod, #mp, #entrega_end, #dinMod').hide();
 
 $('#tipo_pagamento').on('change', function() {
+    $('#tipo_pagamento').css("border", "1px solid #ced4da");
     if (parseInt($(this).val()) === 1) {
         $('#trocoMod').show();
         $('.btnValida').hide();
@@ -982,8 +983,11 @@ $("#formFinish").submit(function() {
         $('#carregando_carrinho').hide();
         exit();
     } else if (t_pg == "") {
-        $('#tipo_pagamento').shake();
+        $('#alertGeralSite').modal('show');
+        $('#mensagem').html('Faltou informar a Forma de Pagamento!');
         $('#acoes_carrinho').show();
+        $('html,body').animate({ scrollTop: $("#t_pag").offset().top }, 'slow');
+        $('#tipo_pagamento').shake().css("border", "1px solid red");
         $('#carregando_carrinho').hide();
     } else {
         $.ajax({

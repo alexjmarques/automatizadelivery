@@ -22,6 +22,7 @@ use app\Models\CupomDescontoUtilizadores;
 use app\Models\Produtos;
 use app\Models\Usuarios;
 use app\Models\UsuariosEmpresa;
+use app\Models\UsuariosEnderecos;
 use Bcrypt\Bcrypt;
 use Browser;
 use Mobile_Detect;
@@ -282,6 +283,58 @@ class CarrinhoController extends Controller
             $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
             $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
             $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
+
+            if (!$endereco->bairro) {
+                $geo = array();
+                $addr = str_replace(" ", "+", $endereco->rua . ' ' . $endereco->numero . ', ' . $empresaEndereco->cidade . ' - ' . $empresaEndereco->estado);
+                $address = utf8_encode($addr);
+
+                $geocode = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ');
+                $output = json_decode($geocode);
+
+                foreach ($output->results[0]->address_components as $component) {
+                    $componentType = $component->types[0];
+                    switch ($componentType) {
+                        case "route": {
+                                $rua = $component->long_name;
+                                break;
+                            }
+                        case "postal_code": {
+                                $cep = $component->long_name;
+                                break;
+                            }
+                        case "administrative_area_level_2": {
+                                $cidade = $component->long_name;
+                                break;
+                            }
+                        case "administrative_area_level_1": {
+                                $estado = $component->short_name;
+                                break;
+                            }
+                        case "sublocality":
+                            $bairro = $component->short_name;
+                            break;
+                        case "political":
+                            $bairro = $component->short_name;
+                            break;
+                        case "sublocality_level_1":
+                            $bairro = $component->short_name;
+                            break;
+                    }
+                }
+
+                $novo = (new UsuariosEnderecos())->findById($endereco->id);;
+                $novo->rua = $rua;
+                $novo->bairro = $bairro;
+                $novo->cidade = $cidade;
+                $novo->estado = $estado;
+                $novo->cep = $cep;
+                $novo->save();
+
+                if ($novo->id > 0) {
+                    redirect(BASE . "{$empresa->link_site}/carrinho");
+                }
+            }
 
             $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
             $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
@@ -641,10 +694,10 @@ class CarrinhoController extends Controller
                 $json = json_encode(['id' => 1, 'resp' => 'insert', 'mensagem' => 'OK Vai para os carrinho', 'code' => 2,  'url' => 'carrinho']);
                 exit($json);
             }
-        }else{
+        } else {
             header('Content-Type: application/json');
-                $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Código inválido! Verifique se digitou corretamente', 'url' => '']);
-                exit($json);
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Código inválido! Verifique se digitou corretamente', 'url' => '']);
+            exit($json);
         }
     }
 
@@ -683,10 +736,10 @@ class CarrinhoController extends Controller
                 $json = json_encode(['id' => $usuario->id, 'resp' => 'insert', 'mensagem' => 'OK Vai para o carrinho', 'code' => 2,  'url' => 'carrinho']);
                 exit($json);
             }
-        }else{
+        } else {
             header('Content-Type: application/json');
-                $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Código inválido! Verifique se digitou corretamente', 'url' => '']);
-                exit($json);
+            $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Código inválido! Verifique se digitou corretamente', 'url' => '']);
+            exit($json);
         }
     }
 

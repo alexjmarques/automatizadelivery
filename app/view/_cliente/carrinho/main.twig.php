@@ -109,7 +109,7 @@
                     {% else %}
                     <div id="entrega_end" class="dados-usuario row pt-3">
                         {% endif %}
-                        <h5 class="pt-4 pl-3 pr-3">Endereço para Retirada <span class="statusCart">Pronto <i class="feather-check"></i></span></h5>
+                        <h5 class="pt-4 pl-3 pr-3">Endereço para Retirada <span style="color:red;">*</span> <span class="statusCart">Pronto <i class="feather-check"></i></span></h5>
                         {% for t in tipo %}
                         {% if t.status == 1 and t.code == 1 %}
                         <div class="card">
@@ -140,11 +140,11 @@
                     {% endif %}
 
                 </div>
-                <div class="mb-3 shadow bg-white rounded p-3 py-3 mt-3 clearfix">
-                    <h5 class="pb-2">Como você vai pagar? <span class="statusCart tipo_pagamento">Pronto <i class="feather-check"></i></span></h5>
+                <div id="t_pag" class="mb-3 shadow bg-white rounded p-3 py-3 mt-3 clearfix">
+                    <h5 class="pb-2">Forma de Pagamento <span style="color:red;">*</span> <span class="statusCart tipo_pagamento">Pronto <i class="feather-check"></i></span></h5>
                     <div class="mb-0 input-group full-width mt-0">
                         <select id="tipo_pagamento" name="tipo_pagamento" class="form-control" required>
-                            <option value="" selected>Forma de Pagamento</option>
+                            <option value="" selected>Selecione</option>
                             {% for pag in pagamento %}
                             <option value="{{pag.code}}">{{pag.tipo}}</option>
                             {% endfor %}
