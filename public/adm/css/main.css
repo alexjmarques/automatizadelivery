@@ -5747,3 +5747,21 @@ h5.full-width.pb-0.bold {
     font-size: 15px;
     background-color: #880a1f !important;
 }
+
+.containersTabela {
+    border: 1px solid #ddd;
+}
+
+.tt {
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.cont {
+    text-align: right;
+    margin-bottom: 2px;
+}
+
+.containersTabela .containers:nth-child(even) {
+    background-color: #ddd;
+}

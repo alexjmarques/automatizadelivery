@@ -235,6 +235,10 @@ class Acoes
     {
         return $this->{$table}->find("{$field} ={$valor}")->limit($limit)->order("{$field2} {$order}")->fetch(true);
     }
+    public function limitTwoOrder(string $table, string $field, string $valor,string $field3, string $valor3,int $limit, string $field2, string $order)
+    {
+        return $this->{$table}->find("{$field} ={$valor} AND {$field3} ={$valor3}")->limit($limit)->order("{$field2} {$order}")->fetch(true);
+    }
 
     public function limitOrderFill(string $table, string $field, string $valor,string $field1, string $valor1,string $field3, string $valor3,int $limit, string $field2, string $order)
     {
@@ -355,6 +359,11 @@ class Acoes
     public function countCompanyVar(string $table,string $field2, string $valor, string $field, string $valor2)
     {
         return $this->{$table}->find("{$field2} ={$valor} AND {$field} = {$valor2}")->count();
+    }
+
+    public function countCompanyVarTwo(string $table,string $field2, string $valor, string $field, string $valor2, string $field3, string $valor3)
+    {
+        return $this->{$table}->find("{$field2} ={$valor} AND {$field} = {$valor2} AND {$field3} = {$valor3}")->count();
     }
 
     public function countCompanyDay(string $table,string $field, string $valor , string $data)

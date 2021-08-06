@@ -37,6 +37,7 @@
                             <th>Cliente</th>
                             <th style="width: 150px !important;">Telefone</th>
                             <th style="width: 100px !important;">Pedidos</th>
+                            <th style="width: 100px !important;">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +54,9 @@
                             <td>
                                 <p class="text-muted">{{ m.pedidos }}</p>
                             </td>
+                            <td>
+                                <button onclick="verPedidos({{ user.id }})" class="btn btn-outline-success"><i class="simple-icon-eye"></i></button>
+                            </td>
                         </tr>
                         {% endif %}
                       {% endfor %}
@@ -68,4 +72,5 @@
         {% endif %}
     </div>
 </div>
+{% include 'partials/modalVer.twig.php'  %}
 {% endblock %}

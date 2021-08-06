@@ -240,6 +240,8 @@ $router->get('/{linkSite}/admin/caixa/relatorio', 'AdminDashboard:caixaLista');
 $router->get('/{linkSite}/admin/caixa/dia/{id}', 'AdminDashboard:caixaDados');
 
 $router->get('/{linkSite}/admin/clientes/relatorio', 'AdminDashboard:clienteLista');
+$router->get('/{linkSite}/admin/clientes/relatorio/{id}', 'AdminDashboard:clienteListaPedidos');
+
 
 $router->get('/{linkSite}/admin/avaliacao', 'AdminRating:index');
 $router->get('/{linkSite}/admin/docs', 'AdminGeral:index');

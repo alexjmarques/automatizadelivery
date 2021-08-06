@@ -204,45 +204,6 @@ if($rcat){
         ]);
     }
 
-
-    public function clienteLista($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
-        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        $countCaixa = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
-
-
-        if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-        }
-
-        $totalPedidos = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
-
-        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
-        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 3);
-        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
-        $pager = new \CoffeeCode\Paginator\Paginator();
-        $pager->pager((int)$count, 30, $page);
-        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'pedidos DESC');
-
-        $this->load('_admin/dashboard/clienteLista', [
-            'paginacao' => $pager->render('mt-4 pagin'),
-            'planoAtivo' => $planoAtivo,
-            'totalPedidos' => $totalPedidos,
-            'moeda' => $moeda,
-            'usuarios' => $usuarios,
-            'retorno' => $retorno,
-            'empresa' => $empresa,
-            'trans' => $this->trans,
-            'usuarioLogado' => $usuarioLogado,
-            'isLogin' => $this->sessao->getUser(),
-            'caixa' => $caixa->status
-        ]);
-    }
-
     public function caixaDados($data)
     {
 
@@ -358,6 +319,109 @@ if($rcat){
             'planoAtivo' => $planoAtivo,
             'trans' => $this->trans,
             'empresa' => $empresa,
+        ]);
+    }
+
+    /**
+     * Relatorio de clientes
+     */
+
+    public function clienteLista($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $countCaixa = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
+
+
+        if ($this->sessao->getUser()) {
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+        }
+
+        $totalPedidos = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
+
+        $usuarios = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
+        $count = $this->acoes->countsTwo('usuariosEmpresa', 'id_empresa', $empresa->id, 'nivel', 3);
+        $page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+        $pager = new \CoffeeCode\Paginator\Paginator();
+        $pager->pager((int)$count, 30, $page);
+        $retorno = $this->acoes->pagination('usuariosEmpresa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'pedidos DESC');
+
+        $this->load('_admin/dashboard/clienteLista', [
+            'paginacao' => $pager->render('mt-4 pagin'),
+            'planoAtivo' => $planoAtivo,
+            'totalPedidos' => $totalPedidos,
+            'moeda' => $moeda,
+            'usuarios' => $usuarios,
+            'retorno' => $retorno,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'caixa' => $caixa->status
+        ]);
+    }
+
+    public function clienteListaPedidos($data)
+    {
+
+        $cliente = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+
+        if ($this->sessao->getUser()) {
+            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getNivel() == 3) {
+                redirect(BASE . $empresa->link_site);
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $totalPedidos = $this->acoes->countCompanyVar('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+        $totalEntregas = $this->acoes->countCompanyVarTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 4);
+        $totalCancelados = $this->acoes->countCompanyVarTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 6);
+        $totalRecusado = $this->acoes->countCompanyVarTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 5);
+
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $pedidos = $this->acoes->getByFieldTwoAll('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
+        $pedidosFeito = $this->acoes->counts('carrinhoPedidos', 'id_cliente', $cliente->id);
+        $status = $this->acoes->getFind('status');
+        $tipoPagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
+        $tipoDelivery = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
+        
+        $totasVendas = $this->acoes->sumFiels('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id,'total_pago');
+        $totalFinal = $this->acoes->sumFielsTreeM('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 5, 'total_pago');
+        $pedidosUltimo = $this->acoes->limitTwoOrder('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        $this->load('_admin/dashboard/inc/pedidos', [
+            'pedidosFeito' => $pedidosFeito,
+            'pedidosUltimo' => $pedidosUltimo,
+            'moeda' => $moeda,
+            'tipoPagamento' => $tipoPagamento,
+            'tipoDelivery' => $tipoDelivery,
+            'pedidos' => $pedidos,
+            'status' => $status,
+            'totalPedidos' => $totalPedidos,
+            'totalEntregas' => $totalEntregas,
+            'totalRecusado' => $totalRecusado,
+            'totalCancelados' => $totalCancelados,
+            'vendas' => $totasVendas,
+            'totalFinal' => $totalFinal,
+            'cliente' => $cliente,
+            'empresa' => $empresa,
+            'trans' => $this->trans,
+            'planoAtivo' => $planoAtivo,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'caixa' => $caixa->status
         ]);
     }
 }

@@ -1754,6 +1754,12 @@ function produtoPizzaModal(tamanho) {
     })
 }
 
+function verPedidos(id) {
+    $.get(`/${link_site}/admin/clientes/relatorio/${id}`, function(dd) {
+        $("#modalVer").modal("show");
+        $("#verItem").html(dd);
+    })
+}
 
 function verEndereco(id) {
     //$("#modProdutoCarrinho").on("click", function () {
