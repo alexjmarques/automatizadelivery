@@ -5744,5 +5744,6 @@ h5.full-width.pb-0.bold {
 
 #customers .linhaTop th {
     font-size: 16px;
+    text-transform: uppercase;
     background-color: #880a1f !important;
 }
