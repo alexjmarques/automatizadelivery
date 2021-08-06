@@ -34,7 +34,7 @@
                                 <p class="list-item-heading"><a href="{{BASE}}{{empresa.link_site}}/admin/caixa/dia/{{ c[':id }}">{{ c[':data_inicio']|date('d/m/Y') }}</a></p>
                                 </td>
                                 <td>
-                                    <a href="{{BASE}}{{empresa.link_site}}/admin/caixa/dia/{{ c[':id }}" class="btn btn-outline-success mb-1" ><i class="simple-icon-eye"></i> Visualizar</a>
+                                    <a href="{{BASE}}{{empresa.link_site}}/admin/caixa/dia/{{ c[':id }}" class="btn btn-outline-success mb-1" ><i class="simple-icon-eye"></i></a>
                                 </td>
                             </tr>
                             {% endif %}
