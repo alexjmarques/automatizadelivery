@@ -91,8 +91,8 @@
                                 <th style="width: 150px !important;">Pagamento</th>
                                 <th style="width: 150px !important;">Status</th>
                                 <th style="width: 200px !important;">Valor Pago</th>
-                                <th style="width: 120px !important;">Custo com Entrega</th>
-                                <th style="width: 200px !important;">Ganho total</th>
+                                <th style="width: 120px !important;">Entregas</th>
+                                <th style="width: 200px !important;">Ganho Total</th>
                             </tr>
                         </thead>
                         <tbody>
