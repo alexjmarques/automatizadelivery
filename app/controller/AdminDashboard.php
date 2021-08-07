@@ -204,12 +204,15 @@ if($rcat){
         ]);
     }
 
+    /**
+     * Relatorio das vendas
+     */
     public function caixaDados($data)
     {
-
         $empresaCaixa = $this->acoes->getByField('empresaCaixa', 'id', $data['id']);
         //dd($empresaCaixa);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
@@ -247,6 +250,7 @@ if($rcat){
         $this->load('_admin/dashboard/caixaDados', [
             'entregas' => $totasEntregas,
             'moeda' => $moeda,
+            'delivery' => $delivery,
             'tipoPagamento' => $tipoPagamento,
             'tipoDelivery' => $tipoDelivery,
             'pedidos' => $pedidos,
@@ -366,7 +370,6 @@ if($rcat){
 
     public function clienteListaPedidos($data)
     {
-
         $cliente = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);

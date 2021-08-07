@@ -87,6 +87,7 @@
                     <table id="customers" class="data-table">
                         <thead class="linhaTop">
                             <tr>
+                                
                                 <th>Numero Pedido</th>
                                 <th style="width: 150px !important;">Frete</th>
                                 <th style="width: 150px !important;">Pagamento</th>

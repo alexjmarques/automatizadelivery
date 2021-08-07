@@ -5743,6 +5743,11 @@ h5.full-width.pb-0.bold {
     font-size: 14px;
 }
 
+#customers .linhaTop.linhaFooter th {
+    background-color: rgb(235, 235, 235) !important;
+    color: #000;
+}
+
 #customers .linhaTop th {
     font-size: 15px;
     background-color: #880a1f !important;

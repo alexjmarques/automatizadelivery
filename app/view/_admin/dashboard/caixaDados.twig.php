@@ -17,7 +17,6 @@
             </ol>
         </nav>
         <div class="separator mb-5"></div>
-
     </div>
     <div class="row">
         <div class="col-lg-4">
@@ -144,7 +143,7 @@
 
                                 <td class="text-right">
                                     {% if ped.tipo_frete == 2 %}
-                                    <p class="text-danger">{{moeda.simbolo}} {{ ped.valor_frete|number_format(2, ',',
+                                    <p class="text-danger">{{moeda.simbolo}} {{ (ped.valor_frete - delivery.taxa_entrega_motoboy)|number_format(2, ',',
                                         '.') }}</p>
                                     {% else %}
                                         ----
@@ -153,10 +152,9 @@
 
                                 <td class="text-right">
                                     <p class="text-success">
-
                                         {% if ped.status == 5 %}
                                             {% if ped.tipo_frete == 2 %}
-                                            <strong>- {{moeda.simbolo}} {{ ped.valor_frete|number_format(2, ',',
+                                            <strong>- {{moeda.simbolo}} {{ (ped.valor_frete - delivery.taxa_entrega_motoboy)|number_format(2, ',',
                                             '.') }}</strong>
                                             {% else %}
                                             ----
