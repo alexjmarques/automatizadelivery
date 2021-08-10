@@ -322,17 +322,17 @@ class AdminProdutos extends Controller
 
     public function insert($data)
     {
-        $adicionalSt = $_POST['adicional'];
+        $adicionalSt = $data['adicional'];
         if ($adicionalSt != null) {
             $adicionalSelecionados = implode(',', $adicionalSt);
         }
 
-        $saborSt = $_POST['sabor'];
+        $saborSt = $data['sabores'];
         if ($saborSt != null) {
             $saborSelecionados = implode(',', $saborSt);
         }
 
-        $diasDD = $_POST['dias_disponiveis'];
+        $diasDD = $data['dias_disponiveis'];
         if ($diasDD != null) {
             $dias_disponiveis = implode(',', $diasDD);
         }
@@ -407,19 +407,17 @@ class AdminProdutos extends Controller
 
     public function update($data)
     {
-        //dd($data);
-
-        $adicionalSt = $_POST['adicional'];
+        $adicionalSt = $data['adicional'];
         if ($adicionalSt != null) {
             $adicionalSelecionados = implode(',', $adicionalSt);
         }
 
-        $saborSt = $_POST['sabor'];
+        $saborSt = $data['sabores'];
         if ($saborSt != null) {
             $saborSelecionados = implode(',', $saborSt);
         }
 
-        $diasDD = $_POST['dias_disponiveis'];
+        $diasDD = $data['dias_disponiveis'];
         if ($diasDD != null) {
             $dias_disponiveis = implode(',', $diasDD);
         }
