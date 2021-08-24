@@ -45,6 +45,9 @@ class AdminConfiguracoesController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -55,11 +58,13 @@ class AdminConfiguracoesController extends Controller
         $diaSelecao = $this->acoes->getFind('dias');
 
         if ($this->sessao->getUser()) {
+            if ($this->sessao->getUser() != 'undefined') {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() == 3) {
                 redirect(BASE . $empresa->link_site);
             }
+        }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
@@ -71,6 +76,9 @@ class AdminConfiguracoesController extends Controller
             'dias' => $diaSelecao,
             'planoAtivo' => $planoAtivo,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -82,11 +90,13 @@ class AdminConfiguracoesController extends Controller
 
     public function update($data)
     {
-        //dd($data);
         $nf_paulista = $data['switch'] ? $data['switch'] : 0;
         $diasSelecionados = $_POST['dias'] ? implode(',', $_POST['dias']) : null;
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $retorno = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
 
         $files = $_FILES;
@@ -100,7 +110,7 @@ class AdminConfiguracoesController extends Controller
             } catch (\Exception $e) {
                 echo "<p>(!) {$e->getMessage()}</p>";
             }
-        }else{
+        } else {
             $capa = $data['imagemNomeCapa'];
         }
 
@@ -115,24 +125,24 @@ class AdminConfiguracoesController extends Controller
         $valor->email_contato = $data['email_contato'];
         $valor->nf_paulista = $nf_paulista;
         $valor->save();
-        
 
-        if($valor->id > 0){
 
-        $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
-        $valorEnd->cep = $data['cep_end'];
-        $valorEnd->rua = $data['rua_end'];
-        $valorEnd->numero = $data['numero_end'];
-        $valorEnd->complemento = $data['complemento_end'];
-        $valorEnd->bairro = $data['bairro_end'];
-        $valorEnd->cidade = $data['cidade_end'];
-        $valorEnd->estado = $data['estado_end'];
-        $valorEnd->save();
+        if ($valor->id > 0) {
 
-        //dd($valorEnd);
-        header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'code' => 2,  'url' => 'admin/conf/e',]);
-        exit($json);
+            $valorEnd = (new EmpresaEnderecos())->findById($retorno->id);
+            $valorEnd->cep = $data['cep_end'];
+            $valorEnd->rua = $data['rua_end'];
+            $valorEnd->numero = $data['numero_end'];
+            $valorEnd->complemento = $data['complemento_end'];
+            $valorEnd->bairro = $data['bairro_end'];
+            $valorEnd->cidade = $data['cidade_end'];
+            $valorEnd->estado = $data['estado_end'];
+            $valorEnd->save();
+
+            //dd($valorEnd);
+            header('Content-Type: application/json');
+            $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Configurações da empresa atualizada com sucesso', 'error' => 'Não foi posível atualizar as informações da sua empresa', 'code' => 2,  'url' => 'admin/conf/e',]);
+            exit($json);
         }
     }
 }

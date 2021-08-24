@@ -8,15 +8,16 @@
 <div class="mb-3 osahan-cart-item osahan-home-page">
                     <div class="card">
                         <div class="card-body">
-                        <table class="data-table data-table-simple responsive" >
+
+                        <table id="customers" class="data-table" >
                                 <thead class="linhaTop">
                                     <tr>
                                         <th style="width: 120px;">Número Pedido</th>
                                         <th style="width: 120px;">Data e Hora</th>
                                         <th style="width: 100px !important;">Pagamento</th>
-                                        <th style="width: 100px !important;">Valor</th>
-                                        <th style="width: 100px !important;">Status</th>
-                                        <th style="width: 90px;">Ações</th>
+                                        <th class="text-right" style="width: 100px !important;">Valor</th>
+                                        <th class="text-right" style="width: 100px !important;">Status</th>
+                                        <th style="width: 40px;">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -46,7 +47,7 @@
                                             {{ moeda.simbolo }} {{ p.total_pago|number_format(2, ',', '.') }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-center">
+                                            <p class="text-right">
                                             {% for stats in status %}
                                         {% if p.status == stats.id %}
                                             {% if p.tipo_frete == 2 %}
@@ -59,7 +60,7 @@
                                             </p>
                                         </td>
                                         <td>
-                                        <a data-toggle="modal" data-target="#modPedido" onclick="produtosModal({{p.id}}, {{p.numero_pedido}} )" class="btn btn-outline-success" ata-toggle="modal" data-target="#rightModal">Ver Mais</a>
+                                        <button data-toggle="modal" data-target="#modPedido" onclick="produtosModal({{p.id}}, {{p.numero_pedido}} )" class="btn btn-outline-success" data-target="#rightModal"><i class="simple-icon-eye"></i></button>
                                         </td>
                                     </tr>
                                 {% endfor %}

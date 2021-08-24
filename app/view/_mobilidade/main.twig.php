@@ -74,7 +74,7 @@
                      <div class="form-group col-md-7">
                         <div class="card-body pt-3">
                            <ul class="list-unstyled mb-4">
-                              <li class="text-successs"><i class="fa fa-check"></i> Plano Inicial R$ 59,90</li>
+                              <li class="text-successs"><i class="fa fa-check"></i> Necessário Plano Inicial</li>
                               <li class="text-successs"><i class="fa fa-check"></i> 1 Bicicleta Eletrica R$ 289,00</li>
                               <li class="text-successs"><i class="fa fa-check"></i> Seguro R$ 19,90</li>
                            </ul>
@@ -83,9 +83,9 @@
 
                      <div class="form-group col-md-5">
                         <div class="elementor-price-table__price price_ull">
-                           <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">368</span>
+                           <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">308</span>
                            <div class="elementor-price-table__after-price">
-                              <span class="elementor-price-table__fractional-part">80</span>
+                              <span class="elementor-price-table__fractional-part">90</span>
                            </div>
                            <span class="elementor-price-table__period elementor-typo-excluded text-right pr-5 pt-2">Custo Mensal</span>
                         </div>
@@ -108,7 +108,7 @@
                      <div class="form-group col-md-7">
                         <div class="card-body pt-3">
                            <ul class="list-unstyled mb-4">
-                              <li class="text-successs"><i class="fa fa-check"></i> Plano Inicial R$ 129,90</li>
+                              <li class="text-successs"><i class="fa fa-check"></i> Necessário Plano Inicial</li>
                               <li class="text-successs"><i class="fa fa-check"></i> 2 Bicicletas Eletrica R$ 558,00</li>
                               <li class="text-successs"><i class="fa fa-check"></i> Seguro R$ 19,90 (por bicicleta)</li>
                            </ul>
@@ -117,9 +117,9 @@
 
                      <div class="form-group col-md-5">
                         <div class="elementor-price-table__price price_ull">
-                           <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">726</span>
+                           <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">577</span>
                            <div class="elementor-price-table__after-price">
-                              <span class="elementor-price-table__fractional-part">80</span>
+                              <span class="elementor-price-table__fractional-part">90</span>
                            </div>
                            <span class="elementor-price-table__period elementor-typo-excluded text-right pr-5 pt-2">Custo Mensal</span>
                         </div>

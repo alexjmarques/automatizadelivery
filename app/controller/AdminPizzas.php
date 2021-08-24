@@ -45,16 +45,21 @@ class AdminProdutos extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -77,6 +82,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -92,25 +100,30 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function novo($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
         $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
-        
+
         $categoriaLista = $this->acoes->getByFieldAll('categorias', 'id_empresa', $empresa->id);
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $diaSelecao = $this->acoes->getFind('dias');
-        
+
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -127,6 +140,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'qtdSabores' => $qtdSabores,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -143,6 +159,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function editar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $qtdProdutosAdicionais = $this->acoes->counts('produtoAdicional', 'id_empresa', $empresa->id);
         $qtdSabores = $this->acoes->counts('produtoSabor', 'id_empresa', $empresa->id);
         $retorno = $this->acoes->getByField('produtos', 'id', $data['id']);
@@ -151,17 +170,19 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $produtosAdicionais = $this->acoes->getByFieldAll('produtoAdicional', 'id_empresa', $empresa->id);
         $produtosSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
         $diaSelecao = $this->acoes->getFind('dias');
-        
+
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -179,6 +200,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'qtdSabores' => $qtdSabores,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -233,7 +257,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
         if ($data['valor_promocional']) {
             $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
-        }else{
+        } else {
             $valor_promocional = 0;
         }
 
@@ -270,7 +294,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valorNCat->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Produto','code' => 2 ,  'url' => 'admin/cardapio',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Produto cadastrado com sucesso', 'error' => 'Não foi possível cadastrar o Produto', 'code' => 2,  'url' => 'admin/cardapio',]);
         exit($json);
     }
 
@@ -294,7 +318,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
         if ($data['valor_promocional']) {
             $valor_promocional = $this->geral->brl2decimal($data['valor_promocional']);
-        }else{
+        } else {
             $valor_promocional = 0;
         }
 
@@ -342,7 +366,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         }
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto','code' => 2 ,  'url' => 'admin/cardapio',]);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Produto atualizado com sucesso', 'error' => 'Não foi possível atualizar o produto', 'code' => 2,  'url' => 'admin/cardapio',]);
         exit($json);
     }
 
@@ -359,6 +383,6 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $valorCat->id_empresa = $data['id_empresa'];
         $valorCat->save();
 
-        redirect(BASE . "{$data['linkSite']}/admin/cardapio");
+        redirect(BASE . "{$data['estado']}/{$data['linkSite']}/admin/cardapio");
     }
 }

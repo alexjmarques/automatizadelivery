@@ -79,9 +79,11 @@ class EmpresaCadastroController extends Controller
     public function pagamento($data)
     {
         if ($this->sessao->getUser()) {
+            if ($this->sessao->getUser() != 'undefined') {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $empresa = $this->acoes->getByField('empresa', 'email_contato', $this->sessao->getEmail());
             $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+            }
         } else {
             redirect(BASE);
         }
@@ -308,6 +310,9 @@ class EmpresaCadastroController extends Controller
     {
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         if($planoAtivo > 0){

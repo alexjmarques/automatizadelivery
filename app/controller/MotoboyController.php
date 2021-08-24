@@ -58,35 +58,40 @@ class MotoboyController extends Controller
     {
         //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         //dd($resultDelivery);
 
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         if ($this->sessao->getUser()) {
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-            $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
+                $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
 
 
-            $entregasFeitas = $this->acoes->sumFielsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'status', 4, 'valor_frete');
+                $entregasFeitas = $this->acoes->sumFielsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'status', 4, 'valor_frete');
 
-            $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
-            $totalMotoboyDia = $this->acoes->sumFielsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4, 'valor_frete');
+                $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+                $totalMotoboyDia = $this->acoes->sumFielsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4, 'valor_frete');
 
-            //dd($resultEntregasDiaCont);
+                //dd($resultEntregasDiaCont);
 
-            $entregasFeitasDia = $totalMotoboyDia->total - ($resultEntregasDiaCont * $resultDelivery->taxa_entrega_motoboy);
+                $entregasFeitasDia = $totalMotoboyDia->total - ($resultEntregasDiaCont * $resultDelivery->taxa_entrega_motoboy);
 
-            //dd($entregasFeitasDia);
+                //dd($entregasFeitasDia);
 
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 0) {
-                redirect(BASE . "{$empresa->link_site}/admin");
-            }
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 0) {
+                    redirect(BASE . "{$empresa->link_site}/admin");
+                }
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/motoboy/login");
@@ -94,6 +99,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
         $this->load('_motoboy/relatorio/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'entregasFeitas' => $entregasFeitas,
             'entregasFeitasDia' => $entregasFeitasDia,
@@ -103,6 +111,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'mesAtual' => date('m'),
             'usuarioAtivo' => $resulUsuario,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
@@ -115,15 +126,23 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function login($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            redirect(BASE . "{$empresa->link_site}/motoboy");
+            if ($this->sessao->getUser() != 'undefined') {
+                redirect(BASE . "{$empresa->link_site}/motoboy");
+            }
         }
 
         $this->load('_motoboy/login/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
@@ -136,6 +155,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function loginValida($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $motoboy = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
         if ($motoboy) {
             if ($this->bcrypt->verify($data['senha'], $motoboy->senha)) {
@@ -145,7 +167,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                 $this->sessao->sessaoNew('nivel', $motoboy->nivel);
 
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $motoboy->id, 'resp' => 'login', 'mensagem' => 'Aguarde estamos redirecionando para a pagina inicial','code' => 2 ,  'url' => 'motoboy']);
+                $json = json_encode(['id' => $motoboy->id, 'resp' => 'login', 'mensagem' => 'Aguarde estamos redirecionando para a pagina inicial', 'code' => 2,  'url' => 'motoboy']);
                 exit($json);
             } else {
                 header('Content-Type: application/json');
@@ -173,11 +195,17 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function cadastro($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/login/cadastro', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
@@ -190,6 +218,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function insert($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         $telefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
@@ -197,7 +228,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $nivel = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $telefone->id);
             if ($nivel->nivel == 1) {
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Número de telefone já cadastrado em nossa plataforma', 'error' => 'Número de telefone já cadastrado em nossa plataforma','code' => 2 ,  'url' => 'motoboy/login']);
+                $json = json_encode(['id' => 0, 'resp' => 'insert', 'mensagem' => 'Número de telefone já cadastrado em nossa plataforma', 'error' => 'Número de telefone já cadastrado em nossa plataforma', 'code' => 2,  'url' => 'motoboy/login']);
                 exit($json);
             } else {
                 $valorEmp = new UsuariosEmpresa();
@@ -234,7 +265,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $valorEmp->save();
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Conta criada com sucesso', 'error' => 'Erro ao criar sua conta','code' => 2 ,  'url' => 'motoboy/login']);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Conta criada com sucesso', 'error' => 'Erro ao criar sua conta', 'code' => 2,  'url' => 'motoboy/login']);
             exit($json);
         }
     }
@@ -243,13 +274,18 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function relatorioMes($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $dataEscolhida = $data['mes'];
@@ -271,6 +307,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'moeda' => $moeda,
             'dataEscolhida' => $dataEscolhida,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
@@ -283,15 +322,23 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function entregas($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
-            $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultPedidoQtd = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+            if ($this->sessao->getUser() != 'undefined') {
+                $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+                $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultPedidoQtd = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+            }
         }
         $this->load('_motoboy/pedidos/main', [
             'pedidosQtd' => $resultPedidoQtd,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $usuarioLogado,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
@@ -307,13 +354,21 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function pesquisarEntrega($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
 
         $this->load('_motoboy/pedidos/pesquisarEntrega', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
@@ -326,6 +381,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function getEntrega($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $resultCarrinho = $this->acoes->getByFieldAll('carrinho', 'id_empresa', $empresa->id);
 
@@ -337,12 +395,14 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $numero_pedido = $data['numero_pedido'];
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $pedidosQtd = $this->acoes->countsTwoNull('carrinhoPedidos', 'id_motoboy', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-            if ($numero_pedido != null) {
-                $resultVendas = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'numero_pedido', $numero_pedido);
-                $cliente = $this->acoes->getByField('usuarios', 'id', $resultVendas->id_cliente);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $pedidosQtd = $this->acoes->countsTwoNull('carrinhoPedidos', 'id_motoboy', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                if ($numero_pedido != null) {
+                    $resultVendas = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'numero_pedido', $numero_pedido);
+                    $cliente = $this->acoes->getByField('usuarios', 'id', $resultVendas->id_cliente);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/login");
@@ -350,7 +410,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
         $resulCaixa = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_motoboy/pedidos/pesquisarEntregaView', [
             'moeda' => $moeda,
@@ -364,6 +424,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'caixa' => $caixa->status,
             'pedidosQtd' => $pedidosQtd,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
@@ -377,8 +440,11 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     {
         $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['pedido']);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $valor = (new CarrinhoPedidos())->findById($data['pedido']);
         $valor->status = 3;
@@ -404,8 +470,11 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function entregaListar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $status = $this->acoes->getFind('status');
         $resultTipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
@@ -414,30 +483,35 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $resultBuscaAll = $this->acoes->getByFieldAll('carrinhoEntregas', 'id_empresa', $empresa->id);
         $resultVendas = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'status', 3);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
-            $enderecos = $this->acoes->getFind('usuariosEnderecos');
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByFieldAll('usuarios', 'nivel', 3);
+                $enderecos = $this->acoes->getFind('usuariosEnderecos');
 
-            if ($usuarioLogado->nivel == 1) {
-                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-                $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+                if ($usuarioLogado->nivel == 1) {
+                    $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                    $resultEntregasDiaCont = $this->acoes->countsFour('carrinhoEntregas', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 4);
 
-                $this->load('_motoboy/pedidos/vendasEntregas', [
-                    'moeda' => $moeda,
-                    'usuario' => $resulUsuario,
-                    'status' => $status,
-                    'tipo_frete' => $resultTipo,
-                    'enderecos' => $enderecos,
-                    'tipo_pagamento' => $resultPagamento,
-                    'vendas' => $resultVendas,
-                    'pedidosQtd' => $resultEntregasDiaCont,
-                    'empresa' => $empresa,
-                    'usuarioAtivo' => $usuarioLogado,
-                    'trans' => $this->trans,
-                    'detect' => new Mobile_Detect(),
-                    'usuarioLogado' => $usuarioLogado,
-                    'isLogin' => $this->sessao->getUser(),
-                ]);
+                    $this->load('_motoboy/pedidos/vendasEntregas', [
+                        'moeda' => $moeda,
+                        'usuario' => $resulUsuario,
+                        'status' => $status,
+                        'tipo_frete' => $resultTipo,
+                        'enderecos' => $enderecos,
+                        'tipo_pagamento' => $resultPagamento,
+                        'vendas' => $resultVendas,
+                        'pedidosQtd' => $resultEntregasDiaCont,
+                        'empresa' => $empresa,
+                        'endEmp' => $endEmp,
+                        'funcionamento' => $funcionamento,
+                        'dias' => $dias,
+                        'usuarioAtivo' => $usuarioLogado,
+                        'trans' => $this->trans,
+                        'detect' => new Mobile_Detect(),
+                        'usuarioLogado' => $usuarioLogado,
+                        'isLogin' => $this->sessao->getUser(),
+                    ]);
+                }
             }
         }
     }
@@ -447,21 +521,29 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function numeroEntregaListar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($usuarioLogado->nivel == 1) {
-                $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($usuarioLogado->nivel == 1) {
+                    $resultCarrinhoQtd = $this->acoes->countsFour('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'id_caixa', $estabelecimento[0]->id, 'status', 3);
 
-                $this->load('_motoboy/pedidos/pedidoQtd', [
-                    'pedidosQtd' => $resultCarrinhoQtd,
-                    'empresa' => $empresa,
-                    'trans' => $this->trans,
-                    'detect' => new Mobile_Detect(),
-                    'isLogin' => $this->sessao->getUser(),
-                ]);
+                    $this->load('_motoboy/pedidos/pedidoQtd', [
+                        'pedidosQtd' => $resultCarrinhoQtd,
+                        'empresa' => $empresa,
+                        'endEmp' => $endEmp,
+                        'funcionamento' => $funcionamento,
+                        'dias' => $dias,
+                        'trans' => $this->trans,
+                        'detect' => new Mobile_Detect(),
+                        'isLogin' => $this->sessao->getUser(),
+                    ]);
+                }
             }
         }
     }
@@ -470,6 +552,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     {
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
 
         $pedido = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'numero_pedido', $data['numero_pedido']);
@@ -485,6 +570,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'usuario' => $usuario,
             'endereco' => $endereco,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
@@ -505,7 +593,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $entrega->save();
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Informamos ao estabelecimento o novo Status', 'error' => 'Não foi possivel informamos ao estabelecimento o novo Status! Tente novamente','code' => 2 ,  'url' => 'motoboy']);
+        $json = json_encode(['id' => $valor->id, 'resp' => 'update', 'mensagem' => 'Informamos ao estabelecimento o novo Status', 'error' => 'Não foi possivel informamos ao estabelecimento o novo Status! Tente novamente', 'code' => 2,  'url' => 'motoboy']);
         exit($json);
     }
 }

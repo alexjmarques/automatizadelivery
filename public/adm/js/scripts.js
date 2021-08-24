@@ -26,6 +26,7 @@ partes.forEach(function(parte) {
     datal[chave] = valor;
 });
 var link_site = $('body').attr('data-link_site');
+var estado_site = $('body').attr('data-estado_site');
 $('input.timepicker').timepicker({
     showInputs: false,
     showMeridian: false,
@@ -583,7 +584,7 @@ function customersProdutos() {
         success: function(dd) {
             //console.log(dd);
             if (parseInt(dd) === 0) {
-                $('#mostraCarrinhoItens').html('<div class="alert alert-info text-center">Adicione Produtos para continuar</div>');
+                $('#mostraCarrinhoItens').html('<div class="empty text-center"><i class="simple-icon-basket"></i><br/>Adicione Produtos para continuar</div>');
             } else {
                 $('#mostraCarrinhoItens').html(dd);
             }
@@ -607,7 +608,7 @@ function customersProdutosEditar() {
         success: function(dd) {
             //console.log(dd);
             if (parseInt(dd) === 0) {
-                $('#mostraCarrinhoItensEditar').html('<div class="alert alert-info text-center">Adicione Produtos para continuar</div>');
+                $('#mostraCarrinhoItensEditar').html('<div class="empty text-center"><i class="simple-icon-basket"></i><br/>Adicione Produtos para continuar</div>');
             } else {
                 $('#mostraCarrinhoItensEditar').html(dd);
             }
@@ -784,8 +785,7 @@ function mudarStatus(id, status, id_caixa) {
                 if (dd == 'Status alterado com sucesso') {
                     atualizar();
                     $('#close-modal').trigger('click');
-
-                    varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimirPDF/${id}`, 'popup')
+                    //varWindow = window.open(`https://automatizadelivery.com.br/${link_site}/admin/pedido/imprimirPDF/${id}`, 'popup')
                 } else {}
 
             },
@@ -1820,13 +1820,22 @@ $("#abrirCarrinhoModal").on('click', function() {
 $('#trocoMod, #mp, #entrega_end').hide();
 
 $('#tipo_pagamento').on('change', function() {
+    $('#tipo_pagamento').css("border", "1px solid #ced4da");
     if (parseInt($(this).val()) === 1) {
         $('#trocoMod').show();
         $('.btnValida').hide();
+        $('.tipo_pagamento').hide();
     } else {
         $('#trocoMod').hide();
         $('#trocoCliente').hide();
         $('.btnValida').show();
+        $('.tipo_pagamento').show();
+    }
+
+    if (parseInt($(this).val()) === 7) {
+        $('#dinMod').show();
+    } else {
+        $('#dinMod').hide();
     }
 });
 

@@ -4,22 +4,22 @@
 {% block head %}
 {% endblock %}
 <div class="homepage-header">
-      <div class="overlay"></div>
-{% include 'partials/desktop/menuTop.twig.php' %}
-<section class="pt-5 pb-5 homepage-search-block position-relative">
-   <div class="banner-overlay"></div>
-   <div class="container">
-      <div class="row d-flex align-items-center py-lg-4 pt-5">
-         <div class="navbar-nav col-lg-6 mx-auto">
-            <div class="homepage-search-title text-center pb-5">
-               <h1 class="mb-2 display-4 text-shadow text-white font-weight-normal"><span class="font-weight-bold">Sistema de Gestão de Pedidos</span></h1>
-               <h5 class="mb-5 text-shadow text-white-50 font-weight-normal">Organize a operação do seu estabelecimento flexibilizando seu tempo, a sua gestão e o seu negócio!</h5>
-               <a href="#inicio" class="btn btn-success btn-lg anchor">Saiba mais</a>
+   <div class="overlay"></div>
+   {% include 'partials/desktop/menuTop.twig.php' %}
+   <section class="pt-5 pb-5 homepage-search-block position-relative">
+      <div class="banner-overlay"></div>
+      <div class="container">
+         <div class="row d-flex align-items-center py-lg-4 pt-5">
+            <div class="navbar-nav col-lg-6 mx-auto">
+               <div class="homepage-search-title text-center pb-5">
+                  <h1 class="mb-2 display-4 text-shadow text-white font-weight-normal"><span class="font-weight-bold">Sistema de Gestão de Pedidos</span></h1>
+                  <h5 class="mb-5 text-shadow text-white-50 font-weight-normal">Organize a operação do seu estabelecimento flexibilizando seu tempo, a sua gestão e o seu negócio!</h5>
+                  <a href="#inicio" class="btn btn-success btn-lg anchor">Saiba mais</a>
+               </div>
             </div>
          </div>
       </div>
-   </div>
-</section>
+   </section>
 </div>
 <section class="section pt-5 pb-5 bg-white homepage-add-section">
    <div class="container">
@@ -30,11 +30,11 @@
                <div class="bg-white shadow-sm rounded align-items-center p-1 mb-4 flex-column">
 
                   <div class="col-md-4 p-1 float-left">
-                  {% if emp.logo is null %}
-                  <img src="{{BASE}}uploads/no-foto.png" class="img-float">
-                  {% else %}
+                     {% if emp.logo is null %}
+                     <img src="{{BASE}}uploads/no-foto.png" class="img-float">
+                     {% else %}
                      <img src="{{BASE}}uploads/{{ emp.logo }}" class="img-float">
-                  {% endif %}
+                     {% endif %}
                   </div>
                   <div class="col-md-8 py-2 float-left pl-0">
                      <p class="mb-0 text-black font-weight-bold size18">{{ emp.nome_fantasia }}</p>
@@ -44,7 +44,7 @@
                      {% endif %}
                      {% endfor %} #}
                      <p class="small mb-1 text-dark">
-                     Telefone: ({{ emp.telefone[:2] }}) {{ emp.telefone|slice(2, 5) }}-{{ emp.telefone|slice(7, 9) }}
+                        Telefone: ({{ emp.telefone[:2] }}) {{ emp.telefone|slice(2, 5) }}-{{ emp.telefone|slice(7, 9) }}
                      </p>
 
                   </div>
@@ -152,7 +152,7 @@
       <div class="row">
 
          <div class="pricing col-md-12 mb-3">
-         <div class="col-md-3 float-left">
+            <div class="col-md-3 float-left">
                <div class="card card-pricing text-center px-3 mb-4 ">
                   <div class="header_plan">
                      <h2>Grátis</h2>
@@ -160,16 +160,17 @@
                   </div>
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
-                         <span class="elementor-price-table__integer-part text-success">Grátis</span>
-                        
+                        <span class="elementor-price-table__integer-part text-success">Grátis</span>
+
                      </div>
                   </div>
                   <div class="card-body pt-0">
                      <ul class="list-unstyled mb-4">
                         <li>50 Pedidos por mês</li>
+                        <li>até 5 Produtos</li>
                         <li>Hospedagem e SSL</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/gratis" rel="nofollow">Cadastrar</a>
+                     {# <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/gratis" rel="nofollow">Cadastrar</a> #}
                   </div>
                </div>
             </div>
@@ -183,20 +184,20 @@
                   </div>
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
-                        <div class="elementor-price-table__original-price elementor-typo-excluded">R$80</div>
-                        <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">59</span>
+                        <span class="elementor-price-table__integer-part"></span>
                         <div class="elementor-price-table__after-price">
-                           <span class="elementor-price-table__fractional-part">90</span>
+                           <span class="elementor-price-table__fractional-part p-1 size18 text-uppercase">consulte valores</span>
                         </div>
-                        <span class="elementor-price-table__period elementor-typo-excluded">Mensal</span>
+                        <span class="elementor-price-table__period elementor-typo-excluded">Plano Mensal</span>
                      </div>
                   </div>
                   <div class="card-body pt-0">
                      <ul class="list-unstyled mb-4">
                         <li>200 Pedidos por mês</li>
+                        <li>até 30 Produtos</li>
                         <li>Hospedagem e SSL</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/inicial" rel="nofollow">Tenho Interesse</a>
+                     {# <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/inicial" rel="nofollow">Tenho Interesse</a> #}
                   </div>
                </div>
             </div>
@@ -210,22 +211,22 @@
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
                         {# <div class="elementor-price-table__original-price elementor-typo-excluded">R$200</div> #}
-                        <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">199</span>
                         <div class="elementor-price-table__after-price">
-                           <span class="elementor-price-table__fractional-part">90</span>
+                           <span class="elementor-price-table__fractional-part p-1 size18 text-uppercase">consulte valores</span>
                         </div>
 
 
-                        <span class="elementor-price-table__period elementor-typo-excluded">Mensal</span>
+                        <span class="elementor-price-table__period elementor-typo-excluded">Plano Mensal</span>
                      </div>
                   </div>
                   <div class="card-body pt-0">
                      <ul class="list-unstyled mb-4">
                         <li>1000 Pedidos por mês</li>
+                        <li>até 50 Produtos</li>
                         <li>Hospedagem e SSL</li>
                         <li>Suporte Profissional</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md gold" href="{{BASE}}cadastro/empresa/intermediario" rel="nofollow">Tenho Interesse</a>
+                     {# <a class="elementor-price-table__button elementor-button elementor-size-md gold" href="{{BASE}}cadastro/empresa/intermediario" rel="nofollow">Tenho Interesse</a> #}
                   </div>
                </div>
             </div>
@@ -239,38 +240,35 @@
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
                         {# <div class="elementor-price-table__original-price elementor-typo-excluded">R$300</div> #}
-                        <span class="elementor-price-table__currency elementor-currency--before">R$</span> <span class="elementor-price-table__integer-part">299</span>
                         <div class="elementor-price-table__after-price">
-                           <span class="elementor-price-table__fractional-part">90</span>
+                           <span class="elementor-price-table__fractional-part p-1 size18 text-uppercase">consulte valores</span>
                         </div>
-                        <span class="elementor-price-table__period elementor-typo-excluded">Mensal</span>
+                        <span class="elementor-price-table__period elementor-typo-excluded">Plano Mensal</span>
                      </div>
                   </div>
                   <div class="card-body pt-0">
                      <ul class="list-unstyled mb-4">
                         <li>Pedidos Ilimitados</li>
+                        <li>Produtos Ilimitados</li>
                         <li>Hospedagem e SSL</li>
                         <li>Chat e Avaliação</li>
                         <li>Suporte Profissional</li>
                      </ul>
-                     <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/essencial" rel="nofollow">Tenho Interesse</a>
+                     {# <a class="elementor-price-table__button elementor-button elementor-size-md" href="{{BASE}}cadastro/empresa/essencial" rel="nofollow">Tenho Interesse</a> #}
                   </div>
                </div>
             </div>
-
          </div>
-         
       </div>
       <div class="container">
          <div class="col-sm-12 block-center bg-white text-center p-5 rounded">
-                  <h5 class="m-0 mb-2">Procurando por uma solução completa?</h5>
-                  <p class="mb-4">Pedidos Ilimitados, Hospedagem e SSL, Chat e Avaliação, Suporte Profissional, <br/>Integração com Marketplaces e muito mais</p>
-                  <a href="https://api.whatsapp.com/send?phone=11980309212&text=Ol%C3%A1!%20Tenho%20Interesse%20na%20Solu%C3%A7%C3%A3o%20Completa" class="elementor-price-table__button elementor-button elementor-size-md gold" target="_blank">Consulte <i class="fa fa-chevron-circle-right"></i></a>
-               </div>
-</div>
+            <h5 class="m-0 mb-2">Entre em contato e saiba mais?</h5>
+            <p class="mb-4">Para mais informações, saber de valores e qual melhor plano entre contato com nossa equipe Master. </p>
+            <a href="/institucional/tenho-interesse" class="elementor-price-table__button elementor-button elementor-size-md gold" target="_blank">Tenho Interesse <i class="fa fa-chevron-circle-right"></i></a>
+         </div>
+      </div>
    </div>
 </section>
-
 
 <section class="section pt-5 pb-5 products-section" id="recursos">
    <div class="container">
@@ -472,26 +470,26 @@
 </section>
 <section class="section pt-0 pb-0 bg-white becomemember-section border-bottom">
    <div class="row ml-0 mr-0 overflow-hidden">
-   <div class="container">
-   
-      <div class="col-sm-6 float-left pt-5 pb-5">
-      <div class="section-header text-left white-text">
-         <h2>Pensando em Mobilidade</h2>
-         <p>Automatiza Delivery e E-Moving Mobilidade Urbana</p>
-         <span class="line"></span>
-      </div>
-         <p>Em parceria com a E-Moving lançamos o plano Delivery mobilidade, com ele seu estabelecimento além de contar com nosso sitema de gestão conta também com Bicicletas elétricas para fazer as entregas! </p>
+      <div class="container">
 
-         <p>Conheça mas da <a href="https://e-moving.com.br/" target="_blank">E-Moving Mobilidade Urbana</a></p>
-         <img src="{{BASE}}img/logo-e-moving-escuro.svg" class="float-left mt-4 mb-4" alt="E-Moving Mobilidade Urbana" width="200px">
-<div class="clearfix"></div>
-         <a href="{{BASE}}mobilidade/nossos-planos" class="btn btn-success btn-lg mt-3 float-left">Quero Mobilidade <i class="fa fa-chevron-circle-right"></i></a>
-      </div>
-      <div class="col-sm-6 float-left parallax-content">
-         <img src="{{BASE}}img/delivery2.jpg" class="desk" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
-         <img src="{{BASE}}img/delivery-bike.png" class="mobile" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
-      </div>
-      <!-- <div class="row">
+         <div class="col-sm-6 float-left pt-5 pb-5">
+            <div class="section-header text-left white-text">
+               <h2>Pensando em Mobilidade</h2>
+               <p>Automatiza Delivery e E-Moving Mobilidade Urbana</p>
+               <span class="line"></span>
+            </div>
+            <p>Em parceria com a E-Moving lançamos o plano Delivery mobilidade, com ele seu estabelecimento além de contar com nosso sitema de gestão conta também com Bicicletas elétricas para fazer as entregas! </p>
+
+            <p>Conheça mas da <a href="https://e-moving.com.br/" target="_blank">E-Moving Mobilidade Urbana</a></p>
+            <img src="{{BASE}}img/logo-e-moving-escuro.svg" class="float-left mt-4 mb-4" alt="E-Moving Mobilidade Urbana" width="200px">
+            <div class="clearfix"></div>
+            <a href="{{BASE}}mobilidade/nossos-planos" class="btn btn-success btn-lg mt-3 float-left">Quero Mobilidade <i class="fa fa-chevron-circle-right"></i></a>
+         </div>
+         <div class="col-sm-6 float-left parallax-content">
+            <img src="{{BASE}}img/delivery2.jpg" class="desk" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
+            <img src="{{BASE}}img/delivery-bike.png" class="mobile" alt="Automatiza Delivery e E-Moving Mobilidade Urbana">
+         </div>
+         <!-- <div class="row">
          <div class="col-sm-12 text-center">
             <a href="register.html" class="btn btn-success btn-lg">
                Create an Account <i class="fa fa-chevron-circle-right"></i>
@@ -499,7 +497,7 @@
          </div>
       </div> -->
 
-   </div>
+      </div>
    </div>
 </section>
 {% include 'partials/desktop/footer.twig.php' %}

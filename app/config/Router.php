@@ -41,7 +41,6 @@ require "../app/controller/AdminProdutoSabores.php";
 require "../app/controller/AdminFormasPagamento.php";
 require "../app/controller/AdminiFoodController.php";
 require "../app/controller/AdminUsuarioController.php";
-require "../app/controller/AdminUberEatsController.php";
 require "../app/controller/AdminProdutosAdicionais.php";
 require "../app/controller/CarrinhoPizzaController.php";
 require "../app/controller/EmpresaCadastroController.php";
@@ -63,6 +62,9 @@ $router->get('/', 'PagesController:index');
 $router->get('/institucional/{slug}', 'PagesController:paginas');
 $router->get('/institucional/contato', 'PagesController:contatoPage');
 $router->get('/institucional/contato/i', 'PagesController:contatoSend');
+
+$router->get('/institucional/tenho-interesse', 'PagesController:tenhoInteresse');
+
 
 $router->get('/cadastro/empresa', 'EmpresaCadastroController:index');
 $router->get('/cadastro/empresa/{plano}', 'EmpresaCadastroController:index');
@@ -271,6 +273,7 @@ $router->post('/{linkSite}/admin/iniciar-atendimento', 'AllController:iniciarAte
 $router->post('/{linkSite}/admin/finalizar-atendimento', 'AllController:finalizarAtendimento');
 $router->get('/{linkSite}/admin/pedidos', 'AdminPedidos:index');
 $router->get('/{linkSite}/admin/pedidos-finalizados', 'AdminPedidos:pedidosFinalizados');
+$router->get('/{linkSite}/admin/pedidos-andamento', 'AdminPedidos:pedidosAndamento');
 $router->get('/{linkSite}/admin/pedidos-cancelados', 'AdminPedidos:pedidosCancelados');
 $router->get('/{linkSite}/admin/todas-entregas', 'AdminPedidos:todasEntregas');
 
@@ -480,7 +483,6 @@ $router->post('/{linkSite}/admin/status/u/{id}', 'AdminStatus:update');
 
 
 
-$router->get('/admin/pedidos/ifood', 'AdminIfoodController:polling');
 $router->post('/{linkSite}/admin/sync/categoria/ifood', 'AdminIfoodController:syncCategory');
 $router->post('/{linkSite}/admin/sync/produto/ifood', 'AdminIfoodController:syncProduct');
 
@@ -491,9 +493,9 @@ $router->post('/{linkSite}/admin/conectar/ifood/final', 'AdminIfoodController:au
 
 $router->get('/{linkSite}/admin/ifoodtest', 'AdminIfoodController:ifoodTest');
 
-$router->get('/{linkSite}/admin/ubereats', 'AdminUberEatsController:index');
 $router->get('/{linkSite}/admin/click-entregas', 'AdminClickEntregasController:index');
 
+$router->get('/admin/pedidos/ifood', 'AdminIfoodController:polling');
 /**
  * Group Error
  * This monitors all Router errors. Are they: 400 Bad Request, 404 Not Found, 405 Method Not Allowed and 501 Not Implemented

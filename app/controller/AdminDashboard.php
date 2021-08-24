@@ -44,6 +44,9 @@ class AdminDashboard extends Controller
     {
         //dd($this->sessao->getNivel());
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -52,10 +55,12 @@ class AdminDashboard extends Controller
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -64,7 +69,6 @@ class AdminDashboard extends Controller
         /**
          * Contagem dos Itens da Empresa
          */
-
 
         $resultCategorias  = $this->acoes->countCompany('categorias', 'id_empresa', $empresa->id);
         $resultProdutos = $this->acoes->countCompany('produtos', 'id_empresa', $empresa->id);
@@ -83,13 +87,14 @@ class AdminDashboard extends Controller
         //dd($estabelecimento);
         if ($estabelecimento[0]->data_final == null) {
 
-$rcat  = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
-if($rcat){
-            $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
-            $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
-            $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
-            $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
-       } } else {
+            $rcat  = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
+            if ($rcat) {
+                $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
+                $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+                $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
+                $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
+            }
+        } else {
             $pedidos = 0;
             $entregas = 0;
             $recusados = 0;
@@ -111,7 +116,6 @@ if($rcat){
         $sexta = date('Y-m-d', strtotime('+' . (5 - $day) . ' days'));
         $sabado = date('Y-m-d', strtotime('+' . (6 - $day) . ' days'));
 
-
         $this->load('_admin/dashboard/main', [
             'moeda' => $moeda,
             'trans' => $this->trans,
@@ -119,6 +123,9 @@ if($rcat){
             'isLogin' => $this->sessao->getUser(),
             'categorias' => $resultCategorias,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'pedidos' => $pedidos,
             'entregas' => $entregas,
             'cancelados' => $cancelados,
@@ -147,18 +154,26 @@ if($rcat){
     public function relatorioSemanal($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
 
         $this->load('_admin/dashboard/relatorioSemanal', [
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
@@ -172,6 +187,9 @@ if($rcat){
     {
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -187,13 +205,18 @@ if($rcat){
         $resultCaixa = $this->acoes->pagination('empresaCaixa', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'id DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
         $this->load('_admin/dashboard/caixaLista', [
             'paginacao' => $pager->render('mt-4 pagin'),
             'totalPedidos' => $totalPedidos,
             'caixas' => $resultCaixa,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'moeda' => $moeda,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
@@ -212,14 +235,19 @@ if($rcat){
         $empresaCaixa = $this->acoes->getByField('empresaCaixa', 'id', $data['id']);
         //dd($empresaCaixa);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -263,6 +291,9 @@ if($rcat){
             'totalFinal' => $totalFinal,
             'caixaDados' => $empresaCaixa,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,
@@ -276,12 +307,17 @@ if($rcat){
     public function relatorioGeral($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -301,6 +337,9 @@ if($rcat){
         $entregas = $this->acoes->sumFielsM('carrinhoPedidos', 'id_empresa', $empresa->id, 'status', 5, 'valor_frete');
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -323,6 +362,9 @@ if($rcat){
             'planoAtivo' => $planoAtivo,
             'trans' => $this->trans,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
         ]);
     }
 
@@ -333,6 +375,9 @@ if($rcat){
     public function clienteLista($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -341,7 +386,9 @@ if($rcat){
 
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
 
         $totalPedidos = $this->acoes->counts('usuariosEmpresa', 'id_empresa', $empresa->id);
@@ -361,6 +408,9 @@ if($rcat){
             'usuarios' => $usuarios,
             'retorno' => $retorno,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -372,13 +422,18 @@ if($rcat){
     {
         $cliente = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -398,8 +453,8 @@ if($rcat){
         $status = $this->acoes->getFind('status');
         $tipoPagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
         $tipoDelivery = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
-        
-        $totasVendas = $this->acoes->sumFiels('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id,'total_pago');
+
+        $totasVendas = $this->acoes->sumFiels('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'total_pago');
         $totalFinal = $this->acoes->sumFielsTreeM('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 5, 'total_pago');
         $pedidosUltimo = $this->acoes->limitTwoOrder('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
@@ -419,6 +474,9 @@ if($rcat){
             'totalFinal' => $totalFinal,
             'cliente' => $cliente,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'planoAtivo' => $planoAtivo,
             'usuarioLogado' => $usuarioLogado,

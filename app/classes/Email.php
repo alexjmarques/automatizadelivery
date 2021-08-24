@@ -165,6 +165,71 @@ class Email
         }
     }
 
+    
+
+    public function contatoInteresse(string $nome, string $email, string $telefone, string $empresa, string $plano, string $msn)
+    {
+        try {
+            $this->mail->isSMTP();
+            $this->mail->Host = 'smtp.gmail.com';
+            $this->mail->SMTPAuth = true;
+            $this->mail->Username = 'oi@automatizadelivery.com';
+            $this->mail->Password = '1@ut98l1znapp0xl';
+            $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $this->mail->Port = 587;
+            $this->mail->setFrom('contato@automatizadelivery.com.br', utf8_decode('Automatiza Delivery'));
+            $this->mail->addAddress('atendimento@automatizadelivery.com', 'Atendimento');
+
+            $this->mail->isHTML(true);
+            $this->mail->Subject = utf8_decode('Contato Site Delivery');
+            $this->mail->Body = utf8_decode('
+            <div leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0"
+    style="height:auto !important;width:100% !important; font-family: Helvetica,Arial,sans-serif !important; margin-bottom: 40px; margin:0; padding:0; background-color:#f8f8f8;">
+    <center style="padding-top: 30px;">
+        <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0"
+            style="max-width:600px; background-color:#ffffff;border:1px solid #e4e2e2;border-collapse:separate !important; border-radius:4px;border-spacing:0;color:#242128; margin:0;padding:40px;"
+            heigth="auto">
+            <tbody>
+                <tr>
+                    <td align="left" valign="center"
+                        style="padding-bottom:40px;border-top:0;height:100% !important;width:100% !important;">
+                        <img src="https://automatizadelivery.com.br/img/logo.png" style="width: 180px;" width="200px">
+                    </td>
+                    <td align="right" valign="center"
+                        style="padding-bottom:40px;border-top:0;height:100% !important;width:100% !important;">
+                        <span
+                            style="color: #8f8f8f; font-weight: normal; line-height: 2; font-size: 14px;">'.date('d/m/Y').'</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-top:10px;border-top:1px solid #e4e2e2">
+                        <h3 style="color:#303030; font-size:18px; line-height: 1.6; font-weight:500;">Temos um novo Contato!!</h3>
+                        <p style="color:#8f8f8f; font-size: 14px; padding-bottom: 20px; line-height: 1.4;"><br>
+                        Nome: ' . $nome . '<br>Nome: ' . $email . '<br>Telefone: ' . $telefone .'<br>Empresa: ' . $empresa .'<br>Plano: ' . $plano . '<br>Mensagem: ' . $msn . '
+                        </p>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        <table style="margin-top:30px; padding-bottom:20px;; margin-bottom: 40px;">
+            <tbody>
+                <tr>
+                    <td align="center" valign="center">
+                        
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </center>
+    </div>');
+            $this->mail->send();
+        } catch (Exception $e) {
+            echo " Não foi possível enviar o email.";
+        }
+    }
+
 
     public function contato(string $nome, string $email, string $telefone, string $msn)
     {

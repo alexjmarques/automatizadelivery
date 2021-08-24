@@ -30,7 +30,7 @@ class AdminIfoodController extends Controller
     private $ifood;
     private $validacao;
     private $ifoodOrder;
-    
+
 
     /**
      *
@@ -53,11 +53,14 @@ class AdminIfoodController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id,'id_marketplaces', 1);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id, 'id_marketplaces', 1);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         $resultClientes = $this->acoes->getFind('usuarios');
         $resultMotoboy = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
@@ -66,9 +69,11 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -78,7 +83,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         if ($this->cache->read("tokenIfood-{$empresa->id}") != null) {
             $status = $this->ifood->status($empresa->id, $ifoodVerif->id_loja);
             $id_loja = $this->ifood->list('704976e1-4b34-40d9-8b09-bc73bb6f964e');
-            
+
             dd($id_loja);
             if ($status == 401) {
                 $autorizacao = $this->validacao->autorizarCliente();
@@ -94,10 +99,13 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         $this->load('_admin/marketplaces/ifood', [
             'statusiFood' => $ifoodVerif,
             'status' => $status,
-            
+
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -114,17 +122,20 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function autorizar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id,'id_marketplaces', 1);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id, 'id_marketplaces', 1);
         $autorizacao = $this->validacao->autorizarCliente();
 
         $authorizationCode = $autorizacao->authorizationCodeVerifier;
-        
-        if($ifoodVerif){
+
+        if ($ifoodVerif) {
             $valor = (new EmpresaMarketplaces())->findById($data['idIfood']);
             $valor->id_loja = $data['idLoja'];
             $valor->authorization_code = $authorizationCode;
             $valor->save();
-        }else{
+        } else {
             $valor = new EmpresaMarketplaces();
             $valor->id_loja = $data['idLoja'];
             $valor->authorization_code = $authorizationCode;
@@ -135,20 +146,22 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         if ($autorizacao) {
             echo $autorizacao->verificationUrlComplete;
         }
-
     }
 
     public function autorizarCode($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id,'id_marketplaces', 1);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id, 'id_marketplaces', 1);
 
         $valor = (new EmpresaMarketplaces())->findById($ifoodVerif->id);
         $valor->user_code = $data['userCode'];
         $valor->save();
 
-        if($valor->id > 0){
-           // dd($data);
+        if ($valor->id > 0) {
+            // dd($data);
             $dd = $this->validacao->gerarToken($empresa->id, $data['userCode'], $ifoodVerif->authorization_code);
             if ($dd == 401) {
                 echo "Não foi possível atualizar Code";
@@ -167,7 +180,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                 $this->validacao->refreshToken();
             }
             echo $this->ifoodOrder->eventsPolling();
-        }else{
+        } else {
             $this->validacao->gerarToken();
         }
     }
@@ -176,6 +189,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function syncCategory($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $resulifood = $this->marketplace->getById(1);
         if ($resulifood[':idLoja'] != null) {
             $catalogs = $this->ifoodCatalog->catalogs();
@@ -219,6 +235,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function syncProduct($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $resulifood = $this->marketplace->getById(1);
         if ($resulifood[':idLoja'] != null) {
             $idProduct = Input::post('id');
@@ -246,11 +265,14 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function ifoodTest($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id,'id_marketplaces', 1);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $ifoodVerif = $this->acoes->getByFieldTwo('empresaMarketplaces', 'id_empresa', $empresa->id, 'id_marketplaces', 1);
         //dd($ifoodVerif);
         //$dd = $this->cache->read('tokenIfood-1');
         //$time = $this->cache->readTime('tokenIfood') - time();
-        
+
         //print_r($dd);
         //print_r($time);
         //$dd = $this->validacao->autorizarCliente();
@@ -259,7 +281,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
         // print_r($ifoodVerif->user_code);
         // print_r($ifoodVerif->authorization_code);
 
-//        print_r($this->cache->read("tokenIfood-{$empresa->id}"));
+        //        print_r($this->cache->read("tokenIfood-{$empresa->id}"));
         //$dd = $this->validacao->gerarToken();
         //$dd = $this->validacao->refreshToken(1, 'FNSR-ZVNW', 'mbu1treoa4m0vemth0vm0jg60daoosd4574pwet4j26p8mmk3rsl5wr561uj7c0ne5bz1hks4n8kv1o7qb96xl3igc32yhpe4q7');
         //$dd = $this->ifood->listInterruptions($ifoodVerif->id_loja);
@@ -268,7 +290,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
         //$dd = $this->ifood->delete($ifoodVerif->id_loja, 'c5e94367-e5b5-4f47-8e6f-7f2bf9de8b31');
 
-        
+
 
         //$dd =  $this->ifoodOrder->eventsPolling();
         dd($this->cache->readTime('tokenIfood'));

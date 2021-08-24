@@ -32,7 +32,7 @@ class PedidosController extends Controller
      */
     public function __construct()
     {
-        
+
         $this->trans = new Translate(new PhpFilesLoader("../app/language"), ["default" => "pt_BR"]);
         $this->sessao = new Sessao();
         $this->geral = new AllController();
@@ -46,6 +46,9 @@ class PedidosController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -54,8 +57,10 @@ class PedidosController extends Controller
         $status = $this->acoes->getFind('status');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $count = $this->acoes->counts('carrinhoPedidos', 'id_empresa', $empresa->id);
@@ -71,6 +76,9 @@ class PedidosController extends Controller
             'status' => $status,
             'pedidos' => $pedidos,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'diahoje' => $diahoje,
             'empresas' => $empresas,
             'carrinhoQtd' => $resultCarrinhoQtd,
@@ -84,15 +92,23 @@ class PedidosController extends Controller
     public function view($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $venda = $this->acoes->getByField('carrinhoPedidos', 'chave', $data['chave']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
 
         $this->load('_cliente/pedidos/view', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'moeda' => $moeda,
             'venda' => $venda,
             'trans' => $this->trans,
@@ -109,6 +125,9 @@ class PedidosController extends Controller
     public function statusPedidoFull($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $venda = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $carrinho = $this->acoes->getByFieldTwoAll('carrinho', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
@@ -118,11 +137,13 @@ class PedidosController extends Controller
         $status = $this->acoes->getFind('status');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-            $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $avaliacao = $this->acoes->countsTree('avaliacao', 'id_cliente', $this->sessao->getUser(), 'numero_pedido', $data['numero_pedido'], 'id_empresa', $empresa->id);
-            $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $usuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $avaliacao = $this->acoes->countsTree('avaliacao', 'id_cliente', $this->sessao->getUser(), 'numero_pedido', $data['numero_pedido'], 'id_empresa', $empresa->id);
+                $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            }
         }
 
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
@@ -137,6 +158,9 @@ class PedidosController extends Controller
 
         $this->load('_cliente/pedidos/pedidoAcompanharTotal', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'moeda' => $moeda,
             'status' => $status,
             'carrinho' => $carrinho,

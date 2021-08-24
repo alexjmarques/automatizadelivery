@@ -3,7 +3,7 @@
 {% block body %}
 <div class="container-fluid">
     <div class="col-12">
-        <h1 id="titleBy" data-id="{{caixaDados.id}}">Dia ({{ caixaDados.data_inicio|date('m-d') }})</h1>
+        <h1 id="titleBy" data-id="{{caixaDados.id}}">Dia ({{ caixaDados.data_inicio|date("d/m/Y") }})</h1>
         <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
             <ol class="breadcrumb pt-0">
                 <li class="breadcrumb-item">
@@ -12,7 +12,7 @@
                 <li class="breadcrumb-item">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/caixa">Relatórios</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Dia ({{ caixaDados.data_inicio|date('m-d') }})
+                <li class="breadcrumb-item active" aria-current="page">Dia ({{ caixaDados.data_inicio|date("d/m/Y") }})
                 </li>
             </ol>
         </nav>

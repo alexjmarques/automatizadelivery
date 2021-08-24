@@ -36,6 +36,9 @@ class AdminProdutosAdicionais extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -47,10 +50,12 @@ class AdminProdutosAdicionais extends Controller
 
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -72,6 +77,9 @@ class AdminProdutosAdicionais extends Controller
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -83,6 +91,9 @@ class AdminProdutosAdicionais extends Controller
     public function novo($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -90,10 +101,12 @@ class AdminProdutosAdicionais extends Controller
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -103,6 +116,9 @@ class AdminProdutosAdicionais extends Controller
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'catProdAdi' => $data['catProdAdi'],
 
@@ -117,6 +133,9 @@ class AdminProdutosAdicionais extends Controller
     {
         $usuario = $this->acoes->getFind('usuarios');
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $retorno = $this->acoes->getByField('produtoAdicional', 'id', $data['id']);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -125,10 +144,12 @@ class AdminProdutosAdicionais extends Controller
         $tipoAdicional = $this->acoes->getByFieldAll('categoriaTipoAdicional', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -140,6 +161,9 @@ class AdminProdutosAdicionais extends Controller
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'tipoAdicional' => $tipoAdicional,
@@ -181,6 +205,6 @@ class AdminProdutosAdicionais extends Controller
         $valor = (new ProdutoAdicional())->findById($data['id']);
         $valor->destroy();
 
-        redirect(BASE . "{$data['linkSite']}/admin/produtos-adicionais");
+        redirect(BASE . "{$data['estado']}/{$data['linkSite']}/admin/produtos-adicionais");
     }
 }

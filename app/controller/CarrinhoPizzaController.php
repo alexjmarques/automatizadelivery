@@ -50,6 +50,9 @@ class CarrinhoPizzaController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $categoria = $this->acoes->getByField('categorias', 'slug', $data['categoriaSlug']);
         $tamanhos = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanhoId']);
         $tamanhosCategoria = $this->acoes->getByField('pizzaTamanhosCategoria', 'id', $data['tamanhoCatId']);
@@ -63,7 +66,7 @@ class CarrinhoPizzaController extends Controller
         $pizzaMassas = $this->acoes->getByFieldAll('pizzaMassas', 'id_empresa', $empresa->id);
 
 
-        
+
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
 
         $quantidade = $data['quantidade'];
@@ -71,15 +74,17 @@ class CarrinhoPizzaController extends Controller
         $resultchave = md5(uniqid(rand(), true));
         $resultCarrinhoQtd = 0;
         if ($this->sessao->getUser()) {
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            if ($this->sessao->getNivel() == 1) {
-                redirect(BASE . "{$empresa->link_site}/motoboy");
-            }
+            if ($this->sessao->getUser() != 'undefined') {
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+                if ($this->sessao->getNivel() == 1) {
+                    redirect(BASE . "{$empresa->link_site}/motoboy");
+                }
 
-            if ($this->sessao->getNivel() == 0) {
-                redirect(BASE . "{$empresa->link_site}/admin");
+                if ($this->sessao->getNivel() == 0) {
+                    redirect(BASE . "{$empresa->link_site}/admin");
+                }
             }
         }
 
@@ -91,6 +96,9 @@ class CarrinhoPizzaController extends Controller
             'produtos' => $produtos,
             'produtoValor' => $produtoValor,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'enderecoAtivo' => $enderecoAtivo,
             'delivery' => $delivery,
             'categoria' => $categoria,
@@ -113,28 +121,28 @@ class CarrinhoPizzaController extends Controller
 
     public function insert($data)
     {
-        
+
         $quantidade = "";
-        if($data['quantidade'] == 1){
+        if ($data['quantidade'] == 1) {
             $quantidade == "INTEIRA";
-        }else{
-            $quantidade == $data['quantidade']." SABORES";
+        } else {
+            $quantidade == $data['quantidade'] . " SABORES";
         }
 
         $tamanho = $this->acoes->getByField('pizzaTamanhos', 'id', $data['tamanhoId']);
         $sabor = $this->acoes->getByField('produtos', 'id', $data['id_produto']);
         $massa = $this->acoes->getByField('pizzaMassas', 'id', $data['massa']);
 
-        if(is_array($data['pizza_prod'])){
+        if (is_array($data['pizza_prod'])) {
             $i = 1;
             $sabor = "";
             foreach ($data['pizza_prod'] as $cart) {
                 $pizzaSabor = $this->acoes->getByField('produtos', 'id', $cart);
-                $sabor .= $i++.'/'.$data['quantidade'].' ['.$pizzaSabor->cod.'] '.$pizzaSabor->nome.' - ';
+                $sabor .= $i++ . '/' . $data['quantidade'] . ' [' . $pizzaSabor->cod . '] ' . $pizzaSabor->nome . ' - ';
             }
             $saborfinal = rtrim($sabor, ' - ');
             $nomePizza = "PIZZA {$tamanho->nome} {$data['quantidade']} SABORES - {$massa->nome} - {$saborfinal}";
-        }else{
+        } else {
             $nomePizza = "PIZZA {$tamanho->nome} {$quantidade} - {$massa->nome} - {$sabor->cod} {$sabor->nome}";
             //dd($nomePizza);
         }
@@ -151,9 +159,8 @@ class CarrinhoPizzaController extends Controller
 
         if ($valor->id > 0) {
             header('Content-Type: application/json');
-            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.','code' => 2 ,  'url' => 'carrinho',]);
+            $json = json_encode(['id' => $valor->id, 'resp' => 'insertCart', 'mensagem' => 'Seu produto foi adicionado a Sacola!', 'error' => 'Não foi possível adicionar o produto a sacola! Tente novamente.', 'code' => 2,  'url' => 'carrinho',]);
             exit($json);
         }
-       
     }
 }

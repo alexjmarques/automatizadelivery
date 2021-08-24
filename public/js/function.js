@@ -11,6 +11,7 @@ var formatter = new Intl.NumberFormat('pt-BR', {
  */
 
 var link_site = $('body').attr('data-link_site');
+var estado_site = $('body').attr('data-estado_site');
 jQuery.fn.shake = function(interval, distance, times) {
     interval = typeof interval == "undefined" ? 100 : interval;
     distance = typeof distance == "undefined" ? 10 : distance;

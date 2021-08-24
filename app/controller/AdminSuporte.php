@@ -41,16 +41,21 @@ class AdminSuporte extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -60,6 +65,9 @@ class AdminSuporte extends Controller
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'nivelUsuario' => $this->sessao->getNivel(),
             'usuarioLogado' => $usuarioLogado,
@@ -67,6 +75,4 @@ class AdminSuporte extends Controller
             'caixa' => $caixa->status
         ]);
     }
-
-    
 }

@@ -39,18 +39,23 @@ class AdminPlanos extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planosAutomatiza = $this->acoes->getFind('planos');
-        
+
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -62,10 +67,13 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             'estabelecimento' => $estabelecimento,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $caixa->status
         ]);
     }
@@ -73,18 +81,23 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     public function plano($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $plano = $this->acoes->getByField('planos', 'id', $data['id']);
-        
+
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
-$estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
-        
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -92,32 +105,41 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
 
         $this->load('_admin/planos/view', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'plano' => $plano,
             'estabelecimento' => $estabelecimento,
             'planoAtivo' => $planoAtivo,
             'estabelecimento' => $estabelecimento,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
-            'nivelUsuario'=> $this->sessao->getNivel(),
+            'nivelUsuario' => $this->sessao->getNivel(),
             'caixa' => $caixa->status
         ]);
     }
 
-    
+
 
     public function cobrancaPlano($data)
     {
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
-        if($planoAtivo > 0){
+        if ($planoAtivo > 0) {
             //dd($empresa->id);
-            $statusAssinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid','id_empresa', $empresa->id);
+            $statusAssinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid', 'id_empresa', $empresa->id);
             if ($statusAssinatura->subscription_id) {
                 $canceledSubscription = $pagarme->subscriptions()->cancel([
                     'id' => $statusAssinatura->subscription_id
@@ -131,10 +153,10 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
          * Crio o cartão para verificar se o mesmo e válido!
          */
         $card = $pagarme->cards()->create([
-                'holder_name' => $data['name'],
-                'number' => preg_replace("/[^0-9]/", "", $data['number']),
-                'expiration_date' => preg_replace("/[^0-9]/", "", $data['expiry']),
-                'cvv' => $data['cvc']
+            'holder_name' => $data['name'],
+            'number' => preg_replace("/[^0-9]/", "", $data['number']),
+            'expiration_date' => preg_replace("/[^0-9]/", "", $data['expiry']),
+            'cvv' => $data['cvc']
         ]);
         if ($card->valid == 1) {
             /**
@@ -147,8 +169,8 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
             $valor->brand = $card->brand;
             $valor->last_digits = $card->last_digits;
             $valor->save();
-            
-            
+
+
             if ($valor->id > 0) {
                 $result = $this->acoes->getByField('cartaoCredito', 'hash', $card->id);
                 $orderId = substr(number_format(time() * Rand(), 0, '', ''), 0, 6);
@@ -160,7 +182,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                     'card_holder_name' => $data['name'],
                     'card_expiration_date' => preg_replace("/[^0-9]/", "", $data['expiry']),
                     'card_cvv' => $data['cvc'],
-                    'postback_url' => BASE."{$empresa->link_site}/admin/planos/status",
+                    'postback_url' => BASE . "{$empresa->link_site}/admin/planos/status",
                     'customer' => [
                         'email' => $data['email'],
                         'name' => $data['nome'],
@@ -190,7 +212,6 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                         $valor->plano_id = $subscription->plan->id;
                         $valor->id_empresa = $empresa->id;
                         $valor->save();
-
                     } else {
                         $valor = new Assinatura();
                         $valor->subscription_id = $subscription->current_transaction->subscription_id;
@@ -200,7 +221,7 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                         $valor->save();
                     }
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Plano contratado com sucesso!', 'error' => 'Não foi posível contratar o Plano!','code' => 2 ,  'url' => 'admin/planos']);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Plano contratado com sucesso!', 'error' => 'Não foi posível contratar o Plano!', 'code' => 2,  'url' => 'admin/planos']);
                     exit($json);
                 }
                 if ($subscription->status == 'processing' || $subscription->status == 'waiting_payment') {
@@ -212,11 +233,11 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
                     $valor->save();
 
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Aguarde! Estamos aguardando o processamento do pagamento!','code' => 2 ,  'url' => 'admin/planos']);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Aguarde! Estamos aguardando o processamento do pagamento!', 'code' => 2,  'url' => 'admin/planos']);
                     exit($json);
                 } else {
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'error' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão','code' => 2 ,  'url' => 'admin/planos']);
+                    $json = json_encode(['id' => $valor->id, 'resp' => 'insert', 'mensagem' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'error' => 'Pagamento não foi aprovado! Verifique com sua credora de cartão', 'code' => 2,  'url' => 'admin/planos']);
                     exit($json);
                 }
             }
@@ -255,6 +276,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     // public function criarPlano($data)
     // {
     //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+    //   $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+    //$funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+    //$dias = $this->acoes->getFind('dias');
     //     $pagarme = new \PagarMe\Client(pagarme_api_key);
     //     $plan = $pagarme->plans()->create([
     //         'amount' => 74990,
@@ -270,6 +294,9 @@ $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empre
     // public function updatePlano($data)
     // {
     //     $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+    //    $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+    //$funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+    //$dias = $this->acoes->getFind('dias');
     //     $pagarme = new \PagarMe\Client(pagarme_api_key);
     //     $plan = $pagarme->plans()->update([
     //         'id' => '574399',

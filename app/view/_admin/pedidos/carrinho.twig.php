@@ -12,7 +12,7 @@
         {% if p.id == c.id_produto %}
         <tr>
             <td>
-                <a href="#" onclick="deletarProduto({{c.id_produto}}, {{c.id}})" class="btn excluir_prod"><i class="simple-icon-close"></i></a>
+                <button onclick="deletarProduto({{c.id_produto}}, {{c.id}})" class="btn excluir_prod"><i class="simple-icon-close"></i></button>
             </td>
             <td>
                 <div class="media full-width">
@@ -35,10 +35,9 @@
                             {% if foo[5] %} - {{ foo[5] }}{% endif %}
                         </p>
                         {% endif %}
-
                         {% if c.id_sabores != '' %}
                         {% for s in sabores %}
-                        {% if s.id in c.id_sabores %}
+                        {% if s.id == c.id_sabores %}
                         {{ s.nome }}{% if c.id_sabores|length > 1 %}, {% endif %}
                         {% endif %}
                         {% endfor %}
@@ -113,7 +112,7 @@
     </div>
     <div class="mb-0 input-group full-width mt-2 col-6 float-left pr-0">
         <h5 class="full-width pb-0 bold">Formas de Pagamento</h5>
-        <select id="tipo_pagamento" name="tipo_pagamento" class="form-control" required>
+        <select id="tipo_pagamento" name="tipo_pagamento" class="form-control">
             <option value="">Selecione</option>
             {% for pag in pagamento %}
             <option value="{{pag.code}}">{{pag.tipo}}</option>
@@ -197,19 +196,30 @@
 </div>
 </form>
 <script>
+    var link_site = $('body').attr('data-link_site');
+    var estado_site = $('body').attr('data-estado_site');
     $('.valor, #valor, #valor_promocional, #taxa_entrega, #valor_excedente, #taxa_entrega_motoboy, #taxa_entrega2, #taxa_entrega3, #diaria, #taxa').mask('#.##0,00', {
     reverse: true
 });
     $('#trocoMod, #mp, #entrega_end').hide();
 
     $('#tipo_pagamento').on('change', function() {
+    $('#tipo_pagamento').css("border", "1px solid #ced4da");
     if (parseInt($(this).val()) === 1) {
         $('#trocoMod').show();
         $('.btnValida').hide();
+        $('.tipo_pagamento').hide();
     } else {
         $('#trocoMod').hide();
         $('#trocoCliente').hide();
         $('.btnValida').show();
+        $('.tipo_pagamento').show();
+    }
+
+    if (parseInt($(this).val()) === 7) {
+        $('#dinMod').show();
+    } else {
+        $('#dinMod').hide();
     }
 });
 

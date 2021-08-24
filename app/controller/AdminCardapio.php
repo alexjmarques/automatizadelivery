@@ -43,6 +43,10 @@ class AdminCardapio extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $qtdTamanho = $this->acoes->counts('pizzaTamanhos', 'id_empresa', $empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -51,11 +55,13 @@ class AdminCardapio extends Controller
         $produtosValor = $this->acoes->getByFieldAll('pizzaProdutoValor', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
+            if ($this->sessao->getUser() != 'undefined') {
             $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             if ($this->sessao->getNivel() == 3) {
                 redirect(BASE . $empresa->link_site);
             }
+        }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
@@ -66,7 +72,7 @@ class AdminCardapio extends Controller
             $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
             $produtoQtd = $this->acoes->counts('produtos', 'id_empresa', $empresa->id);
 
-            $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id,'posicao ASC');
+            $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id, 'posicao ASC');
             $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
             $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
@@ -74,6 +80,7 @@ class AdminCardapio extends Controller
             $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
             $ultimaVenda = null;
             if ($this->sessao->getUser()) {
+                if ($this->sessao->getUser() != 'undefined') {
                 $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
                 $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
                 $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
@@ -84,11 +91,15 @@ class AdminCardapio extends Controller
                     $diahoje = date('d');
                 }
                 // $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresa->id);
-            }   
+            }
+            }
         }
 
         $this->load('_admin/cardapio/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'endereco' => $empresaEndereco,
             'atendimento' => $atendimento,
             'moeda' => $moeda,
@@ -111,5 +122,4 @@ class AdminCardapio extends Controller
 
         ]);
     }
-    
 }

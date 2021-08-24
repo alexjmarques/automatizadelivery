@@ -114,7 +114,11 @@
 
             {% if delivery.status == 0 %}
             <div class="alert alert-warning text-center mt-3" role="alert">No momento, não estamos aceitando novos
-                pedidos. Nosso horário de atendimento e </div>
+                pedidos. Nosso horário de atendimento e: 
+                <ul class="atendimento">
+                {% for at in funcionamento %}<li>{% for d in dias %}{% if d.id == at.id_dia %}<strong>{{ d.nome }}</strong>{% endif %}{% endfor %} das {{at.abertura}} ás {{at.abertura}}</li>{% endfor %}
+                </ul>
+                </div>
             {% endif%}
     </div>
     <form>
@@ -124,11 +128,15 @@
 
 {% if delivery.status == 0 %}
 <div class="StatusRest">ESTAMOS FECHADOS NO MOMENTO</div>
+
 {% endif%}
+{% if isLogin is not empty %}
+{% if isLogin != 'undefined' %}
 {% if isLogin != 0 %}
 {% include 'partials/footer.twig.php' %}
 {% endif %}
-
+{% endif %}
+{% endif %}
 {% else %}
 
 

@@ -42,6 +42,9 @@ class AdminClickEntregasController extends Controller
     public function index($data)
     {
 $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $result = $this->configEmpresaModel->getById($empresaAct[':id']);
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -51,11 +54,13 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $SessionNivel = $segment->get('nivel');
 
         if ($this->sessao->getUser()) {
+            if ($this->sessao->getUser() != 'undefined') {
             $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resulUsuario = $this->adminUsuarioModel->getById($SessionIdUsuario);
             if ($resulUsuario[':nivel'] == 3) {
                 redirect(BASE . $empresaAct[':link_site']);
             }
+        }
         } else {
             redirect(BASE . $empresaAct[':link_site'] . '/admin/login');
         }
@@ -67,11 +72,17 @@ $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
         $this->allController->verificaAdmin($empresaAct[':id']);
         $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_admin/marketplaces/clickEntregas', [
             'empresa' => $empresa,
+'endEmp' => $endEmp,
+'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'nivelUsuario' => $SessionNivel,
             'statusUberEats' => $resulUber,
             'planoAtivo' => $planoAtivo,

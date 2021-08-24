@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="{{BASE}}adm/css/main.css" />
 </head>
 
-<body class="background show-spinner no-footer" data-link_site="{{empresa.link_site}}">
+<body class="background show-spinner no-footer" data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
 <div class="fixed-background"></div>
     <main>
         {% block body %}{% endblock %}

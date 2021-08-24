@@ -38,7 +38,7 @@
   gtag('config', 'UA-201209024-1');
 </script>
 </head>
-<body data-link_site="{{empresa.link_site}}">
+<body data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
     {% block body %}{% endblock %}
     <script src="{{BASE}}pc/js/jquery.min.js" type="c369c2512c7e5b449fd7ce1b-text/javascript"></script>
     <script src="{{BASE}}pc/osahan.js" type="c369c2512c7e5b449fd7ce1b-text/javascript"></script>

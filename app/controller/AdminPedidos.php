@@ -50,6 +50,9 @@ class AdminPedidos extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -63,9 +66,11 @@ class AdminPedidos extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -85,6 +90,9 @@ class AdminPedidos extends Controller
             'planoAtivo' => $planoAtivo,
             'moeda' => $moeda,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -100,6 +108,9 @@ class AdminPedidos extends Controller
     public function pedidosRecebido($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -114,6 +125,9 @@ class AdminPedidos extends Controller
             $this->load('_admin/pedidos/pedidoListaRecebido', [
                 'planoAtivo' => $planoAtivo,
                 'empresa' => $empresa,
+                'endEmp' => $endEmp,
+                'funcionamento' => $funcionamento,
+                'dias' => $dias,
                 'trans' => $this->trans,
                 'isLogin' => $this->sessao->getUser(),
                 'nivelUsuario' => $this->sessao->getNivel(),
@@ -131,6 +145,9 @@ class AdminPedidos extends Controller
     public function pedidosProducao($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($empresa) {
             $planoAtivo = $this->geral->verificaPlano($empresa->id);
         }
@@ -144,12 +161,16 @@ class AdminPedidos extends Controller
             $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
 
             if ($this->sessao->getUser()) {
-                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getUser() != 'undefined') {
+                    $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                }
             }
-
             $this->load('_admin/pedidos/pedidoListaProducao', [
                 'planoAtivo' => $planoAtivo,
                 'empresa' => $empresa,
+                'endEmp' => $endEmp,
+                'funcionamento' => $funcionamento,
+                'dias' => $dias,
                 'moeda' => $moeda,
                 'trans' => $this->trans,
                 'usuarioLogado' => $usuarioLogado,
@@ -170,6 +191,9 @@ class AdminPedidos extends Controller
     public function pedidosGeral($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -181,12 +205,17 @@ class AdminPedidos extends Controller
             $resultMotoboy = $this->acoes->getByField('motoboy', 'id_empresa', $empresa->id);
 
             if ($this->sessao->getUser()) {
-                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getUser() != 'undefined') {
+                    $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                }
             }
             if ($resultPedidos) {
                 $this->load('_admin/pedidos/pedidoListaGeral', [
                     'planoAtivo' => $planoAtivo,
                     'empresa' => $empresa,
+                    'endEmp' => $endEmp,
+                    'funcionamento' => $funcionamento,
+                    'dias' => $dias,
                     'trans' => $this->trans,
                     'usuarioLogado' => $usuarioLogado,
                     'isLogin' => $this->sessao->getUser(),
@@ -208,6 +237,9 @@ class AdminPedidos extends Controller
     {
         //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -217,12 +249,12 @@ class AdminPedidos extends Controller
         $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
         $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $pedido->id_cliente);
 
-        if($pedido->status > 3){
+        if ($pedido->status > 3) {
             $entrega = $this->acoes->getByField('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido);
         }
-        
+
         $tipoPagamento = $this->acoes->getByField('formasPagamento', 'id', $pedido->tipo_pagamento);
-        $tipoFrete = $this->acoes->getByField('tipoDelivery', 'id', $pedido->tipo_frete);
+        $tipoFrete = $this->acoes->getByFieldTwo('tipoDelivery', 'code', $pedido->tipo_frete, 'id_empresa', $empresa->id);
         $status = $this->acoes->getByField('status', 'id', $pedido->status);
 
         $motoboys = $this->acoes->getByFieldAll('motoboy', 'id_empresa', $empresa->id);
@@ -244,29 +276,33 @@ class AdminPedidos extends Controller
 
         if ($cupomVerifica > 0 && $cupomVerificaUtilizadores) {
             $cupomUtilizado = $this->acoes->getByField('cupomDescontoUtilizadores', 'numero_pedido', $pedido->numero_pedido);
-            if($cupomUtilizado){
+            if ($cupomUtilizado) {
                 $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizado->id_cupom);
 
-            if ((int)$cupomValida->tipo_cupom == 1) {
-                $valor = $pedido->total;
-                $porcentagem = floatval($cupomValida->valor_cupom);
-                $resul = $valor * ($porcentagem / 100);
-                $resultado = $resul;
-            } else {
-                $resultado = $cupomValida->valor_cupom;
-            }
+                if ((int)$cupomValida->tipo_cupom == 1) {
+                    $valor = $pedido->total;
+                    $porcentagem = floatval($cupomValida->valor_cupom);
+                    $resul = $valor * ($porcentagem / 100);
+                    $resultado = $resul;
+                } else {
+                    $resultado = $cupomValida->valor_cupom;
+                }
             }
         }
         //dd($resultado);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
-
         $this->load('_admin/pedidos/pedidoMostrar', [
             'moeda' => $moeda,
             'planoAtivo' => $planoAtivo,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -293,13 +329,16 @@ class AdminPedidos extends Controller
 
         ]);
     }
-    
+
     public function pedidoImprimirPDF($data)
     {
         //dd($data);
         $dompdf = new Dompdf();
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
@@ -331,104 +370,103 @@ class AdminPedidos extends Controller
         $carrinho = $this->acoes->getByFieldAll('carrinho', 'numero_pedido', $pedido->numero_pedido, 'id_empresa', $empresa->id);
         $nf = $nfPaulista->cpf != "" ? "NOTA FISCAL " . $nfPaulista->cpf : 0;
 
-        $tax = $pedido->tipo_frete == 2 ? "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%; text-align:right;  padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ". $pedido->valor_frete."</strong></td></tr>" : "<td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%;padding-bottom: 10px;'><strong>Grátis</strong></td></tr>";
-        
-        $total = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Total</td><td style=' width: 20%;padding-bottom: 10px; text-align:right; '><strong>" . $moeda->simbolo ." ".number_format($pedido->total_pago, 2, '.', '') ."</strong></td></tr>";
-        $subtotal = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Subtotal</td><td style=' width: 20%; text-align:right; padding-bottom: 10px;'><strong>" . $moeda->simbolo ." ".number_format($pedido->total, 2, '.', '') ."</strong></td></tr>";
+        $tax = $pedido->tipo_frete == 2 ? "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%; text-align:right;  padding-bottom: 10px;'><strong>" . $moeda->simbolo . " " . $pedido->valor_frete . "</strong></td></tr>" : "<td style=' width: 80%;padding-bottom: 10px;'>Taxa de Entrega</td><td style=' width: 20%;padding-bottom: 10px;'><strong>Grátis</strong></td></tr>";
+
+        $total = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Total</td><td style=' width: 20%;padding-bottom: 10px; text-align:right; '><strong>" . $moeda->simbolo . " " . number_format($pedido->total_pago, 2, '.', '') . "</strong></td></tr>";
+        $subtotal = "<tr style='border-bottom:2px dotted #ccc; width: 100%;'><td style=' width: 80%;padding-bottom: 10px;'>Subtotal</td><td style=' width: 20%; text-align:right; padding-bottom: 10px;'><strong>" . $moeda->simbolo . " " . number_format($pedido->total, 2, '.', '') . "</strong></td></tr>";
 
         setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
         date_default_timezone_set('America/Sao_Paulo');
         $date = strftime('%A, %d de %B de %Y', strtotime('today'));
 
-            $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>{$empresa->nome_fantasia}</h3>";
-            //$print .= "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>WHATSAPP ".$this->mascTelefone($empresa->telefone)."</h3>";
-            $url = "https://automatizadelivery.com.br/".$data['linkSite'];
-            $print.= '<h2 style="text-align:center;"><img src="'.(new QRCode)->render($url).'" alt="QR Code"/></h2>';
-            $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px; width: 100%;'>PEDIDO #{$pedido->numero_pedido}</h2>";
-            $print .= "<hr>";
-           
-            $print .= "<h4 style='text-align:center; margin-top:0; margin-bottom:0;'>ITENS DO PEDIDO</h4>";
-            $print .= "<table style='text-align:left; margin-top:0; margin-bottom:0; border-collapse: collapse;width: 100%;'>";
-            foreach ($carrinho as $car) {
-                
-                foreach ($produtos as $prod) {
-                    if ($pedido->numero_pedido == $car->numero_pedido) {
-                        if ($car->id_produto == $prod->id) {
-                            $print .= "<tr style='border-bottom:2px dotted #ccc; width: 100%;'>";
-                            $print .= "<td style=' width: 80%;padding-bottom: 10px;'>";
-                            $print .= $car->quantidade . 'x - ' . $prod->nome;
+        $print = "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>{$empresa->nome_fantasia}</h3>";
+        //$print .= "<h3 style='text-align:center; margin-top:0; margin-bottom:0; width: 100%;'>WHATSAPP ".$this->mascTelefone($empresa->telefone)."</h3>";
+        $url = "https://automatizadelivery.com.br/" . $data['linkSite'];
+        $print .= '<h2 style="text-align:center;"><img src="' . (new QRCode)->render($url) . '" alt="QR Code"/></h2>';
+        $print .= "<h2 style='text-align:center; margin-top:0; margin-bottom:10px; width: 100%;'>PEDIDO #{$pedido->numero_pedido}</h2>";
+        $print .= "<hr>";
 
-                            foreach ($sabores as $s) {
-                                $print .= $s->id == $car->id_sabores ? ' | Sabor.: ' . $s->nome . ' | ' : "";
-                            }
-                            $print .= "<br/>";
-                            
-                            
-                            foreach ($carrinhoAdicional as $cartAd) {
-                                if ($prod->id == $cartAd->id_produto) {
-                                    if ($car->chave == $cartAd->chave) {
-                                        foreach ($produtosAdicionais as $a) {
-                                            if ($a->id == $cartAd->id_adicional) {
-                                                $print .= " - " . $cartAd->quantidade . 'x ' . $a->nome;
-                                                $print .= "<br/>";
-                                            }
+        $print .= "<h4 style='text-align:center; margin-top:0; margin-bottom:0;'>ITENS DO PEDIDO</h4>";
+        $print .= "<table style='text-align:left; margin-top:0; margin-bottom:0; border-collapse: collapse;width: 100%;'>";
+        foreach ($carrinho as $car) {
+
+            foreach ($produtos as $prod) {
+                if ($pedido->numero_pedido == $car->numero_pedido) {
+                    if ($car->id_produto == $prod->id) {
+                        $print .= "<tr style='border-bottom:2px dotted #ccc; width: 100%;'>";
+                        $print .= "<td style=' width: 80%;padding-bottom: 10px;'>";
+                        $print .= $car->quantidade . 'x - ' . $prod->nome;
+
+                        foreach ($sabores as $s) {
+                            $print .= $s->id == $car->id_sabores ? ' | Sabor.: ' . $s->nome . ' | ' : "";
+                        }
+                        $print .= "<br/>";
+
+
+                        foreach ($carrinhoAdicional as $cartAd) {
+                            if ($prod->id == $cartAd->id_produto) {
+                                if ($car->chave == $cartAd->chave) {
+                                    foreach ($produtosAdicionais as $a) {
+                                        if ($a->id == $cartAd->id_adicional) {
+                                            $print .= " - " . $cartAd->quantidade . 'x ' . $a->nome;
+                                            $print .= "<br/>";
                                         }
                                     }
                                 }
                             }
-                            $print .= $car->observacao != "" ? "<strong>(Obs.:" . $car->observacao . ')</strong>' : "";
-                            $print .= "<br/>";
-                            
-                            $print .= "</td>";
-                            $print .= "<td style=' width: 20%; text-align:right; padding-bottom: 10px;'>";
-                            $print .= "<strong>{$moeda->simbolo} " . number_format(($car->valor * $car->quantidade), 2, '.', '')."</strong>";
-                            
-                            $print .= "</td>";
-                            $print .= "</tr>";
                         }
+                        $print .= $car->observacao != "" ? "<strong>(Obs.:" . $car->observacao . ')</strong>' : "";
+                        $print .= "<br/>";
+
+                        $print .= "</td>";
+                        $print .= "<td style=' width: 20%; text-align:right; padding-bottom: 10px;'>";
+                        $print .= "<strong>{$moeda->simbolo} " . number_format(($car->valor * $car->quantidade), 2, '.', '') . "</strong>";
+
+                        $print .= "</td>";
+                        $print .= "</tr>";
                     }
                 }
-               
             }
-            $print .= "</table>";
-            $print .= "<br/>";
+        }
+        $print .= "</table>";
+        $print .= "<br/>";
+        $print .= "<hr>";
+        $print .= "<table style='text-align:left; margin-top:0; margin-bottom:0; border-collapse: collapse;width: 100%;'>";
+        $print .= $subtotal;
+        $print .= $tax;
+        $print .= $total;
+        $print .= "</table>";
+
+        /* Dados Entrega */
+        $print .= "<hr>";
+        $print .= "<h3 style='text-align:left; margin-top:0; margin-bottom:0;'>DADOS CLIENTE</h3>";
+        $print .= "<br/>";
+        $print .= "<h3 style='text-align:left; margin-top:0; margin-bottom:0;'>{$cliente->nome}</h3>";
+        $print .= "<strong>TELEFONE </strong>" . $this->mascTelefone($cliente->telefone);
+        $print .= "<br/>";
+        $print .= "<strong>ENDEREÇO </strong>" . $endereco->rua . " " . $endereco->numero . " - " . $endereco->bairro;
+        $print .= "<br/>";
+        $print .= "<strong>COMP </strong>" . $endereco->complemento;
+        $print .= "<hr>";
+
+        /* NF PAULISTA */
+        if ($nf != 0) {
+            $print .= $nf;
             $print .= "<hr>";
-            $print .= "<table style='text-align:left; margin-top:0; margin-bottom:0; border-collapse: collapse;width: 100%;'>";
-            $print .= $subtotal;
-            $print .= $tax;
-            $print .= $total;
-            $print .= "</table>";
+        }
 
-            /* Dados Entrega */
-            $print .= "<hr>";
-            $print .= "<h3 style='text-align:left; margin-top:0; margin-bottom:0;'>DADOS CLIENTE</h3>";
-            $print .= "<br/>";
-            $print .= "<h3 style='text-align:left; margin-top:0; margin-bottom:0;'>{$cliente->nome}</h3>";
-            $print .= "<strong>TELEFONE </strong>" . $this->mascTelefone($cliente->telefone);
-            $print .= "<br/>";
-            $print .= "<strong>ENDEREÇO </strong>" . $endereco->rua . " " . $endereco->numero. " - " .$endereco->bairro;
-            $print .= "<br/>";
-            $print .= "<strong>COMP </strong>" . $endereco->complemento;
-            $print .= "<hr>";
+        /* Footer */
+        $print .= "AGRADECEMOS A PREFERÊNCIA!";
+        $print .= "<br/>";
+        $print .= $date;
+        $print .= "<br/>";
+        $print .= "Automatiza Delivery";
 
-            /* NF PAULISTA */
-            if ($nf != 0) {
-                $print .= $nf;
-                $print .= "<hr>";
-            }
-
-            /* Footer */
-            $print .= "AGRADECEMOS A PREFERÊNCIA!";
-            $print .= "<br/>";
-            $print .= $date;
-            $print .= "<br/>";
-            $print .= "Automatiza Delivery";
-
-            //dd($print);
+        //dd($print);
         $dompdf->loadHtml($print);
         //$dompdf->setPaper($papel, $orientacao); //portrait ou landscap
         $dompdf->render();
-        $dompdf->stream("pedido.pdf", ["Attachment" => false ]);
+        $dompdf->stream("pedido.pdf", ["Attachment" => false]);
     }
 
 
@@ -436,6 +474,9 @@ class AdminPedidos extends Controller
     {
         //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -445,10 +486,10 @@ class AdminPedidos extends Controller
         $cliente = $this->acoes->getByField('usuarios', 'id', $pedido->id_cliente);
         $endereco = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $pedido->id_cliente);
 
-        if($pedido->status > 3){
+        if ($pedido->status > 3) {
             $entrega = $this->acoes->getByField('carrinhoEntregas', 'numero_pedido', $pedido->numero_pedido);
         }
-        
+
         $tipoPagamento = $this->acoes->getByField('formasPagamento', 'id', $pedido->tipo_pagamento);
         $tipoFrete = $this->acoes->getByField('tipoDelivery', 'id', $pedido->tipo_frete);
         $status = $this->acoes->getByField('status', 'id', $pedido->status);
@@ -472,29 +513,34 @@ class AdminPedidos extends Controller
 
         if ($cupomVerifica > 0 && $cupomVerificaUtilizadores) {
             $cupomUtilizado = $this->acoes->getByField('cupomDescontoUtilizadores', 'numero_pedido', $pedido->numero_pedido);
-            if($cupomUtilizado){
+            if ($cupomUtilizado) {
                 $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizado->id_cupom);
 
-            if ((int)$cupomValida->tipo_cupom == 1) {
-                $valor = $pedido->total;
-                $porcentagem = floatval($cupomValida->valor_cupom);
-                $resul = $valor * ($porcentagem / 100);
-                $resultado = $resul;
-            } else {
-                $resultado = $cupomValida->valor_cupom;
-            }
+                if ((int)$cupomValida->tipo_cupom == 1) {
+                    $valor = $pedido->total;
+                    $porcentagem = floatval($cupomValida->valor_cupom);
+                    $resul = $valor * ($porcentagem / 100);
+                    $resultado = $resul;
+                } else {
+                    $resultado = $cupomValida->valor_cupom;
+                }
             }
         }
         //dd($resultado);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
 
         $this->load('_admin/pedidos/pedidoImprimir', [
             'moeda' => $moeda,
             'planoAtivo' => $planoAtivo,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -525,6 +571,9 @@ class AdminPedidos extends Controller
     public function pedidosFinalizados($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -544,9 +593,10 @@ class AdminPedidos extends Controller
         $resultPedidos = $this->acoes->pagination('carrinhoPedidos', 'id_empresa', $empresa->id, $pager->limit(), $pager->offset(), 'created_at DESC');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
-
         $this->load('_admin/pedidos/pedidos', [
             'planoAtivo' => $planoAtivo,
             'paginacao' => $pager->render('mt-4 pagin'),
@@ -555,6 +605,9 @@ class AdminPedidos extends Controller
             'tipoPagamento' => $tipoPagamento,
             'status' => $status,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -570,6 +623,9 @@ class AdminPedidos extends Controller
     public function mudarStatus($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $pedido = $this->acoes->getByField('carrinhoPedidos', 'id', $data['id']);
 
@@ -652,41 +708,43 @@ class AdminPedidos extends Controller
         // $printer->close();
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
         //$connector = new CupsPrintConnector("{$print->code}");
         //$connector = new CupsPrintConnector("EPSON_TM_T88V");
-        
+
 
         //dd($print);
 
         try {
-        //$connector = new CupsPrintConnector("STMicroelectronics_POS58_Printer_USB");
-        $connector = new NetworkPrintConnector("159.65.220.187", 3240);
-        //$connector = new NetworkPrintConnector("159.65.220.187", 9100);
-        //$connector = new FilePrintConnector("php://stdout");
-        //$connector = new FilePrintConnector("/dev/ttyS0?baud=115200");
+            //$connector = new CupsPrintConnector("STMicroelectronics_POS58_Printer_USB");
+            $connector = new NetworkPrintConnector("159.65.220.187", 3240);
+            //$connector = new NetworkPrintConnector("159.65.220.187", 9100);
+            //$connector = new FilePrintConnector("php://stdout");
+            //$connector = new FilePrintConnector("/dev/ttyS0?baud=115200");
 
-        //$connector = new FilePrintConnector("/dev/usb/lp0");
+            //$connector = new FilePrintConnector("/dev/usb/lp0");
 
-        $printer = new Printer($connector);
+            $printer = new Printer($connector);
 
-        /* Print some bold text */
-        $printer -> setEmphasis(true);
-        $printer -> text("FOO CORP Ltd.\n");
-        $printer -> setEmphasis(false);
-        $printer -> feed();
-        $printer -> text("Receipt for whatever\n");
-        $printer -> feed(4);
+            /* Print some bold text */
+            $printer->setEmphasis(true);
+            $printer->text("FOO CORP Ltd.\n");
+            $printer->setEmphasis(false);
+            $printer->feed();
+            $printer->text("Receipt for whatever\n");
+            $printer->feed(4);
 
-        /* Bar-code at the end */
-        $printer -> setJustification(Printer::JUSTIFY_CENTER);
-        $printer->text(">>> PEDIDO DE VENDA TESTE <<<");
-        $printer -> cut();
-        $printer->close();
-        }catch (Exception $e) {
+            /* Bar-code at the end */
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text(">>> PEDIDO DE VENDA TESTE <<<");
+            $printer->cut();
+            $printer->close();
+        } catch (Exception $e) {
             echo "Couldn't print to this printer: " . $e->getMessage() . "\n";
         }
-
     }
 
     public function pedidoImprimir($data)
@@ -695,6 +753,9 @@ class AdminPedidos extends Controller
         date_default_timezone_set('America/Sao_Paulo');
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $print = $this->acoes->getByField('imprimir', 'id_empresa', $empresa->id);
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);

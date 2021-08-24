@@ -72,7 +72,11 @@
 
 </div>
 {% if resulEnderecos > 0 %}
+{% if isLogin != 'undefined' %}
+{% if isLogin != 0 %}
 {% include 'partials/footer.twig.php' %}
+{% endif %}
+{% endif %}
 {% endif %}
 
 {% include 'partials/modalAlertSite.twig.php' %}

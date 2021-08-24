@@ -66,7 +66,7 @@ src="https://www.facebook.com/tr?id=169843661727356&ev=PageView
 <!-- End Facebook Pixel Code -->
 </head>
 
-<body id="page-top" data-link_site="{{empresa.link_site}}">
+<body id="page-top" data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
   {% block body %}{% endblock %}
 
   <!-- Start of HubSpot Embed Code -->

@@ -173,7 +173,7 @@
 {% endif %}
 </head>
 {% if detect.isMobile() %}
-<body class="fixed-bottom-bar" data-link_site="{{empresa.link_site}}">
+<body class="fixed-bottom-bar" data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
   <div id="overlayer"></div>
   <div class="lds-roller">
     <div></div>
@@ -186,7 +186,7 @@
     <div></div>
   </div>
 {% else %}
-<body id="page-top" data-link_site="{{empresa.link_site}}">
+<body id="page-top" data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
 {% endif %}
   {% block body %}{% endblock %}
 {% if detect.isMobile() %}

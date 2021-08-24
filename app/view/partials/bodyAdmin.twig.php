@@ -48,7 +48,7 @@
     <script src="https://cdn.tiny.cloud/1/1gynmt6biui7yo713cxe0avaiicbqc9quif500b40zeyiush/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
-<body id="app-container" class="menu-main-hidden show-spinner" data-link_site="{{empresa.link_site}}">
+<body id="app-container" class="menu-main-hidden show-spinner" data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
     {% include 'partials/menuTopAdmin.twig.php' %}
     {% include 'partials/menuLeftAdmin.twig.php' %}
     <main>

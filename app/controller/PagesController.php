@@ -40,7 +40,7 @@ class PagesController extends Controller
         $this->email = new Email();
     }
 
-    
+
 
     public function index($data)
     {
@@ -67,12 +67,20 @@ class PagesController extends Controller
     public function termosUso($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            }
         }
         $this->load('_geral/termosUso/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect()
@@ -82,13 +90,21 @@ class PagesController extends Controller
     public function politicaPrivacidade($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $links = $this->acoes->getFind('paginas');
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            }
         }
         $this->load('_geral/politicaPrivacidade/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'links' => $links,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
@@ -98,7 +114,7 @@ class PagesController extends Controller
 
     public function sobre($data)
     {
-        dd($data);
+        //dd($data);
         $this->load('_geral/quem-somos/sobre', [
             'trans' => $this->trans,
             'detect' => new Mobile_Detect()
@@ -136,6 +152,9 @@ class PagesController extends Controller
     public function home($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($empresa) {
             $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
             $atendimento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
@@ -143,7 +162,7 @@ class PagesController extends Controller
             $produto = $this->acoes->getByFieldAll('produtos', 'id_empresa', $empresa->id);
             $produtoQtd = $this->acoes->counts('produtos', 'id_empresa', $empresa->id);
 
-            $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id,'posicao ASC');
+            $categoria = $this->acoes->getByFieldAllOrder('categorias', 'id_empresa', $empresa->id, 'posicao ASC');
             $tamanhos = $this->acoes->getByFieldAll('pizzaTamanhos', 'id_empresa', $empresa->id);
             $tamanhosCategoria = $this->acoes->getByFieldAll('pizzaTamanhosCategoria', 'id_empresa', $empresa->id);
 
@@ -153,16 +172,18 @@ class PagesController extends Controller
             $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
             $ultimaVenda = null;
             if ($this->sessao->getUser()) {
-                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-                $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
-                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+                if ($this->sessao->getUser() != 'undefined') {
+                    $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                    $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                    $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser());
+                    $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
 
-                if ($verificaVendaAtiva > 0) {
-                    $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
-                    $diahoje = date('d');
+                    if ($verificaVendaAtiva > 0) {
+                        $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
+                        $diahoje = date('d');
+                    }
+                    // $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresa->id);
                 }
-                // $resultCarrinhoQtd = $this->carrinhoModel->carrinhoQtdList($SessionIdUsuario,$empresa->id);
             }
             $hoje = date('w', strtotime(date('Y-m-d')));
             if ($hoje == 0) {
@@ -170,22 +191,27 @@ class PagesController extends Controller
             }
 
             if ($this->sessao->getUser()) {
-                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-                if ($this->sessao->getNivel() == 1) {
-                    redirect(BASE . "{$empresa->link_site}/motoboy");
-                }
+                if ($this->sessao->getUser() != 'undefined') {
+                    $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                    if ($this->sessao->getNivel() == 1) {
+                        redirect(BASE . "{$empresa->link_site}/motoboy");
+                    }
 
-                if ($this->sessao->getNivel() == 0) {
-                    redirect(BASE . "{$empresa->link_site}/admin");
+                    if ($this->sessao->getNivel() == 0) {
+                        redirect(BASE . "{$empresa->link_site}/admin");
+                    }
                 }
             }
             if ($produtoQtd == 0) {
                 redirect(BASE . "{$empresa->link_site}/novo-por-aqui");
             }
         }
-        
+
         $this->load('home/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'endereco' => $empresaEndereco,
             'atendimento' => $atendimento,
             'moeda' => $moeda,
@@ -215,15 +241,23 @@ class PagesController extends Controller
     public function ultimaVenda($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
-            $resultUltimaVenda = $this->acoes->getByFieldTreeMenor('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'status', 4);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+                $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $this->sessao->getUser(), 'status', 4, 1, 'id', 'DESC');
+                $resultUltimaVenda = $this->acoes->getByFieldTreeMenor('carrinhoPedidos', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id, 'status', 4);
+            }
         }
         $status = $this->acoes->getFind('status');
         $this->load('_cliente/pedidos/pedidoStatusHome', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'status' => $status,
             'ultimaVenda' => $resultUltimaVenda,
             'enderecoAtivo' => $enderecoAtivo,
@@ -235,6 +269,9 @@ class PagesController extends Controller
     public function quemSomos($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $formasPagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
         $empresaFuncionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
@@ -242,13 +279,18 @@ class PagesController extends Controller
         $dias = $this->acoes->getFind('dias');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
         $this->load('_geral/quem-somos/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'usuarioAtivo' => $resulUsuario,
             'endereco' => $empresaEndereco,
@@ -267,12 +309,20 @@ class PagesController extends Controller
     public function bemVindo($data)
     {
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            }
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $this->load('_geral/bemVindo/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'enderecoAtivo' => $enderecoAtivo,
             'detect' => new Mobile_Detect()
         ]);
@@ -281,12 +331,20 @@ class PagesController extends Controller
     public function novoDelivery($data)
     {
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            }
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $this->load('_geral/bemVindo/semProduto', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'enderecoAtivo' => $enderecoAtivo,
             'detect' => new Mobile_Detect()
@@ -296,12 +354,20 @@ class PagesController extends Controller
     public function contato($data)
     {
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            }
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $this->load('_geral/contato/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'enderecoAtivo' => $enderecoAtivo,
             'detect' => new Mobile_Detect()
@@ -311,17 +377,25 @@ class PagesController extends Controller
     public function delivery($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
         $links = $this->acoes->getFind('paginas');
 
         $this->load('_cliente/contato/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'usuarioAtivo' => $resulUsuario,
             'enderecoAtivo' => $enderecoAtivo,
@@ -357,14 +431,37 @@ class PagesController extends Controller
         ]);
     }
 
+    public function tenhoInteresse($data)
+    {
+        $links = $this->acoes->getFind('paginas');
+        $planos = $this->acoes->getFind('planos');
+
+        $this->load('_geral/paginas/interesse', [
+            'links' => $links,
+            'planos' => $planos,
+            'trans' => $this->trans,
+            'detect' => new Mobile_Detect()
+
+        ]);
+    }
+
     public function contatoSend($data)
     {
         $this->email->contato($data['nome'], $data['email'], $data['telefone'], $data['msn']);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde','code' => 2 ,  'url' => 'institucional/contato', 'code' => 12]);
+        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde', 'code' => 2,  'url' => 'institucional/contato', 'code' => 12]);
         exit($json);
         redirect("https://automatizadelivery.com.br/institucional/contato");
     }
-    
+
+    public function contatoInteresseSend($data)
+    {
+        $this->email->contatoInteresse($data['nome'], $data['email'], $data['telefone'], $data['empresa'], $data['plano'], $data['msn']);
+
+        header('Content-Type: application/json');
+        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde', 'code' => 2,  'url' => 'institucional/tenho-interesse/ok', 'code' => 12]);
+        exit($json);
+        redirect("https://automatizadelivery.com.br/institucional/tenho-interesse/ok");
+    }
 }

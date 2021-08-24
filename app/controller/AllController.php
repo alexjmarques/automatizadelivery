@@ -41,9 +41,10 @@ class AllController extends Controller
         $this->acoes = new Acoes();
     }
 
-    public function max_key($array) {
+    public function max_key($array)
+    {
         foreach ($array as $key => $val) {
-            if ($val == max($array)) return $val; 
+            if ($val == max($array)) return $val;
         }
     }
 
@@ -83,12 +84,16 @@ class AllController extends Controller
     public function sair($data)
     {
         $empresa = $data['linkSite'] ? $data['linkSite'] : "";
+        $empresaa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $estado = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresaa->id);
         $this->sessao->sair($empresa);
     }
 
     public function sairAdmin($data)
     {
         $empresa = $data['linkSite'] ? $data['linkSite'] : "";
+        $empresaa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $estado = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresaa->id);
         $this->sessao->sair($empresa);
     }
 
@@ -123,21 +128,23 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 0) {
-                redirect(BASE . "{$empresaAct->link_site}/admin");
-            } else if ($this->sessao->getNivel() == 1) {
-                redirect(BASE . "{$empresaAct->link_site}/motoboy/entregas");
-            } else if ($this->sessao->getNivel() == 2) {
-                redirect(BASE . "{$empresaAct->link_site}/admin");
-            } else if ($this->sessao->getNivel() == 3) {
-                if ($this->sessao->getUser() == 0) {
-                } else {
-                    $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa', $empresaAct->id, 'id_usuario', $this->sessao->getUser());
-                    if ($resulEnderecos == 0) {
-                        redirect(BASE . "{$empresaAct->link_site}/endereco/novo/cadastro");
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 0) {
+                    redirect(BASE . "{$empresaAct->link_site}/admin");
+                } else if ($this->sessao->getNivel() == 1) {
+                    redirect(BASE . "{$empresaAct->link_site}/motoboy/entregas");
+                } else if ($this->sessao->getNivel() == 2) {
+                    redirect(BASE . "{$empresaAct->link_site}/admin");
+                } else if ($this->sessao->getNivel() == 3) {
+                    if ($this->sessao->getUser() == 0) {
                     } else {
-                        redirect(BASE . $empresaAct->link_site);
+                        $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa', $empresaAct->id, 'id_usuario', $this->sessao->getUser());
+                        if ($resulEnderecos == 0) {
+                            redirect(BASE . "{$empresaAct->link_site}/endereco/novo/cadastro");
+                        } else {
+                            redirect(BASE . $empresaAct->link_site);
+                        }
                     }
                 }
             }
@@ -153,14 +160,16 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 0) {
-            } else if ($this->sessao->getNivel() == 1) {
-                redirect(BASE . "{$empresaAct->link_site}/motoboy/entregas");
-            } else if ($this->sessao->getNivel() == 2) {
-                redirect(BASE . "{$empresaAct->link_site}/admin");
-            } else if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresaAct->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 0) {
+                } else if ($this->sessao->getNivel() == 1) {
+                    redirect(BASE . "{$empresaAct->link_site}/motoboy/entregas");
+                } else if ($this->sessao->getNivel() == 2) {
+                    redirect(BASE . "{$empresaAct->link_site}/admin");
+                } else if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresaAct->link_site);
+                }
             }
         }
     }
@@ -216,11 +225,13 @@ class AllController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa', $empresaAct->id, 'id_usuario', $this->sessao->getUser());
-            if ($resulEnderecos == 0) {
-                redirect(BASE . "{$empresaAct->link_site}/endereco/novo/cadastro");
-                exit;
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulEnderecos = $this->acoes->countCompanyVar('usuariosEmpresa', 'id_empresa', $empresaAct->id, 'id_usuario', $this->sessao->getUser());
+                if ($resulEnderecos == 0) {
+                    redirect(BASE . "{$empresaAct->link_site}/endereco/novo/cadastro");
+                    exit;
+                }
             }
         }
     }
@@ -247,6 +258,9 @@ class AllController extends Controller
     public function iniciarAtendimento($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $planoAtivo = $this->verificaPlano($empresa->id);
 
@@ -309,6 +323,9 @@ class AllController extends Controller
     public function finalizarAtendimento($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -340,6 +357,7 @@ class AllController extends Controller
     public function verificaEmpresaUser(int $idEmpresa, int $idUsuario)
     {
         $usuario = $this->acoes->getByField('usuariosEmpresa', 'id_usuario', $idUsuario);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $idEmpresa);
         if ($usuario) {
             $empresa = $this->acoes->getByField('empresa', 'id', $usuario->id_empresa);
             if ($idEmpresa != $usuario->id_empresa) {

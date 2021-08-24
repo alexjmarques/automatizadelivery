@@ -42,6 +42,9 @@ class FavoritosController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
@@ -52,8 +55,7 @@ class FavoritosController extends Controller
         $SessionNivel = $segment->get('nivel');
 
 
-        $resultEmpresa = $this->configEmpresaModel->getById($empresaAct[':id']);
-        $resultDelivery = $this->deliveryModel->getByid_empresa($empresaAct[':id']);
+        $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $moeda = $this->moedaModel->getById($resultEmpresa[':moeda']);
 
         $resultDias = $this->diasModel->getAll();
@@ -62,11 +64,13 @@ class FavoritosController extends Controller
 
 
         if ($this->sessao->getUser()) {
+            if ($this->sessao->getUser() != 'undefined') {
             $usuarioLogado = $this->acoes->getByField('usuarios','id', $this->sessao->getUser());
             $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(),'id_empresa', $empresa->id);
             $verificaLogin = $this->allController->verificaPrimeiroAcesso($empresaAct[':id']);
             $favoritos = $this->favoritosModel->getAllCli($SessionIdUsuario);
             $resulUsuario = $this->usuarioModel->getById($SessionIdUsuario);
+            }
         } else {
             redirect(BASE . $empresaAct[':link_site'] . 'login');
         }
@@ -74,11 +78,14 @@ class FavoritosController extends Controller
 
         $trans = new Translate(new PhpFilesLoader("../app/language"),["default" => "pt_BR"]);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', $empresa->id, 1, 'id', 'DESC');
 
         $this->load('_cliente/favoritos/main', [
-            'empresa' => $resultEmpresa,
+            'empresa' => $empresa,
             'moeda' => $moeda,
             'delivery' => $resultDelivery,
             'produto' => $resultProdutos,
@@ -101,6 +108,9 @@ class FavoritosController extends Controller
     public function deletarFavorito($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $result = $this->favoritosModel->delete($data['id']);
 
         if ($result <= 0) {
@@ -113,6 +123,9 @@ class FavoritosController extends Controller
     public function inserirFavorito($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $session = $this->sessionFactory->newInstance($_COOKIE);
         $segment = $session->getSegment('Vendor\Aura\Segment');
 

@@ -44,15 +44,23 @@ class PerfilController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $this->load('_cliente/perfil/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'usuarioAtivo' => $resulUsuario,
             'trans' => $this->trans,
@@ -65,15 +73,23 @@ class PerfilController extends Controller
     public function perfil($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $this->load('_cliente/perfil/perfil', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'detect' => new Mobile_Detect(),
@@ -88,15 +104,23 @@ class PerfilController extends Controller
     {
 
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $this->load('_cliente/perfil/dadosCadastrais', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'detect' => new Mobile_Detect(),
@@ -111,18 +135,26 @@ class PerfilController extends Controller
     public function enderecos($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulEnderecos = $this->acoes->getByFieldAll('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-            $resulEstados = $this->acoes->getFind('estados');
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulEnderecos = $this->acoes->getByFieldAll('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+                $resulEstados = $this->acoes->getFind('estados');
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $this->load('_cliente/perfil/enderecos', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'detect' => new Mobile_Detect(),
@@ -139,18 +171,26 @@ class PerfilController extends Controller
     public function novoEndereco($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-            $resulEstados = $this->acoes->getFind('estados');
+                $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+                $resulEstados = $this->acoes->getFind('estados');
 
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $this->load('_cliente/perfil/endereco', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'detect' => new Mobile_Detect(),
@@ -168,15 +208,23 @@ class PerfilController extends Controller
     public function novoEnderecoPrimeiro($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-        }else{
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            }
+        } else {
             redirect(BASE . "{$empresa->link_site}");
         }
         $this->load('login/endereco', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'enderecoAtivo' => $enderecoAtivo,
             'empresaEndereco' => $empresaEndereco,
             'trans' => $this->trans,
@@ -190,18 +238,25 @@ class PerfilController extends Controller
     public function editarEndereco($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-            $resulEstados = $this->acoes->getFind('estados');
+                $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+                $resulEstados = $this->acoes->getFind('estados');
 
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
-
         $this->load('_cliente/perfil/editar', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'detect' => new Mobile_Detect(),
@@ -218,18 +273,26 @@ class PerfilController extends Controller
     public function telefone($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $resulUsuario = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
 
-            $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
-            $resulEstados = $this->acoes->getFind('estados');
+                $resulEnderecos = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
+                $resulEstados = $this->acoes->getFind('estados');
 
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+            }
         }
 
         $this->load('_cliente/perfil/mudarTelefone', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuarioAtivo' => $resulUsuario,
             'carrinhoQtd' => $resultCarrinhoQtd,
             'resulEnderecos' => $resulEnderecos,
@@ -245,38 +308,33 @@ class PerfilController extends Controller
     public function insertPrimeiroEndereco($data)
     {
 
-        $geo= array();
-        $addr = str_replace(" ", "+", $data['rua'].' '.$data['numero'].', '.$data['cidade'].' - '.$data['estado']);
+        $geo = array();
+        $addr = str_replace(" ", "+", $data['rua'] . ' ' . $data['numero'] . ', ' . $data['cidade'] . ' - ' . $data['estado']);
         $address = utf8_encode($addr);
 
         $geocode = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ');
         $output = json_decode($geocode);
 
-        foreach( $output->results[0]->address_components as $component) {
+        foreach ($output->results[0]->address_components as $component) {
             $componentType = $component->types[0];
             switch ($componentType) {
-                case "street_number":
-                    {
+                case "street_number": {
                         $street_number = $component->long_name;
                         break;
                     }
-                case "route":
-                    {
+                case "route": {
                         $rua = $component->long_name;
                         break;
                     }
-                case "postal_code":
-                    {
+                case "postal_code": {
                         $cep = $component->long_name;
                         break;
                     }
-                case "administrative_area_level_2":
-                    {
+                case "administrative_area_level_2": {
                         $cidade = $component->long_name;
                         break;
                     }
-                case "administrative_area_level_1":
-                    {
+                case "administrative_area_level_1": {
                         $estado = $component->short_name;
                         break;
                     }
@@ -305,7 +363,6 @@ class PerfilController extends Controller
             $novo->cep = $cep;
             $novo->principal = 1;
             $novo->save();
-
 
             header('Content-Type: application/json');
             $json = json_encode(['id' => $novo->id, 'resp' => 'insert', 'mensagem' => 'Primeiro endereço cadastrado com Sucesso!', 'error' => 'Erro ao cadastrar seu primeiro endereço', 'code' => 2,  'url' => 'carrinho',]);
@@ -350,38 +407,33 @@ class PerfilController extends Controller
             }
         }
 
-        $geo= array();
-        $addr = str_replace(" ", "+", $data['rua'].' '.$data['numero'].', '.$data['cidade'].' - '.$data['estado']);
+        $geo = array();
+        $addr = str_replace(" ", "+", $data['rua'] . ' ' . $data['numero'] . ', ' . $data['cidade'] . ' - ' . $data['estado']);
         $address = utf8_encode($addr);
 
         $geocode = file_get_contents('https://maps.google.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ');
         $output = json_decode($geocode);
 
-        foreach( $output->results[0]->address_components as $component) {
+        foreach ($output->results[0]->address_components as $component) {
             $componentType = $component->types[0];
             switch ($componentType) {
-                case "street_number":
-                    {
+                case "street_number": {
                         $street_number = $component->long_name;
                         break;
                     }
-                case "route":
-                    {
+                case "route": {
                         $rua = $component->long_name;
                         break;
                     }
-                case "postal_code":
-                    {
+                case "postal_code": {
                         $cep = $component->long_name;
                         break;
                     }
-                case "administrative_area_level_2":
-                    {
+                case "administrative_area_level_2": {
                         $cidade = $component->long_name;
                         break;
                     }
-                case "administrative_area_level_1":
-                    {
+                case "administrative_area_level_1": {
                         $estado = $component->short_name;
                         break;
                     }

@@ -1,5 +1,6 @@
 var formatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 });
 var link_site = $('body').attr('data-link_site');
+var estado_site = $('body').attr('data-estado_site');
 $.fn.addCommas = function(nStr) {
     nStr += "";
     var x = nStr.split(".");

@@ -231,6 +231,11 @@ class Acoes
         return $this->{$table}->find("{$field} = {$valor} AND {$field2} = {$valor2} AND numero_pedido is null")->fetch(true);
     }
 
+    public function getByFieldAllNull(string $table, string $field, string $valor)
+    {
+        return $this->{$table}->find("{$field} = {$valor} AND numero_pedido is null")->fetch(true);
+    }
+
     public function limitOrder(string $table, string $field, string $valor,int $limit, string $field2, string $order)
     {
         return $this->{$table}->find("{$field} ={$valor}")->limit($limit)->order("{$field2} {$order}")->fetch(true);

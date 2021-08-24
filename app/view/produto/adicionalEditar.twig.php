@@ -140,5 +140,11 @@
 {% include 'partials/modal.twig.php' %}
 
 
+{% if isLogin is not empty %}
+{% if isLogin != 'undefined' %}
+{% if isLogin != 0 %}
 {% include 'partials/footer.twig.php' %}
+{% endif %}
+{% endif %}
+{% endif %}
 {% endblock %}

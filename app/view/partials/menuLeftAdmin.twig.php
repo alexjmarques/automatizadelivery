@@ -36,7 +36,7 @@
                             </li>
                             <li id="caiRel">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/caixa/relatorio">
-                                    <span class="d-inline-block">Relatório de Caixa</span>
+                                    <span class="d-inline-block">Relatório de Vendas</span>
                                 </a>
                             </li>
                             <li id="caiCli">
@@ -82,7 +82,7 @@
                             {% if planoAtivo > 1 %}
                             <li id="subPf">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/pedidos-finalizados">
-                                    <span class="d-inline-block"><strong>Todos Pedidos</strong></span>
+                                    <span class="d-inline-block"><strong>Pedidos Finalizados</strong></span>
                                 </a>
                             </li>
                             {% else %}

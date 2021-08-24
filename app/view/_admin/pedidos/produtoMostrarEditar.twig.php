@@ -146,6 +146,9 @@
 
 
 <script>
+    var link_site = $('body').attr('data-link_site');
+    var estado_site = $('body').attr('data-estado_site');
+
     $(document).ready(function() {
         if ($(document).find(`[data-tipo_escolha='2']`).length > 0) {
             $(`.addStyleMod, .addStyleModT, .addStyle`).hide();
@@ -578,7 +581,7 @@
         success: function(dd) {
             //console.log(dd);
             if (parseInt(dd) === 0) {
-                $('#mostraCarrinhoItensEditar').html('<div class="alert alert-info text-center">Adicione Produtos para continuar</div>');
+                $('#mostraCarrinhoItensEditar').html('<div class="empty text-center"><i class="simple-icon-basket"></i><br/>Adicione Produtos para continuar</div>');
             } else {
                 $('#mostraCarrinhoItensEditar').html(dd);
             }

@@ -21,6 +21,7 @@
 			<h3>Novo Pedido Delivery</h3>
 			<hr>
 			<p>Para efetuar um novo pedido, basta informar o numero de telefone do cliente e clicar na lupa para buscar os dados do cliente na plataforma</p>
+			<div class="clearfix col-12"></div>
 			<div class="form-group col-md-5 mb-2">
 				<label class="col-12 col-form-label bold" style="padding-left: 0;">Telefone do Cliente com DDD</label>
 				<input type="text" class="form-control form-pedido" id="telefone" name="telefone" value="" autocomplete="off">

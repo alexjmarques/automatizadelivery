@@ -76,9 +76,14 @@ class MobilidadeCadastroController extends Controller
     public function pagamento($data)
     {
         if ($this->sessao->getUser()) {
+            if ($this->sessao->getUser() != 'undefined') {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $empresa = $this->acoes->getByField('empresa', 'email_contato', $this->sessao->getEmail());
+            $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
             $endereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+            }
         } else {
             redirect(BASE);
         }
@@ -96,6 +101,9 @@ class MobilidadeCadastroController extends Controller
             'links' => $links,
             'endereco' => $endereco,
             'empresa' => $empresa,
+'endEmp' => $endEmp,
+'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuario' => $usuarioLogado,
             'moeda' => $moeda,
             'plano' => $plano,
@@ -301,6 +309,9 @@ class MobilidadeCadastroController extends Controller
     {
         $pagarme = new \PagarMe\Client(pagarme_api_key);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
 
         $planoAtivo = $this->geral->verificaPlano($empresa->id);

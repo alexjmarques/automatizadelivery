@@ -67,7 +67,7 @@ src="https://www.facebook.com/tr?id=169843661727356&ev=PageView
 </noscript>
 <!-- End Facebook Pixel Code -->
 </head>
-<body data-link_site="{{empresa.link_site}}">
+<body data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
 {% block body %}{% endblock %}
 <script src="{{BASE}}js/jquery.min.js" type="text/javascript"></script>
 <script src="{{BASE}}js/jquery-ui.js"></script>

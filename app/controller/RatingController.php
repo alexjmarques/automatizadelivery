@@ -23,7 +23,6 @@ class RatingController extends Controller
     private $geral;
     private $trans;
 
-
     /**
      * 
      * Metodo Construtor
@@ -42,6 +41,9 @@ class RatingController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $pedido = $this->acoes->getByField('carrinhoPedidos', 'numero_pedido', $data['numero_pedido']);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -60,6 +62,9 @@ class RatingController extends Controller
             'id_cliente' => $this->sessao->getUser(),
             'data_compra' => $pedido->created_at,
             'empresa' => $empresa,
+'endEmp' => $endEmp,
+'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'usuarioLogado' => $usuario,
@@ -71,6 +76,9 @@ class RatingController extends Controller
     public function rating($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         
         $valor = new Avaliacao();
         $valor->numero_pedido = $data['numero_pedido'];

@@ -1,7 +1,8 @@
+
 {% if pedido.tipo_frete == 1 %}
-<span class="bg-warning white-color codB">Cliente vai {{tipoFrete.tipo}}</span>
+<span class="bg-warning white-color codB">Cliente vai {{ tipoFrete.tipo }}</span>
 {% else %}
-<span class="bg-success white-color codB">Pedido para {{tipoFrete.tipo}}</span>
+<span class="bg-success white-color codB">Pedido para {{tipoFrete.tipo }}</span>
 {% endif %}
 <div class="modal-header">
 

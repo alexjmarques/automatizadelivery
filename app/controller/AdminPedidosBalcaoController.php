@@ -55,6 +55,9 @@ class AdminPedidosBalcaoController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -71,10 +74,12 @@ class AdminPedidosBalcaoController extends Controller
 
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -88,6 +93,9 @@ class AdminPedidosBalcaoController extends Controller
 
         $this->load('_admin/pedidos/novo', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -106,6 +114,9 @@ class AdminPedidosBalcaoController extends Controller
     public function novo($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -128,129 +139,131 @@ class AdminPedidosBalcaoController extends Controller
             $resultPedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $estabelecimento[0]->id);
         }
 
-            $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
-            $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
+        $tipo = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
+        $pagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
 
-            $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
-            $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
-            $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
-            $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
+        $resultSoma = $this->acoes->sumFielsTreeNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+        $resultSomaAdicional = $this->acoes->sumFielsTreeNull('carrinhoAdicional', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id, 'numero_pedido', 'null', 'valor * quantidade');
+        $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
+        $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
 
-            if ($enderecoAtivo) {
-                $cFrete = $this->calculoFrete->calculo($enderecoAtivo->rua, $enderecoAtivo->numero, $enderecoAtivo->bairro, $enderecoAtivo->cep, $enderecoAtivo->id);
-                $infoKm = $this->calculoFrete->infoKm($enderecoAtivo->rua, $enderecoAtivo->numero, $enderecoAtivo->bairro, $enderecoAtivo->cep, $enderecoAtivo->id);
+        if ($enderecoAtivo) {
+            $cFrete = $this->calculoFrete->calculo($enderecoAtivo->rua, $enderecoAtivo->numero, $enderecoAtivo->bairro, $enderecoAtivo->cep, $enderecoAtivo->id);
+            $infoKm = $this->calculoFrete->infoKm($enderecoAtivo->rua, $enderecoAtivo->numero, $enderecoAtivo->bairro, $enderecoAtivo->cep, $enderecoAtivo->id);
 
-                $termo = 'km';
-                $pattern = '/' . $termo . '/';
-                if (preg_match($pattern, $infoKm)) {
-                    $cFrete = $cFrete;
-                } else {
-                    $cFrete = 1;
-                }
+            $termo = 'km';
+            $pattern = '/' . $termo . '/';
+            if (preg_match($pattern, $infoKm)) {
+                $cFrete = $cFrete;
+            } else {
+                $cFrete = 1;
+            }
 
-                //dd($infoKm);
-                //dd($cFrete);
-                $taxa_entrega = $delivery->taxa_entrega;
-                $km_entrega = $delivery->km_entrega;
+            //dd($infoKm);
+            //dd($cFrete);
+            $taxa_entrega = $delivery->taxa_entrega;
+            $km_entrega = $delivery->km_entrega;
 
-                $taxa_entrega2 = $delivery->taxa_entrega2;
-                $km_entrega2 = $delivery->km_entrega2;
+            $taxa_entrega2 = $delivery->taxa_entrega2;
+            $km_entrega2 = $delivery->km_entrega2;
 
-                $taxa_entrega3 = $delivery->taxa_entrega3;
-                $km_entrega3 = $delivery->km_entrega3;
+            $taxa_entrega3 = $delivery->taxa_entrega3;
+            $km_entrega3 = $delivery->km_entrega3;
 
-                $km_entrega_excedente = $delivery->km_entrega_excedente;
-                $valor_excedente = $delivery->valor_excedente;
+            $km_entrega_excedente = $delivery->km_entrega_excedente;
+            $valor_excedente = $delivery->valor_excedente;
 
 
-                if ($cFrete <= $km_entrega) {
-                    $total = $taxa_entrega;
-                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega + $freteVezes;
-                        $total = $taxa_entregaNova;
-                    }
-                }
-
-                if ($delivery->km_entrega_excedente != 0) {
-                    $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
-                }
-
-                if ($km_entrega2 != 0.00) {
-                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
-                        $total = $taxa_entrega2;
-                    }
-
-                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
-                        $total = $taxa_entregaNova;
-
-                        //dd($total);
-                    }
-
-                    if ($delivery->km_entrega_excedente == 0) {
-                        $deliveryEntregaExcedente = $delivery->km_entrega2;
-                    }
-                }
-
-                if ($km_entrega3 != 0.00) {
-                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
-                        $total = $taxa_entrega3;
-                    }
-
-                    if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
-                        $total = $taxa_entregaNova;
-                    }
-
-                    if ($delivery->km_entrega_excedente == 0) {
-                        $deliveryEntregaExcedente = $delivery->km_entrega3;
-                    }
-                }
-
-                if ($delivery->frete_status == 1) {
-                    if ($delivery->valor <= $valorCarrinho) {
-                        $total = 0;
-                    }
-                }
-
-                if ($delivery->primeira_compra == 1) {
-                    if ($resultVendasFeitas == 0) {
-                        $total = 0;
-                    }
+            if ($cFrete <= $km_entrega) {
+                $total = $taxa_entrega;
+                if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
             }
 
-            $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
-
-            $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-
-            if ($cupomVerifica > 0) {
-                $cupomUtilizacoesId = $this->acoes->getByField('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id,);
-                $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizacoesId->id_cupom);
-
-                if ((int)$cupomValida->tipo_cupom == 1) {
-                    $valor = $valorCarrinho;
-                    $porcentagem = floatval($cupomValida->valor_cupom);
-                    $resul = $valor * ($porcentagem / 100);
-                    $resultado = $resul;
-                } else {
-                    $resultado = $cupomValida->valor_cupom;
-                }
-                $valorCarrinho = $valorCarrinho - $resultado;
+            if ($delivery->km_entrega_excedente != 0) {
+                $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
             }
+
+            if ($km_entrega2 != 0.00) {
+                if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
+                    $total = $taxa_entrega2;
+                }
+
+                if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                    $total = $taxa_entregaNova;
+
+                    //dd($total);
+                }
+
+                if ($delivery->km_entrega_excedente == 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega2;
+                }
+            }
+
+            if ($km_entrega3 != 0.00) {
+                if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
+                    $total = $taxa_entrega3;
+                }
+
+                if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                    $total = $taxa_entregaNova;
+                }
+
+                if ($delivery->km_entrega_excedente == 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega3;
+                }
+            }
+
+            if ($delivery->frete_status == 1) {
+                if ($delivery->valor <= $valorCarrinho) {
+                    $total = 0;
+                }
+            }
+
+            if ($delivery->primeira_compra == 1) {
+                if ($resultVendasFeitas == 0) {
+                    $total = 0;
+                }
+            }
+        }
+
+        $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
+
+        $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+
+        if ($cupomVerifica > 0) {
+            $cupomUtilizacoesId = $this->acoes->getByField('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id,);
+            $cupomValida = $this->acoes->getByField('cupomDesconto', 'id', $cupomUtilizacoesId->id_cupom);
+
+            if ((int)$cupomValida->tipo_cupom == 1) {
+                $valor = $valorCarrinho;
+                $porcentagem = floatval($cupomValida->valor_cupom);
+                $resul = $valor * ($porcentagem / 100);
+                $resultado = $resul;
+            } else {
+                $resultado = $cupomValida->valor_cupom;
+            }
+            $valorCarrinho = $valorCarrinho - $resultado;
+        }
 
 
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            if ($this->sessao->getNivel() == 3) {
-                redirect(BASE . $empresa->link_site);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
             }
         } else {
             redirect(BASE . "{$empresa->link_site}/admin/login");
@@ -264,6 +277,9 @@ class AdminPedidosBalcaoController extends Controller
 
         $this->load('_admin/pedidos/novo-cliente', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -319,6 +335,9 @@ class AdminPedidosBalcaoController extends Controller
     public function produtos($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -338,14 +357,16 @@ class AdminPedidosBalcaoController extends Controller
 
         $ultimaVenda = null;
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
+                //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
 
-            if ($verificaVendaAtiva > 0) {
-                $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 4, 1, 'id', 'DESC');
+                // if ($verificaVendaAtiva > 0) {
+                //     $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id, 'status', 4, 1, 'id', 'DESC');
+                // }
             }
         }
         $hoje = date('w', strtotime(date('Y-m-d')));
@@ -354,11 +375,16 @@ class AdminPedidosBalcaoController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
 
         $this->load('_admin/pedidos/novoProduto', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -379,6 +405,9 @@ class AdminPedidosBalcaoController extends Controller
     public function editar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -510,14 +539,16 @@ class AdminPedidosBalcaoController extends Controller
 
         $ultimaVenda = null;
         if ($this->sessao->getUser()) {
-            $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $pedido->id_cliente, 'id_empresa', $empresa->id);
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $pedido->id_cliente);
-            //$enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                //$resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $pedido->id_cliente, 'id_empresa', $empresa->id);
+                $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $pedido->id_cliente);
+                //$enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
 
-            if ($verificaVendaAtiva > 0) {
-                $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $pedido->id_cliente, 'status', 4, 1, 'id', 'DESC');
+                if ($verificaVendaAtiva > 0) {
+                    $ultimaVenda = $this->acoes->limitOrderFill('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $pedido->id_cliente, 'status', 4, 1, 'id', 'DESC');
+                }
             }
         }
         $hoje = date('w', strtotime(date('Y-m-d')));
@@ -526,11 +557,16 @@ class AdminPedidosBalcaoController extends Controller
         }
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+            }
         }
 
         $this->load('_admin/pedidos/editar-cliente', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'pedido' => $pedido,
             'enderecoAtivo' => $enderecoAtivo,
@@ -555,17 +591,8 @@ class AdminPedidosBalcaoController extends Controller
             'caixa' => $caixa->status,
             'carrinhoAdicional' => $carrinhoAdicional,
             'valorPedido' => $valorCarrinho,
-            'carrinhoQtd' => $resultCarrinhoQtd,
             'categoria' => $categoria
         ]);
-    }
-    public function carrinhoQtd($data)
-    {
-        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
-        if ($cliente->id) {
-            $contagem = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
-            echo $contagem;
-        }
     }
 
     public function carrinhoAddProdutoPizza($data)
@@ -624,7 +651,7 @@ class AdminPedidosBalcaoController extends Controller
          */
 
 
-        $id_cliente = 'id_cliente_'.$data['id'];
+        $id_cliente = 'id_cliente_' . $data['id'];
 
         $valor = new Carrinho();
         $valor->id_produto = $idProduto;
@@ -722,7 +749,7 @@ class AdminPedidosBalcaoController extends Controller
             $sabores = $data['sabores'][0];
         }
 
-        $id_cliente = 'id_cliente_'.$data['id'];
+        $id_cliente = 'id_cliente_' . $data['id'];
 
         $valor = new Carrinho();
         $valor->id_produto = $data['id'];
@@ -734,7 +761,7 @@ class AdminPedidosBalcaoController extends Controller
         $valor->id_adicional = $data['id_adicional'];
         $valor->valor = $data['valor'];
         if ($data['numero_pedido']) {
-        $valor->numero_pedido = $data['numero_pedido'];
+            $valor->numero_pedido = $data['numero_pedido'];
         }
         $valor->save();
 
@@ -753,7 +780,7 @@ class AdminPedidosBalcaoController extends Controller
                 $cartAdic->quantidade = $qtd_adicional;
                 if ($data['numero_pedido']) {
                     $cartAdic->numero_pedido = $data['numero_pedido'];
-                    }
+                }
                 $cartAdic->id_empresa = $data['id_empresa'];
                 $cartAdic->save();
             }
@@ -766,6 +793,9 @@ class AdminPedidosBalcaoController extends Controller
     public function produtoMostrar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -785,12 +815,17 @@ class AdminPedidosBalcaoController extends Controller
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            }
         }
 
         $this->load('_admin/pedidos/produtoMostrar', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -810,6 +845,9 @@ class AdminPedidosBalcaoController extends Controller
     public function produtoMostrarEditar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -829,12 +867,17 @@ class AdminPedidosBalcaoController extends Controller
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            }
         }
 
         $this->load('_admin/pedidos/produtoMostrarEditar', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
             'isLogin' => $this->sessao->getUser(),
@@ -859,6 +902,9 @@ class AdminPedidosBalcaoController extends Controller
     {
         //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -887,18 +933,26 @@ class AdminPedidosBalcaoController extends Controller
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            }
         }
 
         $this->load('_admin/pedidos/produtoPizzaMostrar', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'pizzaMassas' => $pizzaMassas,
             'massasTamanho' => $massaTamanho,
             'pizzaMassasTamanhos' => $pizzaMassasTamanhos,
             'produtos' => $produtos,
             'produtoValor' => $produtoValor,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'delivery' => $delivery,
             'categoria' => $categoria,
             'tamanhosCategoria' => $tamanhosCategoria,
@@ -914,7 +968,6 @@ class AdminPedidosBalcaoController extends Controller
             'tipoAdicional' => $resulTipoAdicional,
             'produtoSabores' => $resultSabores,
             'produtoSabores' => $resultSabores,
-            'carrinhoqtd' => $verificaVendaAtiva,
             'chave' => md5(uniqid(rand(), true)),
             'caixa' => $caixa->status
         ]);
@@ -924,6 +977,9 @@ class AdminPedidosBalcaoController extends Controller
     {
         //dd($data);
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
@@ -952,18 +1008,26 @@ class AdminPedidosBalcaoController extends Controller
         $resultSabores = $this->acoes->getByFieldAll('produtoSabor', 'id_empresa', $empresa->id);
 
         if ($this->sessao->getUser()) {
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            if ($this->sessao->getUser() != 'undefined') {
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                //$verificaVendaAtiva = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_cliente', $cliente->id);
+            }
         }
 
         $this->load('_admin/pedidos/produtoPizzaMostrarEditar', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'pizzaMassas' => $pizzaMassas,
             'massasTamanho' => $massaTamanho,
             'pizzaMassasTamanhos' => $pizzaMassasTamanhos,
             'produtos' => $produtos,
             'produtoValor' => $produtoValor,
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'delivery' => $delivery,
             'categoria' => $categoria,
             'tamanhosCategoria' => $tamanhosCategoria,
@@ -980,7 +1044,6 @@ class AdminPedidosBalcaoController extends Controller
             'tipoAdicional' => $resulTipoAdicional,
             'produtoSabores' => $resultSabores,
             'produtoSabores' => $resultSabores,
-            'carrinhoqtd' => $verificaVendaAtiva,
             'chave' => md5(uniqid(rand(), true)),
             'caixa' => $caixa->status
         ]);
@@ -989,6 +1052,9 @@ class AdminPedidosBalcaoController extends Controller
     public function carrinhoProdutos($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -1129,48 +1195,53 @@ class AdminPedidosBalcaoController extends Controller
             }
             $resultchave = md5(uniqid(rand(), true));
 
-        $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
+            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
 
-        if ($resultCarrinhoQtd == 0) {
-            redirect(BASE . "{$empresa->link_site}");
-        }
-        $this->load('_admin/pedidos/carrinho', [
-            'empresa' => $empresa,
-            'enderecoAtivo' => $enderecoAtivo,
-            'trans' => $this->trans,
-            'usuarioLogado' => $usuarioLogado,
-            'isLogin' => $this->sessao->getUser(),
-            'moeda' => $moeda,
-            'estados' => $estados,
-            'planoAtivo' => $planoAtivo,
-            'delivery' => $delivery,
-            'carrinho' => $carrinho,
-            'carrinhoAdicional' => $carrinhoAdicional,
-            'produtos' => $produtos,
-            'adicionais' => $adicionais,
-            'sabores' => $sabores,
-            'tipo' => $tipo,
-            'cliente' => $cliente,
-            'pagamento' => $pagamento,
-            'calculoFrete' => $total,
-            'numero_pedido' => $this->sessao->getSessao('numeroPedido'),
-            'nivelUsuario' => $this->sessao->getNivel(),
-            'valorPedido' => $valorCarrinho,
-            'endereco' => $endereco,
-            'km' => $cFrete,
-            'km_entrega_excedente' => $km_entrega_excedente,
-            'km_entrega' => $km_entrega,
-            'caixa' => $caixa->status
-        ]);
-        }else{
+            if ($resultCarrinhoQtd == 0) {
+                redirect(BASE . "{$empresa->link_site}");
+            }
+            $this->load('_admin/pedidos/carrinho', [
+                'empresa' => $empresa,
+                'endEmp' => $endEmp,
+                'funcionamento' => $funcionamento,
+                'dias' => $dias,
+                'enderecoAtivo' => $enderecoAtivo,
+                'trans' => $this->trans,
+                'usuarioLogado' => $usuarioLogado,
+                'isLogin' => $this->sessao->getUser(),
+                'moeda' => $moeda,
+                'estados' => $estados,
+                'planoAtivo' => $planoAtivo,
+                'delivery' => $delivery,
+                'carrinho' => $carrinho,
+                'carrinhoAdicional' => $carrinhoAdicional,
+                'produtos' => $produtos,
+                'adicionais' => $adicionais,
+                'sabores' => $sabores,
+                'tipo' => $tipo,
+                'cliente' => $cliente,
+                'pagamento' => $pagamento,
+                'calculoFrete' => $total,
+                'numero_pedido' => $this->sessao->getSessao('numeroPedido'),
+                'nivelUsuario' => $this->sessao->getNivel(),
+                'valorPedido' => $valorCarrinho,
+                'endereco' => $endereco,
+                'km' => $cFrete,
+                'km_entrega_excedente' => $km_entrega_excedente,
+                'km_entrega' => $km_entrega,
+                'caixa' => $caixa->status
+            ]);
+        } else {
             echo 0;
         }
-        
     }
 
     public function carrinhoProdutosEditar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $empresaEndereco = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
         $planoAtivo = $this->geral->verificaPlano($empresa->id);
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -1311,40 +1382,42 @@ class AdminPedidosBalcaoController extends Controller
                 }
                 $valorCarrinho = $valorCarrinho - $resultado;
             }
-            
-        $this->load('_admin/pedidos/carrinho-editar', [
-            'empresa' => $empresa,
-            'enderecoAtivo' => $enderecoAtivo,
-            'trans' => $this->trans,
-            'usuarioLogado' => $usuarioLogado,
-            'isLogin' => $this->sessao->getUser(),
-            'moeda' => $moeda,
-            'estados' => $estados,
-            'planoAtivo' => $planoAtivo,
-            'delivery' => $delivery,
-            'carrinho' => $carrinho,
-            'carrinhoAdicional' => $carrinhoAdicional,
-            'produtos' => $produtos,
-            'adicionais' => $adicionais,
-            'sabores' => $sabores,
-            'tipo' => $tipo,
-            'cliente' => $cliente,
-            'pagamento' => $pagamento,
-            'calculoFrete' => $total,
-            'numero_pedido' => $pedido->numero_pedido,
-            'id_pedido' => $pedido->id,
-            'nivelUsuario' => $this->sessao->getNivel(),
-            'valorPedido' => $valorCarrinho,
-            'endereco' => $endereco,
-            'km' => $cFrete,
-            'km_entrega_excedente' => $km_entrega_excedente,
-            'km_entrega' => $km_entrega,
-            'caixa' => $caixa->status
-        ]);
-        }else{
+
+            $this->load('_admin/pedidos/carrinho-editar', [
+                'empresa' => $empresa,
+                'endEmp' => $endEmp,
+                'funcionamento' => $funcionamento,
+                'dias' => $dias,
+                'enderecoAtivo' => $enderecoAtivo,
+                'trans' => $this->trans,
+                'usuarioLogado' => $usuarioLogado,
+                'isLogin' => $this->sessao->getUser(),
+                'moeda' => $moeda,
+                'estados' => $estados,
+                'planoAtivo' => $planoAtivo,
+                'delivery' => $delivery,
+                'carrinho' => $carrinho,
+                'carrinhoAdicional' => $carrinhoAdicional,
+                'produtos' => $produtos,
+                'adicionais' => $adicionais,
+                'sabores' => $sabores,
+                'tipo' => $tipo,
+                'cliente' => $cliente,
+                'pagamento' => $pagamento,
+                'calculoFrete' => $total,
+                'numero_pedido' => $pedido->numero_pedido,
+                'id_pedido' => $pedido->id,
+                'nivelUsuario' => $this->sessao->getNivel(),
+                'valorPedido' => $valorCarrinho,
+                'endereco' => $endereco,
+                'km' => $cFrete,
+                'km_entrega_excedente' => $km_entrega_excedente,
+                'km_entrega' => $km_entrega,
+                'caixa' => $caixa->status
+            ]);
+        } else {
             echo 0;
         }
-        
     }
 
     //Finaliza e fecha o pedido do cliente
@@ -1362,6 +1435,9 @@ class AdminPedidosBalcaoController extends Controller
             $valor_frete = 0;
         }
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $carrinho = $this->acoes->getByFieldAllTwoNull('carrinho', 'id_cliente', $data['idCliente'], 'id_empresa', $empresa->id);
         $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
@@ -1515,14 +1591,17 @@ class AdminPedidosBalcaoController extends Controller
                 $valorAd = (new CarrinhoAdicional())->findById($res->id);
                 $valorAd->destroy();
             }
-            redirect(BASE . "{$data['linkSite']}/admin/pedido/editar/produtos/{$data['pedido']}");
+            redirect(BASE . "{$data['estado']}/{$data['linkSite']}/admin/pedido/editar/produtos/{$data['pedido']}");
         }
-        redirect(BASE . "{$data['linkSite']}/admin/pedido/editar/produtos/{$data['pedido']}");
+        redirect(BASE . "{$data['estado']}/{$data['linkSite']}/admin/pedido/editar/produtos/{$data['pedido']}");
     }
 
     public function carrinhoCadastroValida($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
         if ($getTelefone->id > 0) {
@@ -1610,6 +1689,9 @@ class AdminPedidosBalcaoController extends Controller
     public function carrinhoCadastroEndereco($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $cliente = $this->acoes->getByField('usuarios', 'id', $data['idCliente']);
         $usuario = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $cliente->id, 'id_empresa', $empresa->id);
 

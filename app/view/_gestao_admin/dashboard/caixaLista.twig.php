@@ -47,7 +47,7 @@
                             <td>
                                 <p class="text-muted"><a
                                         href="{{BASE}}{{empresa.link_site}}/admin/caixa/dia/{{ c.id }}">Dia ({{
-                                        c.data_inicio|date('m-d') }})</a></p>
+                                        c.data_inicio|date("d/m/Y") }})</a></p>
                             </td>
                             <td>
                                 <p class="text-muted"><a

@@ -3,7 +3,7 @@
 {% block body %}
 <div class="container-fluid">
     <div class="col-12">
-        <h1 id="titleBy" data-id="{{caixaDados.id}}">Dia ({{ caixaDados.data_inicio|date('m-d') }})</h1>
+        <h1 id="titleBy" data-id="{{caixaDados.id}}">Dia ({{ caixaDados.data_inicio|date("d/m/Y") }})</h1>
         <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
             <ol class="breadcrumb pt-0">
                 <li class="breadcrumb-item">
@@ -12,7 +12,7 @@
                 <li class="breadcrumb-item">
                     <a href="{{BASE}}{{empresa.link_site}}/admin/caixa">Relatórios</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Dia ({{ caixaDados.data_inicio|date('m-d') }})
+                <li class="breadcrumb-item active" aria-current="page">Dia ({{ caixaDados.data_inicio|date("d/m/Y") }})
                 </li>
             </ol>
         </nav>
@@ -90,12 +90,13 @@
                                 <th style="width: 150px !important;">Frete</th>
                                 <th style="width: 150px !important;">Pagamento</th>
                                 <th style="width: 150px !important;">Status</th>
-                                <th style="width: 200px !important;">Valor Pago</th>
+                                <th style="width: 200px !important; text-align:right;">Pedidos</th>
                                 <th style="width: 100px !important;">Entregas</th>
                                 <th style="width: 200px !important;">Ganho Total</th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% set taxaMoto = 0 %}
                             {% for ped in pedidos %}
                                 {% for stats in status %}
                                         {% if ped.status == stats.id %}
@@ -145,6 +146,9 @@
                                     {% if ped.tipo_frete == 2 %}
                                     <p class="text-danger">{{moeda.simbolo}} {{ (ped.valor_frete - delivery.taxa_entrega_motoboy)|number_format(2, ',',
                                         '.') }}</p>
+                                        {% if ped.status < 6 %}
+                                        {% set taxaMoto = taxaMoto + 1 %}
+                                        {% endif %}
                                     {% else %}
                                         ----
                                     {% endif %}
@@ -179,10 +183,10 @@
                             <tr>
                                 <th colspan="4" class="text-right">Total</th>
                                 <th class="text-right" style="width: 100px !important;">{{moeda.simbolo}} {{vendas.total|number_format(2, ',', '.')}}</th>
-                                <th class="text-right text-danger" style="width: 100px !important;">- {{moeda.simbolo}} {{entregas.total|number_format(2, ',', '.')}}</th>
-                                <th class="text-right text-success" style="width: 100px !important;">{{moeda.simbolo}} {{(totalFinal.total - entregas.total)|number_format(2, ',', '.')}}</th>
 
-                                
+                                {% set taxaCalc = taxaMoto * delivery.taxa_entrega_motoboy %}
+                                <th class="text-right text-danger" style="width: 100px !important;">- {{moeda.simbolo}} {{(entregas.total - taxaCalc)|number_format(2, ',', '.')}}</th>
+                                <th class="text-right text-success" style="width: 100px !important;">{{moeda.simbolo}} {{(totalFinal.total - entregas.total)|number_format(2, ',', '.')}}</th>
                             </tr>
                         </tfoot>
                     </table>

@@ -20,7 +20,9 @@
     </div>
 </div>
 {% include 'partials/modalCancelPedido.twig.php' %}
-{% if usuarioLogado.id > 0 %}
+{% if isLogin != 'undefined' %}
+{% if isLogin != 0 %}
 {% include 'partials/footer.twig.php' %}
+{% endif %}
 {% endif %}
 {% endblock %}

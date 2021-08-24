@@ -51,6 +51,12 @@ class CarrinhoController extends Controller
     public function index($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+
+        //dd($funcionamento);
+        $dias = $this->acoes->getFind('dias');
+
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByField('produtos', 'id', $data['id']);
         $resultProdutoAdicional = $this->acoes->getByFieldAll('produtoAdicional', 'id', $empresa->id);
@@ -60,20 +66,25 @@ class CarrinhoController extends Controller
         $resultchave = md5(uniqid(rand(), true));
         $resultCarrinhoQtd = 0;
         if ($this->sessao->getUser()) {
-            $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
-            $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
-            $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
-            if ($this->sessao->getNivel() == 1) {
-                redirect(BASE . "{$empresa->link_site}/motoboy");
-            }
+            if ($this->sessao->getUser() != 'undefined') {
+                $resultCarrinhoQtd = $this->acoes->countsTwoNull('carrinho', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
+                if ($this->sessao->getNivel() == 1) {
+                    redirect(BASE . "{$empresa->link_site}/motoboy");
+                }
 
-            if ($this->sessao->getNivel() == 0) {
-                redirect(BASE . "{$empresa->link_site}/admin");
+                if ($this->sessao->getNivel() == 0) {
+                    redirect(BASE . "{$empresa->link_site}/admin");
+                }
             }
         }
 
         $this->load('produto/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'dias' => $dias,
+            'funcionamento' => $funcionamento,
             'moeda' => $moeda,
             'produto' => $produto,
             'enderecoAtivo' => $enderecoAtivo,
@@ -119,6 +130,9 @@ class CarrinhoController extends Controller
     public function carrinhoAdicional($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $carrinho = $this->acoes->getByField('carrinho', 'id', $data['id']);
         $produto = $this->acoes->getByField('produtos', 'id', $carrinho->id_produto);
@@ -142,6 +156,9 @@ class CarrinhoController extends Controller
         }
         $this->load('produto/adicional', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'moeda' => $moeda,
             'delivery' => $delivery,
             'produto' => $produto,
@@ -161,6 +178,9 @@ class CarrinhoController extends Controller
     public function insertUpdateProdutoAdicional($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $id_cliente = $this->sessao->getUser() ? $this->sessao->getUser() : 0;
         if ($data['quantidade'] > 0) {
             $verificaCadastro = $this->acoes->countsTree('carrinhoAdicional', 'id_carrinho', $data['id_carrinho'], 'id_adicional', $data['id_adicional'], 'id_produto', $data['id_produto']);
@@ -197,6 +217,9 @@ class CarrinhoController extends Controller
     public function carrinhoProdutoEditar($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $produto = $this->acoes->getByField('produtos', 'id', $data['id_produto']);
         $carrinho = $this->acoes->getByFieldTwo('carrinho', 'id_produto', $data['id_produto'], 'id', $data['id_carrinho']);
@@ -221,6 +244,9 @@ class CarrinhoController extends Controller
 
         $this->load('produto/editar', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'moeda' => $moeda,
             'carrinho' => $carrinho,
             'produto' => $produto,
@@ -243,6 +269,9 @@ class CarrinhoController extends Controller
     {
         $verificaEnd = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $this->sessao->getUser());
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         if (!$verificaEnd) {
             redirect(BASE . "{$empresa->link_site}/endereco/novo/cadastro");
@@ -459,6 +488,9 @@ class CarrinhoController extends Controller
 
         $this->load('_cliente/carrinho/main', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'moeda' => $moeda,
             'usuario' => $usuario,
             'endereco' => $endereco,
@@ -492,6 +524,9 @@ class CarrinhoController extends Controller
     public function carrinhoValidaCupom($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $cupomValidaCount = $this->acoes->getByField('cupomDesconto', 'nome_cupom', $data['cupomDesconto'], 'id_empresa', $empresa->id);
 
         //$cupomValidaCount = $this->acoes->countsTwo('cupomDesconto', 'id_empresa', $empresa->id, 'nome_cupom', $data['cupomDesconto']);
@@ -555,12 +590,18 @@ class CarrinhoController extends Controller
         // dd($_SESSION);
         // dd($this->sessao->getSessao('carrinho'));
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
             $enderecoAtivo = $this->acoes->getByFieldTwo('usuariosEnderecos', 'id_usuario', $this->sessao->getUser(), 'principal', 1);
         }
         $this->load('_cliente/carrinho/cadastro', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'enderecoAtivo' => $enderecoAtivo,
             'trans' => $this->trans,
             'usuarioLogado' => $usuarioLogado,
@@ -572,6 +613,9 @@ class CarrinhoController extends Controller
     public function carrinhoCadastroValida($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $getTelefone = $this->acoes->getByField('usuarios', 'telefone', preg_replace('/[^0-9]/', '', $data['telefone']));
 
         if ($getTelefone) {
@@ -657,11 +701,17 @@ class CarrinhoController extends Controller
     public function validaAcessoPage($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
         $isLogin = $this->sessao->getUser() ? redirect(BASE . "{$empresa->link_site}") : null;
 
         $this->load('_cliente/carrinho/validaAcesso', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'usuario' => $usuario,
             'trans' => $this->trans,
             'isLogin' => $isLogin,
@@ -672,6 +722,9 @@ class CarrinhoController extends Controller
     public function usuarioValidaAcessoCode($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $codeValida = $this->sessao->getSessao('codeValida');
         if ($codeValida == $data['codeValida']) {
             $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
@@ -704,6 +757,9 @@ class CarrinhoController extends Controller
     public function carrinhoValidaAcessoCode($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $codeValida = $this->sessao->getSessao('codeValida');
         if ($codeValida == $data['codeValida']) {
             $usuario = $this->acoes->getByField('usuarios', 'telefone', $data['telefone']);
@@ -747,6 +803,9 @@ class CarrinhoController extends Controller
     public function carrinhoCheckoutAdicionalUpdate($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
         $resultCarrinho = $this->acoes->getByField('carrinho', 'id', $data['id']);
         $produto = $this->acoes->getByField('produtos', 'id', $resultCarrinho->id_produto);
@@ -769,6 +828,9 @@ class CarrinhoController extends Controller
 
         $this->load('produto/adicionalEditar', [
             'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
             'moeda' => $moeda,
             'delivery' => $resultDelivery,
             'produto' => $produto,
@@ -791,6 +853,9 @@ class CarrinhoController extends Controller
     public function carrinhoProdutoAcao($data)
     {
         $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
 
         if ($this->sessao->getUser()) {
             $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
