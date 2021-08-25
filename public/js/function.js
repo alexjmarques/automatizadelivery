@@ -206,13 +206,12 @@ $('#calcularTroco').on('click', function() {
         return false
     } else {
         if (isNaN(valor)) {
-            let totalFinal = total_pago - total_pago
-            $('#troco').val(valor)
+            let totalFinal2 = total_pago - total_pago
+            $('#troco').val(total_pago)
             $('.btnValida').show()
             $('#trocoCliente').show();
-            $('#trocoCliente span').text(formatter.format(totalFinal))
+            $('#trocoCliente span').text(formatter.format(totalFinal2))
             $('.tipo_pagamento').show()
-
         } else {
             $('#troco').val(valor)
             $('.btnValida').show()
