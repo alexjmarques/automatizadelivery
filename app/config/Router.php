@@ -65,6 +65,8 @@ $router->get('/institucional/contato/i', 'PagesController:contatoSend');
 
 $router->get('/institucional/tenho-interesse', 'PagesController:tenhoInteresse');
 
+$router->get('/institucional/tenho-interesse/i', 'PagesController:contatoSendInteresse');
+
 
 $router->get('/cadastro/empresa', 'EmpresaCadastroController:index');
 $router->get('/cadastro/empresa/{plano}', 'EmpresaCadastroController:index');

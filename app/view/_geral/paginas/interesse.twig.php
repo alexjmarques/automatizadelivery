@@ -11,7 +11,7 @@
             <div class="col-md-12 float-left">
                <h5 class="mb-0">Formulário de Interesse</h5>
                <p class="mb-4">Para entrar em contato e saber mais sobre os planos, preencha o formulário abaixo.</p>
-               <form class="mt-3" method="post" action="{{BASE}}institucional/contato/i" id="form" enctype="multipart/form-data">
+               <form class="mt-3" method="post" action="{{BASE}}institucional/tenho-interesse/i" id="form" enctype="multipart/form-data">
                   <div class="form-group">
                      <label for="exampleFormControlInput1" class="small font-weight-bold">Seu Nome <span style="color:red;">*</span></label>
                      <input type="text" class="form-control" id="nome" name="nome" required>

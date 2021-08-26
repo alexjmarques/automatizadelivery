@@ -64,7 +64,7 @@
             <h2 class="pt-5 mt-4 text-white">Organize a operação do seu estabelecimento</h2>
             <p class="text-white size20 pt-3">A operação do seu restaurante esta desorganizada, pois você recebe pedidos via WhatsApp, Facebook, Instagram, Mesa, Balcão e Marketplaces (iFood, UberEats)?<br>Com a Automatiza.App, você centraliza seus pedidos em um só lugar e organiza toda a sua operação.</p>
 
-            <a href="https://automatizadelivery.com.br/automatiza-delivery" target="_blank" class="elementor-button-vaz" role="button">
+            <a href="https://automatizadelivery.com.br/automatiza-app" target="_blank" class="elementor-button-vaz" role="button">
                <span class="elementor-button-content-wrapper"><span class="elementor-button-text">Conheça o Sistema</span></span>
             </a>
          </div>

@@ -455,13 +455,13 @@ class PagesController extends Controller
         redirect("https://automatizadelivery.com.br/institucional/contato");
     }
 
-    public function contatoInteresseSend($data)
+    public function contatoSendInteresse($data)
     {
         $this->email->contatoInteresse($data['nome'], $data['email'], $data['telefone'], $data['empresa'], $data['plano'], $data['msn']);
 
         header('Content-Type: application/json');
-        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde', 'code' => 2,  'url' => 'institucional/tenho-interesse/ok', 'code' => 12]);
+        $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Email enviado com sucesso', 'error' => 'Não foi possível enviar tente novamente mais tarde', 'code' => 2,  'url' => 'institucional/tenho-interesse', 'code' => 12]);
         exit($json);
-        redirect("https://automatizadelivery.com.br/institucional/tenho-interesse/ok");
+        redirect("https://automatizadelivery.com.br/institucional/tenho-interesse");
     }
 }
