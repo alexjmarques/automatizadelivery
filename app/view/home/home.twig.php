@@ -264,7 +264,8 @@
          <div class="col-sm-12 block-center bg-white text-center p-5 rounded">
             <h5 class="m-0 mb-2">Entre em contato e saiba mais?</h5>
             <p class="mb-4">Para mais informações, saber de valores e qual melhor plano entre contato com nossa equipe Master. </p>
-            <a href="/institucional/tenho-interesse" class="elementor-price-table__button elementor-button elementor-size-md gold" target="_blank">Tenho Interesse <i class="fa fa-chevron-circle-right"></i></a>
+            {#  /institucional/tenho-interesse #}
+            <a href="https://api.whatsapp.com/send?phone=5511980309212&text=Ol%C3%A1%20Tenho%20interesse%20em%20saber%20mais%20dos%20planos!" class="elementor-price-table__button elementor-button elementor-size-md gold" target="_blank">Tenho Interesse <i class="fa fa-chevron-circle-right"></i></a>
          </div>
       </div>
    </div>
