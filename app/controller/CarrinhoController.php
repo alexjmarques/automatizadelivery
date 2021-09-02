@@ -376,7 +376,7 @@ class CarrinhoController extends Controller
                 $cFrete = 1;
             }
 
-            //dd($infoKm);
+            
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega;
 
@@ -389,21 +389,26 @@ class CarrinhoController extends Controller
             $km_entrega_excedente = $delivery->km_entrega_excedente;
             $valor_excedente = $delivery->valor_excedente;
 
-
-
-
+            
             if ($cFrete <= $km_entrega) {
                 $total = $taxa_entrega;
+
                 if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
                     $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega + $freteVezes;
                     $total = $taxa_entregaNova;
                 }
+
             }
 
             if ($delivery->km_entrega_excedente != 0) {
                 $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
+                
+                $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                $freteVezes = ($kmACalcular * $valor_excedente);
+                $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                $total = $taxa_entregaNova;
             }
 
             if ($km_entrega2 != 0.00) {
@@ -420,8 +425,13 @@ class CarrinhoController extends Controller
                     //dd($total);
                 }
 
-                if ($delivery->km_entrega_excedente == 0) {
+                if ($delivery->km_entrega_excedente != 0) {
                     $deliveryEntregaExcedente = $delivery->km_entrega2;
+
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
             }
 
@@ -439,6 +449,11 @@ class CarrinhoController extends Controller
 
                 if ($delivery->km_entrega_excedente == 0) {
                     $deliveryEntregaExcedente = $delivery->km_entrega3;
+
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
             }
 
@@ -482,7 +497,6 @@ class CarrinhoController extends Controller
         if ($resultCarrinhoQtd == 0) {
             redirect(BASE . "{$empresa->link_site}");
         }
-
 
 
 

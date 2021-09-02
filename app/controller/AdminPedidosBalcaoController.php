@@ -460,7 +460,7 @@ class AdminPedidosBalcaoController extends Controller
                 $cFrete = 1;
             }
 
-            //dd($infoKm);
+            
             $taxa_entrega = $delivery->taxa_entrega;
             $km_entrega = $delivery->km_entrega;
 
@@ -473,19 +473,26 @@ class AdminPedidosBalcaoController extends Controller
             $km_entrega_excedente = $delivery->km_entrega_excedente;
             $valor_excedente = $delivery->valor_excedente;
 
-
+            
             if ($cFrete <= $km_entrega) {
                 $total = $taxa_entrega;
+
                 if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
                     $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
                     $freteVezes = ($kmACalcular * $valor_excedente);
                     $taxa_entregaNova = $taxa_entrega + $freteVezes;
                     $total = $taxa_entregaNova;
                 }
+
             }
 
             if ($delivery->km_entrega_excedente != 0) {
                 $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
+                
+                $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                $freteVezes = ($kmACalcular * $valor_excedente);
+                $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                $total = $taxa_entregaNova;
             }
 
             if ($km_entrega2 != 0.00) {
@@ -502,8 +509,13 @@ class AdminPedidosBalcaoController extends Controller
                     //dd($total);
                 }
 
-                if ($delivery->km_entrega_excedente == 0) {
+                if ($delivery->km_entrega_excedente != 0) {
                     $deliveryEntregaExcedente = $delivery->km_entrega2;
+
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
             }
 
@@ -521,6 +533,11 @@ class AdminPedidosBalcaoController extends Controller
 
                 if ($delivery->km_entrega_excedente == 0) {
                     $deliveryEntregaExcedente = $delivery->km_entrega3;
+
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
             }
 
@@ -1087,92 +1104,108 @@ class AdminPedidosBalcaoController extends Controller
 
             if ($endereco) {
                 $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
-                $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
+            $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
 
-                $termo = 'km';
-                $pattern = '/' . $termo . '/';
-                if (preg_match($pattern, $infoKm)) {
-                    $cFrete = $cFrete;
-                } else {
-                    $cFrete = 1;
+            $termo = 'km';
+            $pattern = '/' . $termo . '/';
+            if (preg_match($pattern, $infoKm)) {
+                $cFrete = $cFrete;
+            } else {
+                $cFrete = 1;
+            }
+
+            
+            $taxa_entrega = $delivery->taxa_entrega;
+            $km_entrega = $delivery->km_entrega;
+
+            $taxa_entrega2 = $delivery->taxa_entrega2;
+            $km_entrega2 = $delivery->km_entrega2;
+
+            $taxa_entrega3 = $delivery->taxa_entrega3;
+            $km_entrega3 = $delivery->km_entrega3;
+
+            $km_entrega_excedente = $delivery->km_entrega_excedente;
+            $valor_excedente = $delivery->valor_excedente;
+
+            
+            if ($cFrete <= $km_entrega) {
+                $total = $taxa_entrega;
+
+                if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
 
-                //dd($infoKm);
-                //dd($cFrete);
-                $taxa_entrega = $delivery->taxa_entrega;
-                $km_entrega = $delivery->km_entrega;
+            }
 
-                $taxa_entrega2 = $delivery->taxa_entrega2;
-                $km_entrega2 = $delivery->km_entrega2;
+            if ($delivery->km_entrega_excedente != 0) {
+                $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
+                
+                $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                $freteVezes = ($kmACalcular * $valor_excedente);
+                $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                $total = $taxa_entregaNova;
+            }
 
-                $taxa_entrega3 = $delivery->taxa_entrega3;
-                $km_entrega3 = $delivery->km_entrega3;
+            if ($km_entrega2 != 0.00) {
+                if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
+                    $total = $taxa_entrega2;
+                }
 
-                $km_entrega_excedente = $delivery->km_entrega_excedente;
-                $valor_excedente = $delivery->valor_excedente;
+                if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                    $total = $taxa_entregaNova;
 
-
-                if ($cFrete <= $km_entrega) {
-                    $total = $taxa_entrega;
-                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega + $freteVezes;
-                        $total = $taxa_entregaNova;
-                    }
+                    //dd($total);
                 }
 
                 if ($delivery->km_entrega_excedente != 0) {
-                    $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
+                    $deliveryEntregaExcedente = $delivery->km_entrega2;
+
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                    $total = $taxa_entregaNova;
+                }
+            }
+
+            if ($km_entrega3 != 0.00) {
+                if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
+                    $total = $taxa_entrega3;
                 }
 
-                if ($km_entrega2 != 0.00) {
-                    if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
-                        $total = $taxa_entrega2;
-                    }
-
-                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
-                        $total = $taxa_entregaNova;
-
-                        //dd($total);
-                    }
-
-                    if ($delivery->km_entrega_excedente == 0) {
-                        $deliveryEntregaExcedente = $delivery->km_entrega2;
-                    }
+                if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
 
-                if ($km_entrega3 != 0.00) {
-                    if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
-                        $total = $taxa_entrega3;
-                    }
+                if ($delivery->km_entrega_excedente == 0) {
+                    $deliveryEntregaExcedente = $delivery->km_entrega3;
 
-                    if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
-                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
-                        $freteVezes = ($kmACalcular * $valor_excedente);
-                        $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
-                        $total = $taxa_entregaNova;
-                    }
-
-                    if ($delivery->km_entrega_excedente == 0) {
-                        $deliveryEntregaExcedente = $delivery->km_entrega3;
-                    }
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
+            }
 
-                if ($delivery->frete_status == 1) {
-                    if ($delivery->valor <= $valorCarrinho) {
-                        $total = 0;
-                    }
+            if ($delivery->frete_status == 1) {
+                if ($delivery->valor <= $valorCarrinho) {
+                    $total = 0;
                 }
+            }
 
-                if ($delivery->primeira_compra == 1) {
-                    if ($resultVendasFeitas == 0) {
-                        $total = 0;
-                    }
+            if ($delivery->primeira_compra == 1) {
+                if ($resultVendasFeitas == 0) {
+                    $total = 0;
                 }
+            }
             }
 
             $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
@@ -1274,10 +1307,9 @@ class AdminPedidosBalcaoController extends Controller
             $resultVendasFeitas = $this->acoes->countsTwo('carrinhoPedidos', 'id_cliente', $cliente->id, 'id_empresa', $empresa->id);
             $valorCarrinho = ((float) $resultSoma->total + (float) $resultSomaAdicional->total);
 
-            if ($endereco) {
-                $cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
+            if ($endereco) {$cFrete = $this->calculoFrete->calculo($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
                 $infoKm = $this->calculoFrete->infoKm($endereco->rua, $endereco->numero, $endereco->bairro, $endereco->cep, $empresa->id);
-
+    
                 $termo = 'km';
                 $pattern = '/' . $termo . '/';
                 if (preg_match($pattern, $infoKm)) {
@@ -1285,78 +1317,94 @@ class AdminPedidosBalcaoController extends Controller
                 } else {
                     $cFrete = 1;
                 }
-
-                //dd($infoKm);
-                //dd($cFrete);
+    
+                
                 $taxa_entrega = $delivery->taxa_entrega;
                 $km_entrega = $delivery->km_entrega;
-
+    
                 $taxa_entrega2 = $delivery->taxa_entrega2;
                 $km_entrega2 = $delivery->km_entrega2;
-
+    
                 $taxa_entrega3 = $delivery->taxa_entrega3;
                 $km_entrega3 = $delivery->km_entrega3;
-
+    
                 $km_entrega_excedente = $delivery->km_entrega_excedente;
                 $valor_excedente = $delivery->valor_excedente;
-
-
+    
+                
                 if ($cFrete <= $km_entrega) {
                     $total = $taxa_entrega;
+    
                     if ($cFrete > $km_entrega && $cFrete <= $km_entrega_excedente) {
                         $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
                         $freteVezes = ($kmACalcular * $valor_excedente);
                         $taxa_entregaNova = $taxa_entrega + $freteVezes;
                         $total = $taxa_entregaNova;
                     }
+    
                 }
-
+    
                 if ($delivery->km_entrega_excedente != 0) {
                     $deliveryEntregaExcedente = $delivery->km_entrega_excedente;
+                    
+                    $kmACalcular = ((int)$cFrete - $delivery->km_entrega);
+                    $freteVezes = ($kmACalcular * $valor_excedente);
+                    $taxa_entregaNova = $taxa_entrega + $freteVezes;
+                    $total = $taxa_entregaNova;
                 }
-
+    
                 if ($km_entrega2 != 0.00) {
                     if ($cFrete > $km_entrega && $cFrete <= $km_entrega2) {
                         $total = $taxa_entrega2;
                     }
-
+    
                     if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega_excedente) {
                         $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
                         $freteVezes = ($kmACalcular * $valor_excedente);
                         $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
                         $total = $taxa_entregaNova;
-
+    
                         //dd($total);
                     }
-
-                    if ($delivery->km_entrega_excedente == 0) {
+    
+                    if ($delivery->km_entrega_excedente != 0) {
                         $deliveryEntregaExcedente = $delivery->km_entrega2;
+    
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega2);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega2 + $freteVezes;
+                        $total = $taxa_entregaNova;
                     }
                 }
-
+    
                 if ($km_entrega3 != 0.00) {
                     if ($cFrete > $km_entrega2 && $cFrete <= $km_entrega3) {
                         $total = $taxa_entrega3;
                     }
-
+    
                     if ($cFrete > $km_entrega3 && $cFrete <= $km_entrega_excedente) {
                         $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
                         $freteVezes = ($kmACalcular * $valor_excedente);
                         $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
                         $total = $taxa_entregaNova;
                     }
-
+    
                     if ($delivery->km_entrega_excedente == 0) {
                         $deliveryEntregaExcedente = $delivery->km_entrega3;
+    
+                        $kmACalcular = ((int)$cFrete - $delivery->km_entrega3);
+                        $freteVezes = ($kmACalcular * $valor_excedente);
+                        $taxa_entregaNova = $taxa_entrega3 + $freteVezes;
+                        $total = $taxa_entregaNova;
                     }
                 }
-
+    
                 if ($delivery->frete_status == 1) {
                     if ($delivery->valor <= $valorCarrinho) {
                         $total = 0;
                     }
                 }
-
+    
                 if ($delivery->primeira_compra == 1) {
                     if ($resultVendasFeitas == 0) {
                         $total = 0;
