@@ -440,7 +440,7 @@ class CarrinhoController extends Controller
                     $deliveryEntregaExcedente = $delivery->km_entrega3;
                 }
 
-                dd($total);
+                //dd($total);
             }
 
             if ($delivery->frete_status == 1) {
@@ -454,7 +454,7 @@ class CarrinhoController extends Controller
                     $total = 0;
                 }
             }
-            dd($total);
+            //dd($total);
 
             $this->sessao->sessaoNew('numeroPedido', substr(number_format(time() * Rand(), 0, '', ''), 0, 6));
             $cupomVerifica = $this->acoes->countsTwoNull('cupomDescontoUtilizadores', 'id_cliente', $this->sessao->getUser(), 'id_empresa', $empresa->id);
@@ -485,7 +485,7 @@ class CarrinhoController extends Controller
         }
 
 
-dd($total);
+//dd($total);
 
         $this->load('_cliente/carrinho/main', [
             'empresa' => $empresa,
