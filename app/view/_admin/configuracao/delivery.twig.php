@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <hr>
+ 
         <div class="form-row hidden">
           <div class="form-group col-md-3">
             <label class="text-dark">Valor</label>
@@ -48,7 +48,7 @@
             <input type="text" class="form-control form-control-sm" id="km_entrega2" name="km_entrega2" value="{{retorno.km_entrega2}}">
           </div>
         </div>
-        <hr>
+       
         <div class="form-row hidden">
           <div class="form-group col-md-3">
             <label class="text-dark">Valor</label>
