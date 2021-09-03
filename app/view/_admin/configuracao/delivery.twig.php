@@ -24,7 +24,7 @@
           </div>
         </div>
         <hr>
-        <h6 class="mt-4">Taxa 01</h6>
+        <h6 class="mt-4">Taxa Entrega padrão</h6>
         <p>Taxa de entrega inicial, informe aqui o custo que será cobrado e até quantos KM para este custo</p>
         <div class="form-row">
           <div class="form-group col-md-3">
@@ -38,9 +38,7 @@
         </div>
 
         <hr>
-        <h6 class="mt-4">Taxa 02</h6>
-        <p>Taxa de entrega secundário, informe aqui o custo que será cobrado e até quantos KM para este custo, lembrando que se preencheu o <strong>Taxa 01</strong> esse passa a ser utilizado se extiver fora do raio do <strong>Taxa 01</strong></p>
-        <div class="form-row">
+        <div class="form-row hidden">
           <div class="form-group col-md-3">
             <label class="text-dark">Valor</label>
             <input type="text" class="form-control form-control-sm" id="taxa_entrega2" name="taxa_entrega2" value="{{retorno.taxa_entrega2}}">
@@ -51,9 +49,7 @@
           </div>
         </div>
         <hr>
-        <h6 class="mt4">Taxa 03</h6>
-        <p>Taxa de entrega terciário, informe aqui o custo que será cobrado e até quantos KM para este custo, lembrando que se preencheu o <strong>Taxa 02</strong> esse passa a ser utilizado se extiver fora do raio do <strong>Taxa 02</strong></p>
-        <div class="form-row">
+        <div class="form-row hidden">
           <div class="form-group col-md-3">
             <label class="text-dark">Valor</label>
             <input type="text" class="form-control form-control-sm" id="taxa_entrega3" name="taxa_entrega3" value="{{retorno.taxa_entrega3}}">
