@@ -144,6 +144,9 @@ $router->get('/{linkSite}/carrinho', 'CarrinhoController:carrinho');
 $router->get('/{linkSite}/carrinho/dados', 'CarrinhoController:carrinhoCadastro');
 $router->post('/{linkSite}/carrinho/cadastro/valida', 'CarrinhoController:carrinhoCadastroValida');
 
+
+$router->get('/{linkSite}/user/valida/acesso/{id}/up', 'UsuarioController:usuarioValidaAcessoNovo');
+
 $router->get('/{linkSite}/carrinho/valida/acesso/code/{id}', 'CarrinhoController:validaAcessoPage');
 $router->post('/{linkSite}/carrinho/valida/acesso/code/up', 'CarrinhoController:usuarioValidaAcessoCode');
 

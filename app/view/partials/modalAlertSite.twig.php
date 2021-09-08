@@ -16,8 +16,12 @@
             </div>
 
             <h3 class="swal2-title text-center mensagemID" id="mensagem"><h3>
+            <div id="duomensagem"></div>
             <div class="swal2-actions text-center">
                 <button type="button" class="buttonAlert" data-dismiss="modal" aria-label="Close">OK</button>
+                <button type="button" class="buttonAlerts hide" data-dismiss="modal" aria-label="Close">Validar</button>
+                <div class="clearfix"></div>
+                <button type="button" class="buttonAlertNop hide" data-dismiss="modal" aria-label="Close">Não é meus dados</button>
             </div>
       </div>
     </div>

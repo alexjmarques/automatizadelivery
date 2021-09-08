@@ -242,12 +242,21 @@ class UsuarioController extends Controller
             $ddi = '+55';
             $numerofinal = $ddi . $numeroTelefone;
 
-            $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
-            $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
+            // $client = new Client(TWILIO['account_sid'], TWILIO['auth_token']);
+            // $client->messages->create($numerofinal, array('from' => TWILIO['number'], 'body' => $mensagem));
+
+            // header('Content-Type: application/json');
+            // $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!', 'url' => "valida/acesso/code/{$getTelefone->id}"]);
+            // exit($json);
+
+            $endCliente = $this->acoes->getByField('usuariosEnderecos', 'id_usuario', $getTelefone->id);
+
+            $telNumero = substr($data['telefone'], -4);
 
             header('Content-Type: application/json');
-            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => 'Enviamos em seu celular um código para validar seu acesso!', 'url' => "valida/acesso/code/{$getTelefone->id}"]);
+            $json = json_encode(['id' => 1, 'resp' => 'send', 'mensagem' => "Número Validado!", 'duomensagem' => "<p>Confirme os dados para continuar</p><ul><li><strong>Nome:</strong> {$getTelefone->nome}</li><li class='number'><strong>Telefone final</strong>(**) **** - *{$telNumero}</li> <li class='ends'><strong>Endereço:</strong> {$endCliente->rua} **** - {$endCliente->bairro}</li></ul>", 'code' => 2,  'url' => "user/valida/acesso/{$getTelefone->id}/up"]);
             exit($json);
+
         } else {
             header('Content-Type: application/json');
             $json = json_encode(['id' => 0, 'resp' => 'insert', 'error' => 'Você precisa precisa se cadastrar antes de fazer um pedido', 'url' => '/']);
@@ -274,6 +283,18 @@ class UsuarioController extends Controller
             'isLogin' => $isLogin,
             'detect' => new Mobile_Detect()
         ]);
+    }
+
+    public function usuarioValidaAcessoNovo($data)
+    {
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+
+        $usuario = $this->acoes->getByField('usuarios', 'id', $data['id']);
+        $this->sessao->add($usuario->id, $usuario->email, $usuario->nivel);
+
+            if ($this->sessao->getUser()) {
+                redirect(BASE . $empresa->link_site);
+            }
     }
 
     public function usuarioValidaAcessoCode($data)

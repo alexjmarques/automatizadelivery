@@ -938,6 +938,20 @@ $("#form").submit(function(e) {
                             });
                         }
                         break;
+                    case 'Número Validado!':
+                        $('#mensagem').html(dd.mensagem);
+                        $('#duomensagem').html(dd.duomensagem);
+                        $('.successSup').show();
+                        $('.errorSup').hide();
+                        $('#alertGeralSite').modal("show");
+
+                        $('.buttonAlert').addClass("hide");
+                        $('.buttonAlerts, .buttonAlertNop').removeClass("hide");
+
+                        $(".buttonAlerts").on('click', function() {
+                            window.location = `/${link_site}/${dd.url}`;
+                        });
+                        break;
                     case 'Pedido cancelado com sucesso!':
                         $('#cancelarPedido').modal("hide");
                         window.location = `/${link_site}/${dd.url}`;
