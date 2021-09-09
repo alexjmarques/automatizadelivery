@@ -39,9 +39,13 @@
     </div>
 
 </div>
-{% include 'partials/modalAlertSite.twig.php' %}
+
 {% if empresa.capa is null %}
 <style>
+    .modal-backdrop {
+    z-index: 1000 !important;
+    height: initial !important;
+}
     .fixed-bottom-bar {
         margin: 0 !important;
         background: url(/uploads/capa_modelo.jpg);
@@ -53,6 +57,10 @@
 </style>
 {% else %}
 <style>
+    .modal-backdrop {
+    z-index: 1000 !important;
+    height: initial !important;
+}
     .fixed-bottom-bar {
         margin: 0 !important;
         background: url(/uploads/{{empresa.capa}});
@@ -63,6 +71,6 @@
     }
 </style>
 {% endif %}
-
+{% include 'partials/modalAlertSite.twig.php' %}
 
 {% endblock %}

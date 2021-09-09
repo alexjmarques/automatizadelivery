@@ -12,7 +12,7 @@
 
     <div class="p-3 osahan-cart-item osahan-home-page">
 
-    <div class="bg-white rounded shadow mt-n5">
+   <!-- {# <div class="bg-white rounded shadow mt-n5">
         <div class="border-bottom p-3">
             <div class="left mr-0 p-0">
                 <h5 class="d-inline">Ganhos de hoje</h5>
@@ -23,9 +23,9 @@
                 
             </div>
         </div>
-    </div>
+    </div> #}
 
-    <!-- <div class="mt-3 clearfix">
+     <div class="mt-3 clearfix">
         
         <div class="metade pr-2">
             <div class="bg-white rounded shadows ml1">
@@ -54,38 +54,47 @@
         </div>
     </div> -->
 
-    <div class="bg-white rounded shadow mt-3">
+    <div class="bg-white rounded shadow mt-3 mt-n5">
         <div class=" dashboard-filled-line-chart">
         <div class="card-body motoFull">
                 <div class="float-left float-none-xs">
                     <div class="d-inline-block">
                         <h5 class="d-inline">Entregas Feitas</h5>
-                        <span class="text-muted text-small d-block">Entregas por mês</span>
+                        <span class="text-muted text-small d-block pb-2">Entregas do dia</span>
                     </div>
                 </div>
-                <div class="btn-group float-right float-none-xs mt-0">
-                    <select id="mes" name="mes" class="form-control selectMes">
-                        <option value="" selected>Selecione</option>
-                            <option value="01">Janeiro</option>
-                            <option value="02">Fevereiro</option>
-                            <option value="03">Março</option>
-                            <option value="04">Abril</option>
-                            <option value="05">Maio</option>
-                            <option value="06">Junho</option>
-                            <option value="07">Julho</option>
-                            <option value="08">Agosto</option>
-                            <option value="09">Setembro</option>
-                            <option value="10">Outubro</option>
-                            <option value="11">Novembro</option>
-                            <option value="12">Dezembro</option>
-                    </select>
-                </div>
+
+                <table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th scope="col">Data</th>
+            <th scope="col">nº Pedido</th>
+            <th scope="col">KM</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for en in busca %}
+            <tr>
+                <td>
+                {{en.data_pedido|date('h:m')}}
+                </td>
+                <td>
+                    {{en.numero_pedido}}
+                </td>
+                <td>
+                {{en.km}}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+                
             </div>
-            <div class="chart card-body pt-3">
-                <div id="dadosMes"></div>
-                <div class="carregar"></div>
-            </div>
+            
+
+           
             <div class="clearfix"></div>
+
         </div>
     </div>
 

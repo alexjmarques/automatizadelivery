@@ -1,10 +1,11 @@
 
+{{en.id_motoboy}}
 <table class="table table-striped mt-3">
     <thead>
         <tr>
             <th scope="col">Data</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Pago</th>
+            <th scope="col">nº Pedido</th>
+            <th scope="col">KM</th>
         </tr>
     </thead>
     <tbody>
@@ -16,18 +17,13 @@
                 {{en.data_pedido|date('d/m/Y')}}
                 </td>
                 <td>
-                {% for p in pedidos %}
-                    {% if p.numero_pedido == en.numero_pedido %}
-                        {{ moeda.simbolo }} {{ (p.valor_frete - frete.taxa_entrega_motoboy)|number_format(2, ',', '.')}}
-                    {% endif %}
-                {% endfor %}
+                    {{en.numero_pedido}}
+                
                 </td>
                 <td>
-                    {% if en.pago is not null %}
-                    <span class="text-success cartao text-center size14"><i class="feather-check-circle"></i></span>
-                    {% else %}
-                    <span class="text-danger cartao text-center size14"><i class="feather-x-circle"></i></span>
-                    {% endif %}
+
+                {{en.km}}
+                    
                 </td>
             </tr>
             {% endif %}

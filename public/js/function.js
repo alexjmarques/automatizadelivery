@@ -974,6 +974,8 @@ $("#form").submit(function(e) {
                 $('.btn_acao .carrega').html('')
                 $('.errorSup').show();
                 $('.successSup').hide();
+                $('.modal-backdrop').remove();
+
                 $('#alertGeralSite').modal("show");
                 $('#mensagem').html(dd.error);
             }

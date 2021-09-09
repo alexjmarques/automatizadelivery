@@ -34,7 +34,7 @@
         </form>
     </div>
 </div>
-{% include 'partials/modalAlertSite.twig.php' %}
+
 {% if empresa.capa is null %}
 <style>
     .fixed-bottom-bar {
@@ -45,6 +45,10 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+    .modal-backdrop {
+    z-index: 1000 !important;
+    height: initial !important;
+}
 </style>
 {% else %}
 <style>
@@ -56,8 +60,12 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+    .modal-backdrop {
+    z-index: 1000 !important;
+    height: initial !important;
+}
 </style>
 {% endif %}
-
+{% include 'partials/modalAlertSite.twig.php' %}
 
 {% endblock %}
