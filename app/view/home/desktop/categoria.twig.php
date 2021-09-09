@@ -9,9 +9,14 @@
         {% if hoje in p.dias_disponiveis %}
         <div class="gold-members p-3 border-bottom">
             <div class="media">
-                <div class="mr-3"><i class="icofont-ui-press text-danger food-item"></i></div>
+                
+                <div class="mr-3">{% if p.imagem is not empty %}
+           
+           <img src="{{BASE}}uploads/{{p.imagem}}" class="img-fluid item-img" style="max-height: 80px;">
+
+       {% endif %}</div>
                 <div class="media-body">
-                    <h6 class="mb-1">{{p.nome}}</h6>
+                    <h5 class="mb-1">{{p.nome}}</h5>
                     <p class="text-gray mb-0">{{p.descricao}}</p>
                     {% if p.valor_promocional != '0.00' %}
                     <p class="text-black mb-1 dequanto pmais"><span class="float-left por">De </span> <span class="float-left text-black-50"> {{moeda.simbolo}} {{ p.valor|number_format(2, ',',

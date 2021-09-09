@@ -168,6 +168,7 @@ class PagesController extends Controller
 
             $dias = $this->acoes->getFind('dias');
             $produtoTop5 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
+            $produtoTop6 = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 6, 'vendas', 'DESC');
 
             $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
             $ultimaVenda = null;
@@ -221,6 +222,7 @@ class PagesController extends Controller
             'tamanhos' => $tamanhos,
             'produto' => $produto,
             'produtoTop5' => $produtoTop5,
+            'produtoTop6' => $produtoTop6,
             'dias' => $dias,
             'ultimaVenda' => $ultimaVenda,
             'carrinhoQtd' => $resultCarrinhoQtd,
