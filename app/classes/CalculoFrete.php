@@ -29,8 +29,8 @@ class CalculoFrete extends Controller
         if ($n < 90) {
             $n_format = number_format($n / 10, $precision);
             $suffix = '';
-        } else if ($n < 900) {
-            $n_format = number_format($n / 100, $precision);
+        } else if ($n < 999) {
+            $n_format = 1;
             $suffix = '';
         } else if ($n < 900000) {
             // 0.9k-850k
