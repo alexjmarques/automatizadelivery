@@ -84,7 +84,7 @@ class AdminDashboard extends Controller
         /**
          * Contagem dos Itens da Empresa do Dia Atual
          */
-        //dd($estabelecimento);
+        dd($estabelecimento);
         if ($estabelecimento[0]->data_final == null) {
 
             $rcat  = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
@@ -269,7 +269,79 @@ class AdminDashboard extends Controller
         $tipoPagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
         $tipoDelivery = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
 
-        //dd($pedidos);
+        $totasVendas = $this->acoes->sumFiels('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id, 'total_pago');
+        $totasEntregas = $this->acoes->sumFielsTreeM('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id, 'status', 6, 'valor_frete');
+        $totalFinal = $this->acoes->sumFielsTreeM('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id, 'status', 5, 'total_pago');
+
+        $this->load('_admin/dashboard/caixaDados', [
+            'entregas' => $totasEntregas,
+            'moeda' => $moeda,
+            'delivery' => $delivery,
+            'tipoPagamento' => $tipoPagamento,
+            'tipoDelivery' => $tipoDelivery,
+            'pedidos' => $pedidos,
+            'status' => $status,
+            'totalPedidos' => $totalPedidos,
+            'totalEntregas' => $totalEntregas,
+            'totalRecusado' => $totalRecusado,
+            'totalCancelados' => $totalCancelados,
+            'vendas' => $totasVendas,
+            'totalFinal' => $totalFinal,
+            'caixaDados' => $empresaCaixa,
+            'empresa' => $empresa,
+            'endEmp' => $endEmp,
+            'funcionamento' => $funcionamento,
+            'dias' => $dias,
+            'trans' => $this->trans,
+            'planoAtivo' => $planoAtivo,
+            'usuarioLogado' => $usuarioLogado,
+            'isLogin' => $this->sessao->getUser(),
+            'nivelUsuario' => $this->sessao->getNivel(),
+            'caixa' => $caixa->status
+        ]);
+    }
+
+
+    /**
+     * Relatorio das vendas mensais
+     */
+    public function caixaDadosMes($data)
+    {
+        $empresaCaixa = $this->acoes->getByField('empresaCaixa', 'id', $data['id']);
+        $empresa = $this->acoes->getByField('empresa', 'link_site', $data['linkSite']);
+        $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
+        $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
+        $dias = $this->acoes->getFind('dias');
+        $delivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
+
+        if ($this->sessao->getUser()) {
+            if ($this->sessao->getUser() != 'undefined') {
+                $verificaUser = $this->geral->verificaEmpresaUser($empresa->id, $this->sessao->getUser());
+                $usuarioLogado = $this->acoes->getByField('usuarios', 'id', $this->sessao->getUser());
+                if ($this->sessao->getNivel() == 3) {
+                    redirect(BASE . $empresa->link_site);
+                }
+            }
+        } else {
+            redirect(BASE . "{$empresa->link_site}/admin/login");
+        }
+
+        $totalPedidos = $this->acoes->countCompanyVar('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id);
+        $totalEntregas = $this->acoes->countCompanyVar('carrinhoPedidos', 'id_caixa', $empresaCaixa->id, 'status', 4);
+        $totalCancelados = $this->acoes->countCompanyVar('carrinhoPedidos', 'id_caixa', $empresaCaixa->id, 'status', 6);
+        $totalRecusado = $this->acoes->countCompanyVar('carrinhoPedidos', 'id_caixa', $empresaCaixa->id, 'status', 5);
+
+        $planoAtivo = $this->geral->verificaPlano($empresa->id);
+        $caixa = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $estabelecimento = $this->acoes->limitOrder('empresaCaixa', 'id_empresa', $empresa->id, 1, 'id', 'DESC');
+
+        //$totasEntregas = $this->acoes->sumFiels('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id,'valor_frete');
+
+        $pedidos = $this->acoes->getByFieldAll('carrinhoPedidos', 'id_caixa', $empresaCaixa->id);
+        $status = $this->acoes->getFind('status');
+        $tipoPagamento = $this->acoes->getByFieldAll('formasPagamento', 'id_empresa', $empresa->id);
+        $tipoDelivery = $this->acoes->getByFieldAll('tipoDelivery', 'id_empresa', $empresa->id);
 
         $totasVendas = $this->acoes->sumFiels('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id, 'total_pago');
         $totasEntregas = $this->acoes->sumFielsTreeM('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $empresaCaixa->id, 'status', 6, 'valor_frete');
