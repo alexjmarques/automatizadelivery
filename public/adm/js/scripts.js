@@ -496,7 +496,7 @@ $('#txtbuscar').keyup(function() {
 $('#cbbuscar').keyup(function() {
     $('#btn-buscar').click();
 })
-$('#modal-deletar').modal("show");
+//$('#modal-deletar').modal("show");
 
 
 function produtosModal(id, numero_pedido) {
