@@ -27,22 +27,22 @@
     <link rel="stylesheet" href="{{BASE}}adm/font/iconsmind-s/css/iconsminds.css" />
     <link rel="stylesheet" href="{{BASE}}adm/font/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{BASE}}adm/font/simple-line-icons/css/simple-line-icons.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/bootstrap.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/bootstrap.rtl.only.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/fullcalendar.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/datatables.responsive.bootstrap4.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/select2.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/select2-bootstrap.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/smart_wizard.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/glide.core.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/bootstrap-stars.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/nouislider.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/bootstrap.rtl.only.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/fullcalendar.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/datatables.responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/select2.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/select2-bootstrap.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/smart_wizard.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/glide.core.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/bootstrap-stars.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/nouislider.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/bootstrap-datepicker3.min.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/dropzone.css" />
 	<link rel="stylesheet" href="{{BASE}}adm/css/cropper.css"/>
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/component-custom-switch.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/component-custom-switch.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/perfect-scrollbar.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/jquery.timepicker.min.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/main.css" />
     <script src="https://cdn.tiny.cloud/1/1gynmt6biui7yo713cxe0avaiicbqc9quif500b40zeyiush/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
