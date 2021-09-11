@@ -66,28 +66,28 @@
     <link href="https://unpkg.com/croppie/croppie.css" rel="stylesheet"/>
     
     <script src="{{BASE}}adm/js/up/jquery-3.3.1.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/jquery.dataTables.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/Chart.bundle.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/chartjs-plugin-datalabels.js"></script>
-    <script src="{{BASE}}adm/js/vendor/moment.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/fullcalendar.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/datatables.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/perfect-scrollbar.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/glide.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/progressbar.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/jquery.barrating.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/select2.full.js"></script>
-    <script src="{{BASE}}adm/js/vendor/nouislider.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/bootstrap-datepicker.js"></script>
-    <script src="{{BASE}}adm/js/vendor/Sortable.js"></script>
-    <script src="{{BASE}}adm/js/vendor/mousetrap.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/jquery.contextMenu.min.js"></script>
+    <script src="{{BASE}}adm/js/up/jquery.dataTables.min.js"></script>
+    <script src="{{BASE}}adm/js/up/bootstrap.bundle.min.js"></script>
+    <script src="{{BASE}}adm/js/up/Chart.bundle.min.js"></script>
+    <script src="{{BASE}}adm/js/up/chartjs-plugin-datalabels.js"></script>
+    <script src="{{BASE}}adm/js/up/moment.min.js"></script>
+    <script src="{{BASE}}adm/js/up/fullcalendar.min.js"></script>
+    <script src="{{BASE}}adm/js/up/datatables.min.js"></script>
+    <script src="{{BASE}}adm/js/up/perfect-scrollbar.min.js"></script>
+    <script src="{{BASE}}adm/js/up/glide.min.js"></script>
+    <script src="{{BASE}}adm/js/up/progressbar.min.js"></script>
+    <script src="{{BASE}}adm/js/up/jquery.barrating.min.js"></script>
+    <script src="{{BASE}}adm/js/up/select2.full.js"></script>
+    <script src="{{BASE}}adm/js/up/nouislider.min.js"></script>
+    <script src="{{BASE}}adm/js/up/bootstrap-datepicker.js"></script>
+    <script src="{{BASE}}adm/js/up/Sortable.js"></script>
+    <script src="{{BASE}}adm/js/up/mousetrap.min.js"></script>
+    <script src="{{BASE}}adm/js/up/jquery.contextMenu.min.js"></script>
     <script src="{{BASE}}adm/js/dore.script.js"></script>
     <script src="{{BASE}}adm/js/vendor/jquery.smartWizard.min.js"></script>
     <script src="{{BASE}}js/jquery.mask.min.js" type="text/javascript"></script>
-    <script src="{{BASE}}adm/js/vendor/bootstrap-notify.min.js"></script>
-    <script src="{{BASE}}adm/js/vendor/typeahead.bundle.js"></script>
+    <script src="{{BASE}}adm/js/up/bootstrap-notify.min.js"></script>
+    <script src="{{BASE}}adm/js/up/typeahead.bundle.js"></script>
     <script src="{{BASE}}adm/js/dore-plugins/select.from.library.js"></script>
     <script src="{{BASE}}adm/js/jquery.timepicker.min.js"></script>
     <script src="{{BASE}}adm/js/card.js"></script>

@@ -10,7 +10,7 @@
 
 /*
  * Localized default methods for the jQuery validation plugin.
- * Locale: PT_BR
+ * Locale: es_ES
  */
 $.extend( $.validator.methods, {
 	date: function( value, element ) {
