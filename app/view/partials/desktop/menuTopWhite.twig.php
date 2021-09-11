@@ -33,11 +33,11 @@
                   
                   
                   {% if isLogin == 0 %}
-                  <li class="nav-item">
+                  {# <li class="nav-item">
                      <a class="nav-link" href="{{BASE}}admin/login"><i class=""></i>Login</a>
-                  </li>
+                  </li> #}
                   {% else %}
-                  <li class="nav-item dropdown">
+                  {# <li class="nav-item dropdown">
                      <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      <img alt="Generic placeholder image" src="img/user/4.png" class="nav-osahan-pic rounded-pill"> Minha Empresa
                      </a>
@@ -48,7 +48,7 @@
                         <a class="dropdown-item" href="orders.html#payments"><i class="icofont-credit-card"></i> Payments</a>
                         <a class="dropdown-item" href="orders.html#addresses"><i class="icofont-location-pin"></i> Configurações</a>
                      </div>
-                  </li>
+                  </li> #}
                   {% endif %}
                   
                </ul>
