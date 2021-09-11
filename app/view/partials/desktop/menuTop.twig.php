@@ -32,7 +32,7 @@
                   
                   
                   
-                  {% if isLogin == 0 %}
+                  {# {% if isLogin == 0 %}
                   <li class="nav-item">
                      <a class="nav-link" href="{{BASE}}admin/login"><i class=""></i>Login</a>
                   </li>
@@ -49,7 +49,7 @@
                         <a class="dropdown-item" href="orders.html#addresses"><i class="icofont-location-pin"></i> Configurações</a>
                      </div>
                   </li>
-                  {% endif %}
+                  {% endif %} #}
                   
                </ul>
             </div>
