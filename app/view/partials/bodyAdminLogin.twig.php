@@ -36,7 +36,7 @@
     <main>
         {% block body %}{% endblock %}
     </main>
-    <script src="{{BASE}}adm/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="{{BASE}}adm/js/up/jquery-3.3.1.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/jquery.dataTables.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/bootstrap.bundle.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/Chart.bundle.min.js"></script>

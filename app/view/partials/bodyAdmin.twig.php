@@ -65,7 +65,7 @@
     <link href="https://unpkg.com/dropzone/dist/dropzone.css" rel="stylesheet"/>
     <link href="https://unpkg.com/croppie/croppie.css" rel="stylesheet"/>
     
-    <script src="{{BASE}}adm/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="{{BASE}}adm/js/up/jquery-3.3.1.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/jquery.dataTables.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/bootstrap.bundle.min.js"></script>
     <script src="{{BASE}}adm/js/vendor/Chart.bundle.min.js"></script>
