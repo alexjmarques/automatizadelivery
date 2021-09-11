@@ -25,9 +25,9 @@
     <link rel="stylesheet" href="{{BASE}}adm/font/iconsmind-s/css/iconsminds.css" />
     <link rel="stylesheet" href="{{BASE}}adm/font/simple-line-icons/css/simple-line-icons.css" />
 
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/bootstrap.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/bootstrap.rtl.only.min.css" />
-    <link rel="stylesheet" href="{{BASE}}adm/css/vendor/bootstrap-float-label.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/bootstrap.rtl.only.min.css" />
+    <link rel="stylesheet" href="{{BASE}}adm/css/up/bootstrap-float-label.min.css" />
     <link rel="stylesheet" href="{{BASE}}adm/css/main.css" />
 </head>
 
