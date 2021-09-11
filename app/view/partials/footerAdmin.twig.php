@@ -62,7 +62,7 @@
                         {% endif %}
                         {% if planoAtivo is null %}
                     <p>Vimos que você ainda não contratou nenhum plano! Para utilizar nossos serviços e necessário ter um plano ativo! </p>
-                    <a href="{{BASE}}{{empresa.link_site}}/admin/planos" class="btn btn-primary">Contratar Agora</a>
+                    <a href="#" class="btn btn-primary">Contratar Agora</a>
                     {% else %}
                     Para iniciar o atendimento e liberar para seus clientes fazerem pedidos, clique no botão abaixo
 

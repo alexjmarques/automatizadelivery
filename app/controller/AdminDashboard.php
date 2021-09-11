@@ -84,22 +84,27 @@ class AdminDashboard extends Controller
         /**
          * Contagem dos Itens da Empresa do Dia Atual
          */
-        dd($estabelecimento);
-        if ($estabelecimento[0]->data_final == null) {
+        
 
-            $rcat  = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
-            if ($rcat) {
-                $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
-                $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
-                $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
-                $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
+        if ($estabelecimento) {
+            if ($estabelecimento[0]->data_final == null) {
+                $rcat  = $this->acoes->getByFieldTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
+                if ($rcat) {
+                    $pedidos = $this->acoes->countsTwo('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id);
+                    $entregas = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 4);
+                    $recusados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 5);
+                    $cancelados = $this->acoes->countsTree('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_caixa', $estabelecimento[0]->id, 'status', 6);
+                }
             }
-        } else {
+        }else{
             $pedidos = 0;
             $entregas = 0;
             $recusados = 0;
             $cancelados = 0;
         }
+
+
+        
 
         //dd($pedidos);
         $resultMaisVendidos = $this->acoes->limitOrder('produtos', 'id_empresa', $empresa->id, 5, 'vendas', 'DESC');
@@ -395,6 +400,9 @@ class AdminDashboard extends Controller
             redirect(BASE . "{$empresa->link_site}/admin/login");
         }
 
+        $qtdPedidos = $this->acoes->countStatusMes('carrinhoPedidos', 'id_empresa', $empresa->id, 'data_pedido');
+
+        //dd($qtdPedidos);
 
         $totalPedidos = $this->acoes->counts('carrinhoPedidos', 'id_empresa', $empresa->id);
         $totalEntregas = $this->acoes->countCompanyVar('carrinhoPedidos', 'id_empresa', $empresa->id, 'status', 4);

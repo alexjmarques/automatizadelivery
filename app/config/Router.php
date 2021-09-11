@@ -243,8 +243,12 @@ $router->get('/{linkSite}/admin', 'AdminDashboard:index');
 $router->get('/{linkSite}/admin/', 'AdminDashboard:index');
 $router->get('/{linkSite}/admin/sair', 'AllController:sairAdmin');
 $router->get('/{linkSite}/admin/caixa/visao-geral', 'AdminDashboard:relatorioGeral');
+$router->get('/{linkSite}/admin/caixa/visao-geral/{mes}', 'AdminDashboard:relatorioGeralFiltro');
 $router->get('/{linkSite}/admin/caixa/relatorio', 'AdminDashboard:caixaLista');
 $router->get('/{linkSite}/admin/caixa/dia/{id}', 'AdminDashboard:caixaDados');
+
+
+$router->get('/{linkSite}/admin/caixa/mes/{id}', 'AdminDashboard:caixaDadosMes');
 
 $router->get('/{linkSite}/admin/clientes/relatorio', 'AdminDashboard:clienteLista');
 $router->get('/{linkSite}/admin/clientes/relatorio/{id}', 'AdminDashboard:clienteListaPedidos');

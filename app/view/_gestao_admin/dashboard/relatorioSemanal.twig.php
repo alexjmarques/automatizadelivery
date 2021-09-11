@@ -8,7 +8,7 @@
             <a href="{{BASE}}{{empresa.link_site}}/admin">Painel</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{BASE}}{{empresa.link_site}}/admin/planos">Planos</a>
+            <a href="#">Planos</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">Ativo</li>
     </ol>

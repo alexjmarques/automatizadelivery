@@ -49,7 +49,7 @@
                 </li>
                 {% else %}
                 <li id="menuCaixa" class="indisponivel">
-                    <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                    <a href="#">
                         <span class="iconsminds-digital-drawing iconeMenu"></span> <span class="d-inline-block"> Relatórios <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
                     </a>
                 </li>
@@ -66,7 +66,7 @@
                         <ul class="list-unstyled inner-level-menu">
                             <li id="subPn">
                                 {% if planoAtivo == 0 %}
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                                <a href="#">
                                     {% else %}
                                     <a href="{{BASE}}{{empresa.link_site}}/admin/pedido/novo">
                                         {% endif %}
@@ -87,7 +87,7 @@
                             </li>
                             {% else %}
                             <li id="subPf" class="indisponivel">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                                <a href="#">
                                     <span class="d-inline-block">Todos Pedidos <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Inicial">!</span></span>
                                 </a>
                             </li>
@@ -121,7 +121,7 @@
                 </li>
                 {% else %}
                 <li id="menuMotoboys" class="indisponivel">
-                    <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                    <a href="#">
                         <span class="simple-icon-plane iconeMenu"></span> <span class="d-inline-block">Motoboys <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
                     </a>
                 </li>
@@ -205,7 +205,7 @@
                             </li>
                             {% else %}
                             <li id="subUn" class="indisponivel">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                                <a href="#">
                                     <span class="d-inline-block"><strong>Administradores</strong><span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
                                 </a>
                             </li>
@@ -229,11 +229,6 @@
                     <div id="collapseMenuConfiguracoes" class="collapse rounded-left cianColor" data-parent="#menuTypes">
                         <span class="triangulo-top"></span>
                         <ul class="list-unstyled inner-level-menu">
-                            <li id="subMp">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
-                                    <span class="d-inline-block"><strong>Detalhes do plano</strong></span>
-                                </a>
-                            </li>
                             <li id="subEmp">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/conf/e">
                                     <span class="d-inline-block"><strong>Empresa</strong></span>
@@ -260,7 +255,7 @@
                             </li>
                             {% else %}
                             <li id="subCu" class="indisponivel">
-                                <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                                <a href="#">
                                     <span class="d-inline-block"><strong>Cupom Desconto</strong> <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
                                 </a>
                             </li>
@@ -325,7 +320,7 @@
                 </li>
                 {% else %}
                 <li id="menuIntegracao" class="indisponivel">
-                <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                <a href="#">
                         <span class="simple-icon-link iconeMenu"></span> <span class="d-inline-block">Integrações <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível somente no Plano Completo">!</span></span>
                     </a>
                 </li>
@@ -340,7 +335,7 @@
                 </li>
                 {% else %}
                 <li id="menuAvaliacao" class="indisponivel">
-                    <a href="{{BASE}}{{empresa.link_site}}/admin/planos">
+                    <a href="#">
                         <span class="simple-icon-star iconeMenu"></span>
                         <span class="d-inline-block">Avaliação <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível no Plano Essencial">!</span></span>
                     </a>

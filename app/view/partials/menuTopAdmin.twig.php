@@ -1,5 +1,5 @@
 {% if planoAtivo is null %}
-    <a href="{{BASE}}{{empresa.link_site}}/admin/planos" class="atendimento plano alert alert-danger"><p>Vimos que você ainda não contratou nenhum plano! Para utilizar nossos serviços e necessário ter um plano ativo! <span class="botao">Ativar um Plano?</span></p></a>
+    <a href="#" class="atendimento plano alert alert-danger"><p>Vimos que você ainda não contratou nenhum plano! Para utilizar nossos serviços e necessário ter um plano ativo! <span class="botao">Ativar um Plano?</span></p></a>
 {% endif %}
 
 <nav class="navbar fixed-top">

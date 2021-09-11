@@ -155,13 +155,16 @@
             <div class="col-md-3 float-left">
                <div class="card card-pricing text-center px-3 mb-4 ">
                   <div class="header_plan">
-                     <h2>Grátis</h2>
+                     <h2>Plus</h2>
                      <span>Conheça e profissionalize.</span>
                   </div>
                   <div class="bg-transparent card-header pt-4 border-0">
                      <div class="elementor-price-table__price">
-                        <span class="elementor-price-table__integer-part text-success">Grátis</span>
-
+                        <span class="elementor-price-table__integer-part"></span>
+                        <div class="elementor-price-table__after-price">
+                           <span class="elementor-price-table__fractional-part p-1 size18 text-uppercase">consulte valores</span>
+                        </div>
+                        <span class="elementor-price-table__period elementor-typo-excluded">Plano Mensal</span>
                      </div>
                   </div>
                   <div class="card-body pt-0">
@@ -311,7 +314,7 @@
                      <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
                   </div>
                   <div class="table-line">
-                     <div class="label-line-table">Pedidos de delivery via peinel personalizado</div>
+                     <div class="label-line-table">Pedidos de delivery via painel personalizado</div>
                      <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
                      <div class="box-check"><img src="{{BASE}}img/5fac528b5331320c0edbd231_uil_check-combo.svg" loading="lazy" alt=""></div>
                      <div class="box-check"><img src="{{BASE}}img/5fac1be1edab0b4a48172452_uil_check-combo.svg" loading="lazy" alt=""></div>
