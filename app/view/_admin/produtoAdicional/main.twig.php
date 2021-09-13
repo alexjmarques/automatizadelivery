@@ -44,7 +44,7 @@
                                     <tr>
                                         <th>Nome</th>
                                         <th style="width: 100px !important;">Valor</th>
-                                        <th style="width: 120px;">Ações</th>
+                                        <th style="width: 160px;">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
