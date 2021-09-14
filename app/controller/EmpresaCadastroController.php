@@ -299,7 +299,7 @@ class EmpresaCadastroController extends Controller
                 $emailEnvia = $this->email->bemVindo($data['nome'], $usuarios->email, $data['senha'], $data['link_site']);
 
                 header('Content-Type: application/json');
-                $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde','code' => 2 ,  'url' => "{$data['link_site']}/{$plano->slug}/pagamento", 'code' => 11 ]);
+                $json = json_encode(['id' => $usuariosEmpresa->id, 'resp' => 'insert', 'mensagem' => 'Cadastro realizado com sucesso! Aguarde para efetuar o pagamento do seu plano', 'error' => 'Não foi possivel efetuar seu cadastro! Tente novamente mais tarde','code' => 2 ,  'url' => "{$data['link_site']}/admin/login", 'code' => 11 ]);
             }
 
         }
