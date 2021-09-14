@@ -50,7 +50,7 @@
                 {% else %}
                 <li id="menuCaixa" class="indisponivel">
                     <a href="#">
-                        <span class="iconsminds-digital-drawing iconeMenu"></span> <span class="d-inline-block"> Relatórios <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
+                        <span class="iconsminds-digital-drawing iconeMenu"></span> <span class="d-inline-block"> Relatórios</span>
                     </a>
                 </li>
                 {% endif %}
@@ -88,7 +88,7 @@
                             {% else %}
                             <li id="subPf" class="indisponivel">
                                 <a href="#">
-                                    <span class="d-inline-block">Todos Pedidos <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Inicial">!</span></span>
+                                    <span class="d-inline-block">Todos Pedidos </span>
                                 </a>
                             </li>
                             {% endif %}
@@ -122,7 +122,7 @@
                 {% else %}
                 <li id="menuMotoboys" class="indisponivel">
                     <a href="#">
-                        <span class="simple-icon-plane iconeMenu"></span> <span class="d-inline-block">Motoboys <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
+                        <span class="simple-icon-plane iconeMenu"></span> <span class="d-inline-block">Motoboys </span>
                     </a>
                 </li>
                 {% endif %}
@@ -185,7 +185,7 @@
                             {% else %}
                             <li id="subAt" class="indisponivel">
                                 <a href="{{BASE}}{{empresa.link_site}}/admin/atendentes">
-                                    <span class="d-inline-block"><strong>Atendentes</strong> <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
+                                    <span class="d-inline-block"><strong>Atendentes</strong></span>
                                 </a>
                             </li>
                             {% endif %}
@@ -206,7 +206,7 @@
                             {% else %}
                             <li id="subUn" class="indisponivel">
                                 <a href="#">
-                                    <span class="d-inline-block"><strong>Administradores</strong><span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
+                                    <span class="d-inline-block"><strong>Administradores</strong></span>
                                 </a>
                             </li>
 
@@ -256,7 +256,7 @@
                             {% else %}
                             <li id="subCu" class="indisponivel">
                                 <a href="#">
-                                    <span class="d-inline-block"><strong>Cupom Desconto</strong> <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível a partir do Plano Intermediario">!</span></span>
+                                    <span class="d-inline-block"><strong>Cupom Desconto</strong> </span>
                                 </a>
                             </li>
                             {% endif %}
@@ -321,7 +321,7 @@
                 {% else %}
                 <li id="menuIntegracao" class="indisponivel">
                 <a href="#">
-                        <span class="simple-icon-link iconeMenu"></span> <span class="d-inline-block">Integrações <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível somente no Plano Completo">!</span></span>
+                        <span class="simple-icon-link iconeMenu"></span> <span class="d-inline-block">Integrações </span>
                     </a>
                 </li>
                 {% endif %}
@@ -337,7 +337,7 @@
                 <li id="menuAvaliacao" class="indisponivel">
                     <a href="#">
                         <span class="simple-icon-star iconeMenu"></span>
-                        <span class="d-inline-block">Avaliação <span class="badge badge-pill badge-light mb-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Disponível no Plano Essencial">!</span></span>
+                        <span class="d-inline-block">Avaliação </span>
                     </a>
                 </li>
                 {% endif %}
