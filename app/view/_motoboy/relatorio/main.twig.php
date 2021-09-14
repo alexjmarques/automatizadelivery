@@ -73,7 +73,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for en in busca %}
+    {% for en in entregas %}
             <tr>
                 <td>
                 {{en.data_pedido|date('h:m')}}

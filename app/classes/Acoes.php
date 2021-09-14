@@ -185,6 +185,11 @@ class Acoes
         return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} = {$valor3}", "{$field}={$valor}")->fetch(true);
     }
 
+    public function getByFieldTreeMaior(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
+    {
+        return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} > {$valor3}", "{$field}={$valor}")->order("id DESC")->fetch(false);
+    }
+
     public function getByFieldTreeMenor(string $table, string $field, string $valor, string $field2, string $valor2, string $field3, string $valor3)
     {
         return $this->{$table}->find("{$field} = :{$field} AND {$field2} = {$valor2} AND {$field3} < {$valor3}", "{$field}={$valor}")->order("id DESC")->fetch(false);

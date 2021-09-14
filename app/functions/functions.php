@@ -24,7 +24,7 @@ function process(ServerRequestInterface $request, RequestHandlerInterface $handl
 {
     // Start session
     if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_cache_expire(4320000);
+        //session_cache_expire(4320000);
         session_start();
     }
 

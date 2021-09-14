@@ -62,6 +62,7 @@ class MotoboyController extends Controller
         $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
         $dias = $this->acoes->getFind('dias');
         $resultDelivery = $this->acoes->getByField('empresaFrete', 'id_empresa', $empresa->id);
+        $entregas = $this->acoes->getByFieldTreeMaior('carrinhoPedidos', 'id_empresa', $empresa->id, 'id_motoboy', $this->sessao->getUser(), 'status', 4);
         //dd($resultDelivery);
 
         $moeda = $this->acoes->getByField('moeda', 'id', $empresa->id_moeda);
@@ -114,6 +115,7 @@ class MotoboyController extends Controller
             'endEmp' => $endEmp,
             'funcionamento' => $funcionamento,
             'dias' => $dias,
+            'entregas' => $entregas,
             'trans' => $this->trans,
             'detect' => new Mobile_Detect(),
             'isLogin' => $this->sessao->getUser(),
