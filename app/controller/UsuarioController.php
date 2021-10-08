@@ -193,6 +193,7 @@ class UsuarioController extends Controller
                 if ($data['idEmpresa']) {
                     $usuId = $this->acoes->getByFieldTwo('usuariosEmpresa', 'id_usuario', $usuario->id, 'id_empresa', $data['idEmpresa']);
                     if ($usuId->id > 0) {
+
                         $empresa = $this->acoes->getByField('empresa', 'id', $data['idEmpresa']);
                         $endEmp = $this->acoes->getByField('empresaEnderecos', 'id_empresa', $empresa->id);
                         $funcionamento = $this->acoes->getByFieldAll('empresaFuncionamento', 'id_empresa', $empresa->id);
@@ -201,12 +202,14 @@ class UsuarioController extends Controller
                         header('Content-Type: application/json');
                         $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/{$empresa->link_site}/admin", 'resp' => 'login', 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                     } else {
+                        $empresa = $this->acoes->getByField('empresa', 'id', $data['idEmpresa']);
                         header('Content-Type: application/json');
-                        $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                        $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/{$empresa->link_site}/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                     }
                 } else {
+                    $empresa = $this->acoes->getByField('empresa', 'id', $data['idEmpresa']);
                     header('Content-Type: application/json');
-                    $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
+                    $json = json_encode(['id' => 1, 'code' => 4, 'url' => "/{$empresa->link_site}/admin", 'mensagem' => "Aguarde estamos redirecionando para a pagina inicial"]);
                 }
             } else {
                 header('Content-Type: application/json');

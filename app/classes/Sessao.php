@@ -98,10 +98,6 @@ class Sessao
                 $session->destroy();
                 redirect(BASE . "{$empresa}/login");
                 break;
-            case 10:
-                $session->destroy();
-                redirect(BASE . "admin/login");
-                break;
             default :
                 $session->destroy();
                 redirect(BASE);
