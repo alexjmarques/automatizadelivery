@@ -48,7 +48,7 @@
     <script src="https://cdn.tiny.cloud/1/1gynmt6biui7yo713cxe0avaiicbqc9quif500b40zeyiush/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
-<body id="app-container" class="menu-main-hidden hide-spinner" data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
+<body id="app-container" class="menu-main-hidden show-spinner" data-link_site="{{empresa.link_site}}" data-estado_site="{{endEmp.estado}}">
     {% include 'partials/menuTopAdmin.twig.php' %}
     {% include 'partials/menuLeftAdmin.twig.php' %}
     <main>
@@ -93,7 +93,6 @@
     <script src="{{BASE}}adm/js/card.js"></script>
 	<script src="https://unpkg.com/dropzone"></script>
     <script src="https://unpkg.com/croppie"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
     <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="{{BASE}}adm/js/scripts.js"></script>
 </body>

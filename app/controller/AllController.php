@@ -63,11 +63,15 @@ class AllController extends Controller
     {
         $assinatura = $this->acoes->getByFieldTwo('assinatura', 'status', 'paid', 'id_empresa', $data);
         $plano = 0;
+
         if ($assinatura->plano_id != null) {
             $getPlanId = $this->acoes->getByField('planos', 'plano_id', $assinatura->plano_id);
             $plano = $getPlanId->id;
+
         }
+        //dd($plano);
         return $plano;
+
     }
 
     public function verificaPlanoLimit($data)

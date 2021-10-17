@@ -39,5 +39,7 @@
 		</div>
 	</div>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxhvl-7RHUThhX4dNvCGEkPuOoT6qbuDQ&callback=initAutocomplete&libraries=places&v=weekly" async ></script>
+<script src="{{BASE}}adm/js/google.js"></script>
 {% include 'partials/modalNovoCliente.twig.php'  %}
 {% endblock %}
